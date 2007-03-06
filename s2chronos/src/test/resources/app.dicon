@@ -3,6 +3,6 @@
 	"http://www.seasar.org/dtd/components23.dtd">
 <components>
 	<include path="scheduler.dicon" />
-
+	<component class="org.seasar.s2chronos.job.ExampleJob"/>
 
 </components>

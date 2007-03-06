@@ -1,11 +1,8 @@
 package org.seasar.s2chronos.job;
 
 import org.seasar.extension.unit.S2TestCase;
-import org.seasar.framework.log.Logger;
 
 public class JobAdaptorTest extends S2TestCase {
-
-	private Logger log = Logger.getLogger(JobAdaptorTest.class);
 
 	private static final String PATH = "app.dicon";
 
