@@ -4,10 +4,16 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import org.seasar.framework.beans.BeanDesc;
+import org.seasar.framework.beans.PropertyDesc;
 import org.seasar.framework.beans.factory.BeanDescFactory;
 import org.seasar.framework.log.Logger;
+import org.seasar.s2chronos.ThreadPoolType;
 import org.seasar.s2chronos.annotation.job.method.Group;
 import org.seasar.s2chronos.annotation.job.method.Join;
 import org.seasar.s2chronos.annotation.job.method.Next;
@@ -35,6 +41,8 @@ public class JobAdaptor {
 
 	private BeanDesc beanDesc;
 
+	private ExecutorService executorService = null;
+
 	public JobAdaptor(Object job) {
 		this.job = job;
 		this.beanDesc = BeanDescFactory.getBeanDesc(this.job.getClass());
@@ -57,6 +65,23 @@ public class JobAdaptor {
 	}
 
 	private void preparedJob() {
+
+		PropertyDesc threadPoolType = this.beanDesc
+				.getPropertyDesc("threadPoolType");
+		ThreadPoolType type = (ThreadPoolType) threadPoolType.getValue(job);
+
+		if (type == ThreadPoolType.FIXED) {
+			int threadSize = getThreadPoolSize();
+			executorService = Executors.newFixedThreadPool(threadSize);
+		} else if (type == ThreadPoolType.CACHED) {
+			executorService = Executors.newCachedThreadPool();
+		} else if (type == ThreadPoolType.SINGLE) {
+			executorService = Executors.newSingleThreadExecutor();
+		} else if (type == ThreadPoolType.SCHEDULED) {
+			int threadSize = getThreadPoolSize();
+			executorService = Executors.newScheduledThreadPool(threadSize);
+		}
+
 		Class clazz = this.beanDesc.getBeanClass();
 		Method[] methods = clazz.getMethods();
 		for (Method method : methods) {
@@ -83,48 +108,70 @@ public class JobAdaptor {
 
 	}
 
-	public ResultSet callJob(String jobName) {
-
-		String firstChar = jobName.substring(0, 1);
-		String afterString = jobName.substring(1);
-		String function;
-		HashMap<String, Method> jobMethod = allJobMethodMap.get(jobName);
-		if (jobMethod != null) {
-			function = START + firstChar.toUpperCase() + afterString;
-			ResultSet resultSet = methodInvoke(function);
-			List<ResultSet> joins = new ArrayList<ResultSet>();
-			do {
-				resultSet = callJob(resultSet.getResult());
-				joins.add(resultSet);
-			} while (resultSet.getResult() != null);
-			for (ResultSet r : joins) {
-				try {
-					r.getThread().join();
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			}
-			function = END + firstChar.toUpperCase() + afterString;
-		} else {
-			function = DO + firstChar.toUpperCase() + afterString;
-		}
-
-		ResultSet result = methodInvoke(function);
-		return result;
-
+	private int getThreadPoolSize() {
+		PropertyDesc threadPoolSize = this.beanDesc
+				.getPropertyDesc("threadPoolSize");
+		int threadSize = (Integer) threadPoolSize.getValue(job);
+		return threadSize;
 	}
 
-	private class MethodRunnable implements Runnable {
+	public String callJob(String jobName) throws Exception {
+		String result = null;
+		String firstChar = jobName.substring(0, 1);
+		String afterString = jobName.substring(1);
 
-		private final String methodName;
+		HashMap<String, Method> jobMethod = allJobMethodMap.get(jobName);
+		if (jobMethod != null) {
+			String startGroupFunctionName = START + firstChar.toUpperCase()
+					+ afterString;
+			result = (String) beanDesc.getMethod(startGroupFunctionName)
+					.getAnnotation(Next.class).value();
+			beanDesc.invoke(job, startGroupFunctionName, null);
 
-		public MethodRunnable(String methodName) {
-			this.methodName = methodName;
+			// ジョブを呼び出す
+			do {
+				result = callJob(result);
+			} while (result != null);
+
+			String endGroupFunction = END + firstChar.toUpperCase()
+					+ afterString;
+			result = (String) beanDesc.getMethod(endGroupFunction)
+					.getAnnotation(Next.class).value();
+			beanDesc.invoke(job, endGroupFunction, null);
+		} else {
+			final String function = DO + firstChar.toUpperCase() + afterString;
+
+			boolean wait = WAIT_DEFAULT;
+			Method method = this.beanDesc.getMethod(function);
+			Join join = method.getAnnotation(Join.class);
+			if (join != null) {
+				wait = (join.value() == JoinType.Wait);
+			}
+			Next next = method.getAnnotation(Next.class);
+			if (next != null) {
+				result = next.value();
+			}
+
+			// スレッドプールでジョブを呼び出す
+			Future<Object> future = executorService
+					.submit(new Callable<Object>() {
+
+						public Object call() throws Exception {
+							return beanDesc.invoke(job, function, null);
+						}
+
+					});
+
+			if (wait) {
+				try {
+					future.get();
+				} catch (Exception e) {
+					throw e;
+				}
+			}
 		}
 
-		public void run() {
-			beanDesc.invoke(job, methodName, null);
-		}
+		return result;
 
 	}
 
@@ -149,41 +196,15 @@ public class JobAdaptor {
 
 	}
 
-	private ResultSet methodInvoke(String function) {
-		String result = null;
-		boolean wait = WAIT_DEFAULT;
-		Method method = this.beanDesc.getMethod(function);
-		Join join = method.getAnnotation(Join.class);
-		if (join != null) {
-			wait = (join.value() == JoinType.Wait);
-		}
-		Next next = method.getAnnotation(Next.class);
-		if (next != null) {
-			result = next.value();
-		}
-		MethodRunnable methodRunnable = new MethodRunnable(function);
-		Thread thread = new Thread(methodRunnable);
-		thread.start();
-		if (wait) {
-			try {
-				log.debug("join start");
-				do {
-					thread.join(100);
-				} while (thread.isAlive());
-			} catch (InterruptedException e) {
-				log.warn("interrupt", e);
-			}
-			log.debug("join end");
-		}
-		ResultSet resultSet = new ResultSet(thread, result);
-		return resultSet;
+	public void cancel() {
+		this.beanDesc.invoke(this.job, "cancel", null);
 	}
 
-	public String destroy() {
+	public void destroy() {
 		if (!this.jobInitialized) {
-			return null;
+			return;
 		}
-		return (String) this.beanDesc.invoke(this.job, "destroy", null);
+		this.beanDesc.invoke(this.job, "destroy", null);
 	}
 
 	public boolean canExecute() {

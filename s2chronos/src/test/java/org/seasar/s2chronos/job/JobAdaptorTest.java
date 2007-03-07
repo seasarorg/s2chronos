@@ -31,11 +31,16 @@ public class JobAdaptorTest extends S2TestCase {
 	public void testCallJob() {
 
 		String jobName = this.target.initialize();
-		do {
-			JobAdaptor.ResultSet resultSet = this.target.callJob(jobName);
-			jobName = resultSet.getResult();
-		} while (jobName != null);
 
+		try {
+			do {
+				jobName = this.target.callJob(jobName);
+			} while (jobName != null);
+		} catch (Exception ex) {
+			this.target.cancel();
+		}
+
+		this.target.destroy();
 	}
 
 	public void testDestroy() {
