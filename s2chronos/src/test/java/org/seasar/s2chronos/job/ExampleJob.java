@@ -5,7 +5,6 @@ import java.util.concurrent.TimeUnit;
 import org.seasar.framework.log.Logger;
 import org.seasar.s2chronos.ThreadPoolType;
 import org.seasar.s2chronos.annotation.job.Job;
-import org.seasar.s2chronos.annotation.job.method.Clone;
 import org.seasar.s2chronos.annotation.job.method.Group;
 import org.seasar.s2chronos.annotation.job.method.Join;
 import org.seasar.s2chronos.annotation.job.method.Next;
@@ -44,18 +43,16 @@ public class ExampleJob {
 	// ジョブメソッドA
 	@Group("groupA")
 	@Next("jobB")
-	@Clone(5)
 	@Join(JoinType.NoWait)
 	public void doJobA() throws Exception {
-		for (int i = 1; i < 5; i++) {
-			try {
 
-				TimeUnit.SECONDS.sleep(1);
-			} catch (InterruptedException e) {
-				break;
-			}
-			log.info("doJobA");
+		try {
+			TimeUnit.SECONDS.sleep(1);
+		} catch (InterruptedException e) {
 		}
+
+		throw new Exception();
+
 	}
 
 	// ジョブメソッドB
@@ -64,7 +61,7 @@ public class ExampleJob {
 	public void doJobB() {
 		for (int i = 1; i < 5; i++) {
 			try {
-				TimeUnit.SECONDS.sleep(1);
+				TimeUnit.SECONDS.sleep(20);
 			} catch (InterruptedException e) {
 				break;
 			}

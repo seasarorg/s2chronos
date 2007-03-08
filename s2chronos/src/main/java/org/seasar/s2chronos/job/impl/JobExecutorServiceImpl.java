@@ -336,7 +336,7 @@ public class JobExecutorServiceImpl implements JobExecutorService {
 	}
 
 	public void destroy() {
-		if (!this.jobInitialized) {
+		if (!this.jobInitialized || this.executorService.isShutdown()) {
 			return;
 		}
 
