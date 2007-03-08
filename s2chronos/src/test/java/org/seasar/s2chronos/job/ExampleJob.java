@@ -1,83 +1,143 @@
 package org.seasar.s2chronos.job;
 
+import java.util.concurrent.TimeUnit;
+
+import org.seasar.framework.log.Logger;
 import org.seasar.s2chronos.ThreadPoolType;
+import org.seasar.s2chronos.annotation.job.Job;
+import org.seasar.s2chronos.annotation.job.method.Clone;
 import org.seasar.s2chronos.annotation.job.method.Group;
 import org.seasar.s2chronos.annotation.job.method.Join;
 import org.seasar.s2chronos.annotation.job.method.Next;
 import org.seasar.s2chronos.annotation.type.JoinType;
 
-public interface ExampleJob {
+@Job
+public class ExampleJob {
+
+	private Logger log = Logger.getLogger(ExampleJob.class);
 
 	// ジョブメソッドをどのタイプのスレッドプールで実行するか返します
-	public abstract ThreadPoolType getThreadPoolType();
+	public ThreadPoolType getThreadPoolType() {
+		return ThreadPoolType.FIXED;
+	}
 
 	// FIXEDの場合は、プールサイズを返します。
 	// ex)2とした場合同時に2スレッドまでの多重度を指定可能。
-	public abstract int getThreadPoolSize();
+	public int getThreadPoolSize() {
+		return 2;
+	}
 
 	// エントリメソッド
 	// 最初に実行するジョブもしくはジョブグループを指定します。
 	@Next("groupA")
-	public abstract void initialize();
+	public void initialize() {
+		log.info("initialize");
+	}
 
 	// ------------------- JOB GROUP A
 	// ジョブグループが開始したときに呼ばれます
 	@Next("jobA")
-	public abstract void startGroupA();
+	public void startGroupA() {
+		log.info("startGroupA");
+	}
 
 	// ジョブメソッドA
 	@Group("groupA")
 	@Next("jobB")
+	@Clone(5)
 	@Join(JoinType.NoWait)
-	public abstract void doJobA() throws Exception;
+	public void doJobA() throws Exception {
+		for (int i = 1; i < 5; i++) {
+			try {
+
+				TimeUnit.SECONDS.sleep(1);
+			} catch (InterruptedException e) {
+				break;
+			}
+			log.info("doJobA");
+		}
+	}
 
 	// ジョブメソッドB
 	@Group("groupA")
 	@Join(JoinType.NoWait)
-	public abstract void doJobB();
+	public void doJobB() {
+		for (int i = 1; i < 5; i++) {
+			try {
+				TimeUnit.SECONDS.sleep(1);
+			} catch (InterruptedException e) {
+				break;
+			}
+			log.info("doJobB");
+		}
+	}
 
 	// ジョブグループが終了したときに呼ばれます
 	@Next("groupB")
-	public abstract void endGroupA();
+	public void endGroupA() {
+		log.info("endGroupA");
+	}
 
 	// ------------------- JOB GROUP B
 	// ジョブグループが開始したときに呼ばれます
 	@Next("jobC")
-	public abstract void startGroupB();
+	public void startGroupB() {
+		log.info("startGroupB");
+	}
 
 	// ジョブメソッドC
 	@Group("groupB")
 	@Next("jobD")
-	public abstract void doJobC();
+	public void doJobC() {
+		log.info("doJobC");
+	}
 
 	// ジョブメソッドD
 	@Group("groupB")
-	public abstract void doJobD();
+	public void doJobD() {
+		log.info("doJobD");
+	}
 
 	// ジョブグループが終了したときに呼ばれます
 	@Next("jobE")
-	public abstract void endGroupB();
+	public void endGroupB() {
+		log.info("endGroupB");
+	}
 
 	// ------------------- JOB E
 	// ジョブE
 	@Next("jobF")
-	public abstract void doJobE();
+	public void doJobE() {
+		log.info("doJobE");
+	}
 
 	// ------------------- JOB F
 	// ジョブF
-	public abstract void doJobF();
+	public void doJobF() {
+		log.info("doJobF");
+	}
 
 	// ジョブが破棄されるときに呼ばれます
-	public abstract void destroy();
+	public void destroy() {
+		log.info("destroy");
+	}
 
 	// ジョブで例外がスローされると呼ばれます
-	public abstract void cancel();
+	public void cancel() {
+		log.info("cancel");
+	}
 
 	// 実行可能かを返す
-	public abstract boolean canExecute();
+	public boolean canExecute() {
+		return true;
+	}
 
-	public abstract void startScheduler();
+	public void startScheduler() {
+		log.info("startScheduler");
+	}
 
-	public abstract void shutdownScheduler();
+	public void shutdownScheduler() {
+		log.info("shutdownScheduler");
+	}
 
 }

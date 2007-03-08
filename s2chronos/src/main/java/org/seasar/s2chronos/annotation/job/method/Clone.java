@@ -1,4 +1,4 @@
-package org.seasar.s2chronos.annotation.job;
+package org.seasar.s2chronos.annotation.job.method;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -6,6 +6,9 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
-public @interface Job {
+@Target(ElementType.METHOD)
+public @interface Clone {
+
+	long value();
+
 }

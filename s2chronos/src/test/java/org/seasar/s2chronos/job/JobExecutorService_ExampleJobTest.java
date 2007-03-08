@@ -3,8 +3,8 @@ package org.seasar.s2chronos.job;
 import java.util.concurrent.ExecutionException;
 
 import org.seasar.extension.unit.S2TestCase;
+import org.seasar.framework.container.ComponentDef;
 import org.seasar.s2chronos.exception.InvalidNextJobMethodException;
-import org.seasar.s2chronos.job.impl.ExampleJobImpl;
 
 public class JobExecutorService_ExampleJobTest extends S2TestCase {
 
@@ -15,12 +15,13 @@ public class JobExecutorService_ExampleJobTest extends S2TestCase {
 	protected void setUp() throws Exception {
 
 		this.include(PATH);
-		ExampleJobImpl job = (ExampleJobImpl) this
-				.getComponent(ExampleJobImpl.class);
+
 		this.target = (JobExecutorService) this
 				.getComponent(JobExecutorService.class);
 
-		this.target.setJob(job);
+		ComponentDef jobDef = this.getComponentDef(ExampleJob.class);
+
+		this.target.setJobComponentDef(jobDef);
 
 	}
 
@@ -35,14 +36,15 @@ public class JobExecutorService_ExampleJobTest extends S2TestCase {
 
 	}
 
-	public void testCallJob() throws InvalidNextJobMethodException,
-			ExecutionException {
+	public void testCallJob() throws InvalidNextJobMethodException {
 
 		String jobName = this.target.initialize();
 		try {
 			this.target.callJob(jobName);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
+		} catch (ExecutionException e) {
+			this.target.cancel();
 		}
 		this.target.destroy();
 	}

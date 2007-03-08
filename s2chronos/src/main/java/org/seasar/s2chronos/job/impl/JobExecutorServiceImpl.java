@@ -14,8 +14,10 @@ import java.util.concurrent.TimeUnit;
 import org.seasar.framework.beans.BeanDesc;
 import org.seasar.framework.beans.PropertyDesc;
 import org.seasar.framework.beans.factory.BeanDescFactory;
+import org.seasar.framework.container.ComponentDef;
 import org.seasar.framework.log.Logger;
 import org.seasar.s2chronos.ThreadPoolType;
+import org.seasar.s2chronos.annotation.job.method.Clone;
 import org.seasar.s2chronos.annotation.job.method.Group;
 import org.seasar.s2chronos.annotation.job.method.Join;
 import org.seasar.s2chronos.annotation.job.method.Next;
@@ -51,10 +53,10 @@ public class JobExecutorServiceImpl implements JobExecutorService {
 
 	}
 
-	public void setJob(Object job) {
-		this.job = job;
-		this.beanDesc = BeanDescFactory.getBeanDesc(this.job.getClass());
-
+	public void setJobComponentDef(ComponentDef jobComoponetDef) {
+		this.job = jobComoponetDef.getComponent();
+		this.beanDesc = BeanDescFactory.getBeanDesc(jobComoponetDef
+				.getComponentClass());
 	}
 
 	/*
@@ -130,20 +132,25 @@ public class JobExecutorServiceImpl implements JobExecutorService {
 
 	private class ResultSet {
 
-		private Future<Object> future;
+		private List<Future<Object>> futureList;
 
 		private boolean wait;
 
 		private String next;
 
-		public ResultSet(Future<Object> future, boolean wait, String next) {
-			this.future = future;
+		public ResultSet(List<Future<Object>> futureList, boolean wait,
+				String next) {
+			this.futureList = futureList;
 			this.wait = wait;
 			this.next = next;
 		}
 
 		public Future<Object> getFuture() {
-			return future;
+			return futureList.get(0);
+		}
+
+		public List<Future<Object>> getFutureList() {
+			return futureList;
 		}
 
 		public void setNext(String next) {
@@ -161,7 +168,7 @@ public class JobExecutorServiceImpl implements JobExecutorService {
 
 	private ResultSet invokeMethod(final String function) {
 		String result = null;
-
+		long cloneSize = 1;
 		boolean wait = WAIT_DEFAULT;
 		Method method = this.beanDesc.getMethod(function);
 		Join join = method.getAnnotation(Join.class);
@@ -172,18 +179,25 @@ public class JobExecutorServiceImpl implements JobExecutorService {
 		if (next != null) {
 			result = next.value();
 		}
+		Clone clone = method.getAnnotation(Clone.class);
+		if (clone != null) {
+			cloneSize = clone.value();
+		}
 
-		// スレッドプールでジョブを呼び出す
-		Future<Object> future = executorService.submit(new Callable<Object>() {
-
-			public Object call() throws Exception {
-				Object result = beanDesc.invoke(job, function, null);
-				return result;
-			}
-
-		});
-
-		return new ResultSet(future, wait, result);
+		List<Future<Object>> futureList = new ArrayList<Future<Object>>();
+		for (long i = 0; i < cloneSize; i++) {
+			// スレッドプールでジョブを呼び出す
+			Future<Object> future = executorService
+					.submit(new Callable<Object>() {
+						public Object call() throws Exception {
+							Object result = beanDesc
+									.invoke(job, function, null);
+							return result;
+						}
+					});
+			futureList.add(future);
+		}
+		return new ResultSet(futureList, wait, result);
 
 	}
 
@@ -252,17 +266,21 @@ public class JobExecutorServiceImpl implements JobExecutorService {
 		String nextMethodName = startJobName;
 		while (true) {
 			resultSet = invokeJobMethod(nextMethodName);
-			futureList.add(resultSet.getFuture());
+			futureList.addAll(resultSet.getFutureList());
 			if (resultSet.isWait()) {
-				try {
-					Object returnObject = resultSet.getFuture().get();
-					// 同期の場合で戻り値にStringでジョブ名を返した場合は遷移先を上書き
-					if (returnObject instanceof String) {
-						resultSet.setNext((String) returnObject);
+				Object returnObject = null;
+				for (Future<Object> f : resultSet.getFutureList()) {
+					try {
+						returnObject = f.get();
+					} catch (ExecutionException e) {
+						log.warn("ジョブから例外がスローされました", e);
+						f.cancel(true);
+						throw e;
 					}
-				} catch (ExecutionException e) {
-					log.warn("ジョブから例外がスローされました", e);
-					throw e;
+				}
+				// 同期の場合で戻り値にStringでジョブ名を返した場合は遷移先を上書き
+				if (returnObject instanceof String) {
+					resultSet.setNext((String) returnObject);
 				}
 			}
 			nextMethodName = resultSet.getNext();
@@ -279,6 +297,7 @@ public class JobExecutorServiceImpl implements JobExecutorService {
 				f.get();
 			} catch (ExecutionException e) {
 				log.warn("ジョブから例外がスローされました", e);
+				f.cancel(true);
 				throw e;
 			}
 		}
@@ -293,11 +312,6 @@ public class JobExecutorServiceImpl implements JobExecutorService {
 		return false;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.seasar.s2chronos.job.JobExecutorService#callJob(java.lang.String)
-	 */
 	public void callJob(String startJobName) throws InterruptedException,
 			InvalidNextJobMethodException, ExecutionException {
 
@@ -309,11 +323,6 @@ public class JobExecutorServiceImpl implements JobExecutorService {
 
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.seasar.s2chronos.job.JobExecutorService#cancel()
-	 */
 	public void cancel() {
 		this.executorService.shutdownNow();
 		if (this.beanDesc.hasMethod("cancel")) {
@@ -321,22 +330,11 @@ public class JobExecutorServiceImpl implements JobExecutorService {
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.seasar.s2chronos.job.JobExecutorService#await(long,
-	 *      java.util.concurrent.TimeUnit)
-	 */
 	public boolean await(long time, TimeUnit timeUnit)
 			throws InterruptedException {
 		return this.executorService.awaitTermination(time, timeUnit);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.seasar.s2chronos.job.JobExecutorService#destroy()
-	 */
 	public void destroy() {
 		if (!this.jobInitialized) {
 			return;

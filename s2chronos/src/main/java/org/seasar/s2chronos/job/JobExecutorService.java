@@ -3,6 +3,7 @@ package org.seasar.s2chronos.job;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
+import org.seasar.framework.container.ComponentDef;
 import org.seasar.s2chronos.exception.InvalidNextJobMethodException;
 
 public interface JobExecutorService {
@@ -22,6 +23,6 @@ public interface JobExecutorService {
 
 	public abstract boolean canExecute();
 
-	public abstract void setJob(Object job);
+	public abstract void setJobComponentDef(ComponentDef job);
 
 }
