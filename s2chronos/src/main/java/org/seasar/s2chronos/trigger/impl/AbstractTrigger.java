@@ -1,6 +1,6 @@
 package org.seasar.s2chronos.trigger.impl;
 
-import org.seasar.s2chronos.job.JobAdaptor;
+import org.seasar.s2chronos.job.JobExecutorService;
 import org.seasar.s2chronos.trigger.Trigger;
 
 public abstract class AbstractTrigger implements Trigger {
@@ -11,7 +11,7 @@ public abstract class AbstractTrigger implements Trigger {
 
 	private Object job;
 
-	private JobAdaptor jobAdaptor;
+	private JobExecutorService jobExecutorServiceImpl;
 
 	private String description;
 
@@ -37,11 +37,12 @@ public abstract class AbstractTrigger implements Trigger {
 		return job;
 	}
 
-	public JobAdaptor getJobAdaptor() {
-		if (jobAdaptor == null) {
-			jobAdaptor = new JobAdaptor(this.job);
-		}
-		return jobAdaptor;
+	public void setJobExecutorService(JobExecutorService jobExecutorServiceImpl) {
+		this.jobExecutorServiceImpl = jobExecutorServiceImpl;
+	}
+
+	public JobExecutorService getJobExecutorService() {
+		return this.jobExecutorServiceImpl;
 	}
 
 	public String getName() {

@@ -4,5 +4,9 @@
 <components>
 
 	<component class="org.seasar.s2chronos.impl.SchedulerImpl"/>
-	
+	<component class="org.seasar.s2chronos.job.impl.JobExecutorServiceImpl">
+		<aspect>
+			<component class="org.seasar.framework.aop.interceptors.TraceInterceptor"/>
+		</aspect>
+	</component>
 </components>
