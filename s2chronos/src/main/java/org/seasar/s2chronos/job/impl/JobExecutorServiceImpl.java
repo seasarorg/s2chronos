@@ -47,7 +47,9 @@ public class JobExecutorServiceImpl implements JobExecutorService {
 
 	private BeanDesc beanDesc;
 
-	private ExecutorService executorService = null;
+	private ExecutorService jobMethodExecutorService = null;
+
+	private ExecutorService lifecycleMethodExecutorService = null;
 
 	public JobExecutorServiceImpl() {
 
@@ -71,7 +73,8 @@ public class JobExecutorServiceImpl implements JobExecutorService {
 		String result = null;
 
 		if (this.beanDesc.hasMethod("initialize")) {
-			ResultSet resultSet = this.invokeMethod("initialize");
+			ResultSet resultSet = this.invokeMethod(
+					this.lifecycleMethodExecutorService, "initialize");
 			result = resultSet.getNext();
 		}
 
@@ -81,20 +84,23 @@ public class JobExecutorServiceImpl implements JobExecutorService {
 
 	private void preparedJob() {
 
+		lifecycleMethodExecutorService = Executors.newSingleThreadExecutor();
+
 		PropertyDesc threadPoolType = this.beanDesc
 				.getPropertyDesc("threadPoolType");
 		ThreadPoolType type = (ThreadPoolType) threadPoolType.getValue(job);
 
 		if (type == ThreadPoolType.FIXED) {
 			int threadSize = getThreadPoolSize();
-			executorService = Executors.newFixedThreadPool(threadSize);
+			jobMethodExecutorService = Executors.newFixedThreadPool(threadSize);
 		} else if (type == ThreadPoolType.CACHED) {
-			executorService = Executors.newCachedThreadPool();
+			jobMethodExecutorService = Executors.newCachedThreadPool();
 		} else if (type == ThreadPoolType.SINGLE) {
-			executorService = Executors.newSingleThreadExecutor();
+			jobMethodExecutorService = Executors.newSingleThreadExecutor();
 		} else if (type == ThreadPoolType.SCHEDULED) {
 			int threadSize = getThreadPoolSize();
-			executorService = Executors.newScheduledThreadPool(threadSize);
+			jobMethodExecutorService = Executors
+					.newScheduledThreadPool(threadSize);
 		}
 
 		Class clazz = this.beanDesc.getBeanClass();
@@ -166,7 +172,8 @@ public class JobExecutorServiceImpl implements JobExecutorService {
 		}
 	}
 
-	private ResultSet invokeMethod(final String function) {
+	private ResultSet invokeMethod(ExecutorService executorService,
+			final String function) {
 		String result = null;
 		long cloneSize = 1;
 		boolean wait = WAIT_DEFAULT;
@@ -208,18 +215,18 @@ public class JobExecutorServiceImpl implements JobExecutorService {
 		final String function = METHOD_PREFIX_NAME_DO + firstChar.toUpperCase()
 				+ afterString;
 
-		return invokeMethod(function);
+		return invokeMethod(this.jobMethodExecutorService, function);
 	}
 
 	private ResultSet invokeStartJobGroupMethod(String startGroupName) {
-		ResultSet resultSet = invokeMethod(METHOD_PREFIX_NAME_START
-				+ startGroupName);
+		ResultSet resultSet = invokeMethod(this.jobMethodExecutorService,
+				METHOD_PREFIX_NAME_START + startGroupName);
 		return resultSet;
 	}
 
 	private ResultSet invokeEndJobGroupMethod(String endGroupName) {
-		ResultSet resultSet = invokeMethod(METHOD_PREFIX_NAME_END
-				+ endGroupName);
+		ResultSet resultSet = invokeMethod(this.jobMethodExecutorService,
+				METHOD_PREFIX_NAME_END + endGroupName);
 		return resultSet;
 	}
 
@@ -324,24 +331,31 @@ public class JobExecutorServiceImpl implements JobExecutorService {
 	}
 
 	public void cancel() {
-		this.executorService.shutdownNow();
+		this.jobMethodExecutorService.shutdownNow();
 		if (this.beanDesc.hasMethod("cancel")) {
-			this.beanDesc.invoke(this.job, "cancel", null);
+			this.invokeMethod(this.lifecycleMethodExecutorService, "cancel");
 		}
 	}
 
 	public boolean await(long time, TimeUnit timeUnit)
 			throws InterruptedException {
-		return this.executorService.awaitTermination(time, timeUnit);
+		boolean result = this.jobMethodExecutorService.awaitTermination(time,
+				timeUnit);
+		if (result == false) {
+			return result;
+		}
+		result = this.lifecycleMethodExecutorService.awaitTermination(time,
+				timeUnit);
+		return result;
 	}
 
 	public void destroy() {
-		if (!this.jobInitialized || this.executorService.isShutdown()) {
+		if (!this.jobInitialized || this.jobMethodExecutorService.isShutdown()) {
 			return;
 		}
 
 		if (this.beanDesc.hasMethod("destroy")) {
-			this.invokeMethod("destroy");
+			this.invokeMethod(this.lifecycleMethodExecutorService, "destroy");
 		}
 	}
 
