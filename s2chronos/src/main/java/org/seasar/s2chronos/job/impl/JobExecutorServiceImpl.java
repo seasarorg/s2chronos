@@ -26,6 +26,8 @@ import org.seasar.s2chronos.exception.InvalidNextJobMethodException;
 import org.seasar.s2chronos.exception.InvalidOperationException;
 import org.seasar.s2chronos.job.JobExecutorService;
 
+//TODO : ステートパターンとコマンドパターンの適用
+
 public class JobExecutorServiceImpl implements JobExecutorService {
 
 	private Logger log = Logger.getLogger(JobExecutorServiceImpl.class);
