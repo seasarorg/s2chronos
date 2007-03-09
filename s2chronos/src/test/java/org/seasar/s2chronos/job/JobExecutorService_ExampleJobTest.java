@@ -29,7 +29,8 @@ public class JobExecutorService_ExampleJobTest extends S2TestCase {
 		super.tearDown();
 	}
 
-	public void testInitialize() throws InterruptedException, ExecutionException {
+	public void testInitialize() throws InterruptedException,
+			ExecutionException {
 
 		assertNotNull(this.target);
 		this.target.initialize();
@@ -52,11 +53,13 @@ public class JobExecutorService_ExampleJobTest extends S2TestCase {
 
 	public void testDestroy() throws InterruptedException, ExecutionException {
 
+		this.target.initialize();
 		this.target.destroy();
 
 	}
 
-	public void testCanExecute() throws InterruptedException, ExecutionException {
+	public void testCanExecute() throws InterruptedException,
+			ExecutionException {
 		this.target.initialize();
 		try {
 			this.target.canExecute();
