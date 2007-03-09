@@ -23,6 +23,7 @@ import org.seasar.s2chronos.annotation.job.method.Join;
 import org.seasar.s2chronos.annotation.job.method.Next;
 import org.seasar.s2chronos.annotation.type.JoinType;
 import org.seasar.s2chronos.exception.InvalidNextJobMethodException;
+import org.seasar.s2chronos.exception.InvalidOperationException;
 import org.seasar.s2chronos.job.JobExecutorService;
 
 public class JobExecutorServiceImpl implements JobExecutorService {
@@ -61,12 +62,7 @@ public class JobExecutorServiceImpl implements JobExecutorService {
 				.getComponentClass());
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.seasar.s2chronos.job.JobExecutorService#initialize()
-	 */
-	public String initialize() {
+	public String initialize() throws InterruptedException, ExecutionException {
 
 		this.preparedJob();
 
@@ -75,6 +71,7 @@ public class JobExecutorServiceImpl implements JobExecutorService {
 		if (this.beanDesc.hasMethod("initialize")) {
 			ResultSet resultSet = this.invokeMethod(
 					this.lifecycleMethodExecutorService, "initialize");
+			resultSet.getFuture().get();
 			result = resultSet.getNext();
 		}
 
@@ -321,7 +318,9 @@ public class JobExecutorServiceImpl implements JobExecutorService {
 
 	public void callJob(String startJobName) throws InterruptedException,
 			InvalidNextJobMethodException, ExecutionException {
-
+		if (!this.jobInitialized) {
+			throw new InvalidOperationException();
+		}
 		if (isGroupMethod(startJobName)) {
 			callJobGroupMethods(startJobName);
 		} else {
@@ -330,10 +329,15 @@ public class JobExecutorServiceImpl implements JobExecutorService {
 
 	}
 
-	public void cancel() {
+	public void cancel() throws InterruptedException, ExecutionException {
+		if (!this.jobInitialized) {
+			throw new InvalidOperationException();
+		}
 		this.jobMethodExecutorService.shutdownNow();
 		if (this.beanDesc.hasMethod("cancel")) {
-			this.invokeMethod(this.lifecycleMethodExecutorService, "cancel");
+			ResultSet resultSet = this.invokeMethod(
+					this.lifecycleMethodExecutorService, "cancel");
+			resultSet.getFuture().get();
 		}
 	}
 
@@ -349,24 +353,28 @@ public class JobExecutorServiceImpl implements JobExecutorService {
 		return result;
 	}
 
-	public void destroy() {
-		if (!this.jobInitialized || this.jobMethodExecutorService.isShutdown()) {
-			return;
+	public void destroy() throws InterruptedException, ExecutionException {
+		if (!this.jobInitialized) {
+			throw new InvalidOperationException();
 		}
 
 		if (this.beanDesc.hasMethod("destroy")) {
-			this.invokeMethod(this.lifecycleMethodExecutorService, "destroy");
+			ResultSet resultSet = this.invokeMethod(
+					this.lifecycleMethodExecutorService, "destroy");
+			resultSet.getFuture().get();
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.seasar.s2chronos.job.JobExecutorService#canExecute()
-	 */
-	public boolean canExecute() {
+	public boolean canExecute() throws InterruptedException, ExecutionException {
+		if (!this.jobInitialized) {
+			throw new InvalidOperationException();
+		}
+
 		if (this.beanDesc.hasMethod("canExecute")) {
-			return (Boolean) this.beanDesc.invoke(this.job, "canExecute", null);
+			ResultSet resultSet = this.invokeMethod(
+					this.lifecycleMethodExecutorService, "canExecute");
+			Boolean result = (Boolean) resultSet.getFuture().get();
+			return result;
 		}
 		return true;
 	}

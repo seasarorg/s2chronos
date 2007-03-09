@@ -29,14 +29,15 @@ public class JobExecutorService_ExampleJobTest extends S2TestCase {
 		super.tearDown();
 	}
 
-	public void testInitialize() {
+	public void testInitialize() throws InterruptedException, ExecutionException {
 
 		assertNotNull(this.target);
 		this.target.initialize();
 
 	}
 
-	public void testCallJob() throws InvalidNextJobMethodException {
+	public void testCallJob() throws InvalidNextJobMethodException,
+			InterruptedException, ExecutionException {
 
 		String jobName = this.target.initialize();
 		try {
@@ -49,15 +50,21 @@ public class JobExecutorService_ExampleJobTest extends S2TestCase {
 		this.target.destroy();
 	}
 
-	public void testDestroy() {
+	public void testDestroy() throws InterruptedException, ExecutionException {
 
 		this.target.destroy();
 
 	}
 
-	public void testCanExecute() {
-
-		this.target.canExecute();
+	public void testCanExecute() throws InterruptedException, ExecutionException {
+		this.target.initialize();
+		try {
+			this.target.canExecute();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			e.printStackTrace();
+		}
 
 	}
 
