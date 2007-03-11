@@ -16,6 +16,7 @@ import org.seasar.chronos.annotation.type.JoinType;
 import org.seasar.framework.beans.BeanDesc;
 import org.seasar.framework.beans.MethodNotFoundRuntimeException;
 import org.seasar.framework.beans.PropertyDesc;
+import org.seasar.framework.beans.factory.BeanDescFactory;
 import org.seasar.framework.container.ComponentDef;
 
 public class JobBeanDesc {
@@ -68,19 +69,44 @@ public class JobBeanDesc {
 		return jobResult;
 	}
 
-	public Future<JobResult> beginInvoke(final String methodName) {
-		Future<JobResult> f = executoerService
+	/**
+	 * listener public void doJobACallback(AsyncResult ar){ }
+	 * 
+	 * jobBeanDesc.beginInvoke("doJobA", new Callback(listener), null );
+	 * 
+	 * @param methodName
+	 * @param callback
+	 * @param state
+	 * @return
+	 */
+	public AsyncResult beginInvoke(final String methodName,
+			final Callback callback, final Object state) {
+		Future<JobResult> future = executoerService
 				.submit(new Callable<JobResult>() {
 					public JobResult call() throws Exception {
-						return invoke(methodName);
+						BeanDesc beanDesc = BeanDescFactory
+								.getBeanDesc(callback.getTarget().getClass());
+
+						JobResult jobResult = invoke(methodName);
+
+						String callbackMethodName = callback.getMethodName();
+						if (callbackMethodName == null) {
+							callbackMethodName = methodName + "Callback";
+						}
+						beanDesc
+								.invoke(callback.getTarget(),
+										callbackMethodName,
+										new Object[] { new AsyncResult(
+												jobResult, state) });
+						return jobResult;
 					}
 				});
-		return f;
+		return new AsyncResult(future, state);
 	}
 
-	public JobResult endInvoke(Future<JobResult> future) throws Throwable {
+	public JobResult endInvoke(AsyncResult asyncResult) throws Throwable {
 		try {
-			return future.get();
+			return asyncResult.getJobResult();
 		} catch (ExecutionException e) {
 			throw e.getCause();
 		}
