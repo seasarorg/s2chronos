@@ -2,8 +2,8 @@ package org.seasar.s2chronos.job;
 
 import java.util.concurrent.TimeUnit;
 
+import org.seasar.chronos.annotation.job.method.Next;
 import org.seasar.framework.log.Logger;
-import org.seasar.s2chronos.annotation.job.method.Next;
 
 public class InterruptSupportJob {
 

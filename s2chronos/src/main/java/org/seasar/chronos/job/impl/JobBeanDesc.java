@@ -28,7 +28,7 @@ public class JobBeanDesc {
 
 	private ExecutorService executoerService;
 
-	JobBeanDesc(ComponentDef jobComponentDef) {
+	public JobBeanDesc(ComponentDef jobComponentDef) {
 
 	}
 
@@ -78,9 +78,16 @@ public class JobBeanDesc {
 		return f;
 	}
 
-	public JobResult endInvoke(Future<JobResult> future)
-			throws InterruptedException, ExecutionException {
-		return future.get();
+	public JobResult endInvoke(Future<JobResult> future) throws Throwable {
+		try {
+			return future.get();
+		} catch (ExecutionException e) {
+			throw e.getCause();
+		}
+	}
+
+	public int getThreadPoolSize() {
+		return 0;
 	}
 
 	public ThreadPoolType getThreadPoolType() {

@@ -2,13 +2,13 @@ package org.seasar.s2chronos.job;
 
 import java.util.concurrent.TimeUnit;
 
+import org.seasar.chronos.ThreadPoolType;
+import org.seasar.chronos.annotation.job.Job;
+import org.seasar.chronos.annotation.job.method.Group;
+import org.seasar.chronos.annotation.job.method.Join;
+import org.seasar.chronos.annotation.job.method.Next;
+import org.seasar.chronos.annotation.type.JoinType;
 import org.seasar.framework.log.Logger;
-import org.seasar.s2chronos.ThreadPoolType;
-import org.seasar.s2chronos.annotation.job.Job;
-import org.seasar.s2chronos.annotation.job.method.Group;
-import org.seasar.s2chronos.annotation.job.method.Join;
-import org.seasar.s2chronos.annotation.job.method.Next;
-import org.seasar.s2chronos.annotation.type.JoinType;
 
 @Job
 public class ExampleJob {

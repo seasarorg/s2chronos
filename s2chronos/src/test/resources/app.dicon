@@ -3,7 +3,7 @@
 	"http://www.seasar.org/dtd/components23.dtd">
 <components>
 	<include path="scheduler.dicon" />
-	<component class="org.seasar.s2chronos.job.ExampleJob">
+	<component class="org.seasar.chronos.job.ExampleJob">
 		<aspect pointcut="do.*, initialize, destroy">
 			<component class="org.seasar.framework.aop.interceptors.TraceInterceptor"/>
 		</aspect>

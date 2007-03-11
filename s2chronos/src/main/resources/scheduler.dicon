@@ -3,8 +3,8 @@
 	"http://www.seasar.org/dtd/components23.dtd">
 <components>
 
-	<component class="org.seasar.s2chronos.impl.SchedulerImpl"/>
-	<component class="org.seasar.s2chronos.job.impl.JobExecutorServiceImpl">
+	<component class="org.seasar.chronos.impl.SchedulerImpl"/>
+	<component class="org.seasar.chronos.job.impl.JobExecutorServiceImpl">
 		<aspect>
 			<component class="org.seasar.framework.aop.interceptors.TraceInterceptor"/>
 		</aspect>

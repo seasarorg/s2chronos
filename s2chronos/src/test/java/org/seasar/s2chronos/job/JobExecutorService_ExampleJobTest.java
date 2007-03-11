@@ -2,9 +2,10 @@ package org.seasar.s2chronos.job;
 
 import java.util.concurrent.ExecutionException;
 
+import org.seasar.chronos.exception.InvalidNextJobMethodException;
+import org.seasar.chronos.job.JobExecutorService;
 import org.seasar.extension.unit.S2TestCase;
 import org.seasar.framework.container.ComponentDef;
-import org.seasar.s2chronos.exception.InvalidNextJobMethodException;
 
 public class JobExecutorService_ExampleJobTest extends S2TestCase {
 
