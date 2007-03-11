@@ -6,6 +6,9 @@ import java.util.concurrent.Executors;
 import org.seasar.chronos.ThreadPoolType;
 import org.seasar.chronos.delegate.AsyncResult;
 import org.seasar.chronos.delegate.MethodInvoker;
+import org.seasar.chronos.job.TaskExecuteHandler;
+import org.seasar.chronos.job.TaskExecuteHandlerFactory;
+import org.seasar.chronos.job.TaskType;
 import org.seasar.framework.beans.BeanDesc;
 import org.seasar.framework.beans.PropertyDesc;
 import org.seasar.framework.beans.factory.BeanDescFactory;
@@ -46,6 +49,10 @@ public class JobBeanDesc {
 				METHOD_PREFIX_NAME_DO);
 	}
 
+	private boolean isGroupMethod(String groupName) {
+		return this.methodGroupMap.existGroup(groupName);
+	}
+
 	private void prepareMethodInvoker() {
 		ExecutorService lifecycleMethodExecutorService = Executors
 				.newSingleThreadExecutor();
@@ -71,6 +78,20 @@ public class JobBeanDesc {
 		}
 
 		return null;
+	}
+
+	public void callJob(String startJobName) throws Throwable {
+
+		TaskType type = isGroupMethod(startJobName) ? TaskType.JOBGROUP
+				: TaskType.JOB;
+
+		TaskExecuteHandler taskExecuteHandler = TaskExecuteHandlerFactory
+				.create(type);
+
+		taskExecuteHandler.setMethodInvoker(this.jobMethodInvoker);
+		taskExecuteHandler.setMethodGroupMap(this.methodGroupMap);
+
+		taskExecuteHandler.handleRequest(startJobName);
 	}
 
 	public void destroy() throws Throwable {

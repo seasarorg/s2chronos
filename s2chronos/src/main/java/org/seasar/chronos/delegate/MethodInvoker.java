@@ -1,5 +1,6 @@
 package org.seasar.chronos.delegate;
 
+import java.lang.reflect.Method;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -12,6 +13,8 @@ import org.seasar.framework.container.ComponentDef;
 
 public class MethodInvoker {
 
+	private static final String CALLBACK_SUFFIX = "Callback";
+
 	private Class targetClass;
 
 	private Object target;
@@ -19,6 +22,10 @@ public class MethodInvoker {
 	private BeanDesc beanDesc;
 
 	private ExecutorService executorService;
+
+	public ExecutorService getExecutorService() {
+		return executorService;
+	}
 
 	public MethodInvoker(ExecutorService executorService, Object target,
 			BeanDesc beanDesc) {
@@ -40,13 +47,18 @@ public class MethodInvoker {
 		return this.beanDesc.hasMethod(methodName);
 	}
 
+	public Method getMethod(String methodName) {
+		return this.beanDesc.getMethod(methodName);
+	}
+
 	public Object invoke(String methodName) {
 		return invoke(methodName, null);
 	}
 
 	public Object invoke(String methodName, Object[] args)
 			throws MethodNotFoundRuntimeException {
-		Object result = (Object) beanDesc.invoke(this.target, methodName, args);
+		Object result = (Object) this.beanDesc.invoke(this.target, methodName,
+				args);
 		return result;
 	}
 
@@ -60,32 +72,40 @@ public class MethodInvoker {
 	}
 
 	public AsyncResult beginInvoke(final String methodName,
-			final Object[] args, final MethodCallback methodCallback, final Object state) {
+			final Object[] args, final MethodCallback methodCallback,
+			final Object state) {
 
 		final AsyncResult asyncResult = new AsyncResult();
 
-		Future<Object> future = executorService.submit(new Callable<Object>() {
-			public Object call() throws Exception {
-				synchronized (asyncResult) {
-					asyncResult.wait();
-				}
+		Future<Object> future = this.executorService
+				.submit(new Callable<Object>() {
+					public Object call() throws Exception {
+						synchronized (asyncResult) {
+							asyncResult.wait();
+						}
+						Object result = invoke(methodName, args);
+						callbackHandler(methodName, methodCallback, asyncResult);
+						return result;
+					}
 
-				BeanDesc beanDesc = BeanDescFactory.getBeanDesc(methodCallback
-						.getTarget().getClass());
+					private void callbackHandler(final String methodName,
+							final MethodCallback methodCallback,
+							final AsyncResult asyncResult) {
 
-				Object result = invoke(methodName, args);
-
-				StringBuffer callbackMethodName = new StringBuffer(methodCallback
-						.getMethodName());
-				if (callbackMethodName == null) {
-					callbackMethodName.append(methodName);
-					callbackMethodName.append("Callback");
-				}
-				beanDesc.invoke(methodCallback.getTarget(), callbackMethodName
-						.toString(), new Object[] { asyncResult });
-				return result;
-			}
-		});
+						BeanDesc beanDesc = BeanDescFactory
+								.getBeanDesc(methodCallback.getTarget()
+										.getClass());
+						StringBuffer callbackMethodName = new StringBuffer(
+								methodCallback.getMethodName());
+						if (callbackMethodName == null) {
+							callbackMethodName.append(methodName);
+							callbackMethodName.append(CALLBACK_SUFFIX);
+						}
+						beanDesc.invoke(methodCallback.getTarget(),
+								callbackMethodName.toString(),
+								new Object[] { asyncResult });
+					}
+				});
 
 		synchronized (asyncResult) {
 			asyncResult.setFuture(future);
@@ -101,6 +121,14 @@ public class MethodInvoker {
 		} catch (ExecutionException e) {
 			throw e.getCause();
 		}
+	}
+
+	public boolean cancelInvoke(AsyncResult asyncResult) {
+		return asyncResult.getFuture().cancel(true);
+	}
+
+	public boolean cancelInvoke(AsyncResult asyncResult, boolean shutdown) {
+		return asyncResult.getFuture().cancel(shutdown);
 	}
 
 }

@@ -1,5 +1,18 @@
 package org.seasar.chronos.job;
 
+import org.seasar.chronos.delegate.MethodInvoker;
+import org.seasar.chronos.job.impl.MethodGroupMap;
+
 public interface TaskExecuteHandler {
-	public void handleRequest(String startTaskName);
+
+	public MethodInvoker getMethodInvoker();
+
+	public void setMethodInvoker(MethodInvoker methodInvoker);
+
+	public MethodGroupMap getMethodGroupMap();
+
+	public void setMethodGroupMap(MethodGroupMap methodGroupMap);
+
+	public boolean handleRequest(String startTaskName) throws Throwable;
+
 }

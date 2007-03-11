@@ -4,8 +4,8 @@ public class JobGroupMethodExecuteHandlerImpl extends
 		AbstractTaskExecuteHandler {
 
 	@Override
-	public void handleRequest(String startTaskName) {
-
+	public boolean handleRequest(String startTaskName) {
+		return false;
 	}
 
 }

@@ -1,5 +1,6 @@
 package org.seasar.chronos.delegate;
 
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 public class AsyncResult {
@@ -8,11 +9,11 @@ public class AsyncResult {
 
 	private Object state = null;
 
-	public Future<Object> getFuture() {
+	Future<Object> getFuture() {
 		return future;
 	}
 
-	public void setFuture(Future<Object> future) {
+	void setFuture(Future<Object> future) {
 		this.future = future;
 	}
 
@@ -22,6 +23,18 @@ public class AsyncResult {
 
 	public void setState(Object state) {
 		this.state = state;
+	}
+
+	public void waitOne() throws Throwable {
+		try {
+			this.future.get();
+		} catch (ExecutionException e) {
+			throw e.getCause();
+		}
+	}
+
+	public boolean isCompleted() {
+		return this.future.isDone();
 	}
 
 }
