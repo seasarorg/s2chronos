@@ -1,4 +1,4 @@
-package org.seasar.chronos.concurrent;
+package org.seasar.chronos.delegate;
 
 import java.util.concurrent.Future;
 

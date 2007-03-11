@@ -1,4 +1,4 @@
-package org.seasar.chronos.concurrent;
+package org.seasar.chronos.delegate;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
@@ -10,7 +10,7 @@ import org.seasar.framework.beans.MethodNotFoundRuntimeException;
 import org.seasar.framework.beans.factory.BeanDescFactory;
 import org.seasar.framework.container.ComponentDef;
 
-public class BeanDescInvoker {
+public class MethodInvoker {
 
 	private Class targetClass;
 
@@ -20,7 +20,7 @@ public class BeanDescInvoker {
 
 	private ExecutorService executorService;
 
-	public BeanDescInvoker(ExecutorService executorService, Object target,
+	public MethodInvoker(ExecutorService executorService, Object target,
 			BeanDesc beanDesc) {
 		this.executorService = executorService;
 		this.beanDesc = beanDesc;
@@ -28,7 +28,7 @@ public class BeanDescInvoker {
 		this.targetClass = this.beanDesc.getBeanClass();
 	}
 
-	public BeanDescInvoker(ExecutorService executorService,
+	public MethodInvoker(ExecutorService executorService,
 			ComponentDef componentDef) {
 		this.executorService = executorService;
 		this.target = componentDef.getComponent();
@@ -55,12 +55,12 @@ public class BeanDescInvoker {
 	}
 
 	public AsyncResult beginInvoke(final String methodName,
-			final Callback callback, final Object state) {
-		return beginInvoke(methodName, null, callback, state);
+			final MethodCallback methodCallback, final Object state) {
+		return beginInvoke(methodName, null, methodCallback, state);
 	}
 
 	public AsyncResult beginInvoke(final String methodName,
-			final Object[] args, final Callback callback, final Object state) {
+			final Object[] args, final MethodCallback methodCallback, final Object state) {
 
 		final AsyncResult asyncResult = new AsyncResult();
 
@@ -70,18 +70,18 @@ public class BeanDescInvoker {
 					asyncResult.wait();
 				}
 
-				BeanDesc beanDesc = BeanDescFactory.getBeanDesc(callback
+				BeanDesc beanDesc = BeanDescFactory.getBeanDesc(methodCallback
 						.getTarget().getClass());
 
 				Object result = invoke(methodName, args);
 
-				StringBuffer callbackMethodName = new StringBuffer(callback
+				StringBuffer callbackMethodName = new StringBuffer(methodCallback
 						.getMethodName());
 				if (callbackMethodName == null) {
 					callbackMethodName.append(methodName);
 					callbackMethodName.append("Callback");
 				}
-				beanDesc.invoke(callback.getTarget(), callbackMethodName
+				beanDesc.invoke(methodCallback.getTarget(), callbackMethodName
 						.toString(), new Object[] { asyncResult });
 				return result;
 			}

@@ -1,16 +1,16 @@
-package org.seasar.chronos.concurrent;
+package org.seasar.chronos.delegate;
 
-public class Callback {
+public class MethodCallback {
 
 	private Object target;
 
 	private String methodName;
 
-	public Callback(Object target) {
+	public MethodCallback(Object target) {
 		this.target = target;
 	}
 
-	public Callback(Object target, String methodName) {
+	public MethodCallback(Object target, String methodName) {
 		this.target = target;
 		this.methodName = methodName;
 	}
