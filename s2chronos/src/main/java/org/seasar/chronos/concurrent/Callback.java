@@ -1,4 +1,4 @@
-package org.seasar.chronos.job.impl;
+package org.seasar.chronos.concurrent;
 
 public class Callback {
 
