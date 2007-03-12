@@ -35,12 +35,11 @@ public class JobExecuteStateNoInitialized extends AbstractJobExecuteState {
 	public void cancel(JobExecuteContext context) {
 	}
 
-	public void destroy(JobExecuteContext context) throws InterruptedException,
-			ExecutionException {
+	public void destroy(JobExecuteContext context) {
 	}
 
 	public String initialize(JobExecuteContext context,
-			ComponentDef jobComponentDef) throws Throwable {
+			ComponentDef jobComponentDef) throws InterruptedException {
 
 		String result = this.getJobExecuteStrategy()
 				.initialize(jobComponentDef);

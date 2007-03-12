@@ -14,7 +14,7 @@ public class JobExecuteContext {
 		this.currentState = nextState;
 	}
 
-	public String initialize(ComponentDef jobComponentDef) throws Throwable {
+	public String initialize(ComponentDef jobComponentDef) throws InterruptedException {
 		return this.currentState.initialize(this, jobComponentDef);
 	}
 
@@ -32,7 +32,7 @@ public class JobExecuteContext {
 		return this.currentState.await(this, time, timeUnit);
 	}
 
-	public void destroy() throws Throwable {
+	public void destroy() throws InterruptedException {
 		this.currentState.destroy(this);
 	}
 

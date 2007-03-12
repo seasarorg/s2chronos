@@ -5,15 +5,16 @@ import org.seasar.framework.container.ComponentDef;
 
 public interface JobExecuteStrategy {
 
-	public String initialize(ComponentDef jobComponentDef) throws Throwable;
+	public String initialize(ComponentDef jobComponentDef)
+			throws InterruptedException;
 
-	public void callJob(String startJobName) throws Throwable;
+	public void callJob(String startJobName) throws InterruptedException;
 
-	public void destroy() throws Throwable;
+	public void destroy() throws InterruptedException;
 
 	public void cancel();
 
-	public boolean canExecute() throws Throwable;
+	public boolean canExecute() throws InterruptedException;
 
 	public int getThreadPoolSize();
 

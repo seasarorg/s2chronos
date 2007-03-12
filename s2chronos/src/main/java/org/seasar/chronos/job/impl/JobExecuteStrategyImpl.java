@@ -69,7 +69,8 @@ public class JobExecuteStrategyImpl implements JobExecuteStrategy {
 	 * 
 	 * @see org.seasar.chronos.job.impl.JobExecuteStrategy#initialize(org.seasar.framework.container.ComponentDef)
 	 */
-	public String initialize(ComponentDef jobComponentDef) throws Throwable {
+	public String initialize(ComponentDef jobComponentDef)
+			throws InterruptedException {
 
 		this.jobComponentDef = jobComponentDef;
 		this.job = this.jobComponentDef.getComponent();
@@ -129,7 +130,7 @@ public class JobExecuteStrategyImpl implements JobExecuteStrategy {
 	 * 
 	 * @see org.seasar.chronos.job.impl.JobExecuteStrategy#destroy()
 	 */
-	public void destroy() throws Throwable {
+	public void destroy() throws InterruptedException {
 		if (this.lifecycleMethodInvoker.hasMethod(METHOD_NAME_DESTROY)) {
 			AsyncResult ar = this.lifecycleMethodInvoker
 					.beginInvoke(METHOD_NAME_DESTROY);
@@ -144,7 +145,7 @@ public class JobExecuteStrategyImpl implements JobExecuteStrategy {
 	 * 
 	 * @see org.seasar.chronos.job.impl.JobExecuteStrategy#canExecute()
 	 */
-	public boolean canExecute() throws Throwable {
+	public boolean canExecute() throws InterruptedException {
 		if (this.lifecycleMethodInvoker.hasMethod(METHOD_NAME_CANEXECUTE)) {
 			AsyncResult ar = this.lifecycleMethodInvoker
 					.beginInvoke(METHOD_NAME_CANEXECUTE);

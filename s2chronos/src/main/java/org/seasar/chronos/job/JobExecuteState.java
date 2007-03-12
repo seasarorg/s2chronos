@@ -9,7 +9,7 @@ import org.seasar.framework.container.ComponentDef;
 public interface JobExecuteState {
 
 	public String initialize(JobExecuteContext context,
-			ComponentDef jobComponentDef) throws Throwable;
+			ComponentDef jobComponentDef) throws InterruptedException;
 
 	public void callJob(JobExecuteContext context, String startJobName)
 			throws InterruptedException, InvalidNextJobMethodException,
@@ -20,7 +20,7 @@ public interface JobExecuteState {
 	public boolean await(JobExecuteContext context, long time, TimeUnit timeUnit)
 			throws InterruptedException;
 
-	public void destroy(JobExecuteContext context) throws Throwable;
+	public void destroy(JobExecuteContext context) throws InterruptedException;
 
 	public boolean canExecute(JobExecuteContext context)
 			throws InterruptedException, ExecutionException;

@@ -45,14 +45,14 @@ public class JobExecuteStateInitialized extends AbstractJobExecuteState {
 	}
 
 	@Override
-	public void destroy(JobExecuteContext context) throws Throwable {
+	public void destroy(JobExecuteContext context) throws InterruptedException {
 		this.getJobExecuteStrategy().destroy();
 		this.changeState(context, jobExecuteStateNoInitialized);
 	}
 
 	@Override
 	public String initialize(JobExecuteContext context,
-			ComponentDef jobComponentDef) throws Throwable {
+			ComponentDef jobComponentDef) {
 		return null;
 	}
 

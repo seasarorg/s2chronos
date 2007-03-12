@@ -46,11 +46,12 @@ public class JobExecutorServiceImpl implements JobExecutorService {
 		this.jobExecuteContext.cancel();
 	}
 
-	public void destroy() throws Throwable {
+	public void destroy() throws InterruptedException {
 		this.jobExecuteContext.destroy();
 	}
 
-	public String initialize(ComponentDef jobComponentDef) throws Throwable {
+	public String initialize(ComponentDef jobComponentDef)
+			throws InterruptedException {
 		this.jobExecuteContext.changeState(this.jobExecuteStateNoInitialized);
 		return this.jobExecuteContext.initialize(jobComponentDef);
 	}

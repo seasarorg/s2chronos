@@ -38,9 +38,10 @@ public abstract class AbstractJobExecuteState implements JobExecuteState {
 
 	public abstract void cancel(JobExecuteContext context);
 
-	public abstract void destroy(JobExecuteContext context) throws Throwable;
+	public abstract void destroy(JobExecuteContext context)
+			throws InterruptedException;
 
 	public abstract String initialize(JobExecuteContext context,
-			ComponentDef jobComponentDef) throws Throwable;
+			ComponentDef jobComponentDef) throws InterruptedException;
 
 }
