@@ -10,8 +10,12 @@ import org.seasar.framework.beans.BeanDesc;
 import org.seasar.framework.beans.MethodNotFoundRuntimeException;
 import org.seasar.framework.beans.factory.BeanDescFactory;
 import org.seasar.framework.container.ComponentDef;
+import org.seasar.framework.log.Logger;
+import org.seasar.framework.util.tiger.ReflectionUtil;
 
 public class MethodInvoker {
+
+	private static Logger log = Logger.getLogger(MethodInvoker.class);
 
 	private static final String CALLBACK_SUFFIX = "Callback";
 
@@ -55,7 +59,7 @@ public class MethodInvoker {
 		return invoke(methodName, null);
 	}
 
-	public Object invoke(String methodName, Object[] args)
+	public Object invoke(final String methodName, final Object[] args)
 			throws MethodNotFoundRuntimeException {
 		Object result = (Object) this.beanDesc.invoke(this.target, methodName,
 				args);
@@ -64,6 +68,10 @@ public class MethodInvoker {
 
 	public AsyncResult beginInvoke(final String methodName) {
 		return beginInvoke(methodName, null, null, null);
+	}
+
+	public AsyncResult beginInvoke(final String methodName, final Object[] args) {
+		return beginInvoke(methodName, args, null, null);
 	}
 
 	public AsyncResult beginInvoke(final String methodName,
@@ -81,38 +89,59 @@ public class MethodInvoker {
 				.submit(new Callable<Object>() {
 					public Object call() throws Exception {
 						synchronized (asyncResult) {
-							asyncResult.wait();
+							asyncResult.notify();
 						}
+						// 対象メソッドを実行
 						Object result = invoke(methodName, args);
-						callbackHandler(methodName, methodCallback, asyncResult);
+
+						if (methodCallback != null) {
+							// さらにコールバックをスレッドプールから実行
+							executorService.submit(new Callable<Void>() {
+								public Void call() throws Exception {
+									callbackHandler(methodName, methodCallback,
+											asyncResult);
+									return null;
+								}
+							});
+						}
+
 						return result;
 					}
 
+					// コールバックを実行します
 					private void callbackHandler(final String methodName,
 							final MethodCallback methodCallback,
-							final AsyncResult asyncResult) {
-						if (methodCallback == null) {
-							return;
+							final AsyncResult asyncResult) throws Exception {
+						try {
+							StringBuffer callbackMethodName = new StringBuffer(
+									methodCallback.getMethodName());
+							if (callbackMethodName == null) {
+								callbackMethodName.append(methodName);
+								callbackMethodName.append(CALLBACK_SUFFIX);
+							}
+							Method mt = ReflectionUtil.getDeclaredMethod(
+									methodCallback.getTargetClass(),
+									callbackMethodName.toString(),
+									AsyncResult.class);
+							mt.setAccessible(true);
+							ReflectionUtil.invoke(mt, methodCallback
+									.getTarget(), asyncResult);
+						} catch (Exception ex) {
+							log.error(ex);
+							throw ex;
 						}
-						BeanDesc beanDesc = BeanDescFactory
-								.getBeanDesc(methodCallback.getTarget()
-										.getClass());
-						StringBuffer callbackMethodName = new StringBuffer(
-								methodCallback.getMethodName());
-						if (callbackMethodName == null) {
-							callbackMethodName.append(methodName);
-							callbackMethodName.append(CALLBACK_SUFFIX);
-						}
-						beanDesc.invoke(methodCallback.getTarget(),
-								callbackMethodName.toString(),
-								new Object[] { asyncResult });
+
 					}
 				});
 
 		synchronized (asyncResult) {
 			asyncResult.setFuture(future);
 			asyncResult.setState(state);
-			asyncResult.notify();
+			try {
+				asyncResult.wait();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		}
 		return asyncResult;
 	}
@@ -126,7 +155,7 @@ public class MethodInvoker {
 	}
 
 	public boolean cancelInvoke(AsyncResult asyncResult) {
-		return asyncResult.getFuture().cancel(true);
+		return cancelInvoke(asyncResult, true);
 	}
 
 	public boolean cancelInvoke(AsyncResult asyncResult, boolean shutdown) {

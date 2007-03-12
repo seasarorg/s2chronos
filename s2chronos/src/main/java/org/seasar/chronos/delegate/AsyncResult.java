@@ -1,5 +1,6 @@
 package org.seasar.chronos.delegate;
 
+import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
@@ -28,6 +29,8 @@ public class AsyncResult {
 	public void waitOne() throws Throwable {
 		try {
 			this.future.get();
+		} catch (CancellationException e) {
+			;
 		} catch (ExecutionException e) {
 			throw e.getCause();
 		}

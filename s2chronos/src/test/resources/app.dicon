@@ -9,7 +9,7 @@
 		</aspect>
 	</component>
 	
-	<component class="org.seasar.chronos.delegate.Invoke">
+	<component class="org.seasar.chronos.delegate.InvokeTarget">
 	</component>
 
 </components>

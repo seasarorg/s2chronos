@@ -2,9 +2,9 @@ package org.seasar.chronos.delegate;
 
 public class MethodCallback {
 
-	private Object target;
+	private Object target = null;
 
-	private String methodName;
+	private String methodName = null;
 
 	public MethodCallback(Object target) {
 		this.target = target;
@@ -21,6 +21,10 @@ public class MethodCallback {
 
 	public Object getTarget() {
 		return target;
+	}
+
+	public Class getTargetClass() {
+		return target.getClass();
 	}
 
 }
