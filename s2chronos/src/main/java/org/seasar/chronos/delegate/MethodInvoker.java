@@ -4,10 +4,10 @@ import java.lang.reflect.Method;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import org.seasar.framework.beans.BeanDesc;
-import org.seasar.framework.beans.MethodNotFoundRuntimeException;
 import org.seasar.framework.beans.factory.BeanDescFactory;
 import org.seasar.framework.container.ComponentDef;
 import org.seasar.framework.log.Logger;
@@ -27,10 +27,16 @@ public class MethodInvoker {
 
 	private ExecutorService executorService;
 
-	public ExecutorService getExecutorService() {
-		return executorService;
-	}
-
+	/**
+	 * コンストラクタ
+	 * 
+	 * @param executorService
+	 *            ExecutorService
+	 * @param target
+	 *            ターゲットオブジェクト
+	 * @param beanDesc
+	 *            BeanDesc
+	 */
 	public MethodInvoker(ExecutorService executorService, Object target,
 			BeanDesc beanDesc) {
 		this.executorService = executorService;
@@ -39,6 +45,14 @@ public class MethodInvoker {
 		this.targetClass = this.beanDesc.getBeanClass();
 	}
 
+	/**
+	 * コンストラクタ
+	 * 
+	 * @param executorService
+	 *            ExecutorService
+	 * @param componentDef
+	 *            コンポーネント定義
+	 */
 	public MethodInvoker(ExecutorService executorService,
 			ComponentDef componentDef) {
 		this.executorService = executorService;
@@ -47,38 +61,116 @@ public class MethodInvoker {
 		this.beanDesc = BeanDescFactory.getBeanDesc(this.targetClass);
 	}
 
+	/**
+	 * ExecutorServiceを返します．
+	 * 
+	 * @return ExecutorService
+	 */
+	public ExecutorService getExecutorService() {
+		return executorService;
+	}
+
+	/**
+	 * メソッドの存在の有無を返します．
+	 * 
+	 * @param methodName
+	 *            メソッド名
+	 * @return あり=true, なし=false
+	 */
 	public boolean hasMethod(String methodName) {
 		return this.beanDesc.hasMethod(methodName);
 	}
 
+	/**
+	 * メソッドを返します．
+	 * 
+	 * @param methodName
+	 *            メソッド名
+	 * @return メソッドオブジェクト
+	 */
 	public Method getMethod(String methodName) {
 		return this.beanDesc.getMethod(methodName);
 	}
 
+	/**
+	 * 指定したメソッドを同期で呼び出します．
+	 * 
+	 * @param methodName
+	 *            メソッド名
+	 * @return 戻り値
+	 */
 	public Object invoke(String methodName) {
 		return invoke(methodName, null);
 	}
 
-	public Object invoke(final String methodName, final Object[] args)
-			throws MethodNotFoundRuntimeException {
+	/**
+	 * 指定したメソッドを同期で呼び出します．
+	 * 
+	 * @param methodName
+	 *            メソッド名
+	 * @param args
+	 *            メソッド引数
+	 * @return 戻り値
+	 */
+	public Object invoke(final String methodName, final Object[] args) {
 		Object result = (Object) this.beanDesc.invoke(this.target, methodName,
 				args);
 		return result;
 	}
 
+	/**
+	 * 指定したメソッドを非同期で呼び出します．
+	 * 
+	 * @param methodName
+	 *            メソッド名
+	 * @return 非同期結果オブジェクト
+	 */
 	public AsyncResult beginInvoke(final String methodName) {
 		return beginInvoke(methodName, null, null, null);
 	}
 
+	/**
+	 * 指定したメソッドを非同期で呼び出します．
+	 * 
+	 * @param methodName
+	 *            メソッド名
+	 * @param args
+	 *            メソッドの引数
+	 * @return 非同期結果オブジェクト
+	 */
 	public AsyncResult beginInvoke(final String methodName, final Object[] args) {
 		return beginInvoke(methodName, args, null, null);
 	}
 
+	/**
+	 * 指定したメソッドを非同期で呼び出します．
+	 * 
+	 * @param methodName
+	 *            メソッド名
+	 * @param methodCallback
+	 *            メソッドコールバック(メソッド名には非Publicｇが指定できます)
+	 * @param state
+	 *            ステート
+	 * @return 非同期結果オブジェクト
+	 */
 	public AsyncResult beginInvoke(final String methodName,
 			final MethodCallback methodCallback, final Object state) {
 		return beginInvoke(methodName, null, methodCallback, state);
 	}
 
+	/**
+	 * 指定したメソッドを非同期で呼び出します．
+	 * 
+	 * @param methodName
+	 *            メソッド名
+	 * @param args
+	 *            メソッドの引数名
+	 * @param methodCallback
+	 *            メソッドコールバックオブジェクト
+	 * @param state
+	 *            ステート
+	 * @return 非同期結果オブジェクト
+	 */
 	public AsyncResult beginInvoke(final String methodName,
 			final Object[] args, final MethodCallback methodCallback,
 			final Object state) {
@@ -95,8 +187,10 @@ public class MethodInvoker {
 						Object result = invoke(methodName, args);
 
 						if (methodCallback != null) {
+							ExecutorService es = Executors
+									.newSingleThreadExecutor();
 							// さらにコールバックをスレッドプールから実行
-							executorService.submit(new Callable<Void>() {
+							es.submit(new Callable<Void>() {
 								public Void call() throws Exception {
 									callbackHandler(methodName, methodCallback,
 											asyncResult);
@@ -146,6 +240,16 @@ public class MethodInvoker {
 		return asyncResult;
 	}
 
+	/**
+	 * 非同期呼び出しの戻り値を返します．<br>
+	 * 非同期呼び出しが完了していない場合は，完了を待機します．
+	 * 
+	 * @param asyncResult
+	 *            非同期結果オブジェクト
+	 * @return 戻り値のオブジェクト
+	 * @throws Throwable
+	 *             例外
+	 */
 	public Object endInvoke(AsyncResult asyncResult) throws Throwable {
 		try {
 			return asyncResult.getFuture().get();
@@ -154,10 +258,24 @@ public class MethodInvoker {
 		}
 	}
 
+	/**
+	 * 非同期呼び出しをキャンセルします．
+	 * 
+	 * @param asyncResult
+	 *            非同期結果オブジェクト
+	 * @return 戻り値のオブジェクト
+	 */
 	public boolean cancelInvoke(AsyncResult asyncResult) {
 		return cancelInvoke(asyncResult, true);
 	}
 
+	/**
+	 * 非同期呼び出しをキャンセルします．
+	 * 
+	 * @param asyncResult
+	 * @param shutdown
+	 * @return
+	 */
 	public boolean cancelInvoke(AsyncResult asyncResult, boolean shutdown) {
 		return asyncResult.getFuture().cancel(shutdown);
 	}
