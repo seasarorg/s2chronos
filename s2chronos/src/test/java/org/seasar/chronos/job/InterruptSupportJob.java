@@ -1,4 +1,4 @@
-package org.seasar.s2chronos.job;
+package org.seasar.chronos.job;
 
 import java.util.concurrent.TimeUnit;
 

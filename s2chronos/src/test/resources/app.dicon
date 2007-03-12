@@ -7,7 +7,9 @@
 		<aspect pointcut="do.*, initialize, destroy">
 			<component class="org.seasar.framework.aop.interceptors.TraceInterceptor"/>
 		</aspect>
-
+	</component>
+	
+	<component class="org.seasar.chronos.delegate.Invoke">
 	</component>
 
 </components>

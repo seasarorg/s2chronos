@@ -1,10 +1,10 @@
 package org.seasar.chronos.delegate;
 
+import java.lang.reflect.Method;
 import java.util.concurrent.Executors;
 
 import org.seasar.extension.unit.S2TestCase;
 import org.seasar.framework.container.ComponentDef;
-import org.seasar.s2chronos.job.ExampleJob;
 
 public class MethodInvokerTest extends S2TestCase {
 
@@ -14,7 +14,7 @@ public class MethodInvokerTest extends S2TestCase {
 
 	protected void setUp() throws Exception {
 		this.include(PATH);
-		ComponentDef componentDef = this.getComponentDef(ExampleJob.class);
+		ComponentDef componentDef = this.getComponentDef(Invoke.class);
 		target = new MethodInvoker(Executors.newSingleThreadExecutor(),
 				componentDef);
 	}
@@ -29,15 +29,16 @@ public class MethodInvokerTest extends S2TestCase {
 	}
 
 	public void testGetMethod() {
-		fail("‚Ü‚¾À‘•‚³‚ê‚Ä‚¢‚Ü‚¹‚ñB");
+		Method method = target.getMethod("initialize");
+		assertNotNull(method);
 	}
 
 	public void testInvokeString() {
-		fail("‚Ü‚¾À‘•‚³‚ê‚Ä‚¢‚Ü‚¹‚ñB");
+		target.invoke("initialize");
 	}
 
 	public void testInvokeStringObjectArray() {
-		fail("‚Ü‚¾À‘•‚³‚ê‚Ä‚¢‚Ü‚¹‚ñB");
+
 	}
 
 	public void testBeginInvokeString() {
