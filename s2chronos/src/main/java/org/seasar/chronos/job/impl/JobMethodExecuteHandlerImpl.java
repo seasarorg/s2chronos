@@ -6,48 +6,55 @@ import java.util.List;
 import org.seasar.chronos.annotation.type.JoinType;
 import org.seasar.chronos.delegate.AsyncResult;
 import org.seasar.chronos.delegate.MethodInvoker;
+import org.seasar.chronos.job.Transition;
 
 public class JobMethodExecuteHandlerImpl extends AbstractTaskExecuteHandler {
+	private static final String METHOD_PREFIX_NAME_DO = "do";
 
 	@Override
-	public boolean handleRequest(String startTaskName) throws Throwable {
+	public Transition handleRequest(String startTaskName) throws Throwable {
 		MethodInvoker mi = this.getMethodInvoker();
 		List<AsyncResult> asyncResultList = new ArrayList<AsyncResult>();
 		// 連続でジョブを呼び出す
-		String nextMethodName = startTaskName;
+		String nextTaskName = startTaskName;
 		while (true) {
+			String firstChar = nextTaskName.substring(0, 1);
+			String afterString = nextTaskName.substring(1);
+			final String methodName = METHOD_PREFIX_NAME_DO
+					+ firstChar.toUpperCase() + afterString;
+
 			JobMethodMetaData md = new JobMethodMetaData(mi
-					.getMethod(nextMethodName));
+					.getMethod(methodName));
 
 			for (int i = 0; i < md.getCloneSize(); i++) {
-				AsyncResult ar = mi.beginInvoke(nextMethodName);
+				AsyncResult ar = mi.beginInvoke(methodName);
 				asyncResultList.add(ar);
 			}
 
 			Object returnValue = null;
-			String nextTaskName = null;
+			String _nextTaskName = null;
 			if (md.getJoinType() == JoinType.Wait) {
 				for (AsyncResult ar : asyncResultList) {
 					returnValue = mi.endInvoke(ar);
 				}
 				// 同期の場合で戻り値にStringでジョブ名を返した場合は遷移先を上書き
 				if (returnValue instanceof String) {
-					nextTaskName = (String) returnValue;
+					_nextTaskName = (String) returnValue;
 				}
 			}
-			nextMethodName = nextTaskName != null ? nextTaskName : md
+			nextTaskName = _nextTaskName != null ? _nextTaskName : md
 					.getNextTask();
-			if (nextMethodName == null) {
+			if (nextTaskName == null) {
 				break;
-			} else if (this.getMethodGroupMap().existGroup(nextMethodName)) {
-				return false;
+			} else if (this.getMethodGroupMap().existGroup(nextTaskName)) {
+				return new Transition();
 			}
 		}
 
 		for (AsyncResult ar : asyncResultList) {
 			mi.endInvoke(ar);
 		}
-		return true;
+		return new Transition(true);
 
 	}
 

@@ -51,7 +51,7 @@ public class ExampleJob {
 		} catch (InterruptedException e) {
 		}
 
-		throw new Exception();
+		// throw new Exception();
 
 	}
 
@@ -61,7 +61,7 @@ public class ExampleJob {
 	public void doJobB() {
 		for (int i = 1; i < 5; i++) {
 			try {
-				TimeUnit.SECONDS.sleep(20);
+				TimeUnit.SECONDS.sleep(1);
 			} catch (InterruptedException e) {
 				break;
 			}

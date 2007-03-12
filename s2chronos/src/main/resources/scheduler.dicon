@@ -9,4 +9,17 @@
 			<component class="org.seasar.framework.aop.interceptors.TraceInterceptor"/>
 		</aspect>
 	</component>
+	
+	<component name="jobMethodExecuteHandler" class="org.seasar.chronos.job.impl.JobMethodExecuteHandlerImpl">
+	</component>
+		
+	<component name="jobGroupMethodExecuteHandler" class="org.seasar.chronos.job.impl.JobGroupMethodExecuteHandlerImpl">
+		<property name="jobMethodExecuteHandler">jobMethodExecuteHandler</property>
+	</component>
+	
+	<component name="org.seasar.chronos.job.impl.JobBeanDesc" class="org.seasar.chronos.job.impl.JobBeanDesc">
+		<property name="jobMethodExecuteHandler">jobMethodExecuteHandler</property>
+		<property name="jobGroupMethodExecuteHandler">jobGroupMethodExecuteHandler</property>
+	</component>
+	
 </components>

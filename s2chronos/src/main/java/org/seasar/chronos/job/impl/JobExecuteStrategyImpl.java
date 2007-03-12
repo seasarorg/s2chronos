@@ -6,15 +6,16 @@ import java.util.concurrent.Executors;
 import org.seasar.chronos.ThreadPoolType;
 import org.seasar.chronos.delegate.AsyncResult;
 import org.seasar.chronos.delegate.MethodInvoker;
+import org.seasar.chronos.job.JobExecuteStrategy;
 import org.seasar.chronos.job.TaskExecuteHandler;
-import org.seasar.chronos.job.TaskExecuteHandlerFactory;
 import org.seasar.chronos.job.TaskType;
+import org.seasar.chronos.job.Transition;
 import org.seasar.framework.beans.BeanDesc;
 import org.seasar.framework.beans.PropertyDesc;
 import org.seasar.framework.beans.factory.BeanDescFactory;
 import org.seasar.framework.container.ComponentDef;
 
-public class JobBeanDesc {
+public class JobExecuteStrategyImpl implements JobExecuteStrategy {
 
 	private static final String METHOD_NAME_INITIALIZE = "initialize";
 
@@ -40,13 +41,12 @@ public class JobBeanDesc {
 
 	private MethodGroupMap methodGroupMap;
 
-	public JobBeanDesc(ComponentDef jobComponentDef) {
-		this.jobComponentDef = jobComponentDef;
-		this.job = this.jobComponentDef.getComponent();
-		this.jobClass = this.jobComponentDef.getComponentClass();
-		this.beanDesc = BeanDescFactory.getBeanDesc(this.jobClass);
-		this.methodGroupMap = new MethodGroupMap(jobClass,
-				METHOD_PREFIX_NAME_DO);
+	private TaskExecuteHandler jobMethodExecuteHandler;
+
+	private TaskExecuteHandler jobGroupMethodExecuteHandler;
+
+	public JobExecuteStrategyImpl() {
+
 	}
 
 	private boolean isGroupMethod(String groupName) {
@@ -64,7 +64,17 @@ public class JobBeanDesc {
 				lifecycleMethodExecutorService, this.job, this.beanDesc);
 	}
 
-	public String initialize() throws Throwable {
+	/* (non-Javadoc)
+	 * @see org.seasar.chronos.job.impl.JobExecuteStrategy#initialize(org.seasar.framework.container.ComponentDef)
+	 */
+	public String initialize(ComponentDef jobComponentDef) throws Throwable {
+
+		this.jobComponentDef = jobComponentDef;
+		this.job = this.jobComponentDef.getComponent();
+		this.jobClass = this.jobComponentDef.getComponentClass();
+		this.beanDesc = BeanDescFactory.getBeanDesc(this.jobClass);
+		this.methodGroupMap = new MethodGroupMap(jobClass,
+				METHOD_PREFIX_NAME_DO);
 
 		this.prepareMethodInvoker();
 
@@ -80,20 +90,39 @@ public class JobBeanDesc {
 		return null;
 	}
 
-	public void callJob(String startJobName) throws Throwable {
-
-		TaskType type = isGroupMethod(startJobName) ? TaskType.JOBGROUP
-				: TaskType.JOB;
-
-		TaskExecuteHandler taskExecuteHandler = TaskExecuteHandlerFactory
-				.create(type);
-
+	private Transition handleRequest(TaskExecuteHandler taskExecuteHandler,
+			String startJobName) throws Throwable {
 		taskExecuteHandler.setMethodInvoker(this.jobMethodInvoker);
 		taskExecuteHandler.setMethodGroupMap(this.methodGroupMap);
-
-		taskExecuteHandler.handleRequest(startJobName);
+		return taskExecuteHandler.handleRequest(startJobName);
 	}
 
+	private TaskExecuteHandler getTaskExecuteHandler(TaskType type) {
+		return type == TaskType.JOB ? this.jobMethodExecuteHandler
+				: this.jobGroupMethodExecuteHandler;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.seasar.chronos.job.impl.JobExecuteStrategy#callJob(java.lang.String)
+	 */
+	public void callJob(String startJobName) throws Throwable {
+		TaskType type = isGroupMethod(startJobName) ? TaskType.JOBGROUP
+				: TaskType.JOB;
+		String nextTaskName = startJobName;
+		while (true) {
+			TaskExecuteHandler teh = getTaskExecuteHandler(type);
+			Transition transition = handleRequest(teh, nextTaskName);
+			if (transition.isProcessResult()) {
+				break;
+			}
+			type = type == TaskType.JOB ? TaskType.JOBGROUP : TaskType.JOB;
+			nextTaskName = transition.getNextTaskName();
+		}
+	}
+
+	/* (non-Javadoc)
+	 * @see org.seasar.chronos.job.impl.JobExecuteStrategy#destroy()
+	 */
 	public void destroy() throws Throwable {
 		if (this.lifecycleMethodInvoker.hasMethod(METHOD_NAME_DESTROY)) {
 			AsyncResult ar = this.lifecycleMethodInvoker
@@ -104,6 +133,9 @@ public class JobBeanDesc {
 		this.lifecycleMethodInvoker = null;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.seasar.chronos.job.impl.JobExecuteStrategy#canExecute()
+	 */
 	public boolean canExecute() throws Throwable {
 		if (this.lifecycleMethodInvoker.hasMethod(METHOD_NAME_CANEXECUTE)) {
 			AsyncResult ar = this.lifecycleMethodInvoker
@@ -131,19 +163,46 @@ public class JobBeanDesc {
 		return result;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.seasar.chronos.job.impl.JobExecuteStrategy#getThreadPoolSize()
+	 */
 	public int getThreadPoolSize() {
-		PropertyDesc threadPoolSize = this.beanDesc
-				.getPropertyDesc("threadPoolSize");
-		Integer result = (Integer) threadPoolSize.getValue(this.job);
+		Integer result = 1;
+		if (this.beanDesc.hasPropertyDesc("threadPoolSize")) {
+			PropertyDesc threadPoolSize = this.beanDesc
+					.getPropertyDesc("threadPoolSize");
+			result = (Integer) threadPoolSize.getValue(this.job);
+		}
 		return result;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.seasar.chronos.job.impl.JobExecuteStrategy#getThreadPoolType()
+	 */
 	public ThreadPoolType getThreadPoolType() {
-		PropertyDesc threadPoolType = this.beanDesc
-				.getPropertyDesc("threadPoolType");
-		ThreadPoolType type = (ThreadPoolType) threadPoolType
-				.getValue(this.job);
+		ThreadPoolType type = ThreadPoolType.CACHED;
+		if (this.beanDesc.hasPropertyDesc("threadPoolType")) {
+			PropertyDesc threadPoolType = this.beanDesc
+					.getPropertyDesc("threadPoolType");
+			type = (ThreadPoolType) threadPoolType.getValue(this.job);
+		}
 		return type;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.seasar.chronos.job.impl.JobExecuteStrategy#setJobGroupMethodExecuteHandler(org.seasar.chronos.job.TaskExecuteHandler)
+	 */
+	public void setJobGroupMethodExecuteHandler(
+			TaskExecuteHandler jobGroupMethdoExecuteHandler) {
+		this.jobGroupMethodExecuteHandler = jobGroupMethdoExecuteHandler;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.seasar.chronos.job.impl.JobExecuteStrategy#setJobMethodExecuteHandler(org.seasar.chronos.job.TaskExecuteHandler)
+	 */
+	public void setJobMethodExecuteHandler(
+			TaskExecuteHandler jobMethdoExecuteHandler) {
+		this.jobMethodExecuteHandler = jobMethdoExecuteHandler;
 	}
 
 }

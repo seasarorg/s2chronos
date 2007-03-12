@@ -2,6 +2,7 @@ package org.seasar.chronos.job.impl;
 
 import org.seasar.chronos.delegate.MethodInvoker;
 import org.seasar.chronos.job.TaskExecuteHandler;
+import org.seasar.chronos.job.Transition;
 
 public abstract class AbstractTaskExecuteHandler implements TaskExecuteHandler {
 
@@ -9,7 +10,7 @@ public abstract class AbstractTaskExecuteHandler implements TaskExecuteHandler {
 
 	public MethodGroupMap methodGroupMap;
 
-	public abstract boolean handleRequest(String startTaskName)
+	public abstract Transition handleRequest(String startTaskName)
 			throws Throwable;
 
 	public void setMethodInvoker(MethodInvoker methodInvoker) {
@@ -20,11 +21,11 @@ public abstract class AbstractTaskExecuteHandler implements TaskExecuteHandler {
 		return methodInvoker;
 	}
 
-	public MethodGroupMap getMethodGroupMap() {
-		return methodGroupMap;
-	}
-
 	public void setMethodGroupMap(MethodGroupMap methodGroupMap) {
 		this.methodGroupMap = methodGroupMap;
+	}
+
+	public MethodGroupMap getMethodGroupMap() {
+		return methodGroupMap;
 	}
 }

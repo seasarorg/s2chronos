@@ -69,9 +69,8 @@ public class MethodInvokerTest extends S2TestCase {
 
 	@SuppressWarnings("unused")
 	private void Callback(AsyncResult ar) {
-		String result = null;
 		try {
-			result = (String) target.endInvoke(ar);
+			target.endInvoke(ar);
 		} catch (Throwable e) {
 			e.printStackTrace();
 		}

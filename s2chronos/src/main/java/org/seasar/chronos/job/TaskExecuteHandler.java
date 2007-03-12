@@ -13,6 +13,6 @@ public interface TaskExecuteHandler {
 
 	public void setMethodGroupMap(MethodGroupMap methodGroupMap);
 
-	public boolean handleRequest(String startTaskName) throws Throwable;
+	public Transition handleRequest(String startTaskName) throws Throwable;
 
 }

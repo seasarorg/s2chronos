@@ -2,7 +2,9 @@
 <!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN"
 	"http://www.seasar.org/dtd/components23.dtd">
 <components>
+
 	<include path="scheduler.dicon" />
+	
 	<component class="org.seasar.chronos.job.ExampleJob">
 		<aspect pointcut="do.*, initialize, destroy">
 			<component class="org.seasar.framework.aop.interceptors.TraceInterceptor"/>
@@ -10,6 +12,9 @@
 	</component>
 	
 	<component class="org.seasar.chronos.delegate.InvokeTarget">
+	</component>
+	
+	<component class="org.seasar.chronos.job.impl.TestJob">
 	</component>
 
 </components>
