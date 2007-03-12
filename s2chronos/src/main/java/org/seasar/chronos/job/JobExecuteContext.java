@@ -14,8 +14,7 @@ public class JobExecuteContext {
 		this.currentState = nextState;
 	}
 
-	public String initialize(ComponentDef jobComponentDef)
-			throws Throwable {
+	public String initialize(ComponentDef jobComponentDef) throws Throwable {
 		return this.currentState.initialize(this, jobComponentDef);
 	}
 
@@ -24,7 +23,7 @@ public class JobExecuteContext {
 		this.currentState.callJob(this, startJobName);
 	}
 
-	public void cancel() throws InterruptedException, ExecutionException {
+	public void cancel() {
 		this.currentState.cancel(this);
 	}
 

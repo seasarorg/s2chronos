@@ -12,13 +12,20 @@ public class JobExecutorServiceImpl implements JobExecutorService {
 
 	private JobExecuteContext jobExecuteContext;
 
+	private JobExecuteStateNoInitialized jobExecuteStateNoInitialized;
+
 	public JobExecutorServiceImpl() {
 
 	}
 
+	public void setJobExecuteStateNoInitialized(
+			JobExecuteStateNoInitialized jobExecuteStateNoInitialized) {
+		this.jobExecuteStateNoInitialized = jobExecuteStateNoInitialized;
+	}
+
 	public void setJobExecuteContext(JobExecuteContext jobExecuteContext) {
 		this.jobExecuteContext = jobExecuteContext;
-		this.jobExecuteContext.changeState(new JobExecuteStateNoInitialized());
+
 	}
 
 	public boolean await(long time, TimeUnit timeUnit)
@@ -35,7 +42,7 @@ public class JobExecutorServiceImpl implements JobExecutorService {
 		return this.jobExecuteContext.canExecute();
 	}
 
-	public void cancel() throws InterruptedException, ExecutionException {
+	public void cancel() {
 		this.jobExecuteContext.cancel();
 	}
 
@@ -44,6 +51,7 @@ public class JobExecutorServiceImpl implements JobExecutorService {
 	}
 
 	public String initialize(ComponentDef jobComponentDef) throws Throwable {
+		this.jobExecuteContext.changeState(this.jobExecuteStateNoInitialized);
 		return this.jobExecuteContext.initialize(jobComponentDef);
 	}
 

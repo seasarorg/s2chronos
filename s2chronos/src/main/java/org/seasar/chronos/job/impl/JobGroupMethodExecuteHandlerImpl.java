@@ -2,7 +2,6 @@ package org.seasar.chronos.job.impl;
 
 import org.seasar.chronos.delegate.AsyncResult;
 import org.seasar.chronos.delegate.MethodInvoker;
-import org.seasar.chronos.exception.InvalidNextJobMethodException;
 import org.seasar.chronos.job.TaskExecuteHandler;
 import org.seasar.chronos.job.Transition;
 import org.seasar.framework.log.Logger;
@@ -32,7 +31,8 @@ public class JobGroupMethodExecuteHandlerImpl extends
 	}
 
 	@Override
-	public Transition handleRequest(String startTaskName) throws Throwable {
+	public Transition handleRequest(String startTaskName)
+			throws InterruptedException {
 		String firstChar = startTaskName.substring(0, 1);
 		String afterString = startTaskName.substring(1);
 
@@ -45,8 +45,9 @@ public class JobGroupMethodExecuteHandlerImpl extends
 			return new Transition(true, nextTask);
 		} else if (this.methodGroupMap.existGroup(nextTask)) {
 			log.debug("startGroupの次はメソッドを指定してください");
-			throw new InvalidNextJobMethodException(
-					"startGroupの次はメソッドを指定してください");
+			// throw new InvalidNextJobMethodException(
+			// "startGroupの次はメソッドを指定してください");
+			return new Transition(true, nextTask);
 		}
 
 		jobMethodExecuteHandler.handleRequest(nextTask);
@@ -62,17 +63,20 @@ public class JobGroupMethodExecuteHandlerImpl extends
 		return new Transition(false, nextTask);
 	}
 
-	private String invokeEndJobGroupMethod(String groupName) throws Throwable {
+	private String invokeEndJobGroupMethod(String groupName)
+			throws InterruptedException {
 		String methodName = METHOD_PREFIX_NAME_END + groupName;
 		return invokeGroupMethod(methodName);
 	}
 
-	private String invokeStartJobGroupMethod(String groupName) throws Throwable {
+	private String invokeStartJobGroupMethod(String groupName)
+			throws InterruptedException {
 		String methodName = METHOD_PREFIX_NAME_START + groupName;
 		return invokeGroupMethod(methodName);
 	}
 
-	private String invokeGroupMethod(String methodName) throws Throwable {
+	private String invokeGroupMethod(String methodName)
+			throws InterruptedException {
 		MethodInvoker mi = this.getMethodInvoker();
 		AsyncResult ar = mi.beginInvoke(methodName);
 		mi.endInvoke(ar);

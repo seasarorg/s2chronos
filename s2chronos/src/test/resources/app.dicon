@@ -3,7 +3,7 @@
 	"http://www.seasar.org/dtd/components23.dtd">
 <components>
 
-	<include path="scheduler.dicon" />
+	<include path="s2chronos.dicon" />
 	
 	<component class="org.seasar.chronos.job.ExampleJob">
 		<aspect pointcut="do.*, initialize, destroy">

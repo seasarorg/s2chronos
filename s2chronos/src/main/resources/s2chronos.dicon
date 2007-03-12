@@ -4,12 +4,14 @@
 <components>
 
 	<component class="org.seasar.chronos.impl.SchedulerImpl"/>
-	<component class="org.seasar.chronos.job.JobExecuteContext"/>
+	<component name="jobExecuteContext" class="org.seasar.chronos.job.JobExecuteContext"/>
 	
 	<component class="org.seasar.chronos.job.impl.JobExecutorServiceImpl">
 		<aspect>
 			<component class="org.seasar.framework.aop.interceptors.TraceInterceptor"/>
 		</aspect>
+		<property name="jobExecuteStateNoInitialized">jobExecuteStateNoInitialized</property>
+		<property name="jobExecuteContext">jobExecuteContext</property>
 	</component>
 	
 	<component name="jobMethodExecuteHandler" class="org.seasar.chronos.job.impl.JobMethodExecuteHandlerImpl">
@@ -17,9 +19,19 @@
 	<component name="jobGroupMethodExecuteHandler" class="org.seasar.chronos.job.impl.JobGroupMethodExecuteHandlerImpl">
 		<property name="jobMethodExecuteHandler">jobMethodExecuteHandler</property>
 	</component>
-	<component name="org.seasar.chronos.job.impl.JobBeanDesc" class="org.seasar.chronos.job.impl.JobBeanDesc">
+	<component name="jobExecuteStrategy" class="org.seasar.chronos.job.impl.JobExecuteStrategyImpl">
 		<property name="jobMethodExecuteHandler">jobMethodExecuteHandler</property>
 		<property name="jobGroupMethodExecuteHandler">jobGroupMethodExecuteHandler</property>
 	</component>
+	
+	<component name="jobExecuteStateNoInitialized" class="org.seasar.chronos.job.impl.JobExecuteStateNoInitialized">
+		<property name="jobExecuteStateInitialized">jobExecuteStateInitialized</property>
+		<property name="jobExecuteStrategy">jobExecuteStrategy</property>
+	</component>
+	<component name="jobExecuteStateInitialized" class="org.seasar.chronos.job.impl.JobExecuteStateInitialized">
+		<property name="jobExecuteStateNoInitialized">jobExecuteStateNoInitialized</property>
+		<property name="jobExecuteStrategy">jobExecuteStrategy</property>
+	</component>
+	
 	
 </components>

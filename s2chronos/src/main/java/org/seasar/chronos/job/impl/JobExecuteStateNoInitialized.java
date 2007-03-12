@@ -9,6 +9,13 @@ import org.seasar.framework.container.ComponentDef;
 
 public class JobExecuteStateNoInitialized extends AbstractJobExecuteState {
 
+	private JobExecuteStateInitialized jobExecuteStateInitialized;
+
+	public void setJobExecuteStateInitialized(
+			JobExecuteStateInitialized jobExecuteStateInitialized) {
+		this.jobExecuteStateInitialized = jobExecuteStateInitialized;
+	}
+
 	public boolean await(JobExecuteContext context, long time, TimeUnit timeUnit)
 			throws InterruptedException {
 		return false;
@@ -37,7 +44,7 @@ public class JobExecuteStateNoInitialized extends AbstractJobExecuteState {
 
 		String result = this.getJobExecuteStrategy()
 				.initialize(jobComponentDef);
-		this.changeState(context, new JobExecuteStateInitialized());
+		this.changeState(context, jobExecuteStateInitialized);
 
 		return result;
 	}

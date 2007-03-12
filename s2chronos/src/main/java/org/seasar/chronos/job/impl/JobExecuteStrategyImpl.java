@@ -93,7 +93,7 @@ public class JobExecuteStrategyImpl implements JobExecuteStrategy {
 	}
 
 	private Transition handleRequest(TaskExecuteHandler taskExecuteHandler,
-			String startJobName) throws Throwable {
+			String startJobName) throws InterruptedException {
 		taskExecuteHandler.setMethodInvoker(this.jobMethodInvoker);
 		taskExecuteHandler.setMethodGroupMap(this.methodGroupMap);
 		return taskExecuteHandler.handleRequest(startJobName);
@@ -109,7 +109,7 @@ public class JobExecuteStrategyImpl implements JobExecuteStrategy {
 	 * 
 	 * @see org.seasar.chronos.job.impl.JobExecuteStrategy#callJob(java.lang.String)
 	 */
-	public void callJob(String startJobName) throws Throwable {
+	public void callJob(String startJobName) throws InterruptedException {
 		TaskType type = isGroupMethod(startJobName) ? TaskType.JOBGROUP
 				: TaskType.JOB;
 		String nextTaskName = startJobName;

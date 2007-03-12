@@ -6,6 +6,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 import org.seasar.framework.beans.BeanDesc;
 import org.seasar.framework.beans.factory.BeanDescFactory;
@@ -247,14 +248,18 @@ public class MethodInvoker {
 	 * @param asyncResult
 	 *            非同期結果オブジェクト
 	 * @return 戻り値のオブジェクト
-	 * @throws Throwable
+	 * @throws InterruptedException
 	 *             例外
 	 */
-	public Object endInvoke(AsyncResult asyncResult) throws Throwable {
+	public Object endInvoke(AsyncResult asyncResult)
+			throws InterruptedException {
 		try {
 			return asyncResult.getFuture().get();
 		} catch (ExecutionException e) {
-			throw e.getCause();
+			throw new ExecutionRuntimeException(e);
+		} catch (InterruptedException e) {
+			log.warn(e);
+			throw e;
 		}
 	}
 
@@ -278,6 +283,28 @@ public class MethodInvoker {
 	 */
 	public boolean cancelInvoke(AsyncResult asyncResult, boolean shutdown) {
 		return asyncResult.getFuture().cancel(shutdown);
+	}
+
+	public void cancelInvokes() {
+		this.cancelInvokes(true);
+	}
+
+	public void cancelInvokes(boolean shutdown) {
+		if (shutdown) {
+			this.executorService.shutdownNow();
+		} else {
+			this.executorService.shutdown();
+		}
+	}
+
+	public void awaitInvokes(long time, TimeUnit unit)
+			throws InterruptedException {
+		try {
+			this.executorService.awaitTermination(time, unit);
+		} catch (InterruptedException e) {
+			log.warn(e);
+			throw e;
+		}
 	}
 
 }

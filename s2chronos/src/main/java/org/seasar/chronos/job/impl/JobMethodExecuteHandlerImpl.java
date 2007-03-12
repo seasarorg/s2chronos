@@ -12,7 +12,8 @@ public class JobMethodExecuteHandlerImpl extends AbstractTaskExecuteHandler {
 	private static final String METHOD_PREFIX_NAME_DO = "do";
 
 	@Override
-	public Transition handleRequest(String startTaskName) throws Throwable {
+	public Transition handleRequest(String startTaskName)
+			throws InterruptedException {
 		MethodInvoker mi = this.getMethodInvoker();
 		List<AsyncResult> asyncResultList = new ArrayList<AsyncResult>();
 		// 連続でジョブを呼び出す

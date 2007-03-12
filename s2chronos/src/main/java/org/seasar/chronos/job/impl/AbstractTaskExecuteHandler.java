@@ -11,7 +11,7 @@ public abstract class AbstractTaskExecuteHandler implements TaskExecuteHandler {
 	public MethodGroupMap methodGroupMap;
 
 	public abstract Transition handleRequest(String startTaskName)
-			throws Throwable;
+			throws InterruptedException;
 
 	public void setMethodInvoker(MethodInvoker methodInvoker) {
 		this.methodInvoker = methodInvoker;

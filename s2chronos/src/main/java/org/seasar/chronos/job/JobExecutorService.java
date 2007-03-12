@@ -13,7 +13,7 @@ public interface JobExecutorService {
 	public void callJob(String startJobName) throws InterruptedException,
 			InvalidNextJobMethodException, ExecutionException;
 
-	public void cancel() throws InterruptedException, ExecutionException;
+	public void cancel();
 
 	public boolean await(long time, TimeUnit timeUnit)
 			throws InterruptedException;
