@@ -91,7 +91,9 @@ public class MethodInvoker {
 					private void callbackHandler(final String methodName,
 							final MethodCallback methodCallback,
 							final AsyncResult asyncResult) {
-
+						if (methodCallback == null) {
+							return;
+						}
 						BeanDesc beanDesc = BeanDescFactory
 								.getBeanDesc(methodCallback.getTarget()
 										.getClass());
