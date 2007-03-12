@@ -64,7 +64,9 @@ public class JobExecuteStrategyImpl implements JobExecuteStrategy {
 				lifecycleMethodExecutorService, this.job, this.beanDesc);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.seasar.chronos.job.impl.JobExecuteStrategy#initialize(org.seasar.framework.container.ComponentDef)
 	 */
 	public String initialize(ComponentDef jobComponentDef) throws Throwable {
@@ -102,7 +104,9 @@ public class JobExecuteStrategyImpl implements JobExecuteStrategy {
 				: this.jobGroupMethodExecuteHandler;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.seasar.chronos.job.impl.JobExecuteStrategy#callJob(java.lang.String)
 	 */
 	public void callJob(String startJobName) throws Throwable {
@@ -120,7 +124,9 @@ public class JobExecuteStrategyImpl implements JobExecuteStrategy {
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.seasar.chronos.job.impl.JobExecuteStrategy#destroy()
 	 */
 	public void destroy() throws Throwable {
@@ -133,7 +139,9 @@ public class JobExecuteStrategyImpl implements JobExecuteStrategy {
 		this.lifecycleMethodInvoker = null;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.seasar.chronos.job.impl.JobExecuteStrategy#canExecute()
 	 */
 	public boolean canExecute() throws Throwable {
@@ -163,7 +171,9 @@ public class JobExecuteStrategyImpl implements JobExecuteStrategy {
 		return result;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.seasar.chronos.job.impl.JobExecuteStrategy#getThreadPoolSize()
 	 */
 	public int getThreadPoolSize() {
@@ -176,7 +186,9 @@ public class JobExecuteStrategyImpl implements JobExecuteStrategy {
 		return result;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.seasar.chronos.job.impl.JobExecuteStrategy#getThreadPoolType()
 	 */
 	public ThreadPoolType getThreadPoolType() {
@@ -189,7 +201,9 @@ public class JobExecuteStrategyImpl implements JobExecuteStrategy {
 		return type;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.seasar.chronos.job.impl.JobExecuteStrategy#setJobGroupMethodExecuteHandler(org.seasar.chronos.job.TaskExecuteHandler)
 	 */
 	public void setJobGroupMethodExecuteHandler(
@@ -197,12 +211,18 @@ public class JobExecuteStrategyImpl implements JobExecuteStrategy {
 		this.jobGroupMethodExecuteHandler = jobGroupMethdoExecuteHandler;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.seasar.chronos.job.impl.JobExecuteStrategy#setJobMethodExecuteHandler(org.seasar.chronos.job.TaskExecuteHandler)
 	 */
 	public void setJobMethodExecuteHandler(
 			TaskExecuteHandler jobMethdoExecuteHandler) {
 		this.jobMethodExecuteHandler = jobMethdoExecuteHandler;
+	}
+
+	public void cancel() {
+		this.jobMethodInvoker.getExecutorService().shutdownNow();
 	}
 
 }

@@ -8,21 +8,18 @@ import org.seasar.framework.container.ComponentDef;
 
 public interface JobExecutorService {
 
-	public abstract String initialize() throws InterruptedException, ExecutionException;
+	public String initialize(ComponentDef job) throws Throwable;
 
-	public abstract void callJob(String startJobName)
-			throws InterruptedException, InvalidNextJobMethodException,
-			ExecutionException;
+	public void callJob(String startJobName) throws InterruptedException,
+			InvalidNextJobMethodException, ExecutionException;
 
-	public abstract void cancel() throws InterruptedException, ExecutionException;
+	public void cancel() throws InterruptedException, ExecutionException;
 
-	public abstract boolean await(long time, TimeUnit timeUnit)
+	public boolean await(long time, TimeUnit timeUnit)
 			throws InterruptedException;
 
-	public abstract void destroy() throws InterruptedException, ExecutionException;
+	public void destroy() throws Throwable;
 
-	public abstract boolean canExecute() throws InterruptedException, ExecutionException;
-
-	public abstract void setJobComponentDef(ComponentDef job);
+	public boolean canExecute() throws InterruptedException, ExecutionException;
 
 }

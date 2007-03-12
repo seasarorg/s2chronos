@@ -2,8 +2,6 @@ package org.seasar.chronos.job;
 
 import java.util.concurrent.ExecutionException;
 
-import org.seasar.chronos.exception.InvalidNextJobMethodException;
-import org.seasar.chronos.job.JobExecutorService;
 import org.seasar.extension.unit.S2TestCase;
 import org.seasar.framework.container.ComponentDef;
 
@@ -20,28 +18,24 @@ public class JobExecutorService_ExampleJobTest extends S2TestCase {
 		this.target = (JobExecutorService) this
 				.getComponent(JobExecutorService.class);
 
-		ComponentDef jobDef = this.getComponentDef(ExampleJob.class);
-
-		this.target.setJobComponentDef(jobDef);
-
 	}
 
 	protected void tearDown() throws Exception {
 		super.tearDown();
 	}
 
-	public void testInitialize() throws InterruptedException,
-			ExecutionException {
+	public void testInitialize() throws Throwable {
 
 		assertNotNull(this.target);
-		this.target.initialize();
+
+		ComponentDef jobDef = this.getComponentDef(ExampleJob.class);
+		this.target.initialize(jobDef);
 
 	}
 
-	public void testCallJob() throws InvalidNextJobMethodException,
-			InterruptedException, ExecutionException {
-
-		String jobName = this.target.initialize();
+	public void testCallJob() throws Throwable {
+		ComponentDef jobDef = this.getComponentDef(ExampleJob.class);
+		String jobName = this.target.initialize(jobDef);
 		try {
 			this.target.callJob(jobName);
 		} catch (InterruptedException e) {
@@ -52,16 +46,16 @@ public class JobExecutorService_ExampleJobTest extends S2TestCase {
 		this.target.destroy();
 	}
 
-	public void testDestroy() throws InterruptedException, ExecutionException {
-
-		this.target.initialize();
+	public void testDestroy() throws Throwable {
+		ComponentDef jobDef = this.getComponentDef(ExampleJob.class);
+		this.target.initialize(jobDef);
 		this.target.destroy();
 
 	}
 
-	public void testCanExecute() throws InterruptedException,
-			ExecutionException {
-		this.target.initialize();
+	public void testCanExecute() throws Throwable {
+		ComponentDef jobDef = this.getComponentDef(ExampleJob.class);
+		this.target.initialize(jobDef);
 		try {
 			this.target.canExecute();
 		} catch (InterruptedException e) {

@@ -11,6 +11,8 @@ public interface JobExecuteStrategy {
 
 	public void destroy() throws Throwable;
 
+	public void cancel();
+
 	public boolean canExecute() throws Throwable;
 
 	public int getThreadPoolSize();
