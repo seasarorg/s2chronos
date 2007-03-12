@@ -12,8 +12,13 @@ public class JobExecutorServiceImpl implements JobExecutorService {
 
 	private JobExecuteContext jobExecuteContext;
 
+	public JobExecutorServiceImpl() {
+
+	}
+
 	public void setJobExecuteContext(JobExecuteContext jobExecuteContext) {
 		this.jobExecuteContext = jobExecuteContext;
+		this.jobExecuteContext.changeState(new JobExecuteStateNoInitialized());
 	}
 
 	public boolean await(long time, TimeUnit timeUnit)
@@ -38,8 +43,7 @@ public class JobExecutorServiceImpl implements JobExecutorService {
 		this.jobExecuteContext.destroy();
 	}
 
-	public String initialize(ComponentDef jobComponentDef)
-			throws Throwable {
+	public String initialize(ComponentDef jobComponentDef) throws Throwable {
 		return this.jobExecuteContext.initialize(jobComponentDef);
 	}
 

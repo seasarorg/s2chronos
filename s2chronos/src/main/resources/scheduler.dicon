@@ -4,6 +4,8 @@
 <components>
 
 	<component class="org.seasar.chronos.impl.SchedulerImpl"/>
+	<component class="org.seasar.chronos.job.JobExecuteContext"/>
+	
 	<component class="org.seasar.chronos.job.impl.JobExecutorServiceImpl">
 		<aspect>
 			<component class="org.seasar.framework.aop.interceptors.TraceInterceptor"/>
@@ -12,11 +14,9 @@
 	
 	<component name="jobMethodExecuteHandler" class="org.seasar.chronos.job.impl.JobMethodExecuteHandlerImpl">
 	</component>
-		
 	<component name="jobGroupMethodExecuteHandler" class="org.seasar.chronos.job.impl.JobGroupMethodExecuteHandlerImpl">
 		<property name="jobMethodExecuteHandler">jobMethodExecuteHandler</property>
 	</component>
-	
 	<component name="org.seasar.chronos.job.impl.JobBeanDesc" class="org.seasar.chronos.job.impl.JobBeanDesc">
 		<property name="jobMethodExecuteHandler">jobMethodExecuteHandler</property>
 		<property name="jobGroupMethodExecuteHandler">jobGroupMethodExecuteHandler</property>
