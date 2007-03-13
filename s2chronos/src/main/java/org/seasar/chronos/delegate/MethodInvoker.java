@@ -297,10 +297,10 @@ public class MethodInvoker {
 		}
 	}
 
-	public void awaitInvokes(long time, TimeUnit unit)
+	public boolean awaitInvokes(long time, TimeUnit unit)
 			throws InterruptedException {
 		try {
-			this.executorService.awaitTermination(time, unit);
+			return this.executorService.awaitTermination(time, unit);
 		} catch (InterruptedException e) {
 			log.warn(e);
 			throw e;

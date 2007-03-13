@@ -1,6 +1,5 @@
 package org.seasar.chronos.job.state;
 
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 import org.seasar.framework.container.ComponentDef;
@@ -21,6 +20,6 @@ public interface JobExecuteState {
 	public void destroy(JobExecuteContext context) throws InterruptedException;
 
 	public boolean canExecute(JobExecuteContext context)
-			throws InterruptedException, ExecutionException;
+			throws InterruptedException;
 
 }

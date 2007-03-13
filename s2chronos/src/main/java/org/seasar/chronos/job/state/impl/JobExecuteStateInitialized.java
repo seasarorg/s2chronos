@@ -1,6 +1,5 @@
 package org.seasar.chronos.job.state.impl;
 
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 import org.seasar.chronos.job.state.JobExecuteContext;
@@ -18,7 +17,7 @@ public class JobExecuteStateInitialized extends AbstractJobExecuteState {
 	@Override
 	public boolean await(JobExecuteContext context, long time, TimeUnit timeUnit)
 			throws InterruptedException {
-		return false;
+		return this.getJobExecuteStrategy().await(time, timeUnit);
 	}
 
 	@Override
@@ -29,14 +28,13 @@ public class JobExecuteStateInitialized extends AbstractJobExecuteState {
 
 	@Override
 	public boolean canExecute(JobExecuteContext context)
-			throws InterruptedException, ExecutionException {
+			throws InterruptedException {
 		return this.getJobExecuteStrategy().canExecute();
 	}
 
 	@Override
 	public void cancel(JobExecuteContext context) {
 		this.getJobExecuteStrategy().cancel();
-		this.changeState(context, jobExecuteStateNonInitialized);
 	}
 
 	@Override

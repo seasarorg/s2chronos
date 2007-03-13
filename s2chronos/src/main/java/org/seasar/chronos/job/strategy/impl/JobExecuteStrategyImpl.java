@@ -2,6 +2,7 @@ package org.seasar.chronos.job.strategy.impl;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import org.seasar.chronos.ThreadPoolType;
 import org.seasar.chronos.delegate.AsyncResult;
@@ -226,6 +227,12 @@ public class JobExecuteStrategyImpl implements JobExecuteStrategy {
 
 	public void cancel() {
 		this.jobMethodInvoker.getExecutorService().shutdownNow();
+	}
+
+	public boolean await(long time, TimeUnit timeUnit)
+			throws InterruptedException {
+		this.jobMethodInvoker.awaitInvokes(time, timeUnit);
+		return false;
 	}
 
 }

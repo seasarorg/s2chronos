@@ -1,6 +1,5 @@
 package org.seasar.chronos.job.state.impl;
 
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 import org.seasar.chronos.job.state.JobExecuteContext;
@@ -32,7 +31,7 @@ public abstract class AbstractJobExecuteState implements JobExecuteState {
 			throws InterruptedException;
 
 	public abstract boolean canExecute(JobExecuteContext context)
-			throws InterruptedException, ExecutionException;
+			throws InterruptedException;
 
 	public abstract void cancel(JobExecuteContext context);
 
