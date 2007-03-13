@@ -4,32 +4,32 @@
 <components>
 
 	<component class="org.seasar.chronos.impl.SchedulerImpl"/>
-	<component name="jobExecuteContext" class="org.seasar.chronos.job.JobExecuteContext"/>
+	<component name="jobExecuteContext" class="org.seasar.chronos.job.state.JobExecuteContext"/>
 	
 	<component class="org.seasar.chronos.job.impl.JobExecutorServiceImpl">
 		<aspect>
 			<component class="org.seasar.framework.aop.interceptors.TraceInterceptor"/>
 		</aspect>
-		<property name="jobExecuteStateNoInitialized">jobExecuteStateNoInitialized</property>
+		<property name="jobExecuteStateNonInitialized">jobExecuteStateNonInitialized</property>
 		<property name="jobExecuteContext">jobExecuteContext</property>
 	</component>
 	
-	<component name="jobMethodExecuteHandler" class="org.seasar.chronos.job.impl.JobMethodExecuteHandlerImpl">
+	<component name="jobMethodExecuteHandler" class="org.seasar.chronos.job.handler.impl.JobMethodExecuteHandlerImpl">
 	</component>
-	<component name="jobGroupMethodExecuteHandler" class="org.seasar.chronos.job.impl.JobGroupMethodExecuteHandlerImpl">
+	<component name="jobGroupMethodExecuteHandler" class="org.seasar.chronos.job.handler.impl.JobGroupMethodExecuteHandlerImpl">
 		<property name="jobMethodExecuteHandler">jobMethodExecuteHandler</property>
 	</component>
-	<component name="jobExecuteStrategy" class="org.seasar.chronos.job.impl.JobExecuteStrategyImpl">
+	<component name="jobExecuteStrategy" class="org.seasar.chronos.job.strategy.impl.JobExecuteStrategyImpl">
 		<property name="jobMethodExecuteHandler">jobMethodExecuteHandler</property>
 		<property name="jobGroupMethodExecuteHandler">jobGroupMethodExecuteHandler</property>
 	</component>
 	
-	<component name="jobExecuteStateNoInitialized" class="org.seasar.chronos.job.impl.JobExecuteStateNoInitialized">
+	<component name="jobExecuteStateNonInitialized" class="org.seasar.chronos.job.state.impl.JobExecuteStateNonInitialized">
 		<property name="jobExecuteStateInitialized">jobExecuteStateInitialized</property>
 		<property name="jobExecuteStrategy">jobExecuteStrategy</property>
 	</component>
-	<component name="jobExecuteStateInitialized" class="org.seasar.chronos.job.impl.JobExecuteStateInitialized">
-		<property name="jobExecuteStateNoInitialized">jobExecuteStateNoInitialized</property>
+	<component name="jobExecuteStateInitialized" class="org.seasar.chronos.job.state.impl.JobExecuteStateInitialized">
+		<property name="jobExecuteStateNoInitialized">jobExecuteStateNonInitialized</property>
 		<property name="jobExecuteStrategy">jobExecuteStrategy</property>
 	</component>
 	

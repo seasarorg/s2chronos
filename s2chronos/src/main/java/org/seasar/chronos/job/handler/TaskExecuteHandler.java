@@ -1,6 +1,7 @@
-package org.seasar.chronos.job;
+package org.seasar.chronos.job.handler;
 
 import org.seasar.chronos.delegate.MethodInvoker;
+import org.seasar.chronos.job.Transition;
 import org.seasar.chronos.job.impl.MethodGroupMap;
 
 public interface TaskExecuteHandler {

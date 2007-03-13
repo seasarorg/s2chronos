@@ -1,4 +1,4 @@
-package org.seasar.chronos.job;
+package org.seasar.chronos.job.state;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;

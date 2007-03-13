@@ -4,23 +4,24 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 import org.seasar.chronos.exception.InvalidNextJobMethodException;
-import org.seasar.chronos.job.JobExecuteContext;
 import org.seasar.chronos.job.JobExecutorService;
+import org.seasar.chronos.job.state.JobExecuteContext;
+import org.seasar.chronos.job.state.impl.JobExecuteStateNonInitialized;
 import org.seasar.framework.container.ComponentDef;
 
 public class JobExecutorServiceImpl implements JobExecutorService {
 
 	private JobExecuteContext jobExecuteContext;
 
-	private JobExecuteStateNoInitialized jobExecuteStateNoInitialized;
+	private JobExecuteStateNonInitialized jobExecuteStateNonInitialized;
 
 	public JobExecutorServiceImpl() {
 
 	}
 
-	public void setJobExecuteStateNoInitialized(
-			JobExecuteStateNoInitialized jobExecuteStateNoInitialized) {
-		this.jobExecuteStateNoInitialized = jobExecuteStateNoInitialized;
+	public void setJobExecuteStateNonInitialized(
+			JobExecuteStateNonInitialized jobExecuteStateNonInitialized) {
+		this.jobExecuteStateNonInitialized = jobExecuteStateNonInitialized;
 	}
 
 	public void setJobExecuteContext(JobExecuteContext jobExecuteContext) {
@@ -52,7 +53,7 @@ public class JobExecutorServiceImpl implements JobExecutorService {
 
 	public String initialize(ComponentDef jobComponentDef)
 			throws InterruptedException {
-		this.jobExecuteContext.changeState(this.jobExecuteStateNoInitialized);
+		this.jobExecuteContext.changeState(this.jobExecuteStateNonInitialized);
 		return this.jobExecuteContext.initialize(jobComponentDef);
 	}
 

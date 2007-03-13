@@ -1,6 +1,7 @@
-package org.seasar.chronos.job;
+package org.seasar.chronos.job.strategy;
 
 import org.seasar.chronos.ThreadPoolType;
+import org.seasar.chronos.job.handler.TaskExecuteHandler;
 import org.seasar.framework.container.ComponentDef;
 
 public interface JobExecuteStrategy {

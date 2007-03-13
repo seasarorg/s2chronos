@@ -1,13 +1,12 @@
-package org.seasar.chronos.job.impl;
+package org.seasar.chronos.job.state.impl;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
-import org.seasar.chronos.exception.InvalidNextJobMethodException;
-import org.seasar.chronos.job.JobExecuteContext;
+import org.seasar.chronos.job.state.JobExecuteContext;
 import org.seasar.framework.container.ComponentDef;
 
-public class JobExecuteStateNoInitialized extends AbstractJobExecuteState {
+public class JobExecuteStateNonInitialized extends AbstractJobExecuteState {
 
 	private JobExecuteStateInitialized jobExecuteStateInitialized;
 
@@ -22,8 +21,7 @@ public class JobExecuteStateNoInitialized extends AbstractJobExecuteState {
 	}
 
 	public void callJob(JobExecuteContext context, String startJobName)
-			throws InterruptedException, InvalidNextJobMethodException,
-			ExecutionException {
+			throws InterruptedException {
 
 	}
 

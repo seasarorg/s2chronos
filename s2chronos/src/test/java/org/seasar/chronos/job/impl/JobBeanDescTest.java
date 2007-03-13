@@ -1,7 +1,8 @@
 package org.seasar.chronos.job.impl;
 
 import org.seasar.chronos.job.ExampleJob;
-import org.seasar.chronos.job.JobExecuteStrategy;
+import org.seasar.chronos.job.strategy.JobExecuteStrategy;
+import org.seasar.chronos.job.strategy.impl.JobExecuteStrategyImpl;
 import org.seasar.extension.unit.S2TestCase;
 import org.seasar.framework.container.ComponentDef;
 

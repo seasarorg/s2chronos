@@ -1,4 +1,4 @@
-package org.seasar.chronos.job.impl;
+package org.seasar.chronos.job.handler.impl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,6 +7,7 @@ import org.seasar.chronos.annotation.type.JoinType;
 import org.seasar.chronos.delegate.AsyncResult;
 import org.seasar.chronos.delegate.MethodInvoker;
 import org.seasar.chronos.job.Transition;
+import org.seasar.chronos.job.impl.JobMethodMetaData;
 
 public class JobMethodExecuteHandlerImpl extends AbstractTaskExecuteHandler {
 	private static final String METHOD_PREFIX_NAME_DO = "do";
