@@ -8,6 +8,12 @@ import org.seasar.framework.container.ComponentDef;
 
 public interface TaskExecuteStrategy {
 
+	public void setTaskGroupMethodExecuteHandler(
+			TaskExecuteHandler jobGroupMethdoExecuteHandler);
+
+	public void setTaskMethodExecuteHandler(
+			TaskExecuteHandler jobMethdoExecuteHandler);
+
 	public String initialize(ComponentDef jobComponentDef)
 			throws InterruptedException;
 
@@ -20,22 +26,20 @@ public interface TaskExecuteStrategy {
 	public boolean await(long time, TimeUnit timeUnit)
 			throws InterruptedException;
 
-	public boolean canExecute() throws InterruptedException;
-
-	public boolean canCancel() throws InterruptedException;
-
 	public int getThreadPoolSize();
 
 	public ThreadPoolType getThreadPoolType();
 
-	public void setTaskGroupMethodExecuteHandler(
-			TaskExecuteHandler jobGroupMethdoExecuteHandler);
+	public void setStartTask(boolean startTask);
 
-	public void setTaskMethodExecuteHandler(
-			TaskExecuteHandler jobMethdoExecuteHandler);
+	public boolean getStartTask();
 
-	public boolean getTerminate();
+	public boolean getEndTask();
 
-	public void setTerminate(boolean terminate);
+	public void setEndTask(boolean endTask);
+
+	public boolean getShutdownTask();
+
+	public void setShutdownTask(boolean shutdownTask);
 
 }

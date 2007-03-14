@@ -14,12 +14,9 @@ public interface TaskExecuteState {
 
 	public void cancel(TaskExecuteContext context);
 
-	public boolean await(TaskExecuteContext context, long time, TimeUnit timeUnit)
-			throws InterruptedException;
+	public boolean await(TaskExecuteContext context, long time,
+			TimeUnit timeUnit) throws InterruptedException;
 
 	public void destroy(TaskExecuteContext context) throws InterruptedException;
-
-	public boolean canExecute(TaskExecuteContext context)
-			throws InterruptedException;
 
 }

@@ -27,11 +27,8 @@ public abstract class AbstractJobExecuteState implements TaskExecuteState {
 	public abstract boolean await(TaskExecuteContext context, long time,
 			TimeUnit timeUnit) throws InterruptedException;
 
-	public abstract void execute(TaskExecuteContext context, String startTaskName)
-			throws InterruptedException;
-
-	public abstract boolean canExecute(TaskExecuteContext context)
-			throws InterruptedException;
+	public abstract void execute(TaskExecuteContext context,
+			String startTaskName) throws InterruptedException;
 
 	public abstract void cancel(TaskExecuteContext context);
 

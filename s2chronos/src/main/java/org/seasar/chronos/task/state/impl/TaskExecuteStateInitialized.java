@@ -15,8 +15,8 @@ public class TaskExecuteStateInitialized extends AbstractJobExecuteState {
 	}
 
 	@Override
-	public boolean await(TaskExecuteContext context, long time, TimeUnit timeUnit)
-			throws InterruptedException {
+	public boolean await(TaskExecuteContext context, long time,
+			TimeUnit timeUnit) throws InterruptedException {
 		return this.getTaskExecuteStrategy().await(time, timeUnit);
 	}
 
@@ -24,12 +24,6 @@ public class TaskExecuteStateInitialized extends AbstractJobExecuteState {
 	public void execute(TaskExecuteContext context, String startTaskName)
 			throws InterruptedException {
 		this.getTaskExecuteStrategy().execute(startTaskName);
-	}
-
-	@Override
-	public boolean canExecute(TaskExecuteContext context)
-			throws InterruptedException {
-		return this.getTaskExecuteStrategy().canExecute();
 	}
 
 	@Override

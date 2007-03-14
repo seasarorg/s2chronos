@@ -5,7 +5,7 @@
 
 	<include path="s2chronos.dicon" />
 	
-	<component class="org.seasar.chronos.task.ExampleJob">
+	<component class="org.seasar.chronos.task.ExampleTask">
 		<aspect pointcut="do.*, initialize, destroy">
 			<component class="org.seasar.framework.aop.interceptors.TraceInterceptor"/>
 		</aspect>

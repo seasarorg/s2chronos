@@ -11,9 +11,9 @@ import org.seasar.chronos.annotation.type.JoinType;
 import org.seasar.framework.log.Logger;
 
 @Job
-public class ExampleJob {
+public class ExampleTask {
 
-	private Logger log = Logger.getLogger(ExampleJob.class);
+	private Logger log = Logger.getLogger(ExampleTask.class);
 
 	// ジョブメソッドをどのタイプのスレッドプールで実行するか返します
 	public ThreadPoolType getThreadPoolType() {
@@ -55,9 +55,7 @@ public class ExampleJob {
 		try {
 			TimeUnit.SECONDS.sleep(1);
 		} catch (InterruptedException e) {
-			if (terminate) {
-				return;
-			}
+
 		}
 
 		// this.terminate = true;
@@ -143,24 +141,40 @@ public class ExampleJob {
 		return executed;
 	}
 
-	private boolean terminate = false;
+	private boolean startTask;
 
-	public void setTerminate(boolean terminate) {
-		this.terminate = terminate;
+	// 実行したらfalseにします．
+	public void setStartTask(boolean startTask) {
+		this.startTask = startTask;
 	}
 
-	public boolean getTerminate() {
-		return this.terminate;
+	// trueを返すとスケジューラから起動されます
+	public boolean getStartTask() {
+		return this.startTask;
 	}
 
-	// 実行可能かを返す
-	public boolean canExecute() {
-		return true;
+	private boolean endTask;
+
+	// 停止したらfalseにします．
+	public void setEndTask(boolean endTask) {
+		this.endTask = endTask;
 	}
 
-	// キャンセル可能かを返す
-	public boolean canCancel() {
-		return false;
+	// trueを返すとスケジューラから停止されます．
+	public boolean getEndTask() {
+		return endTask;
+	}
+
+	private boolean shutdownTask;
+
+	// シャットダウンしたらfalseにします．
+	public void setShutdownTask(boolean shutdownTask) {
+		this.shutdownTask = shutdownTask;
+	}
+
+	// trueを返すとスケジューラからシャットダウンされます．
+	public boolean getShutdownTask() {
+		return this.shutdownTask;
 	}
 
 	public void startScheduler() {

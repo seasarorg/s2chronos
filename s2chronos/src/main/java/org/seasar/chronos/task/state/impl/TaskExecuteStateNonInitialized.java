@@ -14,19 +14,14 @@ public class TaskExecuteStateNonInitialized extends AbstractJobExecuteState {
 		this.taskExecuteStateInitialized = taskExecuteStateInitialized;
 	}
 
-	public boolean await(TaskExecuteContext context, long time, TimeUnit timeUnit)
-			throws InterruptedException {
+	public boolean await(TaskExecuteContext context, long time,
+			TimeUnit timeUnit) throws InterruptedException {
 		return false;
 	}
 
 	public void execute(TaskExecuteContext context, String startTaskName)
 			throws InterruptedException {
 
-	}
-
-	public boolean canExecute(TaskExecuteContext context)
-			throws InterruptedException {
-		return false;
 	}
 
 	public void cancel(TaskExecuteContext context) {
@@ -38,8 +33,8 @@ public class TaskExecuteStateNonInitialized extends AbstractJobExecuteState {
 	public String initialize(TaskExecuteContext context,
 			ComponentDef jobComponentDef) throws InterruptedException {
 
-		String result = this.getTaskExecuteStrategy()
-				.initialize(jobComponentDef);
+		String result = this.getTaskExecuteStrategy().initialize(
+				jobComponentDef);
 		this.changeState(context, taskExecuteStateInitialized);
 
 		return result;

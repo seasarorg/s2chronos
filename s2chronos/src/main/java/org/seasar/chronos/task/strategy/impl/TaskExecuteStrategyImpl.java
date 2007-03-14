@@ -26,14 +26,6 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 
 	private static final String METHOD_NAME_DESTROY = "destroy";
 
-	private static final String METHOD_NAME_CANEXECUTE = "canExecute";
-
-	private static final String METHOD_NAME_CANCANCEL = "canCancel";
-
-	private static final boolean DEFAULT_CANEXECUTE = true;
-
-	private static final boolean DEFAULT_CANCANCEL = true;
-
 	private static final ThreadPoolType DEFAULT_THREADPOOL_TYPE = ThreadPoolType.CACHED;
 
 	private Object job;
@@ -103,11 +95,11 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 	}
 
 	private Transition handleRequest(TaskExecuteHandler taskExecuteHandler,
-			String startJobName) throws InterruptedException {
+			String startTaskName) throws InterruptedException {
 		taskExecuteHandler.setTaskExecuteStrategy(this);
 		taskExecuteHandler.setMethodInvoker(this.jobMethodInvoker);
 		taskExecuteHandler.setMethodGroupMap(this.methodGroupManager);
-		return taskExecuteHandler.handleRequest(startJobName);
+		return taskExecuteHandler.handleRequest(startTaskName);
 	}
 
 	private TaskExecuteHandler getTaskExecuteHandler(TaskType type) {
@@ -145,24 +137,6 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 		}
 		this.jobMethodInvoker = null;
 		this.lifecycleMethodInvoker = null;
-	}
-
-	public boolean canExecute() throws InterruptedException {
-		if (this.lifecycleMethodInvoker.hasMethod(METHOD_NAME_CANEXECUTE)) {
-			AsyncResult ar = this.lifecycleMethodInvoker
-					.beginInvoke(METHOD_NAME_CANEXECUTE);
-			this.lifecycleMethodInvoker.endInvoke(ar);
-		}
-		return DEFAULT_CANEXECUTE;
-	}
-
-	public boolean canCancel() throws InterruptedException {
-		if (this.lifecycleMethodInvoker.hasMethod(METHOD_NAME_CANCANCEL)) {
-			AsyncResult ar = this.lifecycleMethodInvoker
-					.beginInvoke(METHOD_NAME_CANCANCEL);
-			this.lifecycleMethodInvoker.endInvoke(ar);
-		}
-		return DEFAULT_CANCANCEL;
 	}
 
 	private ExecutorService getJobMethodExecutorService() {
@@ -227,19 +201,51 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 		return result;
 	}
 
-	public boolean getTerminate() {
+	public boolean getStartTask() {
 		Boolean result = false;
-		if (this.beanDesc.hasPropertyDesc("terminate")) {
-			PropertyDesc pd = this.beanDesc.getPropertyDesc("terminate");
+		if (this.beanDesc.hasPropertyDesc("startTask")) {
+			PropertyDesc pd = this.beanDesc.getPropertyDesc("startTask");
 			result = (Boolean) pd.getValue(this.job);
 		}
 		return result;
 	}
 
-	public void setTerminate(boolean terminate) {
-		if (this.beanDesc.hasPropertyDesc("terminate")) {
-			PropertyDesc pd = this.beanDesc.getPropertyDesc("terminate");
-			pd.setValue(this.job, terminate);
+	public void setStartTask(boolean startTask) {
+		if (this.beanDesc.hasPropertyDesc("startTask")) {
+			PropertyDesc pd = this.beanDesc.getPropertyDesc("startTask");
+			pd.setValue(this.job, startTask);
+		}
+	}
+
+	public boolean getEndTask() {
+		Boolean result = false;
+		if (this.beanDesc.hasPropertyDesc("endTask")) {
+			PropertyDesc pd = this.beanDesc.getPropertyDesc("endTask");
+			result = (Boolean) pd.getValue(this.job);
+		}
+		return result;
+	}
+
+	public void setEndTask(boolean endTask) {
+		if (this.beanDesc.hasPropertyDesc("endTask")) {
+			PropertyDesc pd = this.beanDesc.getPropertyDesc("endTask");
+			pd.setValue(this.job, endTask);
+		}
+	}
+
+	public boolean getShutdownTask() {
+		Boolean result = false;
+		if (this.beanDesc.hasPropertyDesc("shutdownTask")) {
+			PropertyDesc pd = this.beanDesc.getPropertyDesc("shutdownTask");
+			result = (Boolean) pd.getValue(this.job);
+		}
+		return result;
+	}
+
+	public void setShutdownTask(boolean shutdownTask) {
+		if (this.beanDesc.hasPropertyDesc("shutdownTask")) {
+			PropertyDesc pd = this.beanDesc.getPropertyDesc("shutdownTask");
+			pd.setValue(this.job, shutdownTask);
 		}
 	}
 
@@ -264,7 +270,7 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 	}
 
 	public void cancel() {
-		this.setTerminate(true);
+		this.setShutdownTask(true);
 		this.jobMethodInvoker.cancelInvokes();
 	}
 

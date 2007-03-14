@@ -36,10 +36,6 @@ public class TaskExecutorServiceImpl implements TaskExecutorService {
 		this.taskExecuteContext.execute(startTaskName);
 	}
 
-	public boolean canExecute() throws InterruptedException {
-		return this.taskExecuteContext.canExecute();
-	}
-
 	public void cancel() {
 		this.taskExecuteContext.cancel();
 	}
@@ -50,7 +46,8 @@ public class TaskExecutorServiceImpl implements TaskExecutorService {
 
 	public String initialize(ComponentDef jobComponentDef)
 			throws InterruptedException {
-		this.taskExecuteContext.changeState(this.taskExecuteStateNonInitialized);
+		this.taskExecuteContext
+				.changeState(this.taskExecuteStateNonInitialized);
 		return this.taskExecuteContext.initialize(jobComponentDef);
 	}
 

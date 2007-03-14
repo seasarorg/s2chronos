@@ -2,7 +2,7 @@ package org.seasar.chronos.task.impl;
 
 import java.util.concurrent.TimeUnit;
 
-import org.seasar.chronos.task.ExampleJob;
+import org.seasar.chronos.task.ExampleTask;
 import org.seasar.chronos.task.TaskExecutorService;
 import org.seasar.extension.unit.S2TestCase;
 import org.seasar.framework.container.ComponentDef;
@@ -19,7 +19,7 @@ public class JobExecutorServiceImplTest extends S2TestCase {
 		include(PATH);
 		this.taskExecutorService = (TaskExecutorService) this
 				.getComponent(TaskExecutorService.class);
-		this.jobComponentDef = this.getComponentDef(ExampleJob.class);
+		this.jobComponentDef = this.getComponentDef(ExampleTask.class);
 	}
 
 	public void testAwait() {
@@ -40,15 +40,6 @@ public class JobExecutorServiceImplTest extends S2TestCase {
 					.initialize(jobComponentDef);
 			this.taskExecutorService.execute(startTaskName);
 			this.taskExecutorService.destroy();
-		} catch (InterruptedException e) {
-			fail();
-		}
-	}
-
-	public void testCanExecute() {
-		try {
-			this.taskExecutorService.initialize(jobComponentDef);
-			this.taskExecutorService.canExecute();
 		} catch (InterruptedException e) {
 			fail();
 		}

@@ -34,8 +34,4 @@ public class TaskExecuteContext {
 		this.currentState.destroy(this);
 	}
 
-	public boolean canExecute() throws InterruptedException {
-		return this.currentState.canExecute(this);
-	}
-
 }

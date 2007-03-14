@@ -77,7 +77,7 @@ public abstract class AbstractTaskExecuteHandler implements TaskExecuteHandler {
 	}
 
 	protected Transition getTerminateTransition(String lastTaskName) {
-		boolean terminate = getTaskExecuteStrategy().getTerminate();
+		boolean terminate = getTaskExecuteStrategy().getEndTask();
 		if (terminate) {
 			log.warn("タスクが終了しました");
 			return new Transition(true, null, lastTaskName);

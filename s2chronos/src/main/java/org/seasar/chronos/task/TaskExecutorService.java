@@ -17,6 +17,4 @@ public interface TaskExecutorService {
 
 	public void destroy() throws InterruptedException;
 
-	public boolean canExecute() throws InterruptedException;
-
 }
