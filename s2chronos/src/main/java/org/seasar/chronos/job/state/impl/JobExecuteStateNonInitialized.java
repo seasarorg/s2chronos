@@ -19,7 +19,7 @@ public class JobExecuteStateNonInitialized extends AbstractJobExecuteState {
 		return false;
 	}
 
-	public void callJob(JobExecuteContext context, String startJobName)
+	public void execute(JobExecuteContext context, String startJobName)
 			throws InterruptedException {
 
 	}

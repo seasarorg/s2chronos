@@ -37,7 +37,7 @@ public class JobExecutorService_ExampleJobTest extends S2TestCase {
 		ComponentDef jobDef = this.getComponentDef(ExampleJob.class);
 		String jobName = this.target.initialize(jobDef);
 		try {
-			this.target.callJob(jobName);
+			this.target.execute(jobName);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		} catch (ExecutionException e) {

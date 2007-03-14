@@ -26,13 +26,13 @@ public class AsyncResult {
 		this.state = state;
 	}
 
-	public void waitOne() throws Throwable {
+	public void waitOne() throws InterruptedException {
 		try {
 			this.future.get();
 		} catch (CancellationException e) {
 			;
 		} catch (ExecutionException e) {
-			throw e.getCause();
+			throw new ExecutionRuntimeException(e);
 		}
 	}
 

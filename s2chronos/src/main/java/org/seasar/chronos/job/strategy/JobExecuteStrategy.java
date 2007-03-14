@@ -11,7 +11,7 @@ public interface JobExecuteStrategy {
 	public String initialize(ComponentDef jobComponentDef)
 			throws InterruptedException;
 
-	public void callJob(String startJobName) throws InterruptedException;
+	public void execute(String startJobName) throws InterruptedException;
 
 	public void destroy() throws InterruptedException;
 

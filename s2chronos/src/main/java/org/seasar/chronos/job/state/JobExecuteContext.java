@@ -18,9 +18,9 @@ public class JobExecuteContext {
 		return this.currentState.initialize(this, jobComponentDef);
 	}
 
-	public void callJob(String startJobName) throws InterruptedException,
+	public void execute(String startJobName) throws InterruptedException,
 			InvalidNextJobMethodException, ExecutionException {
-		this.currentState.callJob(this, startJobName);
+		this.currentState.execute(this, startJobName);
 	}
 
 	public void cancel() {

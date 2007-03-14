@@ -10,7 +10,7 @@ public interface JobExecutorService {
 
 	public String initialize(ComponentDef job) throws InterruptedException;
 
-	public void callJob(String startJobName) throws InterruptedException,
+	public void execute(String startJobName) throws InterruptedException,
 			InvalidNextJobMethodException, ExecutionException;
 
 	public void cancel();

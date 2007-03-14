@@ -26,7 +26,7 @@ public class JobBeanDescTest extends S2TestCase {
 
 	public void testCallJob() throws Throwable {
 		String startTaskName = this.jobExecuteStrategyImpl.initialize(jobComponentDef);
-		this.jobExecuteStrategyImpl.callJob(startTaskName);
+		this.jobExecuteStrategyImpl.execute(startTaskName);
 		this.jobExecuteStrategyImpl.destroy();
 	}
 

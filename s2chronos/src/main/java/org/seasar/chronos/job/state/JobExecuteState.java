@@ -9,7 +9,7 @@ public interface JobExecuteState {
 	public String initialize(JobExecuteContext context,
 			ComponentDef jobComponentDef) throws InterruptedException;
 
-	public void callJob(JobExecuteContext context, String startJobName)
+	public void execute(JobExecuteContext context, String startJobName)
 			throws InterruptedException;
 
 	public void cancel(JobExecuteContext context);

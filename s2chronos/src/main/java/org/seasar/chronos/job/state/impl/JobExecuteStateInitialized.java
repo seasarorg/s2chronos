@@ -21,9 +21,9 @@ public class JobExecuteStateInitialized extends AbstractJobExecuteState {
 	}
 
 	@Override
-	public void callJob(JobExecuteContext context, String startJobName)
+	public void execute(JobExecuteContext context, String startJobName)
 			throws InterruptedException {
-		this.getJobExecuteStrategy().callJob(startJobName);
+		this.getJobExecuteStrategy().execute(startJobName);
 	}
 
 	@Override

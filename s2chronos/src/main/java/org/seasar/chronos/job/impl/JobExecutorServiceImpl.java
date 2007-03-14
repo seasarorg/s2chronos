@@ -34,9 +34,9 @@ public class JobExecutorServiceImpl implements JobExecutorService {
 		return jobExecuteContext.await(time, timeUnit);
 	}
 
-	public void callJob(String startJobName) throws InterruptedException,
+	public void execute(String startJobName) throws InterruptedException,
 			InvalidNextJobMethodException, ExecutionException {
-		this.jobExecuteContext.callJob(startJobName);
+		this.jobExecuteContext.execute(startJobName);
 	}
 
 	public boolean canExecute() throws InterruptedException, ExecutionException {

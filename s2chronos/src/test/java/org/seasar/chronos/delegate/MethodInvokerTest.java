@@ -45,26 +45,27 @@ public class MethodInvokerTest extends S2TestCase {
 	}
 
 	public void testBeginInvokeString() {
-		AsyncResult ar = target.beginInvoke("testA");
+		AsyncResult ar;
 		try {
+			ar = target.beginInvoke("testA");
 			target.endInvoke(ar);
-		} catch (Throwable e) {
-			e.printStackTrace();
+		} catch (InterruptedException e1) {
+			fail();
 		}
 	}
 
 	public void testBeginInvokeStringMethodCallbackObject() {
 		String testValue = "testB";
-		AsyncResult ar = target
-				.beginInvoke("testB", new Object[] { testValue });
-		assertNotNull(ar);
-		String result = null;
+		AsyncResult ar;
 		try {
-			result = (String) target.endInvoke(ar);
-		} catch (Throwable e) {
-			e.printStackTrace();
+			ar = target.beginInvoke("testB", new Object[] { testValue });
+			assertNotNull(ar);
+			String result = (String) target.endInvoke(ar);
+			assertEquals(result, testValue);
+		} catch (InterruptedException e1) {
+			fail();
 		}
-		assertEquals(result, testValue);
+
 	}
 
 	@SuppressWarnings("unused")
@@ -78,11 +79,18 @@ public class MethodInvokerTest extends S2TestCase {
 
 	public void testBeginInvokeStringObjectArrayMethodCallbackObject() {
 		String testValue = "testB";
-		AsyncResult ar = target.beginInvoke("testB",
-				new Object[] { testValue },
-				new MethodCallback(this, "Callback"), null);
 		try {
+			AsyncResult ar = target.beginInvoke("testB",
+					new Object[] { testValue }, new MethodCallback(this,
+							"Callback"), null);
 			ar.waitOne();
+		} catch (InterruptedException e1) {
+			e1.printStackTrace();
+		} catch (Throwable e) {
+			e.printStackTrace();
+		}
+		try {
+
 		} catch (Throwable e) {
 			e.printStackTrace();
 		}
@@ -90,26 +98,16 @@ public class MethodInvokerTest extends S2TestCase {
 
 	public void testCancelInvokeAsyncResult() {
 
-		AsyncResult ar = target.beginInvoke("testC");
-
+		AsyncResult ar;
 		try {
+			ar = target.beginInvoke("testC");
 			Thread.sleep(3);
-		} catch (InterruptedException e) {
-			;
-		}
-
-		target.cancelInvoke(ar);
-
-		try {
+			target.cancelInvoke(ar);
 			Thread.sleep(5);
-		} catch (InterruptedException e1) {
-			e1.printStackTrace();
-		}
-
-		assertEquals(ar.isCompleted(), true);
-
-		try {
+			assertEquals(ar.isCompleted(), true);
 			ar.waitOne();
+		} catch (InterruptedException e2) {
+			fail();
 		} catch (Throwable e) {
 			e.printStackTrace();
 		}
@@ -117,28 +115,18 @@ public class MethodInvokerTest extends S2TestCase {
 	}
 
 	public void testCancelInvokeAsyncResultBoolean() {
-		AsyncResult ar = target.beginInvoke("testC");
 
 		try {
+			AsyncResult ar = target.beginInvoke("testC");
 			Thread.sleep(3);
-		} catch (InterruptedException e) {
-			;
-		}
-
-		target.cancelInvoke(ar, false);
-
-		try {
+			target.cancelInvoke(ar, false);
 			Thread.sleep(5);
-		} catch (InterruptedException e1) {
-			e1.printStackTrace();
-		}
-
-		assertEquals(ar.isCompleted(), true);
-
-		try {
+			assertEquals(ar.isCompleted(), true);
 			ar.waitOne();
-		} catch (Throwable e1) {
-			e1.printStackTrace();
+		} catch (InterruptedException e) {
+			fail();
+		} catch (Throwable e) {
+			e.printStackTrace();
 		}
 
 	}

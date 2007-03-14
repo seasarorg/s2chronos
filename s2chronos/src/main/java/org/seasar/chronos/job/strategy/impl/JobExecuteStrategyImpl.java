@@ -113,7 +113,7 @@ public class JobExecuteStrategyImpl implements JobExecuteStrategy {
 	 * 
 	 * @see org.seasar.chronos.job.impl.JobExecuteStrategy#callJob(java.lang.String)
 	 */
-	public void callJob(String startJobName) throws InterruptedException {
+	public void execute(String startJobName) throws InterruptedException {
 		TaskType type = isGroupMethod(startJobName) ? TaskType.JOBGROUP
 				: TaskType.JOB;
 		String nextTaskName = startJobName;

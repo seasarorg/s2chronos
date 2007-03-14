@@ -27,7 +27,7 @@ public abstract class AbstractJobExecuteState implements JobExecuteState {
 	public abstract boolean await(JobExecuteContext context, long time,
 			TimeUnit timeUnit) throws InterruptedException;
 
-	public abstract void callJob(JobExecuteContext context, String startJobName)
+	public abstract void execute(JobExecuteContext context, String startJobName)
 			throws InterruptedException;
 
 	public abstract boolean canExecute(JobExecuteContext context)
