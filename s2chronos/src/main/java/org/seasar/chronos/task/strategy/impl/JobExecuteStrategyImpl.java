@@ -1,4 +1,4 @@
-package org.seasar.chronos.job.strategy.impl;
+package org.seasar.chronos.task.strategy.impl;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -7,12 +7,12 @@ import java.util.concurrent.TimeUnit;
 import org.seasar.chronos.ThreadPoolType;
 import org.seasar.chronos.delegate.AsyncResult;
 import org.seasar.chronos.delegate.MethodInvoker;
-import org.seasar.chronos.job.TaskType;
-import org.seasar.chronos.job.Transition;
-import org.seasar.chronos.job.handler.TaskExecuteHandler;
-import org.seasar.chronos.job.impl.JobMethodMetaData;
-import org.seasar.chronos.job.impl.MethodGroupMap;
-import org.seasar.chronos.job.strategy.JobExecuteStrategy;
+import org.seasar.chronos.task.TaskType;
+import org.seasar.chronos.task.Transition;
+import org.seasar.chronos.task.handler.TaskExecuteHandler;
+import org.seasar.chronos.task.impl.JobMethodMetaData;
+import org.seasar.chronos.task.impl.MethodGroupManager;
+import org.seasar.chronos.task.strategy.JobExecuteStrategy;
 import org.seasar.framework.beans.BeanDesc;
 import org.seasar.framework.beans.PropertyDesc;
 import org.seasar.framework.beans.factory.BeanDescFactory;
@@ -26,9 +26,11 @@ public class JobExecuteStrategyImpl implements JobExecuteStrategy {
 
 	private static final String METHOD_NAME_CANEXECUTE = "canExecute";
 
+	private static final String METHOD_PREFIX_NAME_DO = "do";
+
 	private static final boolean DEFAULT_CANEXECUTE = true;
 
-	private static final String METHOD_PREFIX_NAME_DO = "do";
+	private static final ThreadPoolType DEFAULT_THREADPOOL_TYPE = ThreadPoolType.CACHED;
 
 	private Object job;
 
@@ -42,7 +44,7 @@ public class JobExecuteStrategyImpl implements JobExecuteStrategy {
 
 	private MethodInvoker lifecycleMethodInvoker;
 
-	private MethodGroupMap methodGroupMap;
+	private MethodGroupManager methodGroupManager;
 
 	private TaskExecuteHandler jobMethodExecuteHandler;
 
@@ -53,7 +55,7 @@ public class JobExecuteStrategyImpl implements JobExecuteStrategy {
 	}
 
 	private boolean isGroupMethod(String groupName) {
-		return this.methodGroupMap.existGroup(groupName);
+		return this.methodGroupManager.existGroup(groupName);
 	}
 
 	private void prepareMethodInvoker() {
@@ -70,7 +72,7 @@ public class JobExecuteStrategyImpl implements JobExecuteStrategy {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.seasar.chronos.job.impl.JobExecuteStrategy#initialize(org.seasar.framework.container.ComponentDef)
+	 * @see org.seasar.chronos.task.impl.JobExecuteStrategy#initialize(org.seasar.framework.container.ComponentDef)
 	 */
 	public String initialize(ComponentDef jobComponentDef)
 			throws InterruptedException {
@@ -79,7 +81,7 @@ public class JobExecuteStrategyImpl implements JobExecuteStrategy {
 		this.job = this.jobComponentDef.getComponent();
 		this.jobClass = this.jobComponentDef.getComponentClass();
 		this.beanDesc = BeanDescFactory.getBeanDesc(this.jobClass);
-		this.methodGroupMap = new MethodGroupMap(jobClass,
+		this.methodGroupManager = new MethodGroupManager(jobClass,
 				METHOD_PREFIX_NAME_DO);
 
 		this.prepareMethodInvoker();
@@ -99,7 +101,7 @@ public class JobExecuteStrategyImpl implements JobExecuteStrategy {
 	private Transition handleRequest(TaskExecuteHandler taskExecuteHandler,
 			String startJobName) throws InterruptedException {
 		taskExecuteHandler.setMethodInvoker(this.jobMethodInvoker);
-		taskExecuteHandler.setMethodGroupMap(this.methodGroupMap);
+		taskExecuteHandler.setMethodGroupMap(this.methodGroupManager);
 		return taskExecuteHandler.handleRequest(startJobName);
 	}
 
@@ -126,7 +128,7 @@ public class JobExecuteStrategyImpl implements JobExecuteStrategy {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.seasar.chronos.job.impl.JobExecuteStrategy#destroy()
+	 * @see org.seasar.chronos.task.impl.JobExecuteStrategy#destroy()
 	 */
 	public void destroy() throws InterruptedException {
 		if (this.lifecycleMethodInvoker.hasMethod(METHOD_NAME_DESTROY)) {
@@ -141,7 +143,7 @@ public class JobExecuteStrategyImpl implements JobExecuteStrategy {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.seasar.chronos.job.impl.JobExecuteStrategy#canExecute()
+	 * @see org.seasar.chronos.task.impl.JobExecuteStrategy#canExecute()
 	 */
 	public boolean canExecute() throws InterruptedException {
 		if (this.lifecycleMethodInvoker.hasMethod(METHOD_NAME_CANEXECUTE)) {
@@ -173,7 +175,7 @@ public class JobExecuteStrategyImpl implements JobExecuteStrategy {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.seasar.chronos.job.impl.JobExecuteStrategy#getThreadPoolSize()
+	 * @see org.seasar.chronos.task.impl.JobExecuteStrategy#getThreadPoolSize()
 	 */
 	public int getThreadPoolSize() {
 		Integer result = 1;
@@ -188,10 +190,10 @@ public class JobExecuteStrategyImpl implements JobExecuteStrategy {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.seasar.chronos.job.impl.JobExecuteStrategy#getThreadPoolType()
+	 * @see org.seasar.chronos.task.impl.JobExecuteStrategy#getThreadPoolType()
 	 */
 	public ThreadPoolType getThreadPoolType() {
-		ThreadPoolType type = ThreadPoolType.CACHED;
+		ThreadPoolType type = DEFAULT_THREADPOOL_TYPE;
 		if (this.beanDesc.hasPropertyDesc("threadPoolType")) {
 			PropertyDesc threadPoolType = this.beanDesc
 					.getPropertyDesc("threadPoolType");
@@ -203,7 +205,7 @@ public class JobExecuteStrategyImpl implements JobExecuteStrategy {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.seasar.chronos.job.impl.JobExecuteStrategy#setJobGroupMethodExecuteHandler(org.seasar.chronos.job.TaskExecuteHandler)
+	 * @see org.seasar.chronos.task.impl.JobExecuteStrategy#setJobGroupMethodExecuteHandler(org.seasar.chronos.task.TaskExecuteHandler)
 	 */
 	public void setJobGroupMethodExecuteHandler(
 			TaskExecuteHandler jobGroupMethdoExecuteHandler) {
@@ -213,7 +215,7 @@ public class JobExecuteStrategyImpl implements JobExecuteStrategy {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.seasar.chronos.job.impl.JobExecuteStrategy#setJobMethodExecuteHandler(org.seasar.chronos.job.TaskExecuteHandler)
+	 * @see org.seasar.chronos.task.impl.JobExecuteStrategy#setJobMethodExecuteHandler(org.seasar.chronos.task.TaskExecuteHandler)
 	 */
 	public void setJobMethodExecuteHandler(
 			TaskExecuteHandler jobMethdoExecuteHandler) {
@@ -221,13 +223,12 @@ public class JobExecuteStrategyImpl implements JobExecuteStrategy {
 	}
 
 	public void cancel() {
-		this.jobMethodInvoker.getExecutorService().shutdownNow();
+		this.jobMethodInvoker.cancelInvokes();
 	}
 
 	public boolean await(long time, TimeUnit timeUnit)
 			throws InterruptedException {
-		this.jobMethodInvoker.awaitInvokes(time, timeUnit);
-		return false;
+		return this.jobMethodInvoker.awaitInvokes(time, timeUnit);
 	}
 
 }

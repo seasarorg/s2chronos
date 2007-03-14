@@ -5,16 +5,16 @@
 
 	<include path="s2chronos.dicon" />
 	
-	<component class="org.seasar.chronos.job.ExampleJob">
+	<component class="org.seasar.chronos.task.ExampleJob">
 		<aspect pointcut="do.*, initialize, destroy">
 			<component class="org.seasar.framework.aop.interceptors.TraceInterceptor"/>
 		</aspect>
 	</component>
-	
+<!--	
 	<component class="org.seasar.chronos.delegate.InvokeTarget">
 	</component>
 	
-	<component class="org.seasar.chronos.job.impl.TestJob">
+	<component class="org.seasar.chronos.task.impl.TestJob">
 	</component>
-
+-->
 </components>

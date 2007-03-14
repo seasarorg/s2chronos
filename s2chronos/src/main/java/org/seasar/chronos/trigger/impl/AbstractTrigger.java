@@ -1,6 +1,6 @@
 package org.seasar.chronos.trigger.impl;
 
-import org.seasar.chronos.job.JobExecutorService;
+import org.seasar.chronos.task.TaskExecutorService;
 import org.seasar.chronos.trigger.Trigger;
 
 public abstract class AbstractTrigger implements Trigger {
@@ -11,7 +11,7 @@ public abstract class AbstractTrigger implements Trigger {
 
 	private Object job;
 
-	private JobExecutorService jobExecutorServiceImpl;
+	private TaskExecutorService jobExecutorServiceImpl;
 
 	private String description;
 
@@ -37,11 +37,11 @@ public abstract class AbstractTrigger implements Trigger {
 		return job;
 	}
 
-	public void setJobExecutorService(JobExecutorService jobExecutorServiceImpl) {
+	public void setJobExecutorService(TaskExecutorService jobExecutorServiceImpl) {
 		this.jobExecutorServiceImpl = jobExecutorServiceImpl;
 	}
 
-	public JobExecutorService getJobExecutorService() {
+	public TaskExecutorService getJobExecutorService() {
 		return this.jobExecutorServiceImpl;
 	}
 

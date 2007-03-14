@@ -1,8 +1,8 @@
-package org.seasar.chronos.job.state.impl;
+package org.seasar.chronos.task.state.impl;
 
 import java.util.concurrent.TimeUnit;
 
-import org.seasar.chronos.job.state.JobExecuteContext;
+import org.seasar.chronos.task.state.JobExecuteContext;
 import org.seasar.framework.container.ComponentDef;
 
 public class JobExecuteStateInitialized extends AbstractJobExecuteState {
@@ -21,9 +21,9 @@ public class JobExecuteStateInitialized extends AbstractJobExecuteState {
 	}
 
 	@Override
-	public void execute(JobExecuteContext context, String startJobName)
+	public void execute(JobExecuteContext context, String startTaskName)
 			throws InterruptedException {
-		this.getJobExecuteStrategy().execute(startJobName);
+		this.getJobExecuteStrategy().execute(startTaskName);
 	}
 
 	@Override

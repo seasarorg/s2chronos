@@ -1,4 +1,4 @@
-package org.seasar.chronos.job;
+package org.seasar.chronos.task;
 
 import java.util.concurrent.TimeUnit;
 
@@ -6,7 +6,7 @@ import org.seasar.chronos.ThreadPoolType;
 import org.seasar.chronos.annotation.job.Job;
 import org.seasar.chronos.annotation.job.method.Group;
 import org.seasar.chronos.annotation.job.method.Join;
-import org.seasar.chronos.annotation.job.method.Next;
+import org.seasar.chronos.annotation.job.method.NextTask;
 import org.seasar.chronos.annotation.type.JoinType;
 import org.seasar.framework.log.Logger;
 
@@ -28,21 +28,27 @@ public class ExampleJob {
 
 	// エントリメソッド
 	// 最初に実行するジョブもしくはジョブグループを指定します。
-	@Next("groupA")
+	@NextTask("groupA")
 	public void initialize() {
 		log.info("initialize");
 	}
 
 	// ------------------- JOB GROUP A
 	// ジョブグループが開始したときに呼ばれます
-	@Next("jobA")
-	public void startGroupA() {
-		log.info("startGroupA");
+	// @Next("jobA")
+	// public void startGroupA() {
+	// log.info("startGroupA");
+	// }
+
+	@Group("groupA")
+	@NextTask("jobA")
+	public void doHoge() {
+		log.info("doHoge");
 	}
 
 	// ジョブメソッドA
 	@Group("groupA")
-	@Next("jobB")
+	@NextTask("jobB")
 	@Join(JoinType.NoWait)
 	public void doJobA() throws Exception {
 
@@ -70,23 +76,23 @@ public class ExampleJob {
 	}
 
 	// ジョブグループが終了したときに呼ばれます
-	@Next("groupB")
+	// @Next("groupB")
 	public void endGroupA() {
 		log.info("endGroupA");
 	}
 
-	// ------------------- JOB GROUP B
-	// ジョブグループが開始したときに呼ばれます
-	@Next("jobC")
-	public void startGroupB() {
-		log.info("startGroupB");
-	}
-
 	// ジョブメソッドC
-	@Group("groupB")
-	@Next("jobD")
+	// @Group("groupB")
+	@NextTask("groupB")
 	public void doJobC() {
 		log.info("doJobC");
+	}
+
+	// ------------------- JOB GROUP B
+	// ジョブグループが開始したときに呼ばれます
+	@NextTask("jobD")
+	public void startGroupB() {
+		log.info("startGroupB");
 	}
 
 	// ジョブメソッドD
@@ -96,14 +102,14 @@ public class ExampleJob {
 	}
 
 	// ジョブグループが終了したときに呼ばれます
-	@Next("jobE")
+	@NextTask("jobE")
 	public void endGroupB() {
 		log.info("endGroupB");
 	}
 
 	// ------------------- JOB E
 	// ジョブE
-	@Next("jobF")
+	@NextTask("jobF")
 	public void doJobE() {
 		log.info("doJobE");
 	}

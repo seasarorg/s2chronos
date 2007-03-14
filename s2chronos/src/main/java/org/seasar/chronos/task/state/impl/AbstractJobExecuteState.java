@@ -1,10 +1,10 @@
-package org.seasar.chronos.job.state.impl;
+package org.seasar.chronos.task.state.impl;
 
 import java.util.concurrent.TimeUnit;
 
-import org.seasar.chronos.job.state.JobExecuteContext;
-import org.seasar.chronos.job.state.JobExecuteState;
-import org.seasar.chronos.job.strategy.JobExecuteStrategy;
+import org.seasar.chronos.task.state.JobExecuteContext;
+import org.seasar.chronos.task.state.JobExecuteState;
+import org.seasar.chronos.task.strategy.JobExecuteStrategy;
 import org.seasar.framework.container.ComponentDef;
 
 public abstract class AbstractJobExecuteState implements JobExecuteState {
@@ -27,7 +27,7 @@ public abstract class AbstractJobExecuteState implements JobExecuteState {
 	public abstract boolean await(JobExecuteContext context, long time,
 			TimeUnit timeUnit) throws InterruptedException;
 
-	public abstract void execute(JobExecuteContext context, String startJobName)
+	public abstract void execute(JobExecuteContext context, String startTaskName)
 			throws InterruptedException;
 
 	public abstract boolean canExecute(JobExecuteContext context)

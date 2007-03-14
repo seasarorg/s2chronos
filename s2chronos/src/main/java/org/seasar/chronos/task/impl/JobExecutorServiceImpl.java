@@ -1,13 +1,13 @@
-package org.seasar.chronos.job.impl;
+package org.seasar.chronos.task.impl;
 
 import java.util.concurrent.TimeUnit;
 
-import org.seasar.chronos.job.JobExecutorService;
-import org.seasar.chronos.job.state.JobExecuteContext;
-import org.seasar.chronos.job.state.impl.JobExecuteStateNonInitialized;
+import org.seasar.chronos.task.TaskExecutorService;
+import org.seasar.chronos.task.state.JobExecuteContext;
+import org.seasar.chronos.task.state.impl.JobExecuteStateNonInitialized;
 import org.seasar.framework.container.ComponentDef;
 
-public class JobExecutorServiceImpl implements JobExecutorService {
+public class JobExecutorServiceImpl implements TaskExecutorService {
 
 	private JobExecuteContext jobExecuteContext;
 
@@ -32,8 +32,8 @@ public class JobExecutorServiceImpl implements JobExecutorService {
 		return jobExecuteContext.await(time, timeUnit);
 	}
 
-	public void execute(String startJobName) throws InterruptedException {
-		this.jobExecuteContext.execute(startJobName);
+	public void execute(String startTaskName) throws InterruptedException {
+		this.jobExecuteContext.execute(startTaskName);
 	}
 
 	public boolean canExecute() throws InterruptedException {

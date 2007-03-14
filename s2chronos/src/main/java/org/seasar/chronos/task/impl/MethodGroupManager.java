@@ -1,10 +1,12 @@
-package org.seasar.chronos.job.impl;
+package org.seasar.chronos.task.impl;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-public class MethodGroupMap {
+public class MethodGroupManager {
 
 	private static final String NO_GROUP = "noGroup";
 
@@ -14,22 +16,36 @@ public class MethodGroupMap {
 
 	private HashMap<String, HashMap<String, Method>> methodMap = new HashMap<String, HashMap<String, Method>>();
 
-	public MethodGroupMap(Class clazz, String prefixMethodName) {
+	private HashMap<String, ArrayList<Method>> methodList = new HashMap<String, ArrayList<Method>>();
+
+	private ArrayList<String> groupList = new ArrayList<String>();
+
+	private ArrayList<Method> methodAllList = new ArrayList<Method>();
+
+	public MethodGroupManager(Class clazz, String prefixMethodName) {
 		this.clazz = clazz;
 		this.prefixMethodName = prefixMethodName;
 		this.initialize();
 	}
 
 	public Map<String, Method> getMethodMapByNoGroup() {
-		return methodMap.get(NO_GROUP);
+		return this.methodMap.get(NO_GROUP);
 	}
 
 	public Map<String, Method> getMethodMap(String groupName) {
-		return methodMap.get(groupName);
+		return this.methodMap.get(groupName);
+	}
+
+	public List<Method> getMethodList(String groupName) {
+		return this.methodList.get(groupName);
+	}
+
+	public List<String> getGroupList() {
+		return this.groupList;
 	}
 
 	public boolean existGroup(String groupName) {
-		return methodMap.get(groupName) != null;
+		return this.methodMap.get(groupName) != null;
 	}
 
 	private void initialize() {
@@ -43,13 +59,23 @@ public class MethodGroupMap {
 					groupName = NO_GROUP;
 				}
 				HashMap<String, Method> jobMethodMap = methodMap.get(groupName);
+				ArrayList<Method> jobMethodList = methodList.get(groupName);
 				if (null == jobMethodMap) {
 					jobMethodMap = new HashMap<String, Method>();
+					jobMethodList = new ArrayList<Method>();
 					methodMap.put(groupName, jobMethodMap);
+					methodList.put(groupName, jobMethodList);
+					groupList.add(groupName);
 				}
 				jobMethodMap.put(methodName, method);
+				jobMethodList.add(method);
+				methodAllList.add(method);
 			}
 		}
+	}
+
+	public List<Method> getAllMethodList() {
+		return methodAllList;
 	}
 
 }

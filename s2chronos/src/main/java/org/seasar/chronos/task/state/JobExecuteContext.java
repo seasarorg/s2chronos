@@ -1,4 +1,4 @@
-package org.seasar.chronos.job.state;
+package org.seasar.chronos.task.state;
 
 import java.util.concurrent.TimeUnit;
 
@@ -17,8 +17,8 @@ public class JobExecuteContext {
 		return this.currentState.initialize(this, jobComponentDef);
 	}
 
-	public void execute(String startJobName) throws InterruptedException {
-		this.currentState.execute(this, startJobName);
+	public void execute(String startTaskName) throws InterruptedException {
+		this.currentState.execute(this, startTaskName);
 	}
 
 	public void cancel() {

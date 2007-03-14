@@ -1,11 +1,11 @@
-package org.seasar.chronos.job.impl;
+package org.seasar.chronos.task.impl;
 
 import java.lang.reflect.Method;
 
 import org.seasar.chronos.annotation.job.method.Clone;
 import org.seasar.chronos.annotation.job.method.Group;
 import org.seasar.chronos.annotation.job.method.Join;
-import org.seasar.chronos.annotation.job.method.Next;
+import org.seasar.chronos.annotation.job.method.NextTask;
 import org.seasar.chronos.annotation.type.JoinType;
 import org.seasar.framework.beans.BeanDesc;
 
@@ -30,9 +30,9 @@ public class JobMethodMetaData {
 	}
 
 	public String getNextTask() {
-		Next next = method.getAnnotation(Next.class);
-		if (next != null) {
-			return next.value();
+		NextTask nextTask = method.getAnnotation(NextTask.class);
+		if (nextTask != null) {
+			return nextTask.value();
 		}
 		return null;
 	}

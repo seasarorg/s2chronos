@@ -1,8 +1,8 @@
-package org.seasar.chronos.job.handler;
+package org.seasar.chronos.task.handler;
 
 import org.seasar.chronos.delegate.MethodInvoker;
-import org.seasar.chronos.job.Transition;
-import org.seasar.chronos.job.impl.MethodGroupMap;
+import org.seasar.chronos.task.Transition;
+import org.seasar.chronos.task.impl.MethodGroupManager;
 
 public interface TaskExecuteHandler {
 
@@ -10,9 +10,9 @@ public interface TaskExecuteHandler {
 
 	public void setMethodInvoker(MethodInvoker methodInvoker);
 
-	public MethodGroupMap getMethodGroupMap();
+	public MethodGroupManager getMethodGroupMap();
 
-	public void setMethodGroupMap(MethodGroupMap methodGroupMap);
+	public void setMethodGroupMap(MethodGroupManager methodGroupManager);
 
 	public Transition handleRequest(String startTaskName)
 			throws InterruptedException;

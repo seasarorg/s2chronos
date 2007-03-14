@@ -1,4 +1,4 @@
-package org.seasar.chronos.job;
+package org.seasar.chronos.task;
 
 public class Transition {
 
@@ -6,12 +6,20 @@ public class Transition {
 
 	private String nextTaskName = null;
 
+	private String lastTaskName = null;
+
 	public Transition() {
 
 	}
 
+	public Transition(boolean processResult, String nextTaskName,
+			String lastTaskName) {
+		this(processResult, nextTaskName);
+		this.lastTaskName = lastTaskName;
+	}
+
 	public Transition(boolean processResult, String nextTaskName) {
-		this.processResult = processResult;
+		this(processResult);
 		this.nextTaskName = nextTaskName;
 	}
 
@@ -33,5 +41,13 @@ public class Transition {
 
 	public void setProcessResult(boolean processResult) {
 		this.processResult = processResult;
+	}
+
+	public String getLastTaskName() {
+		return lastTaskName;
+	}
+
+	public void setLastTaskName(String lastTaskName) {
+		this.lastTaskName = lastTaskName;
 	}
 }

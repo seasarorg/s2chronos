@@ -1,4 +1,4 @@
-package org.seasar.chronos.job.handler.impl;
+package org.seasar.chronos.task.handler.impl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,11 +6,10 @@ import java.util.List;
 import org.seasar.chronos.annotation.type.JoinType;
 import org.seasar.chronos.delegate.AsyncResult;
 import org.seasar.chronos.delegate.MethodInvoker;
-import org.seasar.chronos.job.Transition;
-import org.seasar.chronos.job.impl.JobMethodMetaData;
+import org.seasar.chronos.task.Transition;
+import org.seasar.chronos.task.impl.JobMethodMetaData;
 
 public class JobMethodExecuteHandlerImpl extends AbstractTaskExecuteHandler {
-	private static final String METHOD_PREFIX_NAME_DO = "do";
 
 	@Override
 	public Transition handleRequest(String startTaskName)
@@ -19,11 +18,10 @@ public class JobMethodExecuteHandlerImpl extends AbstractTaskExecuteHandler {
 		List<AsyncResult> asyncResultList = new ArrayList<AsyncResult>();
 		// 連続でジョブを呼び出す
 		String nextTaskName = startTaskName;
+		String lastTaskName = startTaskName;
 		while (true) {
-			String firstChar = nextTaskName.substring(0, 1);
-			String afterString = nextTaskName.substring(1);
-			final String methodName = METHOD_PREFIX_NAME_DO
-					+ firstChar.toUpperCase() + afterString;
+
+			final String methodName = toMethodName(nextTaskName);
 
 			JobMethodMetaData md = new JobMethodMetaData(mi
 					.getMethod(methodName));
@@ -44,19 +42,36 @@ public class JobMethodExecuteHandlerImpl extends AbstractTaskExecuteHandler {
 					_nextTaskName = (String) returnValue;
 				}
 			}
+
 			nextTaskName = _nextTaskName != null ? _nextTaskName : md
 					.getNextTask();
+
+			if (nextTaskName != null) {
+				if (!this.getMethodGroupMap().existGroup(nextTaskName)) {
+					JobMethodMetaData nextMethodMetaData = new JobMethodMetaData(
+							mi.getMethod(toMethodName(nextTaskName)));
+					String nextGroupName = nextMethodMetaData.getGroupName();
+					String currentGroupName = md.getGroupName();
+					// ジョブグループ名が変更になったら
+					if (nextGroupName != null
+							&& !nextGroupName.equals(currentGroupName)) {
+						nextTaskName = nextGroupName;
+					}
+				}
+			}
+
 			if (nextTaskName == null) {
 				break;
 			} else if (this.getMethodGroupMap().existGroup(nextTaskName)) {
-				return new Transition();
+				return new Transition(false, nextTaskName, lastTaskName);
 			}
+			lastTaskName = nextTaskName;
 		}
 
 		for (AsyncResult ar : asyncResultList) {
 			mi.endInvoke(ar);
 		}
-		return new Transition(true);
+		return new Transition(true, null, lastTaskName);
 
 	}
 

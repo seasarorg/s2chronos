@@ -1,9 +1,9 @@
-package org.seasar.chronos.job.strategy;
+package org.seasar.chronos.task.strategy;
 
 import java.util.concurrent.TimeUnit;
 
 import org.seasar.chronos.ThreadPoolType;
-import org.seasar.chronos.job.handler.TaskExecuteHandler;
+import org.seasar.chronos.task.handler.TaskExecuteHandler;
 import org.seasar.framework.container.ComponentDef;
 
 public interface JobExecuteStrategy {
