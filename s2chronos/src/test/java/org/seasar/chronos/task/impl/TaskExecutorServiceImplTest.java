@@ -7,7 +7,7 @@ import org.seasar.chronos.task.TaskExecutorService;
 import org.seasar.extension.unit.S2TestCase;
 import org.seasar.framework.container.ComponentDef;
 
-public class JobExecutorServiceImplTest extends S2TestCase {
+public class TaskExecutorServiceImplTest extends S2TestCase {
 
 	private static final String PATH = "app.dicon";
 
