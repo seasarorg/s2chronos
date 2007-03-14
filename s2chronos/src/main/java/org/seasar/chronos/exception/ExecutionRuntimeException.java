@@ -1,4 +1,4 @@
-package org.seasar.chronos.delegate;
+package org.seasar.chronos.exception;
 
 public class ExecutionRuntimeException extends RuntimeException {
 

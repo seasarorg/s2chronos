@@ -4,6 +4,8 @@ import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
+import org.seasar.chronos.exception.ExecutionRuntimeException;
+
 public class AsyncResult {
 
 	private Future<Object> future = null;

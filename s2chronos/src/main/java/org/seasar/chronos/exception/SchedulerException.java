@@ -2,9 +2,6 @@ package org.seasar.chronos.exception;
 
 public class SchedulerException extends Exception {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 5793876899318504042L;
 
 	public SchedulerException() {
