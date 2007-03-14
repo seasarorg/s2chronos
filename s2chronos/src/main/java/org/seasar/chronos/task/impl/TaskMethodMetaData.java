@@ -3,7 +3,7 @@ package org.seasar.chronos.task.impl;
 import java.lang.reflect.Method;
 
 import org.seasar.chronos.annotation.job.method.Clone;
-import org.seasar.chronos.annotation.job.method.Group;
+import org.seasar.chronos.annotation.job.method.TaskGroup;
 import org.seasar.chronos.annotation.job.method.Join;
 import org.seasar.chronos.annotation.job.method.NextTask;
 import org.seasar.chronos.annotation.type.JoinType;
@@ -46,9 +46,9 @@ public class TaskMethodMetaData {
 	}
 
 	public String getGroupName() {
-		Group group = method.getAnnotation(Group.class);
-		if (group != null) {
-			return group.value();
+		TaskGroup taskGroup = method.getAnnotation(TaskGroup.class);
+		if (taskGroup != null) {
+			return taskGroup.value();
 		}
 		return null;
 	}

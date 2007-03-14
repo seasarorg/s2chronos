@@ -17,12 +17,12 @@ public class TaskExecutorServiceImpl implements TaskExecutorService {
 
 	}
 
-	public void setJobExecuteStateNonInitialized(
+	public void setTaskExecuteStateNonInitialized(
 			TaskExecuteStateNonInitialized taskExecuteStateNonInitialized) {
 		this.taskExecuteStateNonInitialized = taskExecuteStateNonInitialized;
 	}
 
-	public void setJobExecuteContext(TaskExecuteContext taskExecuteContext) {
+	public void setTaskExecuteContext(TaskExecuteContext taskExecuteContext) {
 		this.taskExecuteContext = taskExecuteContext;
 
 	}

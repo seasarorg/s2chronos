@@ -9,7 +9,7 @@ public class TaskExecuteStateInitialized extends AbstractJobExecuteState {
 
 	private TaskExecuteStateNonInitialized taskExecuteStateNonInitialized;
 
-	public void setJobExecuteStateNoInitialized(
+	public void setTaskExecuteStateNonInitialized(
 			TaskExecuteStateNonInitialized taskExecuteStateNonInitialized) {
 		this.taskExecuteStateNonInitialized = taskExecuteStateNonInitialized;
 	}
@@ -17,29 +17,29 @@ public class TaskExecuteStateInitialized extends AbstractJobExecuteState {
 	@Override
 	public boolean await(TaskExecuteContext context, long time, TimeUnit timeUnit)
 			throws InterruptedException {
-		return this.getJobExecuteStrategy().await(time, timeUnit);
+		return this.getTaskExecuteStrategy().await(time, timeUnit);
 	}
 
 	@Override
 	public void execute(TaskExecuteContext context, String startTaskName)
 			throws InterruptedException {
-		this.getJobExecuteStrategy().execute(startTaskName);
+		this.getTaskExecuteStrategy().execute(startTaskName);
 	}
 
 	@Override
 	public boolean canExecute(TaskExecuteContext context)
 			throws InterruptedException {
-		return this.getJobExecuteStrategy().canExecute();
+		return this.getTaskExecuteStrategy().canExecute();
 	}
 
 	@Override
 	public void cancel(TaskExecuteContext context) {
-		this.getJobExecuteStrategy().cancel();
+		this.getTaskExecuteStrategy().cancel();
 	}
 
 	@Override
 	public void destroy(TaskExecuteContext context) throws InterruptedException {
-		this.getJobExecuteStrategy().destroy();
+		this.getTaskExecuteStrategy().destroy();
 		this.changeState(context, taskExecuteStateNonInitialized);
 	}
 

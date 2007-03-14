@@ -9,7 +9,7 @@ public class TaskExecuteStateNonInitialized extends AbstractJobExecuteState {
 
 	private TaskExecuteStateInitialized taskExecuteStateInitialized;
 
-	public void setJobExecuteStateInitialized(
+	public void setTaskExecuteStateInitialized(
 			TaskExecuteStateInitialized taskExecuteStateInitialized) {
 		this.taskExecuteStateInitialized = taskExecuteStateInitialized;
 	}
@@ -38,7 +38,7 @@ public class TaskExecuteStateNonInitialized extends AbstractJobExecuteState {
 	public String initialize(TaskExecuteContext context,
 			ComponentDef jobComponentDef) throws InterruptedException {
 
-		String result = this.getJobExecuteStrategy()
+		String result = this.getTaskExecuteStrategy()
 				.initialize(jobComponentDef);
 		this.changeState(context, taskExecuteStateInitialized);
 

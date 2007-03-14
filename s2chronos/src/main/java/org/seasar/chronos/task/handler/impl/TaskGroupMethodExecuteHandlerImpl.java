@@ -124,7 +124,7 @@ public class TaskGroupMethodExecuteHandlerImpl extends
 		return null;
 	}
 
-	public void setJobMethodExecuteHandler(
+	public void setTaskMethodExecuteHandler(
 			TaskExecuteHandler jobMethodExecuteHandler) {
 		this.jobMethodExecuteHandler = jobMethodExecuteHandler;
 	}

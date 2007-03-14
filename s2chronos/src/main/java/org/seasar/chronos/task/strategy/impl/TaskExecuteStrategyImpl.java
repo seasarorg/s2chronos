@@ -207,7 +207,7 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 	 * 
 	 * @see org.seasar.chronos.task.impl.JobExecuteStrategy#setJobGroupMethodExecuteHandler(org.seasar.chronos.task.TaskExecuteHandler)
 	 */
-	public void setJobGroupMethodExecuteHandler(
+	public void setTaskGroupMethodExecuteHandler(
 			TaskExecuteHandler jobGroupMethdoExecuteHandler) {
 		this.jobGroupMethodExecuteHandler = jobGroupMethdoExecuteHandler;
 	}
@@ -217,7 +217,7 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 	 * 
 	 * @see org.seasar.chronos.task.impl.JobExecuteStrategy#setJobMethodExecuteHandler(org.seasar.chronos.task.TaskExecuteHandler)
 	 */
-	public void setJobMethodExecuteHandler(
+	public void setTaskMethodExecuteHandler(
 			TaskExecuteHandler jobMethdoExecuteHandler) {
 		this.jobMethodExecuteHandler = jobMethdoExecuteHandler;
 	}

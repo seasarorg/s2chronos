@@ -11,11 +11,11 @@ public abstract class AbstractJobExecuteState implements TaskExecuteState {
 
 	private TaskExecuteStrategy taskExecuteStrategy;
 
-	public TaskExecuteStrategy getJobExecuteStrategy() {
+	public TaskExecuteStrategy getTaskExecuteStrategy() {
 		return taskExecuteStrategy;
 	}
 
-	public void setJobExecuteStrategy(TaskExecuteStrategy taskExecuteStrategy) {
+	public void setTaskExecuteStrategy(TaskExecuteStrategy taskExecuteStrategy) {
 		this.taskExecuteStrategy = taskExecuteStrategy;
 	}
 

@@ -26,10 +26,10 @@ public interface TaskExecuteStrategy {
 
 	public ThreadPoolType getThreadPoolType();
 
-	public void setJobGroupMethodExecuteHandler(
+	public void setTaskGroupMethodExecuteHandler(
 			TaskExecuteHandler jobGroupMethdoExecuteHandler);
 
-	public void setJobMethodExecuteHandler(
+	public void setTaskMethodExecuteHandler(
 			TaskExecuteHandler jobMethdoExecuteHandler);
 
 }

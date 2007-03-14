@@ -2,14 +2,11 @@ package org.seasar.chronos.trigger.impl;
 
 import java.util.Date;
 
-
 public class GenericTrigger extends AbstractTrigger {
 
 	private Date startTime;
 
 	private Date endTime;
-
-	private boolean immediate;
 
 	public GenericTrigger() {
 
@@ -33,14 +30,6 @@ public class GenericTrigger extends AbstractTrigger {
 
 	public Date getEndTime() {
 		return endTime;
-	}
-
-	public boolean isImmediate() {
-		return immediate;
-	}
-
-	public void setImmediate(boolean immediate) {
-		this.immediate = immediate;
 	}
 
 	public boolean canEnd() {
@@ -68,7 +57,7 @@ public class GenericTrigger extends AbstractTrigger {
 			startTimeCheck = (System.currentTimeMillis() >= startTime.getTime());
 		}
 
-		return startTimeCheck || this.immediate;
+		return startTimeCheck;
 	}
 
 }

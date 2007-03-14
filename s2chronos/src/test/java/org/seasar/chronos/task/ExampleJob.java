@@ -4,9 +4,9 @@ import java.util.concurrent.TimeUnit;
 
 import org.seasar.chronos.ThreadPoolType;
 import org.seasar.chronos.annotation.job.Job;
-import org.seasar.chronos.annotation.job.method.Group;
 import org.seasar.chronos.annotation.job.method.Join;
 import org.seasar.chronos.annotation.job.method.NextTask;
+import org.seasar.chronos.annotation.job.method.TaskGroup;
 import org.seasar.chronos.annotation.type.JoinType;
 import org.seasar.framework.log.Logger;
 
@@ -40,14 +40,14 @@ public class ExampleJob {
 	// log.info("startGroupA");
 	// }
 
-	@Group("groupA")
+	@TaskGroup("groupA")
 	@NextTask("jobA")
 	public void doHoge() {
 		log.info("doHoge");
 	}
 
 	// ジョブメソッドA
-	@Group("groupA")
+	@TaskGroup("groupA")
 	@NextTask("jobB")
 	@Join(JoinType.NoWait)
 	public void doJobA() throws Exception {
@@ -62,7 +62,7 @@ public class ExampleJob {
 	}
 
 	// ジョブメソッドB
-	@Group("groupA")
+	@TaskGroup("groupA")
 	@Join(JoinType.NoWait)
 	public void doJobB() {
 		for (int i = 1; i < 5; i++) {
@@ -82,7 +82,7 @@ public class ExampleJob {
 	}
 
 	// ジョブメソッドC
-	// @Group("groupB")
+	// @TaskGroup("groupB")
 	@NextTask("groupB")
 	public void doJobC() {
 		log.info("doJobC");
@@ -96,7 +96,7 @@ public class ExampleJob {
 	}
 
 	// ジョブメソッドD
-	@Group("groupB")
+	@TaskGroup("groupB")
 	public void doJobD() {
 		log.info("doJobD");
 	}
@@ -130,9 +130,27 @@ public class ExampleJob {
 		log.info("cancel");
 	}
 
+	private boolean executed = false;
+
+	public boolean isExecuted() {
+		return executed;
+	}
+
 	// 実行可能かを返す
 	public boolean canExecute() {
-		return true;
+		if (!executed) {
+			executed = true;
+			return true;
+		}
+		return false;
+	}
+
+	public boolean canTerminate() {
+		if (executed) {
+			executed = false;
+			return true;
+		}
+		return false;
 	}
 
 	public void startScheduler() {
