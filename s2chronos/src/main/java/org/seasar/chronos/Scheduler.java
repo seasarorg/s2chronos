@@ -1,7 +1,6 @@
 package org.seasar.chronos;
 
 import org.seasar.chronos.exception.SchedulerException;
-import org.seasar.chronos.trigger.Trigger;
 
 public interface Scheduler {
 
@@ -17,14 +16,14 @@ public interface Scheduler {
 
 	public void shutdown(boolean waitAllJobFinish) throws SchedulerException;
 
-	public void join() throws SchedulerException;
+	public void join() throws InterruptedException;
 
 	public void addListener(SchedulerEventListener listener);
 
 	public void removeListener(SchedulerEventListener listener);
 
-	public boolean addTriggerr(Trigger trigger) throws SchedulerException;
+	public boolean addTask(Object task);
 
-	public boolean removeTrigger(Trigger trigger) throws SchedulerException;
+	public boolean removeTask(Object task);
 
 }
