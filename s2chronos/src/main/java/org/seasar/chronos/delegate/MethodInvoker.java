@@ -28,6 +28,9 @@ public class MethodInvoker {
 
 	private ExecutorService executorService;
 
+	private ExecutorService callbackExecutorService = Executors
+			.newSingleThreadExecutor();
+
 	/**
 	 * コンストラクタ
 	 * 
@@ -125,8 +128,10 @@ public class MethodInvoker {
 	 * @param methodName
 	 *            メソッド名
 	 * @return 非同期結果オブジェクト
+	 * @throws InterruptedException
 	 */
-	public AsyncResult beginInvoke(final String methodName) {
+	public AsyncResult beginInvoke(final String methodName)
+			throws InterruptedException {
 		return beginInvoke(methodName, null, null, null);
 	}
 
@@ -138,8 +143,10 @@ public class MethodInvoker {
 	 * @param args
 	 *            メソッドの引数
 	 * @return 非同期結果オブジェクト
+	 * @throws InterruptedException
 	 */
-	public AsyncResult beginInvoke(final String methodName, final Object[] args) {
+	public AsyncResult beginInvoke(final String methodName, final Object[] args)
+			throws InterruptedException {
 		return beginInvoke(methodName, args, null, null);
 	}
 
@@ -153,9 +160,11 @@ public class MethodInvoker {
 	 * @param state
 	 *            ステート
 	 * @return 非同期結果オブジェクト
+	 * @throws InterruptedException
 	 */
 	public AsyncResult beginInvoke(final String methodName,
-			final MethodCallback methodCallback, final Object state) {
+			final MethodCallback methodCallback, final Object state)
+			throws InterruptedException {
 		return beginInvoke(methodName, null, methodCallback, state);
 	}
 
@@ -171,10 +180,11 @@ public class MethodInvoker {
 	 * @param state
 	 *            ステート
 	 * @return 非同期結果オブジェクト
+	 * @throws InterruptedException
 	 */
 	public AsyncResult beginInvoke(final String methodName,
 			final Object[] args, final MethodCallback methodCallback,
-			final Object state) {
+			final Object state) throws InterruptedException {
 
 		final AsyncResult asyncResult = new AsyncResult();
 
@@ -186,18 +196,16 @@ public class MethodInvoker {
 						}
 						// 対象メソッドを実行
 						Object result = invoke(methodName, args);
-
 						if (methodCallback != null) {
-							ExecutorService es = Executors
-									.newSingleThreadExecutor();
 							// さらにコールバックをスレッドプールから実行
-							es.submit(new Callable<Void>() {
-								public Void call() throws Exception {
-									callbackHandler(methodName, methodCallback,
-											asyncResult);
-									return null;
-								}
-							});
+							callbackExecutorService
+									.submit(new Callable<Void>() {
+										public Void call() throws Exception {
+											callbackHandler(methodName,
+													methodCallback, asyncResult);
+											return null;
+										}
+									});
 						}
 
 						return result;
@@ -232,11 +240,7 @@ public class MethodInvoker {
 		synchronized (asyncResult) {
 			asyncResult.setFuture(future);
 			asyncResult.setState(state);
-			try {
-				asyncResult.wait();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+			asyncResult.wait();
 		}
 		return asyncResult;
 	}
