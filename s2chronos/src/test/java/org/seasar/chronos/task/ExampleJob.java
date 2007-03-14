@@ -55,9 +55,12 @@ public class ExampleJob {
 		try {
 			TimeUnit.SECONDS.sleep(1);
 		} catch (InterruptedException e) {
+			if (terminate) {
+				return;
+			}
 		}
 
-		// throw new Exception();
+		// this.terminate = true;
 
 	}
 
@@ -132,24 +135,31 @@ public class ExampleJob {
 
 	private boolean executed = false;
 
+	public void setExecuted(boolean executed) {
+		this.executed = executed;
+	}
+
 	public boolean isExecuted() {
 		return executed;
 	}
 
-	// 実行可能かを返す
-	public boolean canExecute() {
-		if (!executed) {
-			executed = true;
-			return true;
-		}
-		return false;
+	private boolean terminate = false;
+
+	public void setTerminate(boolean terminate) {
+		this.terminate = terminate;
 	}
 
-	public boolean canTerminate() {
-		if (executed) {
-			executed = false;
-			return true;
-		}
+	public boolean getTerminate() {
+		return this.terminate;
+	}
+
+	// 実行可能かを返す
+	public boolean canExecute() {
+		return true;
+	}
+
+	// キャンセル可能かを返す
+	public boolean canCancel() {
 		return false;
 	}
 

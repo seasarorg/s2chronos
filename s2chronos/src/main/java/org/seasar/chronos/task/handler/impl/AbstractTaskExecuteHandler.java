@@ -4,6 +4,8 @@ import org.seasar.chronos.delegate.MethodInvoker;
 import org.seasar.chronos.task.Transition;
 import org.seasar.chronos.task.handler.TaskExecuteHandler;
 import org.seasar.chronos.task.impl.MethodGroupManager;
+import org.seasar.chronos.task.strategy.TaskExecuteStrategy;
+import org.seasar.framework.log.Logger;
 
 public abstract class AbstractTaskExecuteHandler implements TaskExecuteHandler {
 
@@ -13,12 +15,25 @@ public abstract class AbstractTaskExecuteHandler implements TaskExecuteHandler {
 
 	protected static final String METHOD_PREFIX_NAME_END = "end";
 
+	private static Logger log = Logger
+			.getLogger(AbstractTaskExecuteHandler.class);
+
 	private MethodInvoker methodInvoker;
 
 	public MethodGroupManager methodGroupManager;
 
 	public abstract Transition handleRequest(String startTaskName)
 			throws InterruptedException;
+
+	private TaskExecuteStrategy taskExecuteStrategy;
+
+	public void setTaskExecuteStrategy(TaskExecuteStrategy taskExecuteStrategy) {
+		this.taskExecuteStrategy = taskExecuteStrategy;
+	}
+
+	public TaskExecuteStrategy getTaskExecuteStrategy() {
+		return this.taskExecuteStrategy;
+	}
 
 	public void setMethodInvoker(MethodInvoker methodInvoker) {
 		this.methodInvoker = methodInvoker;
@@ -55,5 +70,18 @@ public abstract class AbstractTaskExecuteHandler implements TaskExecuteHandler {
 			sb.append(firstChar).append(afterString);
 		}
 		return sb.toString();
+	}
+
+	protected Transition getTerminateTransition() {
+		return getTerminateTransition(null);
+	}
+
+	protected Transition getTerminateTransition(String lastTaskName) {
+		boolean terminate = getTaskExecuteStrategy().getTerminate();
+		if (terminate) {
+			log.warn("タスクが終了しました");
+			return new Transition(true, null, lastTaskName);
+		}
+		return null;
 	}
 }

@@ -27,7 +27,14 @@ public class TaskMethodExecuteHandlerImpl extends AbstractTaskExecuteHandler {
 					.getMethod(methodName));
 
 			for (int i = 0; i < md.getCloneSize(); i++) {
+
+				Transition ts = getTerminateTransition(lastTaskName);
+				if (ts != null) {
+					return ts;
+				}
+
 				AsyncResult ar = mi.beginInvoke(methodName);
+
 				asyncResultList.add(ar);
 			}
 

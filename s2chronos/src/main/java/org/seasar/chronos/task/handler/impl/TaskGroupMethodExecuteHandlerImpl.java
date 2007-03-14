@@ -8,8 +8,8 @@ import org.seasar.chronos.delegate.AsyncResult;
 import org.seasar.chronos.delegate.MethodInvoker;
 import org.seasar.chronos.task.Transition;
 import org.seasar.chronos.task.handler.TaskExecuteHandler;
-import org.seasar.chronos.task.impl.TaskMethodMetaData;
 import org.seasar.chronos.task.impl.MethodGroupManager;
+import org.seasar.chronos.task.impl.TaskMethodMetaData;
 import org.seasar.framework.log.Logger;
 
 public class TaskGroupMethodExecuteHandlerImpl extends
@@ -45,6 +45,11 @@ public class TaskGroupMethodExecuteHandlerImpl extends
 
 		String groupName = firstChar.toUpperCase() + afterString;
 
+		Transition ts = this.getTerminateTransition();
+		if (ts != null) {
+			return ts;
+		}
+
 		String nextTask = invokeStartJobGroupMethod(groupName);
 
 		if (nextTask == null) {
@@ -57,7 +62,17 @@ public class TaskGroupMethodExecuteHandlerImpl extends
 			return new Transition(true, nextTask);
 		}
 
+		ts = this.getTerminateTransition();
+		if (ts != null) {
+			return ts;
+		}
+
 		Transition transition = jobMethodExecuteHandler.handleRequest(nextTask);
+
+		ts = this.getTerminateTransition();
+		if (ts != null) {
+			return ts;
+		}
 
 		nextTask = invokeEndJobGroupMethod(groupName);
 

@@ -22,6 +22,8 @@ public interface TaskExecuteStrategy {
 
 	public boolean canExecute() throws InterruptedException;
 
+	public boolean canCancel() throws InterruptedException;
+
 	public int getThreadPoolSize();
 
 	public ThreadPoolType getThreadPoolType();
@@ -31,5 +33,9 @@ public interface TaskExecuteStrategy {
 
 	public void setTaskMethodExecuteHandler(
 			TaskExecuteHandler jobMethdoExecuteHandler);
+
+	public boolean getTerminate();
+
+	public void setTerminate(boolean terminate);
 
 }
