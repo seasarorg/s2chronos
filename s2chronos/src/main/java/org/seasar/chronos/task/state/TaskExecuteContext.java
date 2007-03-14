@@ -4,11 +4,11 @@ import java.util.concurrent.TimeUnit;
 
 import org.seasar.framework.container.ComponentDef;
 
-public class JobExecuteContext {
+public class TaskExecuteContext {
 
-	JobExecuteState currentState;
+	TaskExecuteState currentState;
 
-	public void changeState(JobExecuteState nextState) {
+	public void changeState(TaskExecuteState nextState) {
 		this.currentState = nextState;
 	}
 

@@ -8,15 +8,15 @@ import org.seasar.chronos.delegate.AsyncResult;
 import org.seasar.chronos.delegate.MethodInvoker;
 import org.seasar.chronos.task.Transition;
 import org.seasar.chronos.task.handler.TaskExecuteHandler;
-import org.seasar.chronos.task.impl.JobMethodMetaData;
+import org.seasar.chronos.task.impl.TaskMethodMetaData;
 import org.seasar.chronos.task.impl.MethodGroupManager;
 import org.seasar.framework.log.Logger;
 
-public class JobGroupMethodExecuteHandlerImpl extends
+public class TaskGroupMethodExecuteHandlerImpl extends
 		AbstractTaskExecuteHandler {
 
 	private static Logger log = Logger
-			.getLogger(JobGroupMethodExecuteHandlerImpl.class);
+			.getLogger(TaskGroupMethodExecuteHandlerImpl.class);
 
 	private TaskExecuteHandler jobMethodExecuteHandler;
 
@@ -78,7 +78,7 @@ public class JobGroupMethodExecuteHandlerImpl extends
 					}
 				}
 				if (nextTask != null) {
-					JobMethodMetaData md = new JobMethodMetaData(method);
+					TaskMethodMetaData md = new TaskMethodMetaData(method);
 					String nextGroupName = md.getGroupName();
 					if (nextGroupName != null) {
 						nextTask = nextGroupName;
@@ -117,7 +117,7 @@ public class JobGroupMethodExecuteHandlerImpl extends
 		if (mi.hasMethod(methodName)) {
 			AsyncResult ar = mi.beginInvoke(methodName);
 			mi.endInvoke(ar);
-			JobMethodMetaData md = new JobMethodMetaData(mi
+			TaskMethodMetaData md = new TaskMethodMetaData(mi
 					.getMethod(methodName));
 			return md.getNextTask();
 		}

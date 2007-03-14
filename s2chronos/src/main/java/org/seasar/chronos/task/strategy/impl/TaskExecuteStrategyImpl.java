@@ -10,15 +10,15 @@ import org.seasar.chronos.delegate.MethodInvoker;
 import org.seasar.chronos.task.TaskType;
 import org.seasar.chronos.task.Transition;
 import org.seasar.chronos.task.handler.TaskExecuteHandler;
-import org.seasar.chronos.task.impl.JobMethodMetaData;
+import org.seasar.chronos.task.impl.TaskMethodMetaData;
 import org.seasar.chronos.task.impl.MethodGroupManager;
-import org.seasar.chronos.task.strategy.JobExecuteStrategy;
+import org.seasar.chronos.task.strategy.TaskExecuteStrategy;
 import org.seasar.framework.beans.BeanDesc;
 import org.seasar.framework.beans.PropertyDesc;
 import org.seasar.framework.beans.factory.BeanDescFactory;
 import org.seasar.framework.container.ComponentDef;
 
-public class JobExecuteStrategyImpl implements JobExecuteStrategy {
+public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 
 	private static final String METHOD_NAME_INITIALIZE = "initialize";
 
@@ -50,7 +50,7 @@ public class JobExecuteStrategyImpl implements JobExecuteStrategy {
 
 	private TaskExecuteHandler jobGroupMethodExecuteHandler;
 
-	public JobExecuteStrategyImpl() {
+	public TaskExecuteStrategyImpl() {
 
 	}
 
@@ -90,7 +90,7 @@ public class JobExecuteStrategyImpl implements JobExecuteStrategy {
 			AsyncResult ar = this.lifecycleMethodInvoker
 					.beginInvoke(METHOD_NAME_INITIALIZE);
 			this.lifecycleMethodInvoker.endInvoke(ar);
-			JobMethodMetaData md = new JobMethodMetaData(this.beanDesc,
+			TaskMethodMetaData md = new TaskMethodMetaData(this.beanDesc,
 					METHOD_NAME_INITIALIZE);
 			return md.getNextTask();
 		}

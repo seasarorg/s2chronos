@@ -7,9 +7,9 @@ import org.seasar.chronos.annotation.type.JoinType;
 import org.seasar.chronos.delegate.AsyncResult;
 import org.seasar.chronos.delegate.MethodInvoker;
 import org.seasar.chronos.task.Transition;
-import org.seasar.chronos.task.impl.JobMethodMetaData;
+import org.seasar.chronos.task.impl.TaskMethodMetaData;
 
-public class JobMethodExecuteHandlerImpl extends AbstractTaskExecuteHandler {
+public class TaskMethodExecuteHandlerImpl extends AbstractTaskExecuteHandler {
 
 	@Override
 	public Transition handleRequest(String startTaskName)
@@ -23,7 +23,7 @@ public class JobMethodExecuteHandlerImpl extends AbstractTaskExecuteHandler {
 
 			final String methodName = toMethodName(nextTaskName);
 
-			JobMethodMetaData md = new JobMethodMetaData(mi
+			TaskMethodMetaData md = new TaskMethodMetaData(mi
 					.getMethod(methodName));
 
 			for (int i = 0; i < md.getCloneSize(); i++) {
@@ -48,7 +48,7 @@ public class JobMethodExecuteHandlerImpl extends AbstractTaskExecuteHandler {
 
 			if (nextTaskName != null) {
 				if (!this.getMethodGroupMap().existGroup(nextTaskName)) {
-					JobMethodMetaData nextMethodMetaData = new JobMethodMetaData(
+					TaskMethodMetaData nextMethodMetaData = new TaskMethodMetaData(
 							mi.getMethod(toMethodName(nextTaskName)));
 					String nextGroupName = nextMethodMetaData.getGroupName();
 					String currentGroupName = md.getGroupName();

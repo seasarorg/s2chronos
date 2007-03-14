@@ -9,15 +9,15 @@ import org.seasar.chronos.annotation.job.method.NextTask;
 import org.seasar.chronos.annotation.type.JoinType;
 import org.seasar.framework.beans.BeanDesc;
 
-public class JobMethodMetaData {
+public class TaskMethodMetaData {
 
 	private Method method;
 
-	public JobMethodMetaData(BeanDesc beanDesc, String methodName) {
+	public TaskMethodMetaData(BeanDesc beanDesc, String methodName) {
 		this(beanDesc.getMethod(methodName));
 	}
 
-	public JobMethodMetaData(Method method) {
+	public TaskMethodMetaData(Method method) {
 		this.method = method;
 	}
 

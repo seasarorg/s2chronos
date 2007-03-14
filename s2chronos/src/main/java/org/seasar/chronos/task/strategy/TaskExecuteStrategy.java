@@ -6,7 +6,7 @@ import org.seasar.chronos.ThreadPoolType;
 import org.seasar.chronos.task.handler.TaskExecuteHandler;
 import org.seasar.framework.container.ComponentDef;
 
-public interface JobExecuteStrategy {
+public interface TaskExecuteStrategy {
 
 	public String initialize(ComponentDef jobComponentDef)
 			throws InterruptedException;

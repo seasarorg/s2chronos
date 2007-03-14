@@ -53,7 +53,7 @@ public class MethodGroupManager {
 		for (Method method : methods) {
 			String methodName = method.getName();
 			if (methodName.startsWith(prefixMethodName)) {
-				JobMethodMetaData md = new JobMethodMetaData(method);
+				TaskMethodMetaData md = new TaskMethodMetaData(method);
 				String groupName = md.getGroupName();
 				if (md == null) {
 					groupName = NO_GROUP;

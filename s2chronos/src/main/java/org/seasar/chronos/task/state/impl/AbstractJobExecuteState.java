@@ -2,43 +2,43 @@ package org.seasar.chronos.task.state.impl;
 
 import java.util.concurrent.TimeUnit;
 
-import org.seasar.chronos.task.state.JobExecuteContext;
-import org.seasar.chronos.task.state.JobExecuteState;
-import org.seasar.chronos.task.strategy.JobExecuteStrategy;
+import org.seasar.chronos.task.state.TaskExecuteContext;
+import org.seasar.chronos.task.state.TaskExecuteState;
+import org.seasar.chronos.task.strategy.TaskExecuteStrategy;
 import org.seasar.framework.container.ComponentDef;
 
-public abstract class AbstractJobExecuteState implements JobExecuteState {
+public abstract class AbstractJobExecuteState implements TaskExecuteState {
 
-	private JobExecuteStrategy jobExecuteStrategy;
+	private TaskExecuteStrategy taskExecuteStrategy;
 
-	public JobExecuteStrategy getJobExecuteStrategy() {
-		return jobExecuteStrategy;
+	public TaskExecuteStrategy getJobExecuteStrategy() {
+		return taskExecuteStrategy;
 	}
 
-	public void setJobExecuteStrategy(JobExecuteStrategy jobExecuteStrategy) {
-		this.jobExecuteStrategy = jobExecuteStrategy;
+	public void setJobExecuteStrategy(TaskExecuteStrategy taskExecuteStrategy) {
+		this.taskExecuteStrategy = taskExecuteStrategy;
 	}
 
-	protected void changeState(JobExecuteContext context,
-			JobExecuteState nextState) {
+	protected void changeState(TaskExecuteContext context,
+			TaskExecuteState nextState) {
 		context.changeState(nextState);
 	}
 
-	public abstract boolean await(JobExecuteContext context, long time,
+	public abstract boolean await(TaskExecuteContext context, long time,
 			TimeUnit timeUnit) throws InterruptedException;
 
-	public abstract void execute(JobExecuteContext context, String startTaskName)
+	public abstract void execute(TaskExecuteContext context, String startTaskName)
 			throws InterruptedException;
 
-	public abstract boolean canExecute(JobExecuteContext context)
+	public abstract boolean canExecute(TaskExecuteContext context)
 			throws InterruptedException;
 
-	public abstract void cancel(JobExecuteContext context);
+	public abstract void cancel(TaskExecuteContext context);
 
-	public abstract void destroy(JobExecuteContext context)
+	public abstract void destroy(TaskExecuteContext context)
 			throws InterruptedException;
 
-	public abstract String initialize(JobExecuteContext context,
+	public abstract String initialize(TaskExecuteContext context,
 			ComponentDef jobComponentDef) throws InterruptedException;
 
 }
