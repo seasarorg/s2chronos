@@ -2,6 +2,8 @@ package org.seasar.chronos.delegate;
 
 public class ExecutionRuntimeException extends RuntimeException {
 
+	private static final long serialVersionUID = -1035724208098066740L;
+
 	public ExecutionRuntimeException() {
 	}
 
