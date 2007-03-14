@@ -1,9 +1,7 @@
 package org.seasar.chronos.job.state;
 
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
-import org.seasar.chronos.exception.InvalidNextJobMethodException;
 import org.seasar.framework.container.ComponentDef;
 
 public class JobExecuteContext {
@@ -14,12 +12,12 @@ public class JobExecuteContext {
 		this.currentState = nextState;
 	}
 
-	public String initialize(ComponentDef jobComponentDef) throws InterruptedException {
+	public String initialize(ComponentDef jobComponentDef)
+			throws InterruptedException {
 		return this.currentState.initialize(this, jobComponentDef);
 	}
 
-	public void execute(String startJobName) throws InterruptedException,
-			InvalidNextJobMethodException, ExecutionException {
+	public void execute(String startJobName) throws InterruptedException {
 		this.currentState.execute(this, startJobName);
 	}
 
@@ -36,7 +34,7 @@ public class JobExecuteContext {
 		this.currentState.destroy(this);
 	}
 
-	public boolean canExecute() throws InterruptedException, ExecutionException {
+	public boolean canExecute() throws InterruptedException {
 		return this.currentState.canExecute(this);
 	}
 

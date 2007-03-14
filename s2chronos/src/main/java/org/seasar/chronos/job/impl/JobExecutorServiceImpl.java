@@ -1,9 +1,7 @@
 package org.seasar.chronos.job.impl;
 
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
-import org.seasar.chronos.exception.InvalidNextJobMethodException;
 import org.seasar.chronos.job.JobExecutorService;
 import org.seasar.chronos.job.state.JobExecuteContext;
 import org.seasar.chronos.job.state.impl.JobExecuteStateNonInitialized;
@@ -34,12 +32,11 @@ public class JobExecutorServiceImpl implements JobExecutorService {
 		return jobExecuteContext.await(time, timeUnit);
 	}
 
-	public void execute(String startJobName) throws InterruptedException,
-			InvalidNextJobMethodException, ExecutionException {
+	public void execute(String startJobName) throws InterruptedException {
 		this.jobExecuteContext.execute(startJobName);
 	}
 
-	public boolean canExecute() throws InterruptedException, ExecutionException {
+	public boolean canExecute() throws InterruptedException {
 		return this.jobExecuteContext.canExecute();
 	}
 
