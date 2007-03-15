@@ -2,8 +2,8 @@ package org.seasar.chronos.task.impl;
 
 import java.lang.reflect.Method;
 
-import org.seasar.chronos.annotation.task.method.Clone;
-import org.seasar.chronos.annotation.task.method.Join;
+import org.seasar.chronos.annotation.task.method.CloneTask;
+import org.seasar.chronos.annotation.task.method.JoinTask;
 import org.seasar.chronos.annotation.task.method.NextTask;
 import org.seasar.chronos.annotation.task.method.TaskGroup;
 import org.seasar.chronos.annotation.type.JoinType;
@@ -22,9 +22,9 @@ public class TaskMethodMetaData {
 	}
 
 	public JoinType getJoinType() {
-		Join join = method.getAnnotation(Join.class);
-		if (join != null) {
-			return join.value();
+		JoinTask joinTask = method.getAnnotation(JoinTask.class);
+		if (joinTask != null) {
+			return joinTask.value();
 		}
 		return JoinType.Wait;
 	}
@@ -38,9 +38,9 @@ public class TaskMethodMetaData {
 	}
 
 	public long getCloneSize() {
-		Clone clone = method.getAnnotation(Clone.class);
-		if (clone != null) {
-			return clone.value();
+		CloneTask cloneTask = method.getAnnotation(CloneTask.class);
+		if (cloneTask != null) {
+			return cloneTask.value();
 		}
 		return 1;
 	}

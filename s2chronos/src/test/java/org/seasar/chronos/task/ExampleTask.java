@@ -4,7 +4,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.seasar.chronos.ThreadPoolType;
 import org.seasar.chronos.annotation.task.Task;
-import org.seasar.chronos.annotation.task.method.Join;
+import org.seasar.chronos.annotation.task.method.JoinTask;
 import org.seasar.chronos.annotation.task.method.NextTask;
 import org.seasar.chronos.annotation.task.method.TaskGroup;
 import org.seasar.chronos.annotation.type.JoinType;
@@ -51,7 +51,7 @@ public class ExampleTask {
 	// ジョブメソッドA
 	@TaskGroup("groupA")
 	@NextTask("jobB")
-	@Join(JoinType.NoWait)
+	@JoinTask(JoinType.NoWait)
 	public void doJobA() throws Exception {
 
 		try {
@@ -66,7 +66,7 @@ public class ExampleTask {
 
 	// ジョブメソッドB
 	@TaskGroup("groupA")
-	@Join(JoinType.NoWait)
+	@JoinTask(JoinType.NoWait)
 	public void doJobB() {
 		for (int i = 1; i < 5; i++) {
 			try {

@@ -9,7 +9,7 @@ import org.seasar.chronos.annotation.type.JoinType;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface Join {
+public @interface JoinTask {
 
 	JoinType value() default JoinType.Wait;
 
