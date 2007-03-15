@@ -10,6 +10,12 @@ public class TaskContena {
 
 	private Class targetClass;
 
+	public TaskContena(ComponentDef componentDef) {
+		this.setComponentDef(componentDef);
+		this.setTarget(componentDef.getComponent());
+		this.setTargetClass(componentDef.getComponentClass());
+	}
+
 	public ComponentDef getComponentDef() {
 		return componentDef;
 	}
