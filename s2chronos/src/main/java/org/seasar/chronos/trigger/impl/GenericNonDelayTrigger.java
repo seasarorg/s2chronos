@@ -2,12 +2,20 @@ package org.seasar.chronos.trigger.impl;
 
 public class GenericNonDelayTrigger extends AbstractTrigger {
 
-	public boolean canEnd() {
+	public boolean getStartTask() {
+		return true;
+	}
+
+	public boolean getEndTask() {
 		return false;
 	}
 
-	public boolean canStart() {
-		return true;
+	public void setStartTask(boolean startTask) {
+
+	}
+
+	public void setEndTask(boolean endTask) {
+
 	}
 
 }

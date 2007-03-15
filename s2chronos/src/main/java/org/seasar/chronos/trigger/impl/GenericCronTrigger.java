@@ -3,7 +3,6 @@ package org.seasar.chronos.trigger.impl;
 import java.util.ArrayList;
 import java.util.Date;
 
-
 public class GenericCronTrigger extends AbstractTrigger {
 
 	private CronExpression expression;
@@ -24,11 +23,12 @@ public class GenericCronTrigger extends AbstractTrigger {
 		this.startTimeList = this.expression.getStartTimes();
 	}
 
-	public boolean canEnd() {
-		return false;
+	@Override
+	public void setExecuted(boolean executed) {
+		// this.expression.buildNextTime();
 	}
 
-	public boolean canStart() {
+	public boolean getStartTask() {
 
 		long nowTime = System.currentTimeMillis();
 		boolean startTimeCheck = false;
@@ -53,9 +53,16 @@ public class GenericCronTrigger extends AbstractTrigger {
 		return startTimeCheck;
 	}
 
-	@Override
-	public void setExecuted(boolean executed) {
-		// this.expression.buildNextTime();
+	public boolean getEndTask() {
+		return false;
+	}
+
+	public void setEndTask(boolean endTask) {
+
+	}
+
+	public void setStartTask(boolean startTask) {
+
 	}
 
 }

@@ -13,12 +13,27 @@ import org.seasar.chronos.task.handler.TaskExecuteHandler;
 import org.seasar.chronos.task.impl.TaskMethodManager;
 import org.seasar.chronos.task.impl.TaskMethodMetaData;
 import org.seasar.chronos.task.strategy.TaskExecuteStrategy;
+import org.seasar.chronos.trigger.Trigger;
 import org.seasar.framework.beans.BeanDesc;
 import org.seasar.framework.beans.PropertyDesc;
 import org.seasar.framework.beans.factory.BeanDescFactory;
 import org.seasar.framework.container.ComponentDef;
 
 public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
+
+	private static final String PROPERTY_NAME_THREAD_POOL_SIZE = "threadPoolSize";
+
+	private static final String PROPERTY_NAME_EXECUTED = "executed";
+
+	private static final String PROPERTY_NAME_THREAD_POOL_TYPE = "threadPoolType";
+
+	private static final String PROPERTY_NAME_START_TASK = "startTask";
+
+	private static final String PROPERTY_NAME_END_TASK = "endTask";
+
+	private static final String PROPERTY_NAME_SHUTDOWN_TASK = "shutdownTask";
+
+	private static final String PROPERTY_NAME_TRIGGER = "trigger";
 
 	private static final String METHOD_PREFIX_NAME_DO = "do";
 
@@ -28,26 +43,38 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 
 	private static final ThreadPoolType DEFAULT_THREADPOOL_TYPE = ThreadPoolType.CACHED;
 
-	private Object job;
+	private static final int DEFAULT_THREAD_POOLSIZE = 1;
 
-	private Class jobClass;
+	private Object task;
 
-	private ComponentDef jobComponentDef;
+	private Class taskClass;
+
+	private ComponentDef taskComponentDef;
 
 	private BeanDesc beanDesc;
 
-	private MethodInvoker jobMethodInvoker;
+	private MethodInvoker taskMethodInvoker;
 
 	private MethodInvoker lifecycleMethodInvoker;
 
 	private TaskMethodManager taskMethodManager;
 
-	private TaskExecuteHandler jobMethodExecuteHandler;
+	private TaskExecuteHandler taskMethodExecuteHandler;
 
-	private TaskExecuteHandler jobGroupMethodExecuteHandler;
+	private TaskExecuteHandler taskGroupMethodExecuteHandler;
 
 	public TaskExecuteStrategyImpl() {
 
+	}
+
+	public void setTaskGroupMethodExecuteHandler(
+			TaskExecuteHandler jobGroupMethdoExecuteHandler) {
+		this.taskGroupMethodExecuteHandler = jobGroupMethdoExecuteHandler;
+	}
+
+	public void setTaskMethodExecuteHandler(
+			TaskExecuteHandler jobMethdoExecuteHandler) {
+		this.taskMethodExecuteHandler = jobMethdoExecuteHandler;
 	}
 
 	private boolean isGroupMethod(String groupName) {
@@ -59,25 +86,20 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 				.newSingleThreadExecutor();
 		ExecutorService jobMethodExecutorService = getJobMethodExecutorService();
 
-		this.jobMethodInvoker = new MethodInvoker(jobMethodExecutorService,
-				this.job, this.beanDesc);
+		this.taskMethodInvoker = new MethodInvoker(jobMethodExecutorService,
+				this.task, this.beanDesc);
 		this.lifecycleMethodInvoker = new MethodInvoker(
-				lifecycleMethodExecutorService, this.job, this.beanDesc);
+				lifecycleMethodExecutorService, this.task, this.beanDesc);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.seasar.chronos.task.impl.JobExecuteStrategy#initialize(org.seasar.framework.container.ComponentDef)
-	 */
 	public String initialize(ComponentDef jobComponentDef)
 			throws InterruptedException {
 
-		this.jobComponentDef = jobComponentDef;
-		this.job = this.jobComponentDef.getComponent();
-		this.jobClass = this.jobComponentDef.getComponentClass();
-		this.beanDesc = BeanDescFactory.getBeanDesc(this.jobClass);
-		this.taskMethodManager = new TaskMethodManager(jobClass,
+		this.taskComponentDef = jobComponentDef;
+		this.task = this.taskComponentDef.getComponent();
+		this.taskClass = this.taskComponentDef.getComponentClass();
+		this.beanDesc = BeanDescFactory.getBeanDesc(this.taskClass);
+		this.taskMethodManager = new TaskMethodManager(taskClass,
 				METHOD_PREFIX_NAME_DO);
 
 		this.prepareMethodInvoker();
@@ -97,14 +119,14 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 	private Transition handleRequest(TaskExecuteHandler taskExecuteHandler,
 			String startTaskName) throws InterruptedException {
 		taskExecuteHandler.setTaskExecuteStrategy(this);
-		taskExecuteHandler.setMethodInvoker(this.jobMethodInvoker);
+		taskExecuteHandler.setMethodInvoker(this.taskMethodInvoker);
 		taskExecuteHandler.setMethodGroupMap(this.taskMethodManager);
 		return taskExecuteHandler.handleRequest(startTaskName);
 	}
 
 	private TaskExecuteHandler getTaskExecuteHandler(TaskType type) {
-		return type == TaskType.JOB ? this.jobMethodExecuteHandler
-				: this.jobGroupMethodExecuteHandler;
+		return type == TaskType.JOB ? this.taskMethodExecuteHandler
+				: this.taskGroupMethodExecuteHandler;
 	}
 
 	public void execute(String startJobName) throws InterruptedException {
@@ -124,18 +146,23 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 		this.setExecuted(false);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.seasar.chronos.task.impl.JobExecuteStrategy#destroy()
-	 */
+	public void cancel() {
+		this.setShutdownTask(true);
+		this.taskMethodInvoker.cancelInvokes();
+	}
+
+	public boolean await(long time, TimeUnit timeUnit)
+			throws InterruptedException {
+		return this.taskMethodInvoker.awaitInvokes(time, timeUnit);
+	}
+
 	public void destroy() throws InterruptedException {
 		if (this.lifecycleMethodInvoker.hasMethod(METHOD_NAME_DESTROY)) {
 			AsyncResult ar = this.lifecycleMethodInvoker
 					.beginInvoke(METHOD_NAME_DESTROY);
 			this.lifecycleMethodInvoker.endInvoke(ar);
 		}
-		this.jobMethodInvoker = null;
+		this.taskMethodInvoker = null;
 		this.lifecycleMethodInvoker = null;
 	}
 
@@ -157,126 +184,114 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 		return result;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.seasar.chronos.task.impl.JobExecuteStrategy#getThreadPoolSize()
-	 */
 	public int getThreadPoolSize() {
-		Integer result = 1;
-		if (this.beanDesc.hasPropertyDesc("threadPoolSize")) {
-			PropertyDesc pd = this.beanDesc.getPropertyDesc("threadPoolSize");
-			result = (Integer) pd.getValue(this.job);
+		Integer result = DEFAULT_THREAD_POOLSIZE;
+		if (this.beanDesc.hasPropertyDesc(PROPERTY_NAME_THREAD_POOL_SIZE)) {
+			PropertyDesc pd = this.beanDesc
+					.getPropertyDesc(PROPERTY_NAME_THREAD_POOL_SIZE);
+			result = (Integer) pd.getValue(this.task);
 		}
 		return result;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.seasar.chronos.task.impl.JobExecuteStrategy#getThreadPoolType()
-	 */
 	public ThreadPoolType getThreadPoolType() {
 		ThreadPoolType type = DEFAULT_THREADPOOL_TYPE;
-		if (this.beanDesc.hasPropertyDesc("threadPoolType")) {
-			PropertyDesc pd = this.beanDesc.getPropertyDesc("threadPoolType");
-			type = (ThreadPoolType) pd.getValue(this.job);
+		if (this.beanDesc.hasPropertyDesc(PROPERTY_NAME_THREAD_POOL_TYPE)) {
+			PropertyDesc pd = this.beanDesc
+					.getPropertyDesc(PROPERTY_NAME_THREAD_POOL_TYPE);
+			type = (ThreadPoolType) pd.getValue(this.task);
 		}
 		return type;
 	}
 
 	public void setExecuted(boolean executed) {
-		if (this.beanDesc.hasPropertyDesc("executed")) {
-			PropertyDesc pd = this.beanDesc.getPropertyDesc("executed");
-			pd.setValue(this.job, executed);
+		if (this.beanDesc.hasPropertyDesc(PROPERTY_NAME_EXECUTED)) {
+			PropertyDesc pd = this.beanDesc
+					.getPropertyDesc(PROPERTY_NAME_EXECUTED);
+			pd.setValue(this.task, executed);
 		}
 	}
 
 	public boolean isExecuted() {
 		Boolean result = false;
-		if (this.beanDesc.hasPropertyDesc("executed")) {
-			PropertyDesc pd = this.beanDesc.getPropertyDesc("executed");
-			result = (Boolean) pd.getValue(this.job);
+		if (this.beanDesc.hasPropertyDesc(PROPERTY_NAME_EXECUTED)) {
+			PropertyDesc pd = this.beanDesc
+					.getPropertyDesc(PROPERTY_NAME_EXECUTED);
+			result = (Boolean) pd.getValue(this.task);
 		}
 		return result;
 	}
 
 	public boolean getStartTask() {
 		Boolean result = false;
-		if (this.beanDesc.hasPropertyDesc("startTask")) {
-			PropertyDesc pd = this.beanDesc.getPropertyDesc("startTask");
-			result = (Boolean) pd.getValue(this.job);
+		if (this.beanDesc.hasPropertyDesc(PROPERTY_NAME_START_TASK)) {
+			PropertyDesc pd = this.beanDesc
+					.getPropertyDesc(PROPERTY_NAME_START_TASK);
+			result = (Boolean) pd.getValue(this.task);
 		}
 		return result;
 	}
 
 	public void setStartTask(boolean startTask) {
-		if (this.beanDesc.hasPropertyDesc("startTask")) {
-			PropertyDesc pd = this.beanDesc.getPropertyDesc("startTask");
-			pd.setValue(this.job, startTask);
+		if (this.beanDesc.hasPropertyDesc(PROPERTY_NAME_START_TASK)) {
+			PropertyDesc pd = this.beanDesc
+					.getPropertyDesc(PROPERTY_NAME_START_TASK);
+			pd.setValue(this.task, startTask);
 		}
 	}
 
 	public boolean getEndTask() {
 		Boolean result = false;
-		if (this.beanDesc.hasPropertyDesc("endTask")) {
-			PropertyDesc pd = this.beanDesc.getPropertyDesc("endTask");
-			result = (Boolean) pd.getValue(this.job);
+		if (this.beanDesc.hasPropertyDesc(PROPERTY_NAME_END_TASK)) {
+			PropertyDesc pd = this.beanDesc
+					.getPropertyDesc(PROPERTY_NAME_END_TASK);
+			result = (Boolean) pd.getValue(this.task);
 		}
 		return result;
 	}
 
 	public void setEndTask(boolean endTask) {
-		if (this.beanDesc.hasPropertyDesc("endTask")) {
-			PropertyDesc pd = this.beanDesc.getPropertyDesc("endTask");
-			pd.setValue(this.job, endTask);
+		if (this.beanDesc.hasPropertyDesc(PROPERTY_NAME_END_TASK)) {
+			PropertyDesc pd = this.beanDesc
+					.getPropertyDesc(PROPERTY_NAME_END_TASK);
+			pd.setValue(this.task, endTask);
 		}
 	}
 
 	public boolean getShutdownTask() {
 		Boolean result = false;
-		if (this.beanDesc.hasPropertyDesc("shutdownTask")) {
-			PropertyDesc pd = this.beanDesc.getPropertyDesc("shutdownTask");
-			result = (Boolean) pd.getValue(this.job);
+		if (this.beanDesc.hasPropertyDesc(PROPERTY_NAME_SHUTDOWN_TASK)) {
+			PropertyDesc pd = this.beanDesc
+					.getPropertyDesc(PROPERTY_NAME_SHUTDOWN_TASK);
+			result = (Boolean) pd.getValue(this.task);
 		}
 		return result;
 	}
 
 	public void setShutdownTask(boolean shutdownTask) {
-		if (this.beanDesc.hasPropertyDesc("shutdownTask")) {
-			PropertyDesc pd = this.beanDesc.getPropertyDesc("shutdownTask");
-			pd.setValue(this.job, shutdownTask);
+		if (this.beanDesc.hasPropertyDesc(PROPERTY_NAME_SHUTDOWN_TASK)) {
+			PropertyDesc pd = this.beanDesc
+					.getPropertyDesc(PROPERTY_NAME_SHUTDOWN_TASK);
+			pd.setValue(this.task, shutdownTask);
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.seasar.chronos.task.impl.JobExecuteStrategy#setJobGroupMethodExecuteHandler(org.seasar.chronos.task.TaskExecuteHandler)
-	 */
-	public void setTaskGroupMethodExecuteHandler(
-			TaskExecuteHandler jobGroupMethdoExecuteHandler) {
-		this.jobGroupMethodExecuteHandler = jobGroupMethdoExecuteHandler;
+	public Trigger getTrigger() {
+		Trigger result = null;
+		if (this.beanDesc.hasPropertyDesc(PROPERTY_NAME_TRIGGER)) {
+			PropertyDesc pd = this.beanDesc
+					.getPropertyDesc(PROPERTY_NAME_TRIGGER);
+			result = (Trigger) pd.getValue(this.task);
+		}
+		return result;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.seasar.chronos.task.impl.JobExecuteStrategy#setJobMethodExecuteHandler(org.seasar.chronos.task.TaskExecuteHandler)
-	 */
-	public void setTaskMethodExecuteHandler(
-			TaskExecuteHandler jobMethdoExecuteHandler) {
-		this.jobMethodExecuteHandler = jobMethdoExecuteHandler;
-	}
-
-	public void cancel() {
-		this.setShutdownTask(true);
-		this.jobMethodInvoker.cancelInvokes();
-	}
-
-	public boolean await(long time, TimeUnit timeUnit)
-			throws InterruptedException {
-		return this.jobMethodInvoker.awaitInvokes(time, timeUnit);
+	public void setTrigger(Trigger trigger) {
+		if (this.beanDesc.hasPropertyDesc(PROPERTY_NAME_TRIGGER)) {
+			PropertyDesc pd = this.beanDesc
+					.getPropertyDesc(PROPERTY_NAME_TRIGGER);
+			pd.setValue(this.task, trigger);
+		}
 	}
 
 }

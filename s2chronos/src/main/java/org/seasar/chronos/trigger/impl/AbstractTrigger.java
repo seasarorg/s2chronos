@@ -30,7 +30,7 @@ public abstract class AbstractTrigger implements Trigger {
 		return this.id;
 	}
 
-	public Object getJob() {
+	public Object getTask() {
 		return job;
 	}
 
@@ -54,7 +54,7 @@ public abstract class AbstractTrigger implements Trigger {
 		this.id = id;
 	}
 
-	public void setJob(Object jobComponent) {
+	public void setTask(Object jobComponent) {
 		this.job = jobComponent;
 	}
 

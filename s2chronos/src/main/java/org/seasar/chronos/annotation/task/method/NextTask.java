@@ -1,4 +1,4 @@
-package org.seasar.chronos.annotation.job.method;
+package org.seasar.chronos.annotation.task.method;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface TaskGroup {
+public @interface NextTask {
 
 	String value();
 

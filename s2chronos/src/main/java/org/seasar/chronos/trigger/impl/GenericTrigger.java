@@ -32,19 +32,7 @@ public class GenericTrigger extends AbstractTrigger {
 		return endTime;
 	}
 
-	public boolean canEnd() {
-
-		boolean endTimeCheck = false;
-
-		// 終了時刻の確認
-		if (endTime != null) {
-			endTimeCheck = (System.currentTimeMillis() >= endTime.getTime());
-		}
-
-		return endTimeCheck;
-	}
-
-	public boolean canStart() {
+	public boolean getStartTask() {
 
 		if (this.isExecuted()) {
 			return false;
@@ -58,6 +46,26 @@ public class GenericTrigger extends AbstractTrigger {
 		}
 
 		return startTimeCheck;
+	}
+
+	public boolean getEndTask() {
+
+		boolean endTimeCheck = false;
+
+		// 終了時刻の確認
+		if (endTime != null) {
+			endTimeCheck = (System.currentTimeMillis() >= endTime.getTime());
+		}
+
+		return endTimeCheck;
+	}
+
+	public void setStartTask(boolean startTask) {
+
+	}
+
+	public void setEndTask(boolean endTask) {
+
 	}
 
 }

@@ -3,14 +3,16 @@ package org.seasar.chronos.task;
 import java.util.concurrent.TimeUnit;
 
 import org.seasar.chronos.ThreadPoolType;
-import org.seasar.chronos.annotation.job.Job;
-import org.seasar.chronos.annotation.job.method.Join;
-import org.seasar.chronos.annotation.job.method.NextTask;
-import org.seasar.chronos.annotation.job.method.TaskGroup;
+import org.seasar.chronos.annotation.task.Task;
+import org.seasar.chronos.annotation.task.method.Join;
+import org.seasar.chronos.annotation.task.method.NextTask;
+import org.seasar.chronos.annotation.task.method.TaskGroup;
 import org.seasar.chronos.annotation.type.JoinType;
+import org.seasar.chronos.trigger.Trigger;
+import org.seasar.chronos.trigger.impl.GenericTrigger;
 import org.seasar.framework.log.Logger;
 
-@Job
+@Task
 public class ExampleTask {
 
 	private Logger log = Logger.getLogger(ExampleTask.class);
@@ -175,6 +177,16 @@ public class ExampleTask {
 	// trueを返すとスケジューラからシャットダウンされます．
 	public boolean getShutdownTask() {
 		return this.shutdownTask;
+	}
+
+	private GenericTrigger trigger;
+
+	public Trigger getTrigger() {
+		return trigger;
+	}
+
+	public void setTrigger(GenericTrigger trigger) {
+		this.trigger = trigger;
 	}
 
 	public void startScheduler() {

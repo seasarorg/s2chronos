@@ -1,9 +1,8 @@
 package org.seasar.chronos.impl;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -13,7 +12,11 @@ import java.util.concurrent.TimeUnit;
 import org.seasar.chronos.Scheduler;
 import org.seasar.chronos.SchedulerConfig;
 import org.seasar.chronos.SchedulerEventListener;
+import org.seasar.chronos.annotation.task.Task;
 import org.seasar.chronos.exception.SchedulerException;
+import org.seasar.framework.container.ComponentDef;
+import org.seasar.framework.container.S2Container;
+import org.seasar.framework.container.util.Traversal;
 
 public class SchedulerImpl implements Scheduler {
 
@@ -22,8 +25,31 @@ public class SchedulerImpl implements Scheduler {
 
 	private Future<Void> future;
 
-	private List<TaskContena> taskContenaList = Collections
-			.synchronizedList(new ArrayList<TaskContena>());
+	private ConcurrentHashMap<String, CopyOnWriteArrayList<TaskContena>> taskContenaMap = new ConcurrentHashMap<String, CopyOnWriteArrayList<TaskContena>>();
+
+	private S2Container s2container;
+
+	public void setS2Container(S2Container s2container) {
+		this.s2container = s2container;
+	}
+
+	private CopyOnWriteArrayList<TaskContena> getMasterTaskContenaMap() {
+		return this.taskContenaMap.get("Master");
+	}
+
+	private void putMasterTaskContena(
+			CopyOnWriteArrayList<TaskContena> taskContenaList) {
+		this.taskContenaMap.put("Master", taskContenaList);
+	}
+
+	private CopyOnWriteArrayList<TaskContena> getScheduledTaskContenaMap() {
+		return this.taskContenaMap.get("Master");
+	}
+
+	private void putScheduledTaskContena(
+			CopyOnWriteArrayList<TaskContena> taskContenaList) {
+		this.taskContenaMap.put("Master", taskContenaList);
+	}
 
 	public void addListener(SchedulerEventListener listener) {
 
@@ -69,36 +95,39 @@ public class SchedulerImpl implements Scheduler {
 	public void start() throws SchedulerException {
 
 		// コンテナからタスクを取りだす
+		this.getTaskFromContainer();
 
 		future = executorService.submit(new Callable<Void>() {
 
 			public Void call() throws Exception {
-				if (taskContenaList.size() == 0) {
-					wait();
-				}
-				// 起動できるタスクを探す
-				for (TaskContena taskContena : taskContenaList) {
 
-				}
 				return null;
 			}
 
 		});
 	}
 
+	private void getTaskFromContainer() {
+		S2Container root = this.s2container.getRoot();
+		Traversal.forEachComponent(root, new Traversal.ComponentDefHandler() {
+			public Object processComponent(ComponentDef componentDef) {
+				Class clazz = componentDef.getComponentClass();
+				clazz.getAnnotation(Task.class);
+				return null;
+			}
+
+		});
+
+	}
+
 	public boolean addTask(Object task) {
-		TaskContena tc = new TaskContena();
-		tc.setTarget(task);
-		tc.setTargetClass(task.getClass());
-		boolean ret = taskContenaList.add(tc);
-		this.notify();
-		return ret;
+
+		return false;
 	}
 
 	public boolean removeTask(Object task) {
-		boolean ret = taskContenaList.remove(task);
-		this.notify();
-		return ret;
+
+		return false;
 	}
 
 }

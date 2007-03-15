@@ -4,11 +4,15 @@ public class GenericDelayTrigger extends AbstractTrigger {
 
 	private long delay = 0;
 
-	public boolean canEnd() {
-		return false;
+	public void setDelay(long delay) {
+		this.delay = System.currentTimeMillis() + delay;
 	}
 
-	public boolean canStart() {
+	public long getDelay() {
+		return delay;
+	}
+
+	public boolean getStartTask() {
 		if (this.isExecuted()) {
 			return false;
 		}
@@ -21,12 +25,15 @@ public class GenericDelayTrigger extends AbstractTrigger {
 		return startTimeCheck;
 	}
 
-	public long getDelay() {
-		return delay;
+	public boolean getEndTask() {
+		return false;
 	}
 
-	public void setDelay(long delay) {
-		this.delay = System.currentTimeMillis() + delay;
+	public void setStartTask(boolean startTask) {
+
 	}
 
+	public void setEndTask(boolean endTask) {
+
+	}
 }
