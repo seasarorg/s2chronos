@@ -10,7 +10,7 @@ import org.seasar.chronos.delegate.MethodInvoker;
 import org.seasar.chronos.task.TaskType;
 import org.seasar.chronos.task.Transition;
 import org.seasar.chronos.task.handler.TaskExecuteHandler;
-import org.seasar.chronos.task.impl.MethodGroupManager;
+import org.seasar.chronos.task.impl.TaskMethodManager;
 import org.seasar.chronos.task.impl.TaskMethodMetaData;
 import org.seasar.chronos.task.strategy.TaskExecuteStrategy;
 import org.seasar.framework.beans.BeanDesc;
@@ -40,7 +40,7 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 
 	private MethodInvoker lifecycleMethodInvoker;
 
-	private MethodGroupManager methodGroupManager;
+	private TaskMethodManager taskMethodManager;
 
 	private TaskExecuteHandler jobMethodExecuteHandler;
 
@@ -51,7 +51,7 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 	}
 
 	private boolean isGroupMethod(String groupName) {
-		return this.methodGroupManager.existGroup(groupName);
+		return this.taskMethodManager.existGroup(groupName);
 	}
 
 	private void prepareMethodInvoker() {
@@ -77,7 +77,7 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 		this.job = this.jobComponentDef.getComponent();
 		this.jobClass = this.jobComponentDef.getComponentClass();
 		this.beanDesc = BeanDescFactory.getBeanDesc(this.jobClass);
-		this.methodGroupManager = new MethodGroupManager(jobClass,
+		this.taskMethodManager = new TaskMethodManager(jobClass,
 				METHOD_PREFIX_NAME_DO);
 
 		this.prepareMethodInvoker();
@@ -98,7 +98,7 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 			String startTaskName) throws InterruptedException {
 		taskExecuteHandler.setTaskExecuteStrategy(this);
 		taskExecuteHandler.setMethodInvoker(this.jobMethodInvoker);
-		taskExecuteHandler.setMethodGroupMap(this.methodGroupManager);
+		taskExecuteHandler.setMethodGroupMap(this.taskMethodManager);
 		return taskExecuteHandler.handleRequest(startTaskName);
 	}
 

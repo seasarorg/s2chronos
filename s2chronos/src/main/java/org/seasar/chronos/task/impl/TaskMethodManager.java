@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MethodGroupManager {
+public class TaskMethodManager {
 
 	private static final String NO_GROUP = "noGroup";
 
@@ -22,7 +22,7 @@ public class MethodGroupManager {
 
 	private ArrayList<Method> methodAllList = new ArrayList<Method>();
 
-	public MethodGroupManager(Class clazz, String prefixMethodName) {
+	public TaskMethodManager(Class clazz, String prefixMethodName) {
 		this.clazz = clazz;
 		this.prefixMethodName = prefixMethodName;
 		this.initialize();
@@ -46,6 +46,10 @@ public class MethodGroupManager {
 
 	public boolean existGroup(String groupName) {
 		return this.methodMap.get(groupName) != null;
+	}
+
+	public List<Method> getAllMethodList() {
+		return this.methodAllList;
 	}
 
 	private void initialize() {
@@ -72,10 +76,6 @@ public class MethodGroupManager {
 				methodAllList.add(method);
 			}
 		}
-	}
-
-	public List<Method> getAllMethodList() {
-		return methodAllList;
 	}
 
 }

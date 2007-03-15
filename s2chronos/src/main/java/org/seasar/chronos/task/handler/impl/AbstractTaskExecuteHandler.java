@@ -3,7 +3,7 @@ package org.seasar.chronos.task.handler.impl;
 import org.seasar.chronos.delegate.MethodInvoker;
 import org.seasar.chronos.task.Transition;
 import org.seasar.chronos.task.handler.TaskExecuteHandler;
-import org.seasar.chronos.task.impl.MethodGroupManager;
+import org.seasar.chronos.task.impl.TaskMethodManager;
 import org.seasar.chronos.task.strategy.TaskExecuteStrategy;
 import org.seasar.framework.log.Logger;
 
@@ -20,7 +20,7 @@ public abstract class AbstractTaskExecuteHandler implements TaskExecuteHandler {
 
 	private MethodInvoker methodInvoker;
 
-	public MethodGroupManager methodGroupManager;
+	public TaskMethodManager taskMethodManager;
 
 	public abstract Transition handleRequest(String startTaskName)
 			throws InterruptedException;
@@ -43,12 +43,12 @@ public abstract class AbstractTaskExecuteHandler implements TaskExecuteHandler {
 		return methodInvoker;
 	}
 
-	public void setMethodGroupMap(MethodGroupManager methodGroupManager) {
-		this.methodGroupManager = methodGroupManager;
+	public void setMethodGroupMap(TaskMethodManager taskMethodManager) {
+		this.taskMethodManager = taskMethodManager;
 	}
 
-	public MethodGroupManager getMethodGroupMap() {
-		return methodGroupManager;
+	public TaskMethodManager getMethodGroupMap() {
+		return taskMethodManager;
 	}
 
 	protected String toMethodName(String taskName) {

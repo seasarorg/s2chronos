@@ -8,7 +8,7 @@ import org.seasar.chronos.delegate.AsyncResult;
 import org.seasar.chronos.delegate.MethodInvoker;
 import org.seasar.chronos.task.Transition;
 import org.seasar.chronos.task.handler.TaskExecuteHandler;
-import org.seasar.chronos.task.impl.MethodGroupManager;
+import org.seasar.chronos.task.impl.TaskMethodManager;
 import org.seasar.chronos.task.impl.TaskMethodMetaData;
 import org.seasar.framework.log.Logger;
 
@@ -21,9 +21,9 @@ public class TaskGroupMethodExecuteHandlerImpl extends
 	private TaskExecuteHandler jobMethodExecuteHandler;
 
 	@Override
-	public void setMethodGroupMap(MethodGroupManager methodGroupManager) {
-		super.setMethodGroupMap(methodGroupManager);
-		jobMethodExecuteHandler.setMethodGroupMap(methodGroupManager);
+	public void setMethodGroupMap(TaskMethodManager taskMethodManager) {
+		super.setMethodGroupMap(taskMethodManager);
+		jobMethodExecuteHandler.setMethodGroupMap(taskMethodManager);
 	}
 
 	@Override
@@ -33,7 +33,7 @@ public class TaskGroupMethodExecuteHandlerImpl extends
 	}
 
 	private String getFirstFunction(String taskName) {
-		List<Method> ret = this.methodGroupManager.getMethodList(taskName);
+		List<Method> ret = this.taskMethodManager.getMethodList(taskName);
 		return ret.listIterator().next().getName();
 	}
 
@@ -55,7 +55,7 @@ public class TaskGroupMethodExecuteHandlerImpl extends
 		if (nextTask == null) {
 			String firstFunction = getFirstFunction(startTaskName);
 			nextTask = toTaskName(firstFunction);
-		} else if (this.methodGroupManager.existGroup(nextTask)) {
+		} else if (this.taskMethodManager.existGroup(nextTask)) {
 			log.debug("startGroupの次はメソッドを指定してください");
 			// throw new InvalidNextJobMethodException(
 			// "startGroupの次はメソッドを指定してください");
@@ -77,7 +77,7 @@ public class TaskGroupMethodExecuteHandlerImpl extends
 		nextTask = invokeEndJobGroupMethod(groupName);
 
 		if (nextTask == null) {
-			List<Method> allMethod = this.methodGroupManager.getAllMethodList();
+			List<Method> allMethod = this.taskMethodManager.getAllMethodList();
 			if (transition.getLastTaskName() != null) {
 				String lastTaskName = toMethodName(transition.getLastTaskName());
 				ListIterator<Method> li = allMethod.listIterator();
@@ -108,7 +108,7 @@ public class TaskGroupMethodExecuteHandlerImpl extends
 		// }
 		if (nextTask == null) {
 			return new Transition(true, nextTask);
-		} else if (this.methodGroupManager.existGroup(nextTask)) {
+		} else if (this.taskMethodManager.existGroup(nextTask)) {
 			return handleRequest(nextTask);
 		}
 		return new Transition(false, nextTask);
