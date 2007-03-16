@@ -8,8 +8,6 @@ import org.seasar.chronos.annotation.task.method.JoinTask;
 import org.seasar.chronos.annotation.task.method.NextTask;
 import org.seasar.chronos.annotation.task.method.TaskGroup;
 import org.seasar.chronos.annotation.type.JoinType;
-import org.seasar.chronos.trigger.Trigger;
-import org.seasar.chronos.trigger.impl.GenericTrigger;
 import org.seasar.framework.log.Logger;
 
 @Task
@@ -143,7 +141,7 @@ public class ExampleTask {
 		return executed;
 	}
 
-	private boolean startTask;
+	private boolean startTask = true;
 
 	// é¿çsÇµÇΩÇÁfalseÇ…ÇµÇ‹Ç∑ÅD
 	public void setStartTask(boolean startTask) {
@@ -179,16 +177,13 @@ public class ExampleTask {
 		return this.shutdownTask;
 	}
 
-	private GenericTrigger trigger;
-
-	public Trigger getTrigger() {
-		return trigger;
-	}
-
-	public void setTrigger(GenericTrigger trigger) {
-		this.trigger = trigger;
-	}
-
+	/*
+	 * private GenericTrigger trigger;
+	 * 
+	 * public Trigger getTrigger() { return trigger; }
+	 * 
+	 * public void setTrigger(GenericTrigger trigger) { this.trigger = trigger; }
+	 */
 	public void startScheduler() {
 		log.info("startScheduler");
 	}

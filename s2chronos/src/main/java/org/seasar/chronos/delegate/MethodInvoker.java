@@ -2,6 +2,7 @@ package org.seasar.chronos.delegate;
 
 import java.lang.reflect.Method;
 import java.util.concurrent.Callable;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -20,6 +21,8 @@ public class MethodInvoker {
 	private static Logger log = Logger.getLogger(MethodInvoker.class);
 
 	private static final String CALLBACK_SUFFIX = "Callback";
+
+	private CopyOnWriteArrayList<AsyncResult> resultList = new CopyOnWriteArrayList<AsyncResult>();
 
 	private Class targetClass;
 
@@ -189,7 +192,7 @@ public class MethodInvoker {
 
 		final AsyncResult asyncResult = new AsyncResult();
 
-		Future<Object> future = this.executorService
+		final Future<Object> future = this.executorService
 				.submit(new Callable<Object>() {
 					public Object call() throws Exception {
 						synchronized (asyncResult) {
@@ -208,34 +211,10 @@ public class MethodInvoker {
 										}
 									});
 						}
-
+						resultList.remove(asyncResult);
 						return result;
 					}
 
-					// コールバックを実行します
-					private void callbackHandler(final String methodName,
-							final MethodCallback methodCallback,
-							final AsyncResult asyncResult) throws Exception {
-						try {
-							StringBuffer callbackMethodName = new StringBuffer(
-									methodCallback.getMethodName());
-							if (callbackMethodName == null) {
-								callbackMethodName.append(methodName);
-								callbackMethodName.append(CALLBACK_SUFFIX);
-							}
-							Method mt = ReflectionUtil.getDeclaredMethod(
-									methodCallback.getTargetClass(),
-									callbackMethodName.toString(),
-									AsyncResult.class);
-							mt.setAccessible(true);
-							ReflectionUtil.invoke(mt, methodCallback
-									.getTarget(), asyncResult);
-						} catch (Exception ex) {
-							log.error(ex);
-							throw ex;
-						}
-
-					}
 				});
 
 		synchronized (asyncResult) {
@@ -243,7 +222,31 @@ public class MethodInvoker {
 			asyncResult.setState(state);
 			asyncResult.wait();
 		}
+		resultList.add(asyncResult);
 		return asyncResult;
+	}
+
+	// コールバックを実行します
+	private void callbackHandler(final String methodName,
+			final MethodCallback methodCallback, final AsyncResult asyncResult)
+			throws Exception {
+		try {
+			StringBuffer callbackMethodName = new StringBuffer(methodCallback
+					.getMethodName());
+			if (callbackMethodName == null) {
+				callbackMethodName.append(methodName);
+				callbackMethodName.append(CALLBACK_SUFFIX);
+			}
+			Method mt = ReflectionUtil.getDeclaredMethod(methodCallback
+					.getTargetClass(), callbackMethodName.toString(),
+					AsyncResult.class);
+			mt.setAccessible(true);
+			ReflectionUtil.invoke(mt, methodCallback.getTarget(), asyncResult);
+		} catch (Exception ex) {
+			log.error(ex);
+			throw ex;
+		}
+
 	}
 
 	/**
@@ -309,6 +312,12 @@ public class MethodInvoker {
 		} catch (InterruptedException e) {
 			log.warn(e);
 			throw e;
+		}
+	}
+
+	public void waitInvokes() throws InterruptedException {
+		for (AsyncResult ar : resultList) {
+			this.endInvoke(ar);
 		}
 	}
 

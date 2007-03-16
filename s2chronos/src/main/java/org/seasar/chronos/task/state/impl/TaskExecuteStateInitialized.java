@@ -15,6 +15,11 @@ public class TaskExecuteStateInitialized extends AbstractJobExecuteState {
 	}
 
 	@Override
+	public void setTaskComponentDef(ComponentDef taskComponentDef) {
+		this.getTaskExecuteStrategy().setTaskComponentDef(taskComponentDef);
+	}
+
+	@Override
 	public boolean await(TaskExecuteContext context, long time,
 			TimeUnit timeUnit) throws InterruptedException {
 		return this.getTaskExecuteStrategy().await(time, timeUnit);
@@ -38,9 +43,14 @@ public class TaskExecuteStateInitialized extends AbstractJobExecuteState {
 	}
 
 	@Override
-	public String initialize(TaskExecuteContext context,
-			ComponentDef jobComponentDef) {
+	public String initialize(TaskExecuteContext context)
+			throws InterruptedException {
 		return null;
+	}
+
+	@Override
+	public void prepare(TaskExecuteContext context) {
+
 	}
 
 }

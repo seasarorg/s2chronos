@@ -18,6 +18,8 @@ import org.seasar.framework.beans.BeanDesc;
 import org.seasar.framework.beans.PropertyDesc;
 import org.seasar.framework.beans.factory.BeanDescFactory;
 import org.seasar.framework.container.ComponentDef;
+import org.seasar.framework.container.annotation.tiger.Binding;
+import org.seasar.framework.container.annotation.tiger.BindingType;
 
 public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 
@@ -81,7 +83,19 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 		return this.taskMethodManager.existGroup(groupName);
 	}
 
-	private void prepareMethodInvoker() {
+	public void setTaskComponentDef(ComponentDef taskComponentDef) {
+		this.taskComponentDef = taskComponentDef;
+
+	}
+
+	public void prepare() {
+
+		this.task = this.taskComponentDef.getComponent();
+		this.taskClass = this.taskComponentDef.getComponentClass();
+		this.beanDesc = BeanDescFactory.getBeanDesc(this.taskClass);
+		this.taskMethodManager = new TaskMethodManager(taskClass,
+				METHOD_PREFIX_NAME_DO);
+
 		ExecutorService lifecycleMethodExecutorService = Executors
 				.newSingleThreadExecutor();
 		ExecutorService jobMethodExecutorService = getJobMethodExecutorService();
@@ -92,17 +106,7 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 				lifecycleMethodExecutorService, this.task, this.beanDesc);
 	}
 
-	public String initialize(ComponentDef jobComponentDef)
-			throws InterruptedException {
-
-		this.taskComponentDef = jobComponentDef;
-		this.task = this.taskComponentDef.getComponent();
-		this.taskClass = this.taskComponentDef.getComponentClass();
-		this.beanDesc = BeanDescFactory.getBeanDesc(this.taskClass);
-		this.taskMethodManager = new TaskMethodManager(taskClass,
-				METHOD_PREFIX_NAME_DO);
-
-		this.prepareMethodInvoker();
+	public String initialize() throws InterruptedException {
 
 		if (this.lifecycleMethodInvoker.hasMethod(METHOD_NAME_INITIALIZE)) {
 			AsyncResult ar = this.lifecycleMethodInvoker
@@ -129,11 +133,11 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 				: this.taskGroupMethodExecuteHandler;
 	}
 
-	public void execute(String startJobName) throws InterruptedException {
+	public void execute(String startTaskName) throws InterruptedException {
 		this.setExecuted(true);
-		TaskType type = isGroupMethod(startJobName) ? TaskType.JOBGROUP
+		TaskType type = isGroupMethod(startTaskName) ? TaskType.JOBGROUP
 				: TaskType.JOB;
-		String nextTaskName = startJobName;
+		String nextTaskName = startTaskName;
 		while (true) {
 			TaskExecuteHandler teh = getTaskExecuteHandler(type);
 			Transition transition = handleRequest(teh, nextTaskName);
@@ -286,6 +290,7 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 		return result;
 	}
 
+	@Binding(bindingType = BindingType.NONE)
 	public void setTrigger(Trigger trigger) {
 		if (this.beanDesc.hasPropertyDesc(PROPERTY_NAME_TRIGGER)) {
 			PropertyDesc pd = this.beanDesc

@@ -20,12 +20,12 @@ public class TaskExecutorServiceImplTest extends S2TestCase {
 		this.taskExecutorService = (TaskExecutorService) this
 				.getComponent(TaskExecutorService.class);
 		this.jobComponentDef = this.getComponentDef(ExampleTask.class);
+		this.taskExecutorService.setTaskComponentDef(this.jobComponentDef);
 	}
 
 	public void testAwait() {
 		try {
-			String startTaskName = this.taskExecutorService
-					.initialize(jobComponentDef);
+			String startTaskName = this.taskExecutorService.initialize();
 			this.taskExecutorService.execute(startTaskName);
 			this.taskExecutorService.await(10, TimeUnit.SECONDS);
 			this.taskExecutorService.destroy();
@@ -36,8 +36,7 @@ public class TaskExecutorServiceImplTest extends S2TestCase {
 
 	public void testExecute() {
 		try {
-			String startTaskName = this.taskExecutorService
-					.initialize(jobComponentDef);
+			String startTaskName = this.taskExecutorService.initialize();
 			this.taskExecutorService.execute(startTaskName);
 			this.taskExecutorService.destroy();
 		} catch (InterruptedException e) {
@@ -47,7 +46,7 @@ public class TaskExecutorServiceImplTest extends S2TestCase {
 
 	public void testCancel() {
 		try {
-			this.taskExecutorService.initialize(jobComponentDef);
+			this.taskExecutorService.initialize();
 		} catch (InterruptedException e) {
 			fail();
 		}
@@ -56,7 +55,7 @@ public class TaskExecutorServiceImplTest extends S2TestCase {
 
 	public void testDestroy() {
 		try {
-			this.taskExecutorService.initialize(jobComponentDef);
+			this.taskExecutorService.initialize();
 			this.taskExecutorService.destroy();
 		} catch (InterruptedException e) {
 			fail();
@@ -65,7 +64,7 @@ public class TaskExecutorServiceImplTest extends S2TestCase {
 
 	public void testInitialize() {
 		try {
-			this.taskExecutorService.initialize(jobComponentDef);
+			this.taskExecutorService.initialize();
 		} catch (InterruptedException e) {
 			fail();
 		}

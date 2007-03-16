@@ -1,5 +1,6 @@
 package org.seasar.chronos.impl;
 
+import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -15,6 +16,7 @@ import org.seasar.chronos.SchedulerEventListener;
 import org.seasar.chronos.annotation.task.Task;
 import org.seasar.chronos.exception.SchedulerException;
 import org.seasar.chronos.task.TaskExecutorService;
+import org.seasar.chronos.trigger.Trigger;
 import org.seasar.framework.container.ComponentDef;
 import org.seasar.framework.container.S2Container;
 import org.seasar.framework.container.util.Traversal;
@@ -23,12 +25,15 @@ public class SchedulerImpl implements Scheduler {
 
 	private static final String TASK_TYPE_SCHEDULED = "SCHEDULED";
 
-	private ExecutorService executorService = Executors
-			.newSingleThreadExecutor();
+	private static final String TASK_TYPE_RUNTASK = "RUNTASK";
+
+	private ExecutorService executorService = Executors.newCachedThreadPool();
 
 	private Future<Void> future;
 
 	private ConcurrentHashMap<String, CopyOnWriteArrayList<TaskContena>> taskContenaMap = new ConcurrentHashMap<String, CopyOnWriteArrayList<TaskContena>>();
+
+	private List<Future<TaskExecutorService>> futureList = new CopyOnWriteArrayList<Future<TaskExecutorService>>();
 
 	private S2Container s2container;
 
@@ -40,6 +45,7 @@ public class SchedulerImpl implements Scheduler {
 		CopyOnWriteArrayList<TaskContena> result = this.taskContenaMap.get(key);
 		if (result == null) {
 			result = new CopyOnWriteArrayList<TaskContena>();
+			this.putMasterTaskContena(key, result);
 		}
 		return result;
 	}
@@ -98,34 +104,105 @@ public class SchedulerImpl implements Scheduler {
 		future = executorService.submit(new Callable<Void>() {
 
 			public Void call() throws Exception {
-				CopyOnWriteArrayList<TaskContena> taskList = getTaskContenaMap(TASK_TYPE_SCHEDULED);
-				for (TaskContena tc : taskList) {
-					TaskExecutorService tes = (TaskExecutorService) s2container
-							.getComponent(TaskExecutorService.class);
-					tes.initialize(tc.getComponentDef());
-
+				while (true) {
+					TimeUnit.SECONDS.sleep(1);
+					taskStarter();
+					taskEnder();
 				}
-				return null;
 			}
 
 		});
 	}
 
-	private void getTaskFromContainer() {
-		S2Container root = this.s2container.getRoot();
-		Traversal.forEachComponent(root, new Traversal.ComponentDefHandler() {
-			public Object processComponent(ComponentDef componentDef) {
-				Class clazz = componentDef.getComponentClass();
-				Task task = (Task) clazz.getAnnotation(Task.class);
-				if (task != null) {
-					CopyOnWriteArrayList<TaskContena> list = getTaskContenaMap(TASK_TYPE_SCHEDULED);
-					list.add(new TaskContena(componentDef));
+	private void taskEnder() throws InterruptedException {
+		CopyOnWriteArrayList<TaskContena> runTaskList = getTaskContenaMap(TASK_TYPE_RUNTASK);
+		for (TaskContena tc : runTaskList) {
+			final TaskExecutorService tes = (TaskExecutorService) s2container
+					.getComponent(TaskExecutorService.class);
+			tes.setTaskComponentDef(tc.getComponentDef());
+			Trigger trigger = tes.getTrigger();
+			if (trigger.getEndTask()) {
+				tes.setEndTask(true);
+				try {
+					tc.getFuture().get();
+				} catch (ExecutionException e) {
+					// TODO 自動生成された catch ブロック
+					e.printStackTrace();
 				}
-				return null;
+
 			}
+		}
+	}
 
-		});
+	private void taskStarter() throws InterruptedException {
+		CopyOnWriteArrayList<TaskContena> taskList = getTaskContenaMap(TASK_TYPE_SCHEDULED);
+		CopyOnWriteArrayList<TaskContena> runTaskList = getTaskContenaMap(TASK_TYPE_RUNTASK);
+		for (TaskContena tc : taskList) {
+			final TaskExecutorService tes = (TaskExecutorService) s2container
+					.getComponent(TaskExecutorService.class);
+			tes.setTaskComponentDef(tc.getComponentDef());
+			tes.prepare();
+			boolean start = false;
+			Trigger trigger = tes.getTrigger();
+			if (trigger == null) {
+				start = tes.getStartTask();
+			} else {
+				start = trigger.getStartTask();
+			}
+			if (start) {
+				// タスクの開始
+				Future<TaskExecutorService> future = executorService
+						.submit(new Callable<TaskExecutorService>() {
+							public TaskExecutorService call() throws Exception {
+								synchronized (tes) {
+									tes.notify();
+								}
+								String nextTaskName = tes.initialize();
+								if (nextTaskName != null) {
+									tes.execute(nextTaskName);
+								}
 
+								tes.destroy();
+								return tes;
+							}
+						});
+				synchronized (tes) {
+					tes.wait();
+				}
+				futureList.add(future);
+				tc.setFuture(future);
+				tc.setTaskExecutorService(tes);
+				runTaskList.add(tc);
+			}
+		}
+	}
+
+	private void findComponent(S2Container targetContainer) {
+		Traversal.forEachComponent(targetContainer,
+				new Traversal.ComponentDefHandler() {
+					public Object processComponent(ComponentDef componentDef) {
+						Class clazz = componentDef.getComponentClass();
+						Task task = (Task) clazz.getAnnotation(Task.class);
+						if (task != null) {
+							CopyOnWriteArrayList<TaskContena> list = getTaskContenaMap(TASK_TYPE_SCHEDULED);
+							list.addIfAbsent(new TaskContena(componentDef));
+						}
+						return null;
+					}
+				});
+	}
+
+	private void findChildComponent(S2Container targetContainer) {
+		findComponent(targetContainer);
+		// for (int i = 0; i < targetContainer.getChildSize(); i++) {
+		// targetContainer = targetContainer.getChild(i);
+		// findChildComponent(targetContainer);
+		// }
+	}
+
+	private void getTaskFromContainer() {
+		S2Container target = this.s2container.getRoot();
+		findChildComponent(target);
 	}
 
 	public boolean addTask(Object task) {

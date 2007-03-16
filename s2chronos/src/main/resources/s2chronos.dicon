@@ -2,23 +2,23 @@
 <!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN"
 	"http://www.seasar.org/dtd/components23.dtd">
 <components>
+	<component name="traceInterceptor" class="org.seasar.framework.aop.interceptors.TraceInterceptor"/>
 
 	<component class="org.seasar.chronos.impl.SchedulerImpl"/>
 	<component name="taskExecuteContext" class="org.seasar.chronos.task.state.TaskExecuteContext"/>
 	
-	<component class="org.seasar.chronos.task.impl.TaskExecutorServiceImpl" instance="prototype">
-		<aspect>
-			<component class="org.seasar.framework.aop.interceptors.TraceInterceptor"/>
-		</aspect>
+	<component class="org.seasar.chronos.task.impl.TaskExecutorServiceImpl">
 		<property name="taskExecuteStateNonInitialized">taskExecuteStateNonInitialized</property>
 		<property name="taskExecuteContext">taskExecuteContext</property>
 	</component>
 	
 	<component name="taskMethodExecuteHandler" class="org.seasar.chronos.task.handler.impl.TaskMethodExecuteHandlerImpl">
 	</component>
+	
 	<component name="taskGroupMethodExecuteHandler" class="org.seasar.chronos.task.handler.impl.TaskGroupMethodExecuteHandlerImpl">
 		<property name="taskMethodExecuteHandler">taskMethodExecuteHandler</property>
 	</component>
+	
 	<component name="taskExecuteStrategy" class="org.seasar.chronos.task.strategy.impl.TaskExecuteStrategyImpl">
 		<property name="taskMethodExecuteHandler">taskMethodExecuteHandler</property>
 		<property name="taskGroupMethodExecuteHandler">taskGroupMethodExecuteHandler</property>

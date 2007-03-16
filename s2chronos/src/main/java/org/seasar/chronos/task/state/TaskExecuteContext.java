@@ -2,19 +2,36 @@ package org.seasar.chronos.task.state;
 
 import java.util.concurrent.TimeUnit;
 
+import org.seasar.chronos.task.strategy.TaskExecuteStrategy;
 import org.seasar.framework.container.ComponentDef;
 
 public class TaskExecuteContext {
 
-	TaskExecuteState currentState;
+	private TaskExecuteState currentState;
+
+	private ComponentDef taskComponentDef;
+
+	public TaskExecuteStrategy getTaskExecuteStrategy() {
+		return this.currentState.getTaskExecuteStrategy();
+	}
 
 	public void changeState(TaskExecuteState nextState) {
 		this.currentState = nextState;
+
 	}
 
-	public String initialize(ComponentDef jobComponentDef)
-			throws InterruptedException {
-		return this.currentState.initialize(this, jobComponentDef);
+	public void setTaskComponentDef(ComponentDef taskComponentDef) {
+		this.taskComponentDef = taskComponentDef;
+	}
+
+	public void prepare() {
+		this.currentState.setTaskComponentDef(this.taskComponentDef);
+		this.currentState.prepare(this);
+	}
+
+	public String initialize() throws InterruptedException {
+
+		return this.currentState.initialize(this);
 	}
 
 	public void execute(String startTaskName) throws InterruptedException {

@@ -24,6 +24,8 @@ public abstract class AbstractJobExecuteState implements TaskExecuteState {
 		context.changeState(nextState);
 	}
 
+	public abstract void setTaskComponentDef(ComponentDef taskComponentDef);
+
 	public abstract boolean await(TaskExecuteContext context, long time,
 			TimeUnit timeUnit) throws InterruptedException;
 
@@ -35,7 +37,9 @@ public abstract class AbstractJobExecuteState implements TaskExecuteState {
 	public abstract void destroy(TaskExecuteContext context)
 			throws InterruptedException;
 
-	public abstract String initialize(TaskExecuteContext context,
-			ComponentDef jobComponentDef) throws InterruptedException;
+	public abstract void prepare(TaskExecuteContext context);
+
+	public abstract String initialize(TaskExecuteContext context)
+			throws InterruptedException;
 
 }

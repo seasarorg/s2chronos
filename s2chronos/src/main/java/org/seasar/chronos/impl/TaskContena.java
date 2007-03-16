@@ -1,5 +1,8 @@
 package org.seasar.chronos.impl;
 
+import java.util.concurrent.Future;
+
+import org.seasar.chronos.task.TaskExecutorService;
 import org.seasar.framework.container.ComponentDef;
 
 public class TaskContena {
@@ -9,6 +12,10 @@ public class TaskContena {
 	private Object target;
 
 	private Class targetClass;
+
+	private TaskExecutorService taskExecutorService;
+
+	private Future<TaskExecutorService> future;
 
 	public TaskContena(ComponentDef componentDef) {
 		this.setComponentDef(componentDef);
@@ -38,6 +45,22 @@ public class TaskContena {
 
 	public void setTargetClass(Class targetClass) {
 		this.targetClass = targetClass;
+	}
+
+	public Future<TaskExecutorService> getFuture() {
+		return future;
+	}
+
+	public void setFuture(Future<TaskExecutorService> future) {
+		this.future = future;
+	}
+
+	public TaskExecutorService getTaskExecutorService() {
+		return taskExecutorService;
+	}
+
+	public void setTaskExecutorService(TaskExecutorService taskExecutorService) {
+		this.taskExecutorService = taskExecutorService;
 	}
 
 }
