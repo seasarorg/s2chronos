@@ -5,6 +5,7 @@ import org.seasar.chronos.task.Transition;
 import org.seasar.chronos.task.handler.TaskExecuteHandler;
 import org.seasar.chronos.task.impl.TaskMethodManager;
 import org.seasar.chronos.task.strategy.TaskExecuteStrategy;
+import org.seasar.chronos.trigger.Trigger;
 import org.seasar.framework.log.Logger;
 
 public abstract class AbstractTaskExecuteHandler implements TaskExecuteHandler {
@@ -77,9 +78,15 @@ public abstract class AbstractTaskExecuteHandler implements TaskExecuteHandler {
 	}
 
 	protected Transition getTerminateTransition(String lastTaskName) {
-		boolean terminate = getTaskExecuteStrategy().getEndTask();
+		boolean terminate = false;
+		Trigger trigger = getTaskExecuteStrategy().getTrigger();
+		if (trigger != null) {
+			terminate = trigger.getEndTask();
+		} else {
+			terminate = getTaskExecuteStrategy().getEndTask();
+		}
 		if (terminate) {
-			log.warn("タスクが終了しました");
+			log.info("タスクが終了しました");
 			return new Transition(true, null, lastTaskName);
 		}
 		return null;

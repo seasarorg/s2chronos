@@ -158,16 +158,8 @@ public class SchedulerImpl implements Scheduler {
 		final CopyOnWriteArrayList<TaskContena> cancelTaskList = getTaskContenaMap(TASK_TYPE_CANCELTASK);
 		for (final TaskContena tc : runingTaskList) {
 			final TaskExecutorService tes = tc.getTaskExecutorService();
-			boolean endOrShutdownFlag = false;
-			if (this.getEndTask(tes)) {
-				log.debug("endTask on");
-				endOrShutdownFlag = true;
-			}
 			if (this.getShutdownTask(tes)) {
 				log.debug("shutdownTask on");
-				endOrShutdownFlag = true;
-			}
-			if (endOrShutdownFlag || force) {
 				final Future<TaskExecutorService> future = this.executorService
 						.submit(new Callable<TaskExecutorService>() {
 							public TaskExecutorService call() throws Exception {

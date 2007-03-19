@@ -58,7 +58,7 @@ public class ExampleTask {
 			log.info(e);
 		}
 
-		// this.terminate = true;
+		// this.endTask = true;
 
 	}
 
@@ -167,9 +167,7 @@ public class ExampleTask {
 		return endTask;
 	}
 
-	private boolean shutdownTask = false;
-
-	private int count = 0;
+	private boolean shutdownTask = true;
 
 	// シャットダウンしたらfalseにします．
 	public void setShutdownTask(boolean shutdownTask) {
@@ -178,10 +176,7 @@ public class ExampleTask {
 
 	// trueを返すとスケジューラからシャットダウンされます．
 	public boolean getShutdownTask() {
-		if (count++ > 0) {
-			return true;
-		}
-		return false;
+		return shutdownTask;
 	}
 
 	/*
