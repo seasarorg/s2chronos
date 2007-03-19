@@ -154,9 +154,9 @@ public class SchedulerImpl implements Scheduler {
 	}
 
 	private void taskFinisher(boolean force) throws InterruptedException {
-		final CopyOnWriteArrayList<TaskContena> runTaskList = getTaskContenaMap(TASK_TYPE_RUNINGTASK);
+		final CopyOnWriteArrayList<TaskContena> runingTaskList = getTaskContenaMap(TASK_TYPE_RUNINGTASK);
 		final CopyOnWriteArrayList<TaskContena> cancelTaskList = getTaskContenaMap(TASK_TYPE_CANCELTASK);
-		for (final TaskContena tc : runTaskList) {
+		for (final TaskContena tc : runingTaskList) {
 			final TaskExecutorService tes = tc.getTaskExecutorService();
 			boolean endOrShutdownFlag = false;
 			if (this.getEndTask(tes)) {
@@ -171,8 +171,8 @@ public class SchedulerImpl implements Scheduler {
 				final Future<TaskExecutorService> future = this.executorService
 						.submit(new Callable<TaskExecutorService>() {
 							public TaskExecutorService call() throws Exception {
-								synchronized (runTaskList) {
-									runTaskList.notify();
+								synchronized (runingTaskList) {
+									runingTaskList.notify();
 								}
 								log.debug("cancel start");
 								if (tes.cancel()) {
@@ -184,17 +184,17 @@ public class SchedulerImpl implements Scheduler {
 										cancelTaskList.remove(tc);
 									}
 								} else {
-									runTaskList.add(tc);
+									runingTaskList.add(tc);
 								}
 								log.debug("cancel end");
 								return tes;
 							}
 						});
-				synchronized (runTaskList) {
+				synchronized (runingTaskList) {
 					tc.setFuture(future);
 					cancelTaskList.add(tc);
-					runTaskList.remove(tc);
-					runTaskList.wait();
+					runingTaskList.remove(tc);
+					runingTaskList.wait();
 				}
 			}
 		}
@@ -222,21 +222,20 @@ public class SchedulerImpl implements Scheduler {
 	}
 
 	private void taskStarter() throws InterruptedException {
-		final CopyOnWriteArrayList<TaskContena> taskList = getTaskContenaMap(TASK_TYPE_SCHEDULED);
-		final CopyOnWriteArrayList<TaskContena> runTaskList = getTaskContenaMap(TASK_TYPE_RUNINGTASK);
-		for (final TaskContena tc : taskList) {
+		final CopyOnWriteArrayList<TaskContena> scheduledList = getTaskContenaMap(TASK_TYPE_SCHEDULED);
+		final CopyOnWriteArrayList<TaskContena> runingTaskList = getTaskContenaMap(TASK_TYPE_RUNINGTASK);
+		for (final TaskContena tc : scheduledList) {
 			final TaskExecutorService tes = (TaskExecutorService) s2container
 					.getComponent(TaskExecutorService.class);
 			tes.setTaskComponentDef(tc.getComponentDef());
 			tes.prepare();
 			if (this.getStartTask(tes)) {
-				this.setStartTask(tes, false);
 				// タスクの開始
 				Future<TaskExecutorService> future = executorService
 						.submit(new Callable<TaskExecutorService>() {
 							public TaskExecutorService call() throws Exception {
-								synchronized (runTaskList) {
-									runTaskList.notify();
+								synchronized (runingTaskList) {
+									runingTaskList.notify();
 								}
 								log.debug("initialize start");
 								String nextTaskName = tes.initialize();
@@ -252,18 +251,18 @@ public class SchedulerImpl implements Scheduler {
 								}
 								log.debug("destory start");
 								tes.destroy();
-								if (runTaskList.contains(tc)) {
-									runTaskList.remove(tc);
+								if (runingTaskList.contains(tc)) {
+									runingTaskList.remove(tc);
 								}
 								return tes;
 							}
 						});
-				synchronized (runTaskList) {
+				synchronized (runingTaskList) {
 					tc.setFuture(future);
 					tc.setTaskExecutorService(tes);
-					runTaskList.add(tc);
-					taskList.remove(tc);
-					runTaskList.wait();
+					runingTaskList.add(tc);
+					scheduledList.remove(tc);
+					runingTaskList.wait();
 				}
 			}
 		}
