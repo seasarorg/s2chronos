@@ -30,6 +30,9 @@ public class ExampleTask {
 	// 最初に実行するジョブもしくはジョブグループを指定します。
 	@NextTask("groupA")
 	public void initialize() {
+		if (this.executed) {
+			startTask = false;
+		}
 		log.info("initialize");
 	}
 
@@ -135,6 +138,7 @@ public class ExampleTask {
 
 	public void setExecuted(boolean executed) {
 		this.executed = executed;
+
 	}
 
 	public boolean isExecuted() {
@@ -153,7 +157,7 @@ public class ExampleTask {
 		return this.startTask;
 	}
 
-	private boolean endTask;
+	private boolean endTask = true;
 
 	// 停止したらfalseにします．
 	public void setEndTask(boolean endTask) {

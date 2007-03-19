@@ -26,4 +26,6 @@ public interface TaskExecuteState {
 
 	public void destroy(TaskExecuteContext context) throws InterruptedException;
 
+	public void waitOne() throws InterruptedException;
+
 }

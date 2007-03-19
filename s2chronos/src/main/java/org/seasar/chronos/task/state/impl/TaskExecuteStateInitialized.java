@@ -53,4 +53,10 @@ public class TaskExecuteStateInitialized extends AbstractJobExecuteState {
 
 	}
 
+	@Override
+	public void waitOne() throws InterruptedException {
+		this.getTaskExecuteStrategy().waitOne();
+
+	}
+
 }

@@ -299,4 +299,8 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 		}
 	}
 
+	public void waitOne() throws InterruptedException {
+		this.taskMethodInvoker.waitInvokes();
+	}
+
 }

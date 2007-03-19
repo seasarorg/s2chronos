@@ -109,4 +109,9 @@ public class TaskExecutorServiceImpl implements TaskExecutorService {
 		this.taskExecuteContext.getTaskExecuteStrategy().setTrigger(trigger);
 	}
 
+	public void waitOne() throws InterruptedException {
+		this.taskExecuteContext.waitOne();
+
+	}
+
 }

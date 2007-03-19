@@ -51,4 +51,9 @@ public class TaskExecuteContext {
 		this.currentState.destroy(this);
 	}
 
+	public void waitOne() throws InterruptedException {
+		this.currentState.waitOne();
+
+	}
+
 }

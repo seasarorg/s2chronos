@@ -38,6 +38,7 @@ public class TaskExecuteStateNonInitialized extends AbstractJobExecuteState {
 
 	@Override
 	public void destroy(TaskExecuteContext context) {
+
 	}
 
 	@Override
@@ -52,6 +53,11 @@ public class TaskExecuteStateNonInitialized extends AbstractJobExecuteState {
 	@Override
 	public void prepare(TaskExecuteContext context) {
 		this.getTaskExecuteStrategy().prepare();
+	}
+
+	@Override
+	public void waitOne() {
+
 	}
 
 }

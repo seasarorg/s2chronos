@@ -14,6 +14,8 @@ public interface TaskMethods {
 
 	public void execute(String startTaskName) throws InterruptedException;
 
+	public void waitOne() throws InterruptedException;
+
 	public void cancel();
 
 	public boolean await(long time, TimeUnit timeUnit)

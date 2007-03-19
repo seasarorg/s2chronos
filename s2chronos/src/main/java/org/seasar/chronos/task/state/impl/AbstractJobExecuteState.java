@@ -26,6 +26,8 @@ public abstract class AbstractJobExecuteState implements TaskExecuteState {
 
 	public abstract void setTaskComponentDef(ComponentDef taskComponentDef);
 
+	public abstract void waitOne() throws InterruptedException;
+
 	public abstract boolean await(TaskExecuteContext context, long time,
 			TimeUnit timeUnit) throws InterruptedException;
 

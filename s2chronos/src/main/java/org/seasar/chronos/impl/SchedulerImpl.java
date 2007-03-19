@@ -16,12 +16,16 @@ import org.seasar.chronos.SchedulerEventListener;
 import org.seasar.chronos.annotation.task.Task;
 import org.seasar.chronos.exception.SchedulerException;
 import org.seasar.chronos.task.TaskExecutorService;
+import org.seasar.chronos.task.TaskProperties;
 import org.seasar.chronos.trigger.Trigger;
 import org.seasar.framework.container.ComponentDef;
 import org.seasar.framework.container.S2Container;
 import org.seasar.framework.container.util.Traversal;
+import org.seasar.framework.log.Logger;
 
 public class SchedulerImpl implements Scheduler {
+
+	private static Logger log = Logger.getLogger(SchedulerImpl.class);
 
 	private static final String TASK_TYPE_SCHEDULED = "SCHEDULED";
 
@@ -114,65 +118,75 @@ public class SchedulerImpl implements Scheduler {
 		});
 	}
 
+	private boolean getEndTask(TaskProperties prop) {
+		boolean end = false;
+		Trigger trigger = prop.getTrigger();
+		if (trigger == null) {
+			end = prop.getEndTask();
+		} else {
+			end = trigger.getEndTask();
+		}
+		return end;
+	}
+
 	private void taskEnder() throws InterruptedException {
 		CopyOnWriteArrayList<TaskContena> runTaskList = getTaskContenaMap(TASK_TYPE_RUNTASK);
 		for (TaskContena tc : runTaskList) {
 			final TaskExecutorService tes = (TaskExecutorService) s2container
 					.getComponent(TaskExecutorService.class);
 			tes.setTaskComponentDef(tc.getComponentDef());
-			Trigger trigger = tes.getTrigger();
-			if (trigger.getEndTask()) {
-				tes.setEndTask(true);
-				try {
-					tc.getFuture().get();
-				} catch (ExecutionException e) {
-					// TODO 自動生成された catch ブロック
-					e.printStackTrace();
+			tes.prepare();
+			if (getEndTask(tes)) {
+				tes.cancel();
+				while (!tes.await(1, TimeUnit.SECONDS)) {
+					;
 				}
-
 			}
 		}
 	}
 
+	private boolean getStartTask(TaskProperties prop) {
+		boolean start = false;
+		Trigger trigger = prop.getTrigger();
+		if (trigger == null) {
+			start = prop.getStartTask();
+		} else {
+			start = trigger.getStartTask();
+		}
+		return start;
+	}
+
 	private void taskStarter() throws InterruptedException {
-		CopyOnWriteArrayList<TaskContena> taskList = getTaskContenaMap(TASK_TYPE_SCHEDULED);
-		CopyOnWriteArrayList<TaskContena> runTaskList = getTaskContenaMap(TASK_TYPE_RUNTASK);
-		for (TaskContena tc : taskList) {
+		final CopyOnWriteArrayList<TaskContena> taskList = getTaskContenaMap(TASK_TYPE_SCHEDULED);
+		final CopyOnWriteArrayList<TaskContena> runTaskList = getTaskContenaMap(TASK_TYPE_RUNTASK);
+		for (final TaskContena tc : taskList) {
 			final TaskExecutorService tes = (TaskExecutorService) s2container
 					.getComponent(TaskExecutorService.class);
 			tes.setTaskComponentDef(tc.getComponentDef());
 			tes.prepare();
-			boolean start = false;
-			Trigger trigger = tes.getTrigger();
-			if (trigger == null) {
-				start = tes.getStartTask();
-			} else {
-				start = trigger.getStartTask();
-			}
-			if (start) {
+			if (getStartTask(tes)) {
 				// タスクの開始
 				Future<TaskExecutorService> future = executorService
 						.submit(new Callable<TaskExecutorService>() {
 							public TaskExecutorService call() throws Exception {
-								synchronized (tes) {
-									tes.notify();
-								}
 								String nextTaskName = tes.initialize();
 								if (nextTaskName != null) {
 									tes.execute(nextTaskName);
 								}
-
+								// log.debug("waitOne s");
+								tes.waitOne();
+								// log.debug("waitOne e");
 								tes.destroy();
+								runTaskList.remove(tc);
 								return tes;
 							}
 						});
-				synchronized (tes) {
-					tes.wait();
-				}
+
 				futureList.add(future);
 				tc.setFuture(future);
 				tc.setTaskExecutorService(tes);
 				runTaskList.add(tc);
+				taskList.remove(tc);
 			}
 		}
 	}
