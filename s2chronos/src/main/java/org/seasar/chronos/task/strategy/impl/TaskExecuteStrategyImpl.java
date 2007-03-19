@@ -150,9 +150,9 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 		this.setExecuted(false);
 	}
 
-	public void cancel() {
-		this.setShutdownTask(true);
+	public boolean cancel() {
 		this.taskMethodInvoker.cancelInvokes();
+		return true;
 	}
 
 	public boolean await(long time, TimeUnit timeUnit)

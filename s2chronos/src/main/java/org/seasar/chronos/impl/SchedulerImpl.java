@@ -7,6 +7,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.TimeUnit;
 
 import org.seasar.chronos.Scheduler;
@@ -28,7 +29,7 @@ public class SchedulerImpl implements Scheduler {
 
 	private static final String TASK_TYPE_SCHEDULED = "SCHEDULED_TASK";
 
-	private static final String TASK_TYPE_RUNTASK = "RUN_TASK";
+	private static final String TASK_TYPE_RUNINGTASK = "RUNING_TASK";
 
 	private static final String TASK_TYPE_CANCELTASK = "CANCEL_TASK";
 
@@ -153,23 +154,18 @@ public class SchedulerImpl implements Scheduler {
 	}
 
 	private void taskFinisher(boolean force) throws InterruptedException {
-		final CopyOnWriteArrayList<TaskContena> runTaskList = getTaskContenaMap(TASK_TYPE_RUNTASK);
+		final CopyOnWriteArrayList<TaskContena> runTaskList = getTaskContenaMap(TASK_TYPE_RUNINGTASK);
 		final CopyOnWriteArrayList<TaskContena> cancelTaskList = getTaskContenaMap(TASK_TYPE_CANCELTASK);
 		for (final TaskContena tc : runTaskList) {
-			final TaskExecutorService tes = (TaskExecutorService) this.s2container
-					.getComponent(TaskExecutorService.class);
-			tes.setTaskComponentDef(tc.getComponentDef());
-			tes.prepare();
+			final TaskExecutorService tes = tc.getTaskExecutorService();
 			boolean endOrShutdownFlag = false;
 			if (this.getEndTask(tes)) {
 				log.debug("endTask on");
 				endOrShutdownFlag = true;
-				this.setEndTask(tes, false);
 			}
 			if (this.getShutdownTask(tes)) {
 				log.debug("shutdownTask on");
 				endOrShutdownFlag = true;
-				this.setShutdownTask(tes, false);
 			}
 			if (endOrShutdownFlag || force) {
 				final Future<TaskExecutorService> future = this.executorService
@@ -179,20 +175,23 @@ public class SchedulerImpl implements Scheduler {
 									runTaskList.notify();
 								}
 								log.debug("cancel start");
-								tes.cancel();
-								if (tes.await(30, TimeUnit.SECONDS) == false) {
-									// TODO キャンセルできなかった．例外をスローすること．
+								if (tes.cancel()) {
+									log.debug("cancel ok");
+									if (tes.await(30, TimeUnit.SECONDS) == false) {
+										// TODO キャンセルできなかった．例外をスローすること．
+									}
+									if (cancelTaskList.contains(tc)) {
+										cancelTaskList.remove(tc);
+									}
+								} else {
+									runTaskList.add(tc);
 								}
 								log.debug("cancel end");
-								if (cancelTaskList.contains(tc)) {
-									cancelTaskList.remove(tc);
-								}
 								return tes;
 							}
 						});
 				synchronized (runTaskList) {
 					tc.setFuture(future);
-					tc.setTaskExecutorService(tes);
 					cancelTaskList.add(tc);
 					runTaskList.remove(tc);
 					runTaskList.wait();
@@ -224,7 +223,7 @@ public class SchedulerImpl implements Scheduler {
 
 	private void taskStarter() throws InterruptedException {
 		final CopyOnWriteArrayList<TaskContena> taskList = getTaskContenaMap(TASK_TYPE_SCHEDULED);
-		final CopyOnWriteArrayList<TaskContena> runTaskList = getTaskContenaMap(TASK_TYPE_RUNTASK);
+		final CopyOnWriteArrayList<TaskContena> runTaskList = getTaskContenaMap(TASK_TYPE_RUNINGTASK);
 		for (final TaskContena tc : taskList) {
 			final TaskExecutorService tes = (TaskExecutorService) s2container
 					.getComponent(TaskExecutorService.class);
@@ -239,11 +238,19 @@ public class SchedulerImpl implements Scheduler {
 								synchronized (runTaskList) {
 									runTaskList.notify();
 								}
+								log.debug("initialize start");
 								String nextTaskName = tes.initialize();
 								if (nextTaskName != null) {
-									tes.execute(nextTaskName);
-									tes.waitOne();
+									try {
+										log.debug("execute start");
+										tes.execute(nextTaskName);
+										log.debug("waitOne start");
+										tes.waitOne();
+									} catch (RejectedExecutionException ex) {
+										log.debug(ex);
+									}
 								}
+								log.debug("destory start");
 								tes.destroy();
 								if (runTaskList.contains(tc)) {
 									runTaskList.remove(tc);

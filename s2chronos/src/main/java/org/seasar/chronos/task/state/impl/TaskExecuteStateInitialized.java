@@ -5,7 +5,7 @@ import java.util.concurrent.TimeUnit;
 import org.seasar.chronos.task.state.TaskExecuteContext;
 import org.seasar.framework.container.ComponentDef;
 
-public class TaskExecuteStateInitialized extends AbstractJobExecuteState {
+public class TaskExecuteStateInitialized extends AbstractTaskExecuteState {
 
 	private TaskExecuteStateNonInitialized taskExecuteStateNonInitialized;
 
@@ -32,10 +32,11 @@ public class TaskExecuteStateInitialized extends AbstractJobExecuteState {
 	}
 
 	@Override
-	public void cancel(TaskExecuteContext context) {
+	public boolean cancel(TaskExecuteContext context) {
 		log.debug("TaskExecuteStateInitialized.cancel start");
-		this.getTaskExecuteStrategy().cancel();
+		boolean result = this.getTaskExecuteStrategy().cancel();
 		log.debug("TaskExecuteStateInitialized.cancel end");
+		return result;
 	}
 
 	@Override

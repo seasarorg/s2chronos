@@ -4,6 +4,8 @@ import java.util.concurrent.TimeUnit;
 
 import org.seasar.chronos.task.strategy.TaskExecuteStrategy;
 import org.seasar.framework.container.ComponentDef;
+import org.seasar.framework.container.annotation.tiger.Binding;
+import org.seasar.framework.container.annotation.tiger.BindingType;
 
 public class TaskExecuteContext {
 
@@ -20,6 +22,7 @@ public class TaskExecuteContext {
 
 	}
 
+	@Binding(bindingType = BindingType.NONE)
 	public void setTaskComponentDef(ComponentDef taskComponentDef) {
 		this.taskComponentDef = taskComponentDef;
 	}
@@ -38,8 +41,8 @@ public class TaskExecuteContext {
 		this.currentState.execute(this, startTaskName);
 	}
 
-	public void cancel() {
-		this.currentState.cancel(this);
+	public boolean cancel() {
+		return this.currentState.cancel(this);
 	}
 
 	public boolean await(long time, TimeUnit timeUnit)

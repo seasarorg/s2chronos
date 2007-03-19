@@ -7,7 +7,7 @@
 	<component class="org.seasar.chronos.impl.SchedulerImpl"/>
 	<component name="taskExecuteContext" class="org.seasar.chronos.task.state.TaskExecuteContext"/>
 	
-	<component class="org.seasar.chronos.task.impl.TaskExecutorServiceImpl">
+	<component class="org.seasar.chronos.task.impl.TaskExecutorServiceImpl" instance="prototype">
 		<property name="taskExecuteStateNonInitialized">taskExecuteStateNonInitialized</property>
 		<property name="taskExecuteContext">taskExecuteContext</property>
 	</component>

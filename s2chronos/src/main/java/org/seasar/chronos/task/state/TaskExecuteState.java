@@ -19,7 +19,7 @@ public interface TaskExecuteState {
 	public void execute(TaskExecuteContext context, String startTaskName)
 			throws InterruptedException;
 
-	public void cancel(TaskExecuteContext context);
+	public boolean cancel(TaskExecuteContext context);
 
 	public boolean await(TaskExecuteContext context, long time,
 			TimeUnit timeUnit) throws InterruptedException;

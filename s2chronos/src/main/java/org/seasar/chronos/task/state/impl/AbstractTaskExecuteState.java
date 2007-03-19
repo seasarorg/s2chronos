@@ -8,10 +8,10 @@ import org.seasar.chronos.task.strategy.TaskExecuteStrategy;
 import org.seasar.framework.container.ComponentDef;
 import org.seasar.framework.log.Logger;
 
-public abstract class AbstractJobExecuteState implements TaskExecuteState {
+public abstract class AbstractTaskExecuteState implements TaskExecuteState {
 
 	protected static Logger log = Logger
-			.getLogger(AbstractJobExecuteState.class);
+			.getLogger(AbstractTaskExecuteState.class);
 
 	private TaskExecuteStrategy taskExecuteStrategy;
 
@@ -23,7 +23,7 @@ public abstract class AbstractJobExecuteState implements TaskExecuteState {
 		this.taskExecuteStrategy = taskExecuteStrategy;
 	}
 
-	protected void changeState(TaskExecuteContext context,
+	protected synchronized void changeState(TaskExecuteContext context,
 			TaskExecuteState nextState) {
 		context.changeState(nextState);
 	}
@@ -38,7 +38,7 @@ public abstract class AbstractJobExecuteState implements TaskExecuteState {
 	public abstract void execute(TaskExecuteContext context,
 			String startTaskName) throws InterruptedException;
 
-	public abstract void cancel(TaskExecuteContext context);
+	public abstract boolean cancel(TaskExecuteContext context);
 
 	public abstract void destroy(TaskExecuteContext context)
 			throws InterruptedException;

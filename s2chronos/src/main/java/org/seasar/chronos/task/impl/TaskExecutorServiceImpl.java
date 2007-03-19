@@ -32,6 +32,7 @@ public class TaskExecutorServiceImpl implements TaskExecutorService {
 
 	}
 
+	@Binding(bindingType = BindingType.NONE)
 	public void setTaskComponentDef(ComponentDef taskComponentDef) {
 		this.taskExecuteContext.setTaskComponentDef(taskComponentDef);
 	}
@@ -45,8 +46,8 @@ public class TaskExecutorServiceImpl implements TaskExecutorService {
 		this.taskExecuteContext.execute(startTaskName);
 	}
 
-	public void cancel() {
-		this.taskExecuteContext.cancel();
+	public boolean cancel() {
+		return this.taskExecuteContext.cancel();
 	}
 
 	public void destroy() throws InterruptedException {

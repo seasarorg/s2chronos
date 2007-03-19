@@ -53,7 +53,7 @@ public class ExampleTask {
 	public void doJobA() throws Exception {
 
 		try {
-			TimeUnit.SECONDS.sleep(1);
+			TimeUnit.SECONDS.sleep(10);
 		} catch (InterruptedException e) {
 			log.info(e);
 		}
@@ -68,7 +68,7 @@ public class ExampleTask {
 	public void doJobB() {
 		for (int i = 1; i < 5 && !this.shutdownTask; i++) {
 			try {
-				TimeUnit.SECONDS.sleep(1);
+				TimeUnit.SECONDS.sleep(10);
 			} catch (InterruptedException e) {
 				log.info(e);
 				break;

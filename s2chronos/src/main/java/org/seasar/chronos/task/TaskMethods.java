@@ -16,7 +16,7 @@ public interface TaskMethods {
 
 	public void waitOne() throws InterruptedException;
 
-	public void cancel();
+	public boolean cancel();
 
 	public boolean await(long time, TimeUnit timeUnit)
 			throws InterruptedException;
