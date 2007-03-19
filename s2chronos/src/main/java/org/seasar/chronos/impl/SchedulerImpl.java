@@ -32,6 +32,8 @@ public class SchedulerImpl implements Scheduler {
 
 	private static final String TASK_TYPE_CANCELTASK = "CANCEL_TASK";
 
+	private static final int SCAN_INTERVAL_TIME = 1000;
+
 	private ExecutorService executorService = Executors.newCachedThreadPool();
 
 	private Future<Void> future;
@@ -108,9 +110,9 @@ public class SchedulerImpl implements Scheduler {
 
 			public Void call() throws Exception {
 				while (true) {
-					TimeUnit.SECONDS.sleep(1);
+					TimeUnit.MILLISECONDS.sleep(SCAN_INTERVAL_TIME);
 					taskStarter();
-					taskEnder();
+					taskFinisher();
 				}
 			}
 
@@ -146,7 +148,7 @@ public class SchedulerImpl implements Scheduler {
 		}
 	}
 
-	private void taskEnder() throws InterruptedException {
+	private void taskFinisher() throws InterruptedException {
 		final CopyOnWriteArrayList<TaskContena> runTaskList = getTaskContenaMap(TASK_TYPE_RUNTASK);
 		final CopyOnWriteArrayList<TaskContena> cancelTaskList = getTaskContenaMap(TASK_TYPE_CANCELTASK);
 		for (final TaskContena tc : runTaskList) {
@@ -154,8 +156,16 @@ public class SchedulerImpl implements Scheduler {
 					.getComponent(TaskExecutorService.class);
 			tes.setTaskComponentDef(tc.getComponentDef());
 			tes.prepare();
+			boolean endOrShutdownFlag = false;
 			if (this.getEndTask(tes)) {
+				endOrShutdownFlag = true;
 				this.setEndTask(tes, false);
+			}
+			if (this.getShutdownTask(tes)) {
+				endOrShutdownFlag = true;
+				this.setShutdownTask(tes, false);
+			}
+			if (endOrShutdownFlag) {
 				final Future<TaskExecutorService> future = executorService
 						.submit(new Callable<TaskExecutorService>() {
 							public TaskExecutorService call() throws Exception {
