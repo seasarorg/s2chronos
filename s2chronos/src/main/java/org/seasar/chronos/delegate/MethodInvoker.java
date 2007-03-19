@@ -299,9 +299,13 @@ public class MethodInvoker {
 
 	public void cancelInvokes(boolean shutdown) {
 		if (shutdown) {
+			log.debug("shutdownNow start");
 			this.executorService.shutdownNow();
+			log.debug("shutdownNow end");
 		} else {
+			log.debug("shutdown start");
 			this.executorService.shutdown();
+			log.debug("shutdown end");
 		}
 	}
 

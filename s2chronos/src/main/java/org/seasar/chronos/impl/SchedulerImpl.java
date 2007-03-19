@@ -107,15 +107,16 @@ public class SchedulerImpl implements Scheduler {
 	public void start() throws SchedulerException {
 		// コンテナからタスクを取りだす
 		this.getTaskFromS2Container();
-		this.schedulerTaskFuture = executorService.submit(new Callable<Void>() {
-			public Void call() throws Exception {
-				while (true) {
-					TimeUnit.MILLISECONDS.sleep(SCAN_INTERVAL_TIME);
-					taskStarter();
-					taskFinisher();
-				}
-			}
-		});
+		this.schedulerTaskFuture = this.executorService
+				.submit(new Callable<Void>() {
+					public Void call() throws Exception {
+						while (true) {
+							TimeUnit.MILLISECONDS.sleep(SCAN_INTERVAL_TIME);
+							taskStarter();
+							taskFinisher();
+						}
+					}
+				});
 	}
 
 	private boolean getShutdownTask(TaskProperties prop) {
@@ -161,10 +162,12 @@ public class SchedulerImpl implements Scheduler {
 			tes.prepare();
 			boolean endOrShutdownFlag = false;
 			if (this.getEndTask(tes)) {
+				log.debug("endTask on");
 				endOrShutdownFlag = true;
 				this.setEndTask(tes, false);
 			}
 			if (this.getShutdownTask(tes)) {
+				log.debug("shutdownTask on");
 				endOrShutdownFlag = true;
 				this.setShutdownTask(tes, false);
 			}
@@ -175,10 +178,12 @@ public class SchedulerImpl implements Scheduler {
 								synchronized (runTaskList) {
 									runTaskList.notify();
 								}
+								log.debug("cancel start");
 								tes.cancel();
 								if (tes.await(30, TimeUnit.SECONDS) == false) {
 									// TODO キャンセルできなかった．例外をスローすること．
 								}
+								log.debug("cancel end");
 								if (cancelTaskList.contains(tc)) {
 									cancelTaskList.remove(tc);
 								}

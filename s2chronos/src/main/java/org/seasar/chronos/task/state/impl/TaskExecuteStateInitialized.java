@@ -33,7 +33,9 @@ public class TaskExecuteStateInitialized extends AbstractJobExecuteState {
 
 	@Override
 	public void cancel(TaskExecuteContext context) {
+		log.debug("TaskExecuteStateInitialized.cancel start");
 		this.getTaskExecuteStrategy().cancel();
+		log.debug("TaskExecuteStateInitialized.cancel end");
 	}
 
 	@Override

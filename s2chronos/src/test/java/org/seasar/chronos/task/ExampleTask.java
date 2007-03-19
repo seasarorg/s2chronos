@@ -30,9 +30,6 @@ public class ExampleTask {
 	// 最初に実行するジョブもしくはジョブグループを指定します。
 	@NextTask("groupA")
 	public void initialize() {
-		if (this.executed) {
-			startTask = false;
-		}
 		log.info("initialize");
 	}
 
@@ -58,7 +55,7 @@ public class ExampleTask {
 		try {
 			TimeUnit.SECONDS.sleep(1);
 		} catch (InterruptedException e) {
-
+			log.info(e);
 		}
 
 		// this.terminate = true;
@@ -69,10 +66,11 @@ public class ExampleTask {
 	@TaskGroup("groupA")
 	@JoinTask(JoinType.NoWait)
 	public void doJobB() {
-		for (int i = 1; i < 5; i++) {
+		for (int i = 1; i < 5 && !this.shutdownTask; i++) {
 			try {
 				TimeUnit.SECONDS.sleep(1);
 			} catch (InterruptedException e) {
+				log.info(e);
 				break;
 			}
 			log.info("doJobB");
@@ -157,7 +155,7 @@ public class ExampleTask {
 		return this.startTask;
 	}
 
-	private boolean endTask = true;
+	private boolean endTask = false;
 
 	// 停止したらfalseにします．
 	public void setEndTask(boolean endTask) {
@@ -169,7 +167,9 @@ public class ExampleTask {
 		return endTask;
 	}
 
-	private boolean shutdownTask;
+	private boolean shutdownTask = false;
+
+	private int count = 0;
 
 	// シャットダウンしたらfalseにします．
 	public void setShutdownTask(boolean shutdownTask) {
@@ -178,7 +178,10 @@ public class ExampleTask {
 
 	// trueを返すとスケジューラからシャットダウンされます．
 	public boolean getShutdownTask() {
-		return this.shutdownTask;
+		if (count++ > 0) {
+			return true;
+		}
+		return false;
 	}
 
 	/*

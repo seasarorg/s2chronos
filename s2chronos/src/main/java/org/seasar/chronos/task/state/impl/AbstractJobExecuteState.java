@@ -6,8 +6,12 @@ import org.seasar.chronos.task.state.TaskExecuteContext;
 import org.seasar.chronos.task.state.TaskExecuteState;
 import org.seasar.chronos.task.strategy.TaskExecuteStrategy;
 import org.seasar.framework.container.ComponentDef;
+import org.seasar.framework.log.Logger;
 
 public abstract class AbstractJobExecuteState implements TaskExecuteState {
+
+	protected static Logger log = Logger
+			.getLogger(AbstractJobExecuteState.class);
 
 	private TaskExecuteStrategy taskExecuteStrategy;
 
