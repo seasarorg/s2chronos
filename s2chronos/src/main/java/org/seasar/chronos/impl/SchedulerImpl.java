@@ -93,9 +93,15 @@ public class SchedulerImpl implements Scheduler {
 	}
 
 	public void shutdown(boolean waitAllJobFinish) throws InterruptedException {
+		final CopyOnWriteArrayList<TaskContena> cancelTaskList = getTaskContenaMap(TASK_TYPE_CANCELTASK);
 		taskFinisher(true);
-		this.executorService.shutdown();
-		this.executorService.awaitTermination(3600, TimeUnit.SECONDS);
+		for (TaskContena tc : cancelTaskList) {
+			while (!tc.getFuture().isDone()) {
+				;
+			}
+		}
+		// this.executorService.shutdown();
+		// this.executorService.awaitTermination(3600, TimeUnit.SECONDS);
 	}
 
 	public void start() throws SchedulerException {
