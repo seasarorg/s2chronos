@@ -12,9 +12,9 @@ public interface Scheduler {
 
 	public void pause() throws SchedulerException;
 
-	public void shutdown() throws SchedulerException;
+	public void shutdown() throws InterruptedException;
 
-	public void shutdown(boolean waitAllJobFinish) throws SchedulerException;
+	public void shutdown(boolean waitAllJobFinish) throws InterruptedException;
 
 	public void join() throws InterruptedException;
 

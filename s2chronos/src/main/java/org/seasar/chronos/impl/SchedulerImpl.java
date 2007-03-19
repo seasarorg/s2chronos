@@ -88,26 +88,20 @@ public class SchedulerImpl implements Scheduler {
 
 	}
 
-	public void shutdown() throws SchedulerException {
+	public void shutdown() throws InterruptedException {
 
 	}
 
-	public void shutdown(boolean waitAllJobFinish) throws SchedulerException {
-		executorService.shutdown();
-		try {
-			executorService.awaitTermination(3600, TimeUnit.SECONDS);
-		} catch (InterruptedException e) {
-			throw new SchedulerException(e);
-		}
+	public void shutdown(boolean waitAllJobFinish) throws InterruptedException {
+		taskFinisher(true);
+		this.executorService.shutdown();
+		this.executorService.awaitTermination(3600, TimeUnit.SECONDS);
 	}
 
 	public void start() throws SchedulerException {
-
 		// コンテナからタスクを取りだす
-		this.getTaskFromContainer();
-
+		this.getTaskFromS2Container();
 		this.schedulerTaskFuture = executorService.submit(new Callable<Void>() {
-
 			public Void call() throws Exception {
 				while (true) {
 					TimeUnit.MILLISECONDS.sleep(SCAN_INTERVAL_TIME);
@@ -115,7 +109,6 @@ public class SchedulerImpl implements Scheduler {
 					taskFinisher();
 				}
 			}
-
 		});
 	}
 
@@ -149,10 +142,14 @@ public class SchedulerImpl implements Scheduler {
 	}
 
 	private void taskFinisher() throws InterruptedException {
+		taskFinisher(false);
+	}
+
+	private void taskFinisher(boolean force) throws InterruptedException {
 		final CopyOnWriteArrayList<TaskContena> runTaskList = getTaskContenaMap(TASK_TYPE_RUNTASK);
 		final CopyOnWriteArrayList<TaskContena> cancelTaskList = getTaskContenaMap(TASK_TYPE_CANCELTASK);
 		for (final TaskContena tc : runTaskList) {
-			final TaskExecutorService tes = (TaskExecutorService) s2container
+			final TaskExecutorService tes = (TaskExecutorService) this.s2container
 					.getComponent(TaskExecutorService.class);
 			tes.setTaskComponentDef(tc.getComponentDef());
 			tes.prepare();
@@ -165,8 +162,8 @@ public class SchedulerImpl implements Scheduler {
 				endOrShutdownFlag = true;
 				this.setShutdownTask(tes, false);
 			}
-			if (endOrShutdownFlag) {
-				final Future<TaskExecutorService> future = executorService
+			if (endOrShutdownFlag || force) {
+				final Future<TaskExecutorService> future = this.executorService
 						.submit(new Callable<TaskExecutorService>() {
 							public TaskExecutorService call() throws Exception {
 								synchronized (runTaskList) {
@@ -269,7 +266,7 @@ public class SchedulerImpl implements Scheduler {
 				});
 	}
 
-	private void getTaskFromContainer() {
+	private void getTaskFromS2Container() {
 		S2Container target = this.s2container.getRoot();
 		findChildComponent(target);
 	}

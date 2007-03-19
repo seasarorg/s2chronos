@@ -28,8 +28,6 @@ public class S2ChronosServletContextListener implements ServletContextListener {
 			S2ChronosServletContextListener.scheduler.join();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
-		} catch (SchedulerException e) {
-			e.printStackTrace();
 		}
 	}
 
