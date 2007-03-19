@@ -1,6 +1,5 @@
 package org.seasar.chronos.impl;
 
-import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -27,17 +26,17 @@ public class SchedulerImpl implements Scheduler {
 
 	private static Logger log = Logger.getLogger(SchedulerImpl.class);
 
-	private static final String TASK_TYPE_SCHEDULED = "SCHEDULED";
+	private static final String TASK_TYPE_SCHEDULED = "SCHEDULED_TASK";
 
-	private static final String TASK_TYPE_RUNTASK = "RUNTASK";
+	private static final String TASK_TYPE_RUNTASK = "RUN_TASK";
+
+	private static final String TASK_TYPE_CANCELTASK = "CANCEL_TASK";
 
 	private ExecutorService executorService = Executors.newCachedThreadPool();
 
 	private Future<Void> future;
 
 	private ConcurrentHashMap<String, CopyOnWriteArrayList<TaskContena>> taskContenaMap = new ConcurrentHashMap<String, CopyOnWriteArrayList<TaskContena>>();
-
-	private List<Future<TaskExecutorService>> futureList = new CopyOnWriteArrayList<Future<TaskExecutorService>>();
 
 	private S2Container s2container;
 
@@ -118,6 +117,15 @@ public class SchedulerImpl implements Scheduler {
 		});
 	}
 
+	private boolean getShutdownTask(TaskProperties prop) {
+		boolean shutdown = prop.getShutdownTask();
+		return shutdown;
+	}
+
+	private void setShutdownTask(TaskProperties prop, boolean shutdownTask) {
+		prop.setShutdownTask(shutdownTask);
+	}
+
 	private boolean getEndTask(TaskProperties prop) {
 		boolean end = false;
 		Trigger trigger = prop.getTrigger();
@@ -129,17 +137,47 @@ public class SchedulerImpl implements Scheduler {
 		return end;
 	}
 
+	private void setEndTask(TaskProperties prop, boolean endTask) {
+		Trigger trigger = prop.getTrigger();
+		if (trigger == null) {
+			prop.setEndTask(endTask);
+		} else {
+			trigger.setEndTask(endTask);
+		}
+	}
+
 	private void taskEnder() throws InterruptedException {
-		CopyOnWriteArrayList<TaskContena> runTaskList = getTaskContenaMap(TASK_TYPE_RUNTASK);
-		for (TaskContena tc : runTaskList) {
+		final CopyOnWriteArrayList<TaskContena> runTaskList = getTaskContenaMap(TASK_TYPE_RUNTASK);
+		final CopyOnWriteArrayList<TaskContena> cancelTaskList = getTaskContenaMap(TASK_TYPE_CANCELTASK);
+		for (final TaskContena tc : runTaskList) {
 			final TaskExecutorService tes = (TaskExecutorService) s2container
 					.getComponent(TaskExecutorService.class);
 			tes.setTaskComponentDef(tc.getComponentDef());
 			tes.prepare();
-			if (getEndTask(tes)) {
-				tes.cancel();
-				while (!tes.await(1, TimeUnit.SECONDS)) {
-					;
+			if (this.getEndTask(tes)) {
+				this.setEndTask(tes, false);
+				final Future<TaskExecutorService> future = executorService
+						.submit(new Callable<TaskExecutorService>() {
+							public TaskExecutorService call() throws Exception {
+								synchronized (runTaskList) {
+									runTaskList.notify();
+								}
+								tes.cancel();
+								if (tes.await(30, TimeUnit.SECONDS) == false) {
+									// TODO キャンセルできなかった．例外をスローすること．
+								}
+								if (cancelTaskList.contains(tc)) {
+									cancelTaskList.remove(tc);
+								}
+								return tes;
+							}
+						});
+				synchronized (runTaskList) {
+					tc.setFuture(future);
+					tc.setTaskExecutorService(tes);
+					cancelTaskList.add(tc);
+					runTaskList.remove(tc);
+					runTaskList.wait();
 				}
 			}
 		}
@@ -150,10 +188,20 @@ public class SchedulerImpl implements Scheduler {
 		Trigger trigger = prop.getTrigger();
 		if (trigger == null) {
 			start = prop.getStartTask();
+			prop.setStartTask(false);
 		} else {
 			start = trigger.getStartTask();
 		}
 		return start;
+	}
+
+	private void setStartTask(TaskProperties prop, boolean startTask) {
+		Trigger trigger = prop.getTrigger();
+		if (trigger == null) {
+			prop.setStartTask(startTask);
+		} else {
+			trigger.setStartTask(startTask);
+		}
 	}
 
 	private void taskStarter() throws InterruptedException {
@@ -164,34 +212,39 @@ public class SchedulerImpl implements Scheduler {
 					.getComponent(TaskExecutorService.class);
 			tes.setTaskComponentDef(tc.getComponentDef());
 			tes.prepare();
-			if (getStartTask(tes)) {
+			if (this.getStartTask(tes)) {
+				this.setStartTask(tes, false);
 				// タスクの開始
 				Future<TaskExecutorService> future = executorService
 						.submit(new Callable<TaskExecutorService>() {
 							public TaskExecutorService call() throws Exception {
+								synchronized (runTaskList) {
+									runTaskList.notify();
+								}
 								String nextTaskName = tes.initialize();
 								if (nextTaskName != null) {
 									tes.execute(nextTaskName);
+									tes.waitOne();
 								}
-								// log.debug("waitOne s");
-								tes.waitOne();
-								// log.debug("waitOne e");
 								tes.destroy();
-								runTaskList.remove(tc);
+								if (runTaskList.contains(tc)) {
+									runTaskList.remove(tc);
+								}
 								return tes;
 							}
 						});
-
-				futureList.add(future);
-				tc.setFuture(future);
-				tc.setTaskExecutorService(tes);
-				runTaskList.add(tc);
-				taskList.remove(tc);
+				synchronized (runTaskList) {
+					tc.setFuture(future);
+					tc.setTaskExecutorService(tes);
+					runTaskList.add(tc);
+					taskList.remove(tc);
+					runTaskList.wait();
+				}
 			}
 		}
 	}
 
-	private void findComponent(S2Container targetContainer) {
+	private void findChildComponent(S2Container targetContainer) {
 		Traversal.forEachComponent(targetContainer,
 				new Traversal.ComponentDefHandler() {
 					public Object processComponent(ComponentDef componentDef) {
@@ -204,14 +257,6 @@ public class SchedulerImpl implements Scheduler {
 						return null;
 					}
 				});
-	}
-
-	private void findChildComponent(S2Container targetContainer) {
-		findComponent(targetContainer);
-		// for (int i = 0; i < targetContainer.getChildSize(); i++) {
-		// targetContainer = targetContainer.getChild(i);
-		// findChildComponent(targetContainer);
-		// }
 	}
 
 	private void getTaskFromContainer() {
