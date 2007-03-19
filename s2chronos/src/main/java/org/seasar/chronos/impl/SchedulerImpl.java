@@ -36,7 +36,7 @@ public class SchedulerImpl implements Scheduler {
 
 	private ExecutorService executorService = Executors.newCachedThreadPool();
 
-	private Future<Void> future;
+	private Future<Void> schedulerTaskFuture;
 
 	private ConcurrentHashMap<String, CopyOnWriteArrayList<TaskContena>> taskContenaMap = new ConcurrentHashMap<String, CopyOnWriteArrayList<TaskContena>>();
 
@@ -70,7 +70,7 @@ public class SchedulerImpl implements Scheduler {
 
 	public void join() throws InterruptedException {
 		try {
-			future.get();
+			this.schedulerTaskFuture.get();
 		} catch (ExecutionException e) {
 			;
 		}
@@ -106,7 +106,7 @@ public class SchedulerImpl implements Scheduler {
 		// コンテナからタスクを取りだす
 		this.getTaskFromContainer();
 
-		future = executorService.submit(new Callable<Void>() {
+		this.schedulerTaskFuture = executorService.submit(new Callable<Void>() {
 
 			public Void call() throws Exception {
 				while (true) {
@@ -275,12 +275,20 @@ public class SchedulerImpl implements Scheduler {
 	}
 
 	public boolean addTask(Object task) {
-
-		return false;
+		final CopyOnWriteArrayList<TaskContena> taskList = getTaskContenaMap(TASK_TYPE_SCHEDULED);
+		TaskContena tc = new TaskContena();
+		tc.setTarget(task);
+		tc.setTargetClass(task.getClass());
+		return taskList.add(tc);
 	}
 
 	public boolean removeTask(Object task) {
-
+		final CopyOnWriteArrayList<TaskContena> taskList = getTaskContenaMap(TASK_TYPE_SCHEDULED);
+		for (TaskContena tc : taskList) {
+			if (tc.getTarget() == task) {
+				return taskList.remove(tc);
+			}
+		}
 		return false;
 	}
 

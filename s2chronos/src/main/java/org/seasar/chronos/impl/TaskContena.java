@@ -17,6 +17,10 @@ public class TaskContena {
 
 	private Future<TaskExecutorService> future;
 
+	public TaskContena() {
+
+	}
+
 	public TaskContena(ComponentDef componentDef) {
 		this.setComponentDef(componentDef);
 		this.setTarget(componentDef.getComponent());
