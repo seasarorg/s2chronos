@@ -65,6 +65,10 @@ public class SchedulerImpl implements Scheduler {
 
 	}
 
+	public void removeListener(SchedulerEventListener listener) {
+
+	}
+
 	public SchedulerConfig getConfig() {
 		return null;
 	}
@@ -78,10 +82,6 @@ public class SchedulerImpl implements Scheduler {
 	}
 
 	public void pause() throws SchedulerException {
-
-	}
-
-	public void removeListener(SchedulerEventListener listener) {
 
 	}
 
