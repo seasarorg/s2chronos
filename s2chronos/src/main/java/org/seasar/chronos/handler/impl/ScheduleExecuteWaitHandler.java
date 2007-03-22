@@ -13,13 +13,12 @@ public class ScheduleExecuteWaitHandler extends AbstractScheduleExecuteHandler {
 				.getTaskContenaList(TaskStateType.SCHEDULED);
 		final List<TaskContena> runningTaskList = taskContenaStateManager
 				.getTaskContenaList(TaskStateType.RUNNING);
-
 		if (scheduledTaskList.size() == 0 && runningTaskList.size() == 0) {
 			synchronized (this) {
 				try {
 					this.wait();
 				} catch (InterruptedException e) {
-					;
+					log.log("WCHNS0001", null, e);
 				}
 			}
 		}
