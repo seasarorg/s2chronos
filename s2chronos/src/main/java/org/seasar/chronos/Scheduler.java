@@ -4,9 +4,9 @@ import org.seasar.chronos.exception.SchedulerException;
 
 public interface Scheduler {
 
-	public SchedulerConfig getConfig();
+	public SchedulerConfiguration getConfiguration();
 
-	public void setConfig(SchedulerConfig config);
+	public void setConfiguration(SchedulerConfiguration config);
 
 	public void start() throws SchedulerException;
 

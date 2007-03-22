@@ -6,7 +6,7 @@ package org.seasar.chronos;
  * @author junichi
  * 
  */
-public final class SchedulerConfig {
+public final class SchedulerConfiguration {
 
 	private boolean autoFinish;
 

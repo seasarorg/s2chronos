@@ -20,6 +20,7 @@ import org.seasar.framework.beans.factory.BeanDescFactory;
 import org.seasar.framework.container.ComponentDef;
 import org.seasar.framework.container.annotation.tiger.Binding;
 import org.seasar.framework.container.annotation.tiger.BindingType;
+import org.seasar.framework.container.hotdeploy.HotdeployUtil;
 
 public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 
@@ -107,6 +108,14 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 	}
 
 	public String initialize() throws InterruptedException {
+		try {
+			String className = taskComponentDef.getComponentClass().getName();
+			Class.forName(className);
+		} catch (ClassNotFoundException e) {
+			// TODO é©ìÆê∂ê¨Ç≥ÇÍÇΩ catch ÉuÉçÉbÉN
+			e.printStackTrace();
+		}
+		HotdeployUtil.start();
 
 		if (this.lifecycleMethodInvoker.hasMethod(METHOD_NAME_INITIALIZE)) {
 			AsyncResult ar = this.lifecycleMethodInvoker
@@ -168,6 +177,7 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 		}
 		this.taskMethodInvoker = null;
 		this.lifecycleMethodInvoker = null;
+		HotdeployUtil.stop();
 	}
 
 	private ExecutorService getJobMethodExecutorService() {

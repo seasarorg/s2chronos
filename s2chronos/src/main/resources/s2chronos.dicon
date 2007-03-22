@@ -4,7 +4,15 @@
 <components>
 	<component name="traceInterceptor" class="org.seasar.framework.aop.interceptors.TraceInterceptor"/>
 
-	<component class="org.seasar.chronos.impl.SchedulerImpl"/>
+	<component name="scheduleExecuteShutdownHandler" class="org.seasar.chronos.handler.impl.ScheduleExecuteShutdownHandler"/>
+	<component name="scheduleExecuteStartHandler" class="org.seasar.chronos.handler.impl.ScheduleExecuteStartHandler"/>
+	<component name="scheduleExecuteWaitHandler" class="org.seasar.chronos.handler.impl.ScheduleExecuteWaitHandler"/>
+
+	<component class="org.seasar.chronos.impl.SchedulerImpl">
+		<property name="scheduleExecuteShutdownHandler">scheduleExecuteShutdownHandler</property>
+		<property name="scheduleExecuteStartHandler">scheduleExecuteStartHandler</property>
+		<property name="scheduleExecuteWaitHandler">scheduleExecuteWaitHandler</property>
+	</component>
 	<component name="taskExecuteContext" class="org.seasar.chronos.task.state.TaskExecuteContext"/>
 	
 	<component class="org.seasar.chronos.task.impl.TaskExecutorServiceImpl" instance="prototype">

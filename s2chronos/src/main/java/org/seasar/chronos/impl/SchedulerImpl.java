@@ -1,23 +1,19 @@
 package org.seasar.chronos.impl;
 
+import java.util.List;
 import java.util.concurrent.Callable;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.concurrent.RejectedExecutionException;
-import java.util.concurrent.TimeUnit;
 
 import org.seasar.chronos.Scheduler;
-import org.seasar.chronos.SchedulerConfig;
+import org.seasar.chronos.SchedulerConfiguration;
 import org.seasar.chronos.SchedulerEventListener;
 import org.seasar.chronos.annotation.task.Task;
 import org.seasar.chronos.exception.SchedulerException;
-import org.seasar.chronos.task.TaskExecutorService;
-import org.seasar.chronos.task.TaskProperties;
-import org.seasar.chronos.trigger.Trigger;
+import org.seasar.chronos.handler.ScheduleExecuteHandler;
 import org.seasar.framework.container.ComponentDef;
 import org.seasar.framework.container.S2Container;
 import org.seasar.framework.container.util.Traversal;
@@ -27,42 +23,42 @@ public class SchedulerImpl implements Scheduler {
 
 	private static Logger log = Logger.getLogger(SchedulerImpl.class);
 
-	private static final String TASK_TYPE_SCHEDULED = "SCHEDULED_TASK";
-
-	private static final String TASK_TYPE_RUNINGTASK = "RUNING_TASK";
-
-	private static final String TASK_TYPE_CANCELTASK = "CANCEL_TASK";
-
-	private static final int SCAN_INTERVAL_TIME = 1000;
-
 	private ExecutorService executorService = Executors.newCachedThreadPool();
 
 	private Future<Void> schedulerTaskFuture;
 
-	private ConcurrentHashMap<String, CopyOnWriteArrayList<TaskContena>> taskContenaMap = new ConcurrentHashMap<String, CopyOnWriteArrayList<TaskContena>>();
+	private TaskContenaStateManager taskContenaStateManager = TaskContenaStateManager
+			.getInstance();
 
 	private S2Container s2container;
 
-	private SchedulerConfig config = defaultConfig;
+	private SchedulerConfiguration configuration = defaultConfiguration;
 
-	private static final SchedulerConfig defaultConfig = new SchedulerConfig();
+	private static final SchedulerConfiguration defaultConfiguration = new SchedulerConfiguration();
 
 	public void setS2Container(S2Container s2container) {
 		this.s2container = s2container;
 	}
 
-	private CopyOnWriteArrayList<TaskContena> getTaskContenaMap(String key) {
-		CopyOnWriteArrayList<TaskContena> result = this.taskContenaMap.get(key);
-		if (result == null) {
-			result = new CopyOnWriteArrayList<TaskContena>();
-			this.putMasterTaskContena(key, result);
-		}
-		return result;
+	private ScheduleExecuteHandler scheduleExecuteWaitHandler;
+
+	private ScheduleExecuteHandler scheduleExecuteStartHandler;
+
+	private ScheduleExecuteHandler scheduleExecuteShutdownHandler;
+
+	public void setScheduleExecuteShutdownHandler(
+			ScheduleExecuteHandler sheduleExecuteShutdownHandler) {
+		this.scheduleExecuteShutdownHandler = sheduleExecuteShutdownHandler;
 	}
 
-	private void putMasterTaskContena(String key,
-			CopyOnWriteArrayList<TaskContena> taskContenaList) {
-		this.taskContenaMap.put(key, taskContenaList);
+	public void setScheduleExecuteStartHandler(
+			ScheduleExecuteHandler sheduleExecuteStartHandler) {
+		this.scheduleExecuteStartHandler = sheduleExecuteStartHandler;
+	}
+
+	public void setScheduleExecuteWaitHandler(
+			ScheduleExecuteHandler sheduleExecuteWaitHandler) {
+		this.scheduleExecuteWaitHandler = sheduleExecuteWaitHandler;
 	}
 
 	public void addListener(SchedulerEventListener listener) {
@@ -73,8 +69,8 @@ public class SchedulerImpl implements Scheduler {
 
 	}
 
-	public SchedulerConfig getConfig() {
-		return config;
+	public SchedulerConfiguration getConfiguration() {
+		return configuration;
 	}
 
 	public void join() throws InterruptedException {
@@ -89,8 +85,8 @@ public class SchedulerImpl implements Scheduler {
 
 	}
 
-	public void setConfig(SchedulerConfig config) {
-		this.config = config;
+	public void setConfiguration(SchedulerConfiguration config) {
+		this.configuration = config;
 	}
 
 	public void shutdown() throws InterruptedException {
@@ -98,185 +94,47 @@ public class SchedulerImpl implements Scheduler {
 	}
 
 	public void shutdown(boolean waitAllJobFinish) throws InterruptedException {
-		final CopyOnWriteArrayList<TaskContena> cancelTaskList = getTaskContenaMap(TASK_TYPE_CANCELTASK);
-		taskFinisher(true);
-		for (TaskContena tc : cancelTaskList) {
-			while (!tc.getFuture().isDone()) {
-				;
-			}
+		// キャンセルしたタスクが残っていれば
+		final List<TaskContena> runningTaskList = taskContenaStateManager
+				.getTaskContenaList(TaskStateType.RUNNING);
+		for (TaskContena tc : runningTaskList) {
+			tc.getFuture().cancel(!waitAllJobFinish);
 		}
-		// this.executorService.shutdown();
-		// this.executorService.awaitTermination(3600, TimeUnit.SECONDS);
+		schedulerTaskFuture.cancel(!waitAllJobFinish);
 	}
 
 	private boolean getSchedulerFinish() {
-		final CopyOnWriteArrayList<TaskContena> runingTaskList = getTaskContenaMap(TASK_TYPE_RUNINGTASK);
-		if (runingTaskList.size() == 0 && config.isAutoFinish()) {
+		final List<TaskContena> runingTaskList = taskContenaStateManager
+				.getTaskContenaList(TaskStateType.RUNNING);
+		if (runingTaskList.size() == 0 && configuration.isAutoFinish()) {
 			return true;
 		}
 		return false;
 	}
 
 	public void start() throws SchedulerException {
-		// コンテナからタスクを取りだす
 		this.getTaskFromS2Container();
+		this.setupHandler();
 		this.schedulerTaskFuture = this.executorService
 				.submit(new Callable<Void>() {
 					public Void call() throws Exception {
-						while (true) {
-							TimeUnit.MILLISECONDS.sleep(SCAN_INTERVAL_TIME);
-							taskStarter();
-							taskFinisher();
-							if (getSchedulerFinish()) {
-								return null;
-							}
+						while (!getSchedulerFinish()) {
+							scheduleExecuteWaitHandler.handleRequest();
+							scheduleExecuteStartHandler.handleRequest();
+							scheduleExecuteShutdownHandler.handleRequest();
 						}
+						return null;
 					}
 				});
 	}
 
-	private boolean getShutdownTask(TaskProperties prop) {
-		boolean shutdown = prop.getShutdownTask();
-		return shutdown;
-	}
-
-	@SuppressWarnings("unused")
-	private void setShutdownTask(TaskProperties prop, boolean shutdownTask) {
-		prop.setShutdownTask(shutdownTask);
-	}
-
-	@SuppressWarnings("unused")
-	private boolean getEndTask(TaskProperties prop) {
-		boolean end = false;
-		Trigger trigger = prop.getTrigger();
-		if (trigger == null) {
-			end = prop.getEndTask();
-		} else {
-			end = trigger.getEndTask();
-		}
-		return end;
-	}
-
-	@SuppressWarnings("unused")
-	private void setEndTask(TaskProperties prop, boolean endTask) {
-		Trigger trigger = prop.getTrigger();
-		if (trigger == null) {
-			prop.setEndTask(endTask);
-		} else {
-			trigger.setEndTask(endTask);
-		}
-	}
-
-	private void taskFinisher() throws InterruptedException {
-		taskFinisher(false);
-	}
-
-	private void taskFinisher(boolean force) throws InterruptedException {
-		final CopyOnWriteArrayList<TaskContena> runingTaskList = getTaskContenaMap(TASK_TYPE_RUNINGTASK);
-		final CopyOnWriteArrayList<TaskContena> cancelTaskList = getTaskContenaMap(TASK_TYPE_CANCELTASK);
-		for (final TaskContena tc : runingTaskList) {
-			final TaskExecutorService tes = tc.getTaskExecutorService();
-			if (this.getShutdownTask(tes)) {
-				log.debug("shutdownTask on");
-				final Future<TaskExecutorService> future = this.executorService
-						.submit(new Callable<TaskExecutorService>() {
-							public TaskExecutorService call() throws Exception {
-								synchronized (runingTaskList) {
-									runingTaskList.notify();
-								}
-								log.debug("cancel start");
-								if (tes.cancel()) {
-									log.debug("cancel ok");
-									if (tes.await(30, TimeUnit.SECONDS) == false) {
-										// TODO キャンセルできなかった．例外をスローすること．
-									}
-									if (cancelTaskList.contains(tc)) {
-										cancelTaskList.remove(tc);
-									}
-								} else {
-									runingTaskList.add(tc);
-								}
-								log.debug("cancel end");
-								return tes;
-							}
-						});
-				synchronized (runingTaskList) {
-					tc.setFuture(future);
-					cancelTaskList.add(tc);
-					runingTaskList.remove(tc);
-					runingTaskList.wait();
-				}
-			}
-		}
-	}
-
-	private boolean getStartTask(TaskProperties prop) {
-		boolean start = false;
-		Trigger trigger = prop.getTrigger();
-		if (trigger == null) {
-			start = prop.getStartTask();
-			prop.setStartTask(false);
-		} else {
-			start = trigger.getStartTask();
-		}
-		return start;
-	}
-
-	@SuppressWarnings("unused")
-	private void setStartTask(TaskProperties prop, boolean startTask) {
-		Trigger trigger = prop.getTrigger();
-		if (trigger == null) {
-			prop.setStartTask(startTask);
-		} else {
-			trigger.setStartTask(startTask);
-		}
-	}
-
-	private void taskStarter() throws InterruptedException {
-		final CopyOnWriteArrayList<TaskContena> scheduledList = getTaskContenaMap(TASK_TYPE_SCHEDULED);
-		final CopyOnWriteArrayList<TaskContena> runingTaskList = getTaskContenaMap(TASK_TYPE_RUNINGTASK);
-		for (final TaskContena tc : scheduledList) {
-			final TaskExecutorService tes = (TaskExecutorService) s2container
-					.getComponent(TaskExecutorService.class);
-			tes.setTaskComponentDef(tc.getComponentDef());
-			tes.prepare();
-			if (this.getStartTask(tes)) {
-				// タスクの開始
-				Future<TaskExecutorService> future = executorService
-						.submit(new Callable<TaskExecutorService>() {
-							public TaskExecutorService call() throws Exception {
-								synchronized (runingTaskList) {
-									runingTaskList.notify();
-								}
-								log.debug("initialize start");
-								String nextTaskName = tes.initialize();
-								if (nextTaskName != null) {
-									try {
-										log.debug("execute start");
-										tes.execute(nextTaskName);
-										log.debug("waitOne start");
-										tes.waitOne();
-									} catch (RejectedExecutionException ex) {
-										log.debug(ex);
-									}
-								}
-								log.debug("destory start");
-								tes.destroy();
-								if (runingTaskList.contains(tc)) {
-									runingTaskList.remove(tc);
-								}
-								return tes;
-							}
-						});
-				synchronized (runingTaskList) {
-					tc.setFuture(future);
-					tc.setTaskExecutorService(tes);
-					runingTaskList.add(tc);
-					scheduledList.remove(tc);
-					runingTaskList.wait();
-				}
-			}
-		}
+	private void setupHandler() {
+		this.scheduleExecuteWaitHandler
+				.setExecutorService(this.executorService);
+		this.scheduleExecuteStartHandler
+				.setExecutorService(this.executorService);
+		this.scheduleExecuteShutdownHandler
+				.setExecutorService(this.executorService);
 	}
 
 	private void findChildComponent(S2Container targetContainer) {
@@ -286,7 +144,8 @@ public class SchedulerImpl implements Scheduler {
 						Class clazz = componentDef.getComponentClass();
 						Task task = (Task) clazz.getAnnotation(Task.class);
 						if (task != null) {
-							CopyOnWriteArrayList<TaskContena> list = getTaskContenaMap(TASK_TYPE_SCHEDULED);
+							CopyOnWriteArrayList<TaskContena> list = taskContenaStateManager
+									.getTaskContenaList(TaskStateType.SCHEDULED);
 							list.addIfAbsent(new TaskContena(componentDef));
 						}
 						return null;
@@ -300,15 +159,21 @@ public class SchedulerImpl implements Scheduler {
 	}
 
 	public boolean addTask(Object task) {
-		final CopyOnWriteArrayList<TaskContena> taskList = getTaskContenaMap(TASK_TYPE_SCHEDULED);
+		final CopyOnWriteArrayList<TaskContena> taskList = taskContenaStateManager
+				.getTaskContenaList(TaskStateType.SCHEDULED);
 		TaskContena tc = new TaskContena();
 		tc.setTarget(task);
 		tc.setTargetClass(task.getClass());
-		return taskList.add(tc);
+		boolean result = taskList.add(tc);
+		synchronized (this) {
+			this.notify();
+		}
+		return result;
 	}
 
 	public boolean removeTask(Object task) {
-		final CopyOnWriteArrayList<TaskContena> taskList = getTaskContenaMap(TASK_TYPE_SCHEDULED);
+		final CopyOnWriteArrayList<TaskContena> taskList = taskContenaStateManager
+				.getTaskContenaList(TaskStateType.SCHEDULED);
 		for (TaskContena tc : taskList) {
 			if (tc.getTarget() == task) {
 				return taskList.remove(tc);

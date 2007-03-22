@@ -5,7 +5,7 @@ import java.util.concurrent.Future;
 import org.seasar.chronos.task.TaskExecutorService;
 import org.seasar.framework.container.ComponentDef;
 
-class TaskContena {
+public class TaskContena {
 
 	private ComponentDef componentDef;
 
