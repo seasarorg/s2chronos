@@ -8,15 +8,14 @@ package org.seasar.chronos;
  */
 public final class SchedulerConfig {
 
-	private boolean autoShutdownWithFinshedAllJob;
+	private boolean autoFinish;
 
-	public boolean isAutoShutdownWithFinshedAllJob() {
-		return autoShutdownWithFinshedAllJob;
+	public boolean isAutoFinish() {
+		return autoFinish;
 	}
 
-	public void setAutoShutdownWithFinshedAllJob(
-			boolean autoShutdownWithFinshedAllJob) {
-		this.autoShutdownWithFinshedAllJob = autoShutdownWithFinshedAllJob;
+	public void setAutoFinish(boolean autoFinish) {
+		this.autoFinish = autoFinish;
 	}
 
 }

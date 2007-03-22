@@ -35,10 +35,10 @@ public class ExampleTask {
 
 	// ------------------- JOB GROUP A
 	// ジョブグループが開始したときに呼ばれます
-	// @Next("jobA")
-	// public void startGroupA() {
-	// log.info("startGroupA");
-	// }
+	@NextTask("jobA")
+	public void startGroupA() {
+		log.info("startGroupA");
+	}
 
 	@TaskGroup("groupA")
 	@NextTask("jobA")
@@ -179,13 +179,6 @@ public class ExampleTask {
 		return shutdownTask;
 	}
 
-	/*
-	 * private GenericTrigger trigger;
-	 * 
-	 * public Trigger getTrigger() { return trigger; }
-	 * 
-	 * public void setTrigger(GenericTrigger trigger) { this.trigger = trigger; }
-	 */
 	public void startScheduler() {
 		log.info("startScheduler");
 	}

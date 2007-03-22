@@ -43,6 +43,10 @@ public class SchedulerImpl implements Scheduler {
 
 	private S2Container s2container;
 
+	private SchedulerConfig config = defaultConfig;
+
+	private static final SchedulerConfig defaultConfig = new SchedulerConfig();
+
 	public void setS2Container(S2Container s2container) {
 		this.s2container = s2container;
 	}
@@ -70,7 +74,7 @@ public class SchedulerImpl implements Scheduler {
 	}
 
 	public SchedulerConfig getConfig() {
-		return null;
+		return config;
 	}
 
 	public void join() throws InterruptedException {
@@ -86,7 +90,7 @@ public class SchedulerImpl implements Scheduler {
 	}
 
 	public void setConfig(SchedulerConfig config) {
-
+		this.config = config;
 	}
 
 	public void shutdown() throws InterruptedException {
@@ -105,6 +109,14 @@ public class SchedulerImpl implements Scheduler {
 		// this.executorService.awaitTermination(3600, TimeUnit.SECONDS);
 	}
 
+	private boolean getSchedulerFinish() {
+		final CopyOnWriteArrayList<TaskContena> runingTaskList = getTaskContenaMap(TASK_TYPE_RUNINGTASK);
+		if (runingTaskList.size() == 0 && config.isAutoFinish()) {
+			return true;
+		}
+		return false;
+	}
+
 	public void start() throws SchedulerException {
 		// コンテナからタスクを取りだす
 		this.getTaskFromS2Container();
@@ -115,6 +127,9 @@ public class SchedulerImpl implements Scheduler {
 							TimeUnit.MILLISECONDS.sleep(SCAN_INTERVAL_TIME);
 							taskStarter();
 							taskFinisher();
+							if (getSchedulerFinish()) {
+								return null;
+							}
 						}
 					}
 				});
@@ -125,10 +140,12 @@ public class SchedulerImpl implements Scheduler {
 		return shutdown;
 	}
 
+	@SuppressWarnings("unused")
 	private void setShutdownTask(TaskProperties prop, boolean shutdownTask) {
 		prop.setShutdownTask(shutdownTask);
 	}
 
+	@SuppressWarnings("unused")
 	private boolean getEndTask(TaskProperties prop) {
 		boolean end = false;
 		Trigger trigger = prop.getTrigger();
@@ -140,6 +157,7 @@ public class SchedulerImpl implements Scheduler {
 		return end;
 	}
 
+	@SuppressWarnings("unused")
 	private void setEndTask(TaskProperties prop, boolean endTask) {
 		Trigger trigger = prop.getTrigger();
 		if (trigger == null) {
@@ -204,6 +222,7 @@ public class SchedulerImpl implements Scheduler {
 		return start;
 	}
 
+	@SuppressWarnings("unused")
 	private void setStartTask(TaskProperties prop, boolean startTask) {
 		Trigger trigger = prop.getTrigger();
 		if (trigger == null) {
