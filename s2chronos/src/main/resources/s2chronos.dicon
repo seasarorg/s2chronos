@@ -13,6 +13,7 @@
 		<property name="scheduleExecuteStartHandler">scheduleExecuteStartHandler</property>
 		<property name="scheduleExecuteWaitHandler">scheduleExecuteWaitHandler</property>
 	</component>
+	
 	<component name="taskExecuteContext" class="org.seasar.chronos.task.state.TaskExecuteContext"/>
 	
 	<component class="org.seasar.chronos.task.impl.TaskExecutorServiceImpl" instance="prototype">

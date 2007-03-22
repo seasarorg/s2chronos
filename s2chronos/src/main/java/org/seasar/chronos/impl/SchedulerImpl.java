@@ -155,7 +155,7 @@ public class SchedulerImpl implements Scheduler {
 
 	private void getTaskFromS2Container() {
 		S2Container target = this.s2container.getRoot();
-		findChildComponent(target);
+		this.findChildComponent(target);
 	}
 
 	public boolean addTask(Object task) {
