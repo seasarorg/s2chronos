@@ -3,14 +3,15 @@ package org.seasar.chronos.task.state.impl;
 import java.util.concurrent.TimeUnit;
 
 import org.seasar.chronos.task.state.TaskExecuteContext;
+import org.seasar.chronos.task.state.TaskExecuteState;
 import org.seasar.framework.container.ComponentDef;
 
 public class TaskExecuteStateInitialized extends AbstractTaskExecuteState {
 
-	private TaskExecuteStateNonInitialized taskExecuteStateNonInitialized;
+	private TaskExecuteState taskExecuteStateNonInitialized;
 
 	public void setTaskExecuteStateNonInitialized(
-			TaskExecuteStateNonInitialized taskExecuteStateNonInitialized) {
+			TaskExecuteState taskExecuteStateNonInitialized) {
 		this.taskExecuteStateNonInitialized = taskExecuteStateNonInitialized;
 	}
 
