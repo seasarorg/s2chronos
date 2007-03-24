@@ -12,4 +12,6 @@ public interface TaskExecuteStrategy extends TaskMethods, TaskProperties {
 	public void setTaskMethodExecuteHandler(
 			TaskExecuteHandler jobMethdoExecuteHandler);
 
+	public boolean checkMoveAnotherTask(String nextTaskName);
+
 }

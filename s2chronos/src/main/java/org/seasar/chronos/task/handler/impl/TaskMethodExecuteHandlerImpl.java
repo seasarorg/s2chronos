@@ -20,7 +20,10 @@ public class TaskMethodExecuteHandlerImpl extends AbstractTaskExecuteHandler {
 		String nextTaskName = startTaskName;
 		String lastTaskName = startTaskName;
 		while (true) {
-
+			if (getTaskExecuteStrategy().checkMoveAnotherTask(nextTaskName)) {
+				// TODO:nextTaskNameの外部タスクを起動する
+				break;
+			}
 			final String methodName = toMethodName(nextTaskName);
 
 			TaskMethodMetaData md = new TaskMethodMetaData(mi

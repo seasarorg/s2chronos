@@ -7,7 +7,7 @@ import org.seasar.chronos.annotation.task.method.NextTask;
 import org.seasar.chronos.annotation.type.JoinType;
 import org.seasar.framework.log.Logger;
 
-@Task
+@Task(name = "simple")
 public class SimpleTask {
 
 	private static Logger log = Logger.getLogger(SimpleTask.class);
@@ -53,6 +53,7 @@ public class SimpleTask {
 	}
 
 	// すべてのタスクが終了したら呼ばれる
+	// @NextTask("example")
 	public void destroy() {
 		log.info("destroy");
 	}

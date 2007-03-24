@@ -1,6 +1,7 @@
 package org.seasar.chronos.task;
 
 import org.seasar.chronos.ThreadPoolType;
+import org.seasar.chronos.threadpool.ThreadPool;
 import org.seasar.chronos.trigger.Trigger;
 import org.seasar.framework.container.ComponentDef;
 
@@ -29,5 +30,9 @@ public interface TaskProperties {
 	public Trigger getTrigger();
 
 	public void setTrigger(Trigger trigger);
+
+	public ThreadPool getThreadPool();
+
+	public void setThreadPool(ThreadPool threadPool);
 
 }

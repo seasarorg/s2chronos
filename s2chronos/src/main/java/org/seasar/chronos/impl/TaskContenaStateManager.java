@@ -1,5 +1,6 @@
 package org.seasar.chronos.impl;
 
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -11,6 +12,18 @@ public class TaskContenaStateManager {
 
 	private TaskContenaStateManager() {
 
+	}
+
+	public CopyOnWriteArrayList<TaskContena> getAllTaskContenaList() {
+		CopyOnWriteArrayList<TaskContena> result = new CopyOnWriteArrayList<TaskContena>();
+		Set<TaskStateType> e = this.taskContenaMap.keySet();
+		for (TaskStateType t : e) {
+			CopyOnWriteArrayList<TaskContena> l = this.taskContenaMap.get(t);
+			for (TaskContena tc : l) {
+				result.addIfAbsent(tc);
+			}
+		}
+		return result;
 	}
 
 	public CopyOnWriteArrayList<TaskContena> getTaskContenaList(

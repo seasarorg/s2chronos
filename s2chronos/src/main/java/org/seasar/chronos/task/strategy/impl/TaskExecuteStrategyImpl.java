@@ -1,18 +1,24 @@
 package org.seasar.chronos.task.strategy.impl;
 
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import org.seasar.chronos.ThreadPoolType;
+import org.seasar.chronos.annotation.task.Task;
 import org.seasar.chronos.delegate.AsyncResult;
 import org.seasar.chronos.delegate.MethodInvoker;
+import org.seasar.chronos.impl.TaskContena;
+import org.seasar.chronos.impl.TaskContenaStateManager;
 import org.seasar.chronos.task.TaskType;
 import org.seasar.chronos.task.Transition;
 import org.seasar.chronos.task.handler.TaskExecuteHandler;
 import org.seasar.chronos.task.impl.TaskMethodManager;
 import org.seasar.chronos.task.impl.TaskMethodMetaData;
 import org.seasar.chronos.task.strategy.TaskExecuteStrategy;
+import org.seasar.chronos.threadpool.ThreadPool;
 import org.seasar.chronos.trigger.Trigger;
 import org.seasar.framework.beans.BeanDesc;
 import org.seasar.framework.beans.PropertyDesc;
@@ -47,6 +53,8 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 	private static final ThreadPoolType DEFAULT_THREADPOOL_TYPE = ThreadPoolType.CACHED;
 
 	private static final int DEFAULT_THREAD_POOLSIZE = 1;
+
+	private static final String PROPERTY_NAME_THREADPOOL = "threadPool";
 
 	private Object task;
 
@@ -101,12 +109,29 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 
 		ExecutorService lifecycleMethodExecutorService = Executors
 				.newSingleThreadExecutor();
-		ExecutorService jobMethodExecutorService = getJobMethodExecutorService();
-
+		ThreadPool threadPool = this.getThreadPool();
+		ExecutorService jobMethodExecutorService = null;
+		if (threadPool == null) {
+			jobMethodExecutorService = createJobMethodExecutorService(this.task);
+		} else {
+			jobMethodExecutorService = getCacheExecutorsService(threadPool);
+		}
 		this.taskMethodInvoker = new MethodInvoker(jobMethodExecutorService,
 				this.task, this.beanDesc);
 		this.lifecycleMethodInvoker = new MethodInvoker(
 				lifecycleMethodExecutorService, this.task, this.beanDesc);
+	}
+
+	private static ConcurrentHashMap<ThreadPool, ExecutorService> threadPoolExecutorServiceMap = new ConcurrentHashMap<ThreadPool, ExecutorService>();
+
+	private ExecutorService getCacheExecutorsService(ThreadPool threadPool) {
+		ExecutorService executorService = threadPoolExecutorServiceMap
+				.get(threadPool);
+		if (executorService == null) {
+			executorService = createJobMethodExecutorService(threadPool);
+			threadPoolExecutorServiceMap.put(threadPool, executorService);
+		}
+		return executorService;
 	}
 
 	public String initialize() throws InterruptedException {
@@ -190,42 +215,49 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 		HotdeployUtil.stop();
 	}
 
-	private ExecutorService getJobMethodExecutorService() {
+	private ExecutorService createJobMethodExecutorService(Object target) {
 		ExecutorService result = null;
-		ThreadPoolType type = getThreadPoolType();
-
+		ThreadPoolType type = getThreadPoolType(target);
 		if (type == ThreadPoolType.FIXED) {
-			int threadSize = getThreadPoolSize();
+			int threadSize = getThreadPoolSize(target);
 			result = Executors.newFixedThreadPool(threadSize);
 		} else if (type == ThreadPoolType.CACHED) {
 			result = Executors.newCachedThreadPool();
 		} else if (type == ThreadPoolType.SINGLE) {
 			result = Executors.newSingleThreadExecutor();
 		} else if (type == ThreadPoolType.SCHEDULED) {
-			int threadSize = getThreadPoolSize();
+			int threadSize = getThreadPoolSize(target);
 			result = Executors.newScheduledThreadPool(threadSize);
 		}
 		return result;
 	}
 
-	public int getThreadPoolSize() {
+	private int getThreadPoolSize(Object target) {
 		Integer result = DEFAULT_THREAD_POOLSIZE;
 		if (this.beanDesc.hasPropertyDesc(PROPERTY_NAME_THREAD_POOL_SIZE)) {
 			PropertyDesc pd = this.beanDesc
 					.getPropertyDesc(PROPERTY_NAME_THREAD_POOL_SIZE);
-			result = (Integer) pd.getValue(this.task);
+			result = (Integer) pd.getValue(target);
 		}
 		return result;
 	}
 
-	public ThreadPoolType getThreadPoolType() {
+	public int getThreadPoolSize() {
+		return getThreadPoolSize(this.task);
+	}
+
+	private ThreadPoolType getThreadPoolType(Object target) {
 		ThreadPoolType type = DEFAULT_THREADPOOL_TYPE;
 		if (this.beanDesc.hasPropertyDesc(PROPERTY_NAME_THREAD_POOL_TYPE)) {
 			PropertyDesc pd = this.beanDesc
 					.getPropertyDesc(PROPERTY_NAME_THREAD_POOL_TYPE);
-			type = (ThreadPoolType) pd.getValue(this.task);
+			type = (ThreadPoolType) pd.getValue(target);
 		}
 		return type;
+	}
+
+	public ThreadPoolType getThreadPoolType() {
+		return getThreadPoolType(this.task);
 	}
 
 	public void setExecuted(boolean executed) {
@@ -319,12 +351,46 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 		}
 	}
 
+	public ThreadPool getThreadPool() {
+		ThreadPool result = null;
+		if (this.beanDesc.hasPropertyDesc(PROPERTY_NAME_THREADPOOL)) {
+			PropertyDesc pd = this.beanDesc
+					.getPropertyDesc(PROPERTY_NAME_THREADPOOL);
+			result = (ThreadPool) pd.getValue(this.task);
+		}
+		return result;
+	}
+
+	@Binding(bindingType = BindingType.NONE)
+	public void setThreadPool(ThreadPool threadPool) {
+		if (this.beanDesc.hasPropertyDesc(PROPERTY_NAME_THREADPOOL)) {
+			PropertyDesc pd = this.beanDesc
+					.getPropertyDesc(PROPERTY_NAME_THREADPOOL);
+			pd.setValue(this.task, threadPool);
+		}
+	}
+
 	public void waitOne() throws InterruptedException {
 		this.taskMethodInvoker.waitInvokes();
 	}
 
 	public void setGetterSignal(Object getterSignal) {
 		this.getterSignal = getterSignal;
+	}
+
+	public boolean checkMoveAnotherTask(String nextTaskName) {
+		TaskContenaStateManager tcsm = TaskContenaStateManager.getInstance();
+		CopyOnWriteArrayList<TaskContena> l = tcsm.getAllTaskContenaList();
+		for (TaskContena tc : l) {
+			Task task = (Task) tc.getTargetClass().getAnnotation(Task.class);
+			if (task == null) {
+				continue;
+			}
+			if (nextTaskName.equals(task.name())) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 }

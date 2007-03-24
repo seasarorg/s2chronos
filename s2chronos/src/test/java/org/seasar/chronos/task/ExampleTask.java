@@ -10,7 +10,7 @@ import org.seasar.chronos.annotation.task.method.TaskGroup;
 import org.seasar.chronos.annotation.type.JoinType;
 import org.seasar.framework.log.Logger;
 
-@Task
+@Task(name = "example")
 public class ExampleTask {
 
 	private Logger log = Logger.getLogger(ExampleTask.class);

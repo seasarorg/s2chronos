@@ -6,6 +6,7 @@ import org.seasar.chronos.ThreadPoolType;
 import org.seasar.chronos.task.TaskExecutorService;
 import org.seasar.chronos.task.state.TaskExecuteContext;
 import org.seasar.chronos.task.state.TaskExecuteState;
+import org.seasar.chronos.threadpool.ThreadPool;
 import org.seasar.chronos.trigger.Trigger;
 import org.seasar.framework.container.ComponentDef;
 import org.seasar.framework.container.annotation.tiger.Binding;
@@ -16,8 +17,6 @@ public class TaskExecutorServiceImpl implements TaskExecutorService {
 	private TaskExecuteContext taskExecuteContext;
 
 	private TaskExecuteState taskExecuteStateNonInitialized;
-
-	private Object getterSignal;
 
 	public TaskExecutorServiceImpl() {
 
@@ -114,6 +113,15 @@ public class TaskExecutorServiceImpl implements TaskExecutorService {
 	@Binding(bindingType = BindingType.NONE)
 	public void setTrigger(Trigger trigger) {
 		this.taskExecuteContext.getTaskExecuteStrategy().setTrigger(trigger);
+	}
+
+	public ThreadPool getThreadPool() {
+		return this.taskExecuteContext.getTaskExecuteStrategy().getThreadPool();
+	}
+
+	public void setThreadPool(ThreadPool threadPool) {
+		this.taskExecuteContext.getTaskExecuteStrategy().setThreadPool(
+				threadPool);
 	}
 
 	public void waitOne() throws InterruptedException {

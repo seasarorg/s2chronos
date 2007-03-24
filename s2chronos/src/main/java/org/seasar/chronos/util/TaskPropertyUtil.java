@@ -1,6 +1,8 @@
 package org.seasar.chronos.util;
 
+import org.seasar.chronos.ThreadPoolType;
 import org.seasar.chronos.task.TaskProperties;
+import org.seasar.chronos.threadpool.ThreadPool;
 import org.seasar.chronos.trigger.Trigger;
 
 public final class TaskPropertyUtil {
@@ -54,4 +56,27 @@ public final class TaskPropertyUtil {
 			trigger.setStartTask(startTask);
 		}
 	}
+
+	public static ThreadPoolType getThreadPoolType(TaskProperties prop) {
+		ThreadPoolType threadPoolType = null;
+		ThreadPool threadPool = prop.getThreadPool();
+		if (threadPool == null) {
+			return prop.getThreadPoolType();
+		} else {
+			threadPool.getThreadPoolType();
+		}
+		return threadPoolType;
+	}
+
+	public static int getThreadPoolSize(TaskProperties prop) {
+		int threadPoolSize = 1;
+		ThreadPool threadPool = prop.getThreadPool();
+		if (threadPool == null) {
+			return prop.getThreadPoolSize();
+		} else {
+			threadPool.getThreadPoolSize();
+		}
+		return threadPoolSize;
+	}
+
 }
