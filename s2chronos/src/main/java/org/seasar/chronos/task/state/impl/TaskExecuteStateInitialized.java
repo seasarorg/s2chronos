@@ -4,7 +4,6 @@ import java.util.concurrent.TimeUnit;
 
 import org.seasar.chronos.task.state.TaskExecuteContext;
 import org.seasar.chronos.task.state.TaskExecuteState;
-import org.seasar.framework.container.ComponentDef;
 
 public class TaskExecuteStateInitialized extends AbstractTaskExecuteState {
 
@@ -13,11 +12,6 @@ public class TaskExecuteStateInitialized extends AbstractTaskExecuteState {
 	public void setTaskExecuteStateNonInitialized(
 			TaskExecuteState taskExecuteStateNonInitialized) {
 		this.taskExecuteStateNonInitialized = taskExecuteStateNonInitialized;
-	}
-
-	@Override
-	public void setTaskComponentDef(ComponentDef taskComponentDef) {
-		this.getTaskExecuteStrategy().setTaskComponentDef(taskComponentDef);
 	}
 
 	@Override

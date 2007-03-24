@@ -11,6 +11,8 @@ public interface TaskExecuteState {
 
 	public void setTaskComponentDef(ComponentDef taskComponentDef);
 
+	public void setGetterSignal(Object getterSignal);
+
 	public void prepare(TaskExecuteContext context);
 
 	public String initialize(TaskExecuteContext context)

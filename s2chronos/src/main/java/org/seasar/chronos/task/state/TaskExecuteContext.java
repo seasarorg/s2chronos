@@ -13,6 +13,8 @@ public class TaskExecuteContext {
 
 	private ComponentDef taskComponentDef;
 
+	private Object getterSignal;
+
 	public TaskExecuteStrategy getTaskExecuteStrategy() {
 		return this.currentState.getTaskExecuteStrategy();
 	}
@@ -27,8 +29,14 @@ public class TaskExecuteContext {
 		this.taskComponentDef = taskComponentDef;
 	}
 
+	@Binding(bindingType = BindingType.NONE)
+	public void setGetterSignal(Object getterSignal) {
+		this.getterSignal = getterSignal;
+	}
+
 	public void prepare() {
 		this.currentState.setTaskComponentDef(this.taskComponentDef);
+		this.currentState.setGetterSignal(this.getterSignal);
 		this.currentState.prepare(this);
 	}
 

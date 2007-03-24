@@ -66,6 +66,8 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 
 	private TaskExecuteHandler taskGroupMethodExecuteHandler;
 
+	private Object getterSignal;
+
 	public TaskExecuteStrategyImpl() {
 
 	}
@@ -116,17 +118,24 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 			e.printStackTrace();
 		}
 		HotdeployUtil.start();
-
+		this.setExecuted(true);
 		if (this.lifecycleMethodInvoker.hasMethod(METHOD_NAME_INITIALIZE)) {
 			AsyncResult ar = this.lifecycleMethodInvoker
 					.beginInvoke(METHOD_NAME_INITIALIZE);
 			this.lifecycleMethodInvoker.endInvoke(ar);
 			TaskMethodMetaData md = new TaskMethodMetaData(this.beanDesc,
 					METHOD_NAME_INITIALIZE);
+			this.notifyGetterSignal();
 			return md.getNextTask();
 		}
 
 		return null;
+	}
+
+	private void notifyGetterSignal() {
+		synchronized (this.getterSignal) {
+			this.getterSignal.notify();
+		}
 	}
 
 	private Transition handleRequest(TaskExecuteHandler taskExecuteHandler,
@@ -143,20 +152,19 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 	}
 
 	public void execute(String startTaskName) throws InterruptedException {
-		this.setExecuted(true);
 		TaskType type = isGroupMethod(startTaskName) ? TaskType.JOBGROUP
 				: TaskType.JOB;
 		String nextTaskName = startTaskName;
 		while (true) {
 			TaskExecuteHandler teh = getTaskExecuteHandler(type);
 			Transition transition = handleRequest(teh, nextTaskName);
+			this.notifyGetterSignal();
 			if (transition.isProcessResult()) {
 				break;
 			}
 			type = (type == TaskType.JOB) ? TaskType.JOBGROUP : TaskType.JOB;
 			nextTaskName = transition.getNextTaskName();
 		}
-		this.setExecuted(false);
 	}
 
 	public boolean cancel() {
@@ -175,6 +183,8 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 					.beginInvoke(METHOD_NAME_DESTROY);
 			this.lifecycleMethodInvoker.endInvoke(ar);
 		}
+		this.setExecuted(false);
+		this.notifyGetterSignal();
 		this.taskMethodInvoker = null;
 		this.lifecycleMethodInvoker = null;
 		HotdeployUtil.stop();
@@ -311,6 +321,10 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 
 	public void waitOne() throws InterruptedException {
 		this.taskMethodInvoker.waitInvokes();
+	}
+
+	public void setGetterSignal(Object getterSignal) {
+		this.getterSignal = getterSignal;
 	}
 
 }

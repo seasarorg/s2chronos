@@ -167,7 +167,7 @@ public class ExampleTask {
 		return endTask;
 	}
 
-	private boolean shutdownTask = true;
+	private boolean shutdownTask = false;
 
 	// シャットダウンしたらfalseにします．
 	public void setShutdownTask(boolean shutdownTask) {

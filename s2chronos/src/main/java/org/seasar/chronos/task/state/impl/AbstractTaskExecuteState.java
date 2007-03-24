@@ -28,7 +28,13 @@ public abstract class AbstractTaskExecuteState implements TaskExecuteState {
 		context.changeState(nextState);
 	}
 
-	public abstract void setTaskComponentDef(ComponentDef taskComponentDef);
+	public void setTaskComponentDef(ComponentDef taskComponentDef) {
+		this.taskExecuteStrategy.setTaskComponentDef(taskComponentDef);
+	}
+
+	public void setGetterSignal(Object getterSignal) {
+		this.taskExecuteStrategy.setGetterSignal(getterSignal);
+	}
 
 	public abstract void waitOne() throws InterruptedException;
 

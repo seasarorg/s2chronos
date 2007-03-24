@@ -5,6 +5,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
 import java.util.concurrent.RejectedExecutionException;
 
+import org.seasar.chronos.Scheduler;
 import org.seasar.chronos.impl.TaskContena;
 import org.seasar.chronos.impl.TaskStateType;
 import org.seasar.chronos.task.TaskExecutorService;
@@ -19,6 +20,12 @@ public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler 
 		this.s2container = s2container;
 	}
 
+	private Scheduler scheduler;
+
+	public void setScheduler(Scheduler scheduler) {
+		this.scheduler = scheduler;
+	}
+
 	@Override
 	public void handleRequest() throws InterruptedException {
 		final List<TaskContena> scheduledTaskList = this.taskContenaStateManager
@@ -29,6 +36,7 @@ public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler 
 			final TaskExecutorService tes = (TaskExecutorService) s2container
 					.getComponent(TaskExecutorService.class);
 			tes.setTaskComponentDef(tc.getComponentDef());
+			tes.setGetterSignal(scheduler);
 			tes.prepare();
 			if (TaskPropertyUtil.getStartTask(tes)) {
 				// タスクの開始
@@ -40,6 +48,7 @@ public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler 
 								}
 								log.debug("initialize start");
 								String nextTaskName = tes.initialize();
+								log.debug("initialize end");
 								if (nextTaskName != null) {
 									try {
 										log.debug("execute start");
@@ -52,6 +61,7 @@ public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler 
 								}
 								log.debug("destory start");
 								tes.destroy();
+								log.debug("destory end");
 								if (runingTaskList.contains(tc)) {
 									runingTaskList.remove(tc);
 								}

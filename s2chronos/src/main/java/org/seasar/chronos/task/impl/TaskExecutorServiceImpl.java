@@ -5,7 +5,7 @@ import java.util.concurrent.TimeUnit;
 import org.seasar.chronos.ThreadPoolType;
 import org.seasar.chronos.task.TaskExecutorService;
 import org.seasar.chronos.task.state.TaskExecuteContext;
-import org.seasar.chronos.task.state.impl.TaskExecuteStateNonInitialized;
+import org.seasar.chronos.task.state.TaskExecuteState;
 import org.seasar.chronos.trigger.Trigger;
 import org.seasar.framework.container.ComponentDef;
 import org.seasar.framework.container.annotation.tiger.Binding;
@@ -15,16 +15,22 @@ public class TaskExecutorServiceImpl implements TaskExecutorService {
 
 	private TaskExecuteContext taskExecuteContext;
 
-	private TaskExecuteStateNonInitialized taskExecuteStateNonInitialized;
+	private TaskExecuteState taskExecuteStateNonInitialized;
+
+	private Object getterSignal;
 
 	public TaskExecutorServiceImpl() {
 
 	}
 
 	public void setTaskExecuteStateNonInitialized(
-			TaskExecuteStateNonInitialized taskExecuteStateNonInitialized) {
+			TaskExecuteState taskExecuteStateNonInitialized) {
 		this.taskExecuteStateNonInitialized = taskExecuteStateNonInitialized;
+	}
 
+	@Binding(bindingType = BindingType.NONE)
+	public void setGetterSignal(Object getterSignal) {
+		this.taskExecuteContext.setGetterSignal(getterSignal);
 	}
 
 	public void setTaskExecuteContext(TaskExecuteContext taskExecuteContext) {

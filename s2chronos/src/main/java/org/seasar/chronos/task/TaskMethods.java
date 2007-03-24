@@ -8,6 +8,8 @@ public interface TaskMethods {
 
 	public void setTaskComponentDef(ComponentDef taskComponentDef);
 
+	public void setGetterSignal(Object getterSignal);
+
 	public void prepare();
 
 	public String initialize() throws InterruptedException;
