@@ -8,7 +8,7 @@ public abstract class AbstractTrigger implements TaskTrigger {
 
 	private String name;
 
-	private Object job;
+	private Object task;
 
 	private String description;
 
@@ -31,7 +31,7 @@ public abstract class AbstractTrigger implements TaskTrigger {
 	}
 
 	public Object getTask() {
-		return job;
+		return task;
 	}
 
 	public String getName() {
@@ -54,8 +54,8 @@ public abstract class AbstractTrigger implements TaskTrigger {
 		this.id = id;
 	}
 
-	public void setTask(Object jobComponent) {
-		this.job = jobComponent;
+	public void setTask(Object task) {
+		this.task = task;
 	}
 
 	public void setName(String name) {

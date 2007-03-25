@@ -14,7 +14,7 @@ public interface Scheduler {
 
 	public void shutdown() throws InterruptedException;
 
-	public void shutdown(boolean waitAllJobFinish) throws InterruptedException;
+	public void shutdown(boolean waitAllTaskFinish) throws InterruptedException;
 
 	public void join() throws InterruptedException;
 

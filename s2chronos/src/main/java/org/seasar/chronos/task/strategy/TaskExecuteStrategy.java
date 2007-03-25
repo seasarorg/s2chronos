@@ -7,10 +7,10 @@ import org.seasar.chronos.task.handler.TaskExecuteHandler;
 public interface TaskExecuteStrategy extends TaskMethods, TaskProperties {
 
 	public void setTaskGroupMethodExecuteHandler(
-			TaskExecuteHandler jobGroupMethdoExecuteHandler);
+			TaskExecuteHandler taskGroupMethdoExecuteHandler);
 
 	public void setTaskMethodExecuteHandler(
-			TaskExecuteHandler jobMethdoExecuteHandler);
+			TaskExecuteHandler taskMethdoExecuteHandler);
 
 	public boolean checkMoveAnotherTask(String nextTaskName);
 

@@ -81,13 +81,13 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 	}
 
 	public void setTaskGroupMethodExecuteHandler(
-			TaskExecuteHandler jobGroupMethdoExecuteHandler) {
-		this.taskGroupMethodExecuteHandler = jobGroupMethdoExecuteHandler;
+			TaskExecuteHandler taskGroupMethdoExecuteHandler) {
+		this.taskGroupMethodExecuteHandler = taskGroupMethdoExecuteHandler;
 	}
 
 	public void setTaskMethodExecuteHandler(
-			TaskExecuteHandler jobMethdoExecuteHandler) {
-		this.taskMethodExecuteHandler = jobMethdoExecuteHandler;
+			TaskExecuteHandler taskMethdoExecuteHandler) {
+		this.taskMethodExecuteHandler = taskMethdoExecuteHandler;
 	}
 
 	private boolean isGroupMethod(String groupName) {

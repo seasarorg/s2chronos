@@ -26,7 +26,7 @@ public interface TaskTrigger {
 
 	public void setId(long triggerId);
 
-	public void setTask(Object jobComponent);
+	public void setTask(Object task);
 
 	public void setName(String name);
 

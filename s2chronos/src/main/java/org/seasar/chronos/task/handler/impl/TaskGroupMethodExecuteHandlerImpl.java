@@ -18,18 +18,18 @@ public class TaskGroupMethodExecuteHandlerImpl extends
 	private static Logger log = Logger
 			.getLogger(TaskGroupMethodExecuteHandlerImpl.class);
 
-	private TaskExecuteHandler jobMethodExecuteHandler;
+	private TaskExecuteHandler taskMethodExecuteHandler;
 
 	@Override
 	public void setMethodGroupMap(TaskMethodManager taskMethodManager) {
 		super.setMethodGroupMap(taskMethodManager);
-		jobMethodExecuteHandler.setMethodGroupMap(taskMethodManager);
+		taskMethodExecuteHandler.setMethodGroupMap(taskMethodManager);
 	}
 
 	@Override
 	public void setMethodInvoker(MethodInvoker methodInvoker) {
 		super.setMethodInvoker(methodInvoker);
-		jobMethodExecuteHandler.setMethodInvoker(methodInvoker);
+		taskMethodExecuteHandler.setMethodInvoker(methodInvoker);
 	}
 
 	private String getFirstFunction(String taskName) {
@@ -67,7 +67,7 @@ public class TaskGroupMethodExecuteHandlerImpl extends
 			return ts;
 		}
 
-		Transition transition = jobMethodExecuteHandler.handleRequest(nextTask);
+		Transition transition = taskMethodExecuteHandler.handleRequest(nextTask);
 
 		ts = this.getTerminateTransition();
 		if (ts != null) {
@@ -141,7 +141,7 @@ public class TaskGroupMethodExecuteHandlerImpl extends
 
 	public void setTaskMethodExecuteHandler(
 			TaskExecuteHandler jobMethodExecuteHandler) {
-		this.jobMethodExecuteHandler = jobMethodExecuteHandler;
+		this.taskMethodExecuteHandler = jobMethodExecuteHandler;
 	}
 
 }

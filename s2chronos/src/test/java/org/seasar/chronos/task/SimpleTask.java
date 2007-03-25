@@ -27,29 +27,29 @@ public class SimpleTask {
 
 	// タスクメソッドA 本体
 	// 遷移先を静的に設定し，非同期で実行
-	@NextTask("jobB")
+	@NextTask("taskB")
 	@JoinTask(JoinType.NoWait)
-	public void doJobA() {
-		log.info("doJobA");
+	public void doTaskA() {
+		log.info("doTaskA");
 	}
 
 	// タスクメソッドB 本体
 	// 同期で実行し遷移先を動的に指定する
 	@JoinTask(JoinType.Wait)
-	public String doJobB() {
-		log.info("doJobB");
+	public String doTaskB() {
+		log.info("doTaskB");
 		if (System.currentTimeMillis() % 2 == 0) {
-			return "jobA";
+			return "taskA";
 		}
-		return "jobC";
+		return "taskC";
 	}
 
 	// タスクメソッドC 本体
 	// 非同期に100個タスクメソッドを生成して実行
 	@JoinTask(JoinType.NoWait)
 	@CloneTask(100)
-	public void doJobC() {
-		log.info("doJobC");
+	public void doTaskC() {
+		log.info("doTaskC");
 	}
 
 	// すべてのタスクが終了したら呼ばれる

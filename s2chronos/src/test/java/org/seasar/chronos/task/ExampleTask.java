@@ -33,27 +33,27 @@ public class ExampleTask {
 		log.info("initialize");
 	}
 
-	// ------------------- JOB GROUP A
+	// ------------------- Task GROUP A
 	// ジョブグループが開始したときに呼ばれます
-	@NextTask("jobA")
+	@NextTask("taskA")
 	public void startGroupA() {
 		log.info("startGroupA");
 	}
 
 	@TaskGroup("groupA")
-	@NextTask("jobA")
+	@NextTask("taskA")
 	public void doHoge() {
 		log.info("doHoge");
 	}
 
 	// ジョブメソッドA
 	@TaskGroup("groupA")
-	@NextTask("jobB")
+	@NextTask("taskB")
 	@JoinTask(JoinType.NoWait)
 	public void doJobA() throws Exception {
 
 		try {
-			TimeUnit.SECONDS.sleep(10);
+			TimeUnit.SECONDS.sleep(1);
 		} catch (InterruptedException e) {
 			log.info(e);
 		}
@@ -65,7 +65,7 @@ public class ExampleTask {
 	// ジョブメソッドB
 	@TaskGroup("groupA")
 	@JoinTask(JoinType.NoWait)
-	public void doJobB() {
+	public void doTaskB() {
 		for (int i = 1; i < 5 && !this.shutdownTask; i++) {
 			try {
 				TimeUnit.SECONDS.sleep(10);
@@ -73,7 +73,7 @@ public class ExampleTask {
 				log.info(e);
 				break;
 			}
-			log.info("doJobB");
+			log.info("doTaskB");
 		}
 	}
 
@@ -86,8 +86,8 @@ public class ExampleTask {
 	// ジョブメソッドC
 	// @TaskGroup("groupB")
 	@NextTask("groupB")
-	public void doJobC() {
-		log.info("doJobC");
+	public void doTaskC() {
+		log.info("doTaskC");
 	}
 
 	// ------------------- JOB GROUP B
@@ -99,21 +99,21 @@ public class ExampleTask {
 
 	// ジョブメソッドD
 	@TaskGroup("groupB")
-	public void doJobD() {
-		log.info("doJobD");
+	public void doTaskD() {
+		log.info("doTaskD");
 	}
 
 	// ジョブグループが終了したときに呼ばれます
-	@NextTask("jobE")
+	@NextTask("taskE")
 	public void endGroupB() {
 		log.info("endGroupB");
 	}
 
 	// ------------------- JOB E
 	// ジョブE
-	@NextTask("jobF")
-	public void doJobE() {
-		log.info("doJobE");
+	@NextTask("taskF")
+	public void doTaskE() {
+		log.info("doTaskE");
 	}
 
 	// ------------------- JOB F

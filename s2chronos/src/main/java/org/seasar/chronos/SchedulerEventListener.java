@@ -6,10 +6,10 @@ public interface SchedulerEventListener {
 
 	public void shutdownScheduler(Scheduler scheduler);
 
-	public void startJob(Scheduler scheduler, Object job);
+	public void startJob(Scheduler scheduler, Object task);
 
-	public void endJob(Scheduler scheduler, Object job);
+	public void endJob(Scheduler scheduler, Object task);
 
-	public void cancelJob(Scheduler scheduler, Object job);
+	public void cancelJob(Scheduler scheduler, Object task);
 
 }

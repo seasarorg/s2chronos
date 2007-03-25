@@ -93,14 +93,14 @@ public class SchedulerImpl implements Scheduler {
 
 	}
 
-	public void shutdown(boolean waitAllJobFinish) throws InterruptedException {
+	public void shutdown(boolean waitAllTaskFinish) throws InterruptedException {
 		// キャンセルしたタスクが残っていれば
 		final List<TaskContena> runningTaskList = taskContenaStateManager
 				.getTaskContenaList(TaskStateType.RUNNING);
 		for (TaskContena tc : runningTaskList) {
-			tc.getFuture().cancel(!waitAllJobFinish);
+			tc.getFuture().cancel(!waitAllTaskFinish);
 		}
-		schedulerTaskFuture.cancel(!waitAllJobFinish);
+		schedulerTaskFuture.cancel(!waitAllTaskFinish);
 	}
 
 	private boolean getSchedulerFinish() {
