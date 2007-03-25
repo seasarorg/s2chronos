@@ -21,7 +21,6 @@ public class TaskExecuteContext {
 
 	public void changeState(TaskExecuteState nextState) {
 		this.currentState = nextState;
-
 	}
 
 	@Binding(bindingType = BindingType.NONE)
@@ -41,7 +40,6 @@ public class TaskExecuteContext {
 	}
 
 	public String initialize() throws InterruptedException {
-
 		return this.currentState.initialize(this);
 	}
 
@@ -64,7 +62,6 @@ public class TaskExecuteContext {
 
 	public void waitOne() throws InterruptedException {
 		this.currentState.waitOne();
-
 	}
 
 }

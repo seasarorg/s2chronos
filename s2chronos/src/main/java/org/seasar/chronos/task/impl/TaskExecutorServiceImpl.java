@@ -42,6 +42,15 @@ public class TaskExecutorServiceImpl implements TaskExecutorService {
 		this.taskExecuteContext.setTaskComponentDef(taskComponentDef);
 	}
 
+	public String getTaskName() {
+		return this.taskExecuteContext.getTaskExecuteStrategy().getTaskName();
+	}
+
+	public ComponentDef getTaskComponentDef() {
+		return this.taskExecuteContext.getTaskExecuteStrategy()
+				.getTaskComponentDef();
+	}
+
 	public boolean await(long time, TimeUnit timeUnit)
 			throws InterruptedException {
 		return taskExecuteContext.await(time, timeUnit);
@@ -127,16 +136,6 @@ public class TaskExecutorServiceImpl implements TaskExecutorService {
 
 	public void waitOne() throws InterruptedException {
 		this.taskExecuteContext.waitOne();
-
-	}
-
-	public String getTaskName() {
-		return this.taskExecuteContext.getTaskExecuteStrategy().getTaskName();
-	}
-
-	public ComponentDef getTaskComponentDef() {
-		return this.taskExecuteContext.getTaskExecuteStrategy()
-				.getTaskComponentDef();
 	}
 
 }

@@ -110,6 +110,14 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 
 		ExecutorService lifecycleMethodExecutorService = Executors
 				.newSingleThreadExecutor();
+		ExecutorService jobMethodExecutorService = getExecutorService();
+		this.taskMethodInvoker = new MethodInvoker(jobMethodExecutorService,
+				this.task, this.beanDesc);
+		this.lifecycleMethodInvoker = new MethodInvoker(
+				lifecycleMethodExecutorService, this.task, this.beanDesc);
+	}
+
+	private ExecutorService getExecutorService() {
 		TaskThreadPool taskThreadPool = this.getThreadPool();
 		ExecutorService jobMethodExecutorService = null;
 		if (taskThreadPool == null) {
@@ -117,10 +125,7 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 		} else {
 			jobMethodExecutorService = getCacheExecutorsService(taskThreadPool);
 		}
-		this.taskMethodInvoker = new MethodInvoker(jobMethodExecutorService,
-				this.task, this.beanDesc);
-		this.lifecycleMethodInvoker = new MethodInvoker(
-				lifecycleMethodExecutorService, this.task, this.beanDesc);
+		return jobMethodExecutorService;
 	}
 
 	private static ConcurrentHashMap<TaskThreadPool, ExecutorService> threadPoolExecutorServiceMap = new ConcurrentHashMap<TaskThreadPool, ExecutorService>();
