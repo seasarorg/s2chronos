@@ -113,7 +113,7 @@ public class SchedulerImpl implements Scheduler {
 	}
 
 	public void start() throws SchedulerException {
-		this.getTaskFromS2Container();
+		this.registTaskFromS2Container();
 		this.setupHandler();
 		this.schedulerTaskFuture = this.executorService
 				.submit(new Callable<Void>() {
@@ -137,7 +137,7 @@ public class SchedulerImpl implements Scheduler {
 				.setExecutorService(this.executorService);
 	}
 
-	private void findChildComponent(S2Container targetContainer) {
+	private void registChildTaskComponent(S2Container targetContainer) {
 		Traversal.forEachComponent(targetContainer,
 				new Traversal.ComponentDefHandler() {
 					public Object processComponent(ComponentDef componentDef) {
@@ -153,9 +153,9 @@ public class SchedulerImpl implements Scheduler {
 				});
 	}
 
-	private void getTaskFromS2Container() {
+	private void registTaskFromS2Container() {
 		S2Container target = this.s2container.getRoot();
-		this.findChildComponent(target);
+		this.registChildTaskComponent(target);
 	}
 
 	public boolean addTask(Object task) {

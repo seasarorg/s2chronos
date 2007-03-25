@@ -16,12 +16,11 @@ public class TaskContenaStateManager {
 
 	public CopyOnWriteArrayList<TaskContena> getAllTaskContenaList() {
 		CopyOnWriteArrayList<TaskContena> result = new CopyOnWriteArrayList<TaskContena>();
-		Set<TaskStateType> e = this.taskContenaMap.keySet();
-		for (TaskStateType t : e) {
-			CopyOnWriteArrayList<TaskContena> l = this.taskContenaMap.get(t);
-			for (TaskContena tc : l) {
-				result.addIfAbsent(tc);
-			}
+		Set<TaskStateType> set = this.taskContenaMap.keySet();
+		for (TaskStateType type : set) {
+			CopyOnWriteArrayList<TaskContena> list = this.taskContenaMap
+					.get(type);
+			result.addAllAbsent(list);
 		}
 		return result;
 	}
