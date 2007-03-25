@@ -9,5 +9,8 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 public @interface Task {
 
-	String name();
+	public static final String TASK_NAME_NULL = "";
+
+	String name() default TASK_NAME_NULL;
+
 }

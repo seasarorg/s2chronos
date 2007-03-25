@@ -46,7 +46,7 @@ public class ScheduleExecuteShutdownHandler extends
 							}
 						});
 				synchronized (runingTaskList) {
-					tc.setFuture(future);
+					tc.setTaskStaterFuture(future);
 					cancelTaskList.add(tc);
 					runingTaskList.remove(tc);
 					runingTaskList.wait();

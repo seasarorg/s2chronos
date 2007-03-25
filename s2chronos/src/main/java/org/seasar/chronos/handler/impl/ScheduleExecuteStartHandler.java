@@ -40,7 +40,7 @@ public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler 
 			tes.prepare();
 			if (TaskPropertyUtil.getStartTask(tes)) {
 				// タスクの開始
-				Future<TaskExecutorService> future = executorService
+				Future<TaskExecutorService> taskStaterFuture = executorService
 						.submit(new Callable<TaskExecutorService>() {
 							public TaskExecutorService call() throws Exception {
 								synchronized (runingTaskList) {
@@ -69,7 +69,7 @@ public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler 
 							}
 						});
 				synchronized (runingTaskList) {
-					tc.setFuture(future);
+					tc.setTaskStaterFuture(taskStaterFuture);
 					tc.setTaskExecutorService(tes);
 					runingTaskList.add(tc);
 					scheduledTaskList.remove(tc);

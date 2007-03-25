@@ -51,11 +51,11 @@ public class TaskContena {
 		this.targetClass = targetClass;
 	}
 
-	public Future<TaskExecutorService> getFuture() {
+	public Future<TaskExecutorService> getTaskStaterFuture() {
 		return future;
 	}
 
-	public void setFuture(Future<TaskExecutorService> future) {
+	public void setTaskStaterFuture(Future<TaskExecutorService> future) {
 		this.future = future;
 	}
 

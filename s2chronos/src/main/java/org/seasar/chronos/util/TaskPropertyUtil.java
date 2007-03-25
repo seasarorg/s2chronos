@@ -1,11 +1,22 @@
 package org.seasar.chronos.util;
 
 import org.seasar.chronos.TaskThreadPool;
-import org.seasar.chronos.ThreadPoolType;
 import org.seasar.chronos.TaskTrigger;
+import org.seasar.chronos.ThreadPoolType;
+import org.seasar.chronos.annotation.task.Task;
 import org.seasar.chronos.task.TaskProperties;
 
 public final class TaskPropertyUtil {
+
+	public static String getTaskName(TaskProperties prop) {
+		String taskName = prop.getTaskName();
+		if (taskName == null) {
+			Class clazz = prop.getTaskComponentDef().getComponentClass();
+			Task task = (Task) clazz.getAnnotation(Task.class);
+			return task != null ? task.name() : taskName;
+		}
+		return taskName;
+	}
 
 	public static boolean getShutdownTask(TaskProperties prop) {
 		boolean shutdown = prop.getShutdownTask();

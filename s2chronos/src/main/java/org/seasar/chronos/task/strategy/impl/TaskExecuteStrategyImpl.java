@@ -7,8 +7,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import org.seasar.chronos.TaskThreadPool;
-import org.seasar.chronos.ThreadPoolType;
 import org.seasar.chronos.TaskTrigger;
+import org.seasar.chronos.ThreadPoolType;
 import org.seasar.chronos.annotation.task.Task;
 import org.seasar.chronos.delegate.AsyncResult;
 import org.seasar.chronos.delegate.MethodInvoker;
@@ -56,6 +56,8 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 
 	private static final String PROPERTY_NAME_THREADPOOL = "threadPool";
 
+	private static final String PROPERTY_NAME_TASKNAME = "taskName";
+
 	private Object task;
 
 	private Class taskClass;
@@ -96,7 +98,6 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 
 	public void setTaskComponentDef(ComponentDef taskComponentDef) {
 		this.taskComponentDef = taskComponentDef;
-
 	}
 
 	public void prepare() {
@@ -124,7 +125,8 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 
 	private static ConcurrentHashMap<TaskThreadPool, ExecutorService> threadPoolExecutorServiceMap = new ConcurrentHashMap<TaskThreadPool, ExecutorService>();
 
-	private ExecutorService getCacheExecutorsService(TaskThreadPool taskThreadPool) {
+	private ExecutorService getCacheExecutorsService(
+			TaskThreadPool taskThreadPool) {
 		ExecutorService executorService = threadPoolExecutorServiceMap
 				.get(taskThreadPool);
 		if (executorService == null) {
@@ -391,6 +393,20 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 			}
 		}
 		return false;
+	}
+
+	public String getTaskName() {
+		String result = null;
+		if (this.beanDesc.hasPropertyDesc(PROPERTY_NAME_TASKNAME)) {
+			PropertyDesc pd = this.beanDesc
+					.getPropertyDesc(PROPERTY_NAME_TASKNAME);
+			result = (String) pd.getValue(this.task);
+		}
+		return result;
+	}
+
+	public ComponentDef getTaskComponentDef() {
+		return this.taskComponentDef;
 	}
 
 }

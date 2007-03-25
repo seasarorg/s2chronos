@@ -3,8 +3,8 @@ package org.seasar.chronos.task.impl;
 import java.util.concurrent.TimeUnit;
 
 import org.seasar.chronos.TaskThreadPool;
-import org.seasar.chronos.ThreadPoolType;
 import org.seasar.chronos.TaskTrigger;
+import org.seasar.chronos.ThreadPoolType;
 import org.seasar.chronos.task.TaskExecutorService;
 import org.seasar.chronos.task.state.TaskExecuteContext;
 import org.seasar.chronos.task.state.TaskExecuteState;
@@ -112,7 +112,8 @@ public class TaskExecutorServiceImpl implements TaskExecutorService {
 
 	@Binding(bindingType = BindingType.NONE)
 	public void setTrigger(TaskTrigger taskTrigger) {
-		this.taskExecuteContext.getTaskExecuteStrategy().setTrigger(taskTrigger);
+		this.taskExecuteContext.getTaskExecuteStrategy()
+				.setTrigger(taskTrigger);
 	}
 
 	public TaskThreadPool getThreadPool() {
@@ -127,6 +128,15 @@ public class TaskExecutorServiceImpl implements TaskExecutorService {
 	public void waitOne() throws InterruptedException {
 		this.taskExecuteContext.waitOne();
 
+	}
+
+	public String getTaskName() {
+		return this.taskExecuteContext.getTaskExecuteStrategy().getTaskName();
+	}
+
+	public ComponentDef getTaskComponentDef() {
+		return this.taskExecuteContext.getTaskExecuteStrategy()
+				.getTaskComponentDef();
 	}
 
 }

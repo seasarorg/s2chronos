@@ -16,6 +16,7 @@ import org.seasar.chronos.SchedulerEventListener;
 import org.seasar.chronos.annotation.task.Task;
 import org.seasar.chronos.exception.SchedulerException;
 import org.seasar.chronos.handler.ScheduleExecuteHandler;
+import org.seasar.chronos.util.TaskPropertyUtil;
 import org.seasar.framework.container.ComponentDef;
 import org.seasar.framework.container.S2Container;
 import org.seasar.framework.container.util.Traversal;
@@ -109,7 +110,9 @@ public class SchedulerImpl implements Scheduler {
 			tc.getTaskExecutorService().cancel();
 			while (!tc.getTaskExecutorService()
 					.await(10, TimeUnit.MILLISECONDS)) {
-				log.debug("Task‚ÌShutdown ‘Ò‹@’†");
+				String taskName = TaskPropertyUtil.getTaskName(tc
+						.getTaskExecutorService());
+				log.debug("Task (" + taskName + ") ‚ÌShutdown ‘Ò‹@’†");
 			}
 		}
 		schedulerTaskFuture.cancel(!waitAllTaskFinish);
