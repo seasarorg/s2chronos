@@ -17,7 +17,7 @@ public class TaskExecuteStateNonInitialized extends AbstractTaskExecuteState {
 	@Override
 	public boolean await(TaskExecuteContext context, long time,
 			TimeUnit timeUnit) throws InterruptedException {
-		return false;
+		return true;
 	}
 
 	@Override

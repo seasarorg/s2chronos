@@ -2,11 +2,13 @@ package org.seasar.chronos.impl;
 
 import java.util.List;
 import java.util.concurrent.Callable;
+import java.util.concurrent.CancellationException;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 import org.seasar.chronos.Scheduler;
 import org.seasar.chronos.SchedulerConfiguration;
@@ -76,8 +78,14 @@ public class SchedulerImpl implements Scheduler {
 	public void join() throws InterruptedException {
 		try {
 			this.schedulerTaskFuture.get();
+		} catch (CancellationException e) {
+			log.debug(e);
+			while (!schedulerTaskFuture.isDone()) {
+				log.debug("キャンセル待機中");
+			}
+			log.debug("キャンセルチェック完了");
 		} catch (ExecutionException e) {
-			;
+			log.debug(e);
 		}
 	}
 
@@ -90,7 +98,7 @@ public class SchedulerImpl implements Scheduler {
 	}
 
 	public void shutdown() throws InterruptedException {
-
+		shutdown(false);
 	}
 
 	public void shutdown(boolean waitAllTaskFinish) throws InterruptedException {
@@ -98,7 +106,11 @@ public class SchedulerImpl implements Scheduler {
 		final List<TaskContena> runningTaskList = taskContenaStateManager
 				.getTaskContenaList(TaskStateType.RUNNING);
 		for (TaskContena tc : runningTaskList) {
-			tc.getFuture().cancel(!waitAllTaskFinish);
+			tc.getTaskExecutorService().cancel();
+			while (!tc.getTaskExecutorService()
+					.await(10, TimeUnit.MILLISECONDS)) {
+				log.debug("TaskのShutdown 待機中");
+			}
 		}
 		schedulerTaskFuture.cancel(!waitAllTaskFinish);
 	}

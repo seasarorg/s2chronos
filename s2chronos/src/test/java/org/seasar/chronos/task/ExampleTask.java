@@ -50,12 +50,12 @@ public class ExampleTask {
 	@TaskGroup("groupA")
 	@NextTask("taskB")
 	@JoinTask(JoinType.NoWait)
-	public void doJobA() throws Exception {
+	public void doTaskA() throws Exception {
 
 		try {
 			TimeUnit.SECONDS.sleep(1);
 		} catch (InterruptedException e) {
-			log.info(e);
+			log.info("doTaskAÇ≈InterruptedExceptionÇ™î≠ê∂ÇµÇ‹ÇµÇΩÅDíÜífÇµÇ‹Ç∑", e);
 		}
 
 		// this.endTask = true;
@@ -70,7 +70,7 @@ public class ExampleTask {
 			try {
 				TimeUnit.SECONDS.sleep(10);
 			} catch (InterruptedException e) {
-				log.info(e);
+				log.info("doTaskBÇ≈InterruptedExceptionÇ™î≠ê∂ÇµÇ‹ÇµÇΩÅDíÜífÇµÇ‹Ç∑", e);
 				break;
 			}
 			log.info("doTaskB");
