@@ -1,11 +1,11 @@
 package org.seasar.chronos.task.handler.impl;
 
+import org.seasar.chronos.TaskTrigger;
 import org.seasar.chronos.delegate.MethodInvoker;
 import org.seasar.chronos.task.Transition;
 import org.seasar.chronos.task.handler.TaskExecuteHandler;
 import org.seasar.chronos.task.impl.TaskMethodManager;
 import org.seasar.chronos.task.strategy.TaskExecuteStrategy;
-import org.seasar.chronos.trigger.Trigger;
 import org.seasar.framework.log.Logger;
 
 public abstract class AbstractTaskExecuteHandler implements TaskExecuteHandler {
@@ -79,9 +79,9 @@ public abstract class AbstractTaskExecuteHandler implements TaskExecuteHandler {
 
 	protected Transition getTerminateTransition(String lastTaskName) {
 		boolean terminate = false;
-		Trigger trigger = getTaskExecuteStrategy().getTrigger();
-		if (trigger != null) {
-			terminate = trigger.getEndTask();
+		TaskTrigger taskTrigger = getTaskExecuteStrategy().getTrigger();
+		if (taskTrigger != null) {
+			terminate = taskTrigger.getEndTask();
 		} else {
 			terminate = getTaskExecuteStrategy().getEndTask();
 		}

@@ -1,8 +1,8 @@
 package org.seasar.chronos.task;
 
+import org.seasar.chronos.TaskThreadPool;
 import org.seasar.chronos.ThreadPoolType;
-import org.seasar.chronos.threadpool.ThreadPool;
-import org.seasar.chronos.trigger.Trigger;
+import org.seasar.chronos.TaskTrigger;
 import org.seasar.framework.container.ComponentDef;
 
 public interface TaskProperties {
@@ -27,12 +27,12 @@ public interface TaskProperties {
 
 	public void setShutdownTask(boolean shutdownTask);
 
-	public Trigger getTrigger();
+	public TaskTrigger getTrigger();
 
-	public void setTrigger(Trigger trigger);
+	public void setTrigger(TaskTrigger taskTrigger);
 
-	public ThreadPool getThreadPool();
+	public TaskThreadPool getThreadPool();
 
-	public void setThreadPool(ThreadPool threadPool);
+	public void setThreadPool(TaskThreadPool taskThreadPool);
 
 }

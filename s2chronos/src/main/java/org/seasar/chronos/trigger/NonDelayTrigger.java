@@ -1,6 +1,6 @@
-package org.seasar.chronos.trigger.impl;
+package org.seasar.chronos.trigger;
 
-public class GenericNonDelayTrigger extends AbstractTrigger {
+public class NonDelayTrigger extends AbstractTrigger {
 
 	public boolean getStartTask() {
 		return true;

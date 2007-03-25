@@ -6,7 +6,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+import org.seasar.chronos.TaskThreadPool;
 import org.seasar.chronos.ThreadPoolType;
+import org.seasar.chronos.TaskTrigger;
 import org.seasar.chronos.annotation.task.Task;
 import org.seasar.chronos.delegate.AsyncResult;
 import org.seasar.chronos.delegate.MethodInvoker;
@@ -18,8 +20,6 @@ import org.seasar.chronos.task.handler.TaskExecuteHandler;
 import org.seasar.chronos.task.impl.TaskMethodManager;
 import org.seasar.chronos.task.impl.TaskMethodMetaData;
 import org.seasar.chronos.task.strategy.TaskExecuteStrategy;
-import org.seasar.chronos.threadpool.ThreadPool;
-import org.seasar.chronos.trigger.Trigger;
 import org.seasar.framework.beans.BeanDesc;
 import org.seasar.framework.beans.PropertyDesc;
 import org.seasar.framework.beans.factory.BeanDescFactory;
@@ -109,12 +109,12 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 
 		ExecutorService lifecycleMethodExecutorService = Executors
 				.newSingleThreadExecutor();
-		ThreadPool threadPool = this.getThreadPool();
+		TaskThreadPool taskThreadPool = this.getThreadPool();
 		ExecutorService jobMethodExecutorService = null;
-		if (threadPool == null) {
+		if (taskThreadPool == null) {
 			jobMethodExecutorService = createJobMethodExecutorService(this.task);
 		} else {
-			jobMethodExecutorService = getCacheExecutorsService(threadPool);
+			jobMethodExecutorService = getCacheExecutorsService(taskThreadPool);
 		}
 		this.taskMethodInvoker = new MethodInvoker(jobMethodExecutorService,
 				this.task, this.beanDesc);
@@ -122,14 +122,14 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 				lifecycleMethodExecutorService, this.task, this.beanDesc);
 	}
 
-	private static ConcurrentHashMap<ThreadPool, ExecutorService> threadPoolExecutorServiceMap = new ConcurrentHashMap<ThreadPool, ExecutorService>();
+	private static ConcurrentHashMap<TaskThreadPool, ExecutorService> threadPoolExecutorServiceMap = new ConcurrentHashMap<TaskThreadPool, ExecutorService>();
 
-	private ExecutorService getCacheExecutorsService(ThreadPool threadPool) {
+	private ExecutorService getCacheExecutorsService(TaskThreadPool taskThreadPool) {
 		ExecutorService executorService = threadPoolExecutorServiceMap
-				.get(threadPool);
+				.get(taskThreadPool);
 		if (executorService == null) {
-			executorService = createJobMethodExecutorService(threadPool);
-			threadPoolExecutorServiceMap.put(threadPool, executorService);
+			executorService = createJobMethodExecutorService(taskThreadPool);
+			threadPoolExecutorServiceMap.put(taskThreadPool, executorService);
 		}
 		return executorService;
 	}
@@ -332,41 +332,41 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 		}
 	}
 
-	public Trigger getTrigger() {
-		Trigger result = null;
+	public TaskTrigger getTrigger() {
+		TaskTrigger result = null;
 		if (this.beanDesc.hasPropertyDesc(PROPERTY_NAME_TRIGGER)) {
 			PropertyDesc pd = this.beanDesc
 					.getPropertyDesc(PROPERTY_NAME_TRIGGER);
-			result = (Trigger) pd.getValue(this.task);
+			result = (TaskTrigger) pd.getValue(this.task);
 		}
 		return result;
 	}
 
 	@Binding(bindingType = BindingType.NONE)
-	public void setTrigger(Trigger trigger) {
+	public void setTrigger(TaskTrigger taskTrigger) {
 		if (this.beanDesc.hasPropertyDesc(PROPERTY_NAME_TRIGGER)) {
 			PropertyDesc pd = this.beanDesc
 					.getPropertyDesc(PROPERTY_NAME_TRIGGER);
-			pd.setValue(this.task, trigger);
+			pd.setValue(this.task, taskTrigger);
 		}
 	}
 
-	public ThreadPool getThreadPool() {
-		ThreadPool result = null;
+	public TaskThreadPool getThreadPool() {
+		TaskThreadPool result = null;
 		if (this.beanDesc.hasPropertyDesc(PROPERTY_NAME_THREADPOOL)) {
 			PropertyDesc pd = this.beanDesc
 					.getPropertyDesc(PROPERTY_NAME_THREADPOOL);
-			result = (ThreadPool) pd.getValue(this.task);
+			result = (TaskThreadPool) pd.getValue(this.task);
 		}
 		return result;
 	}
 
 	@Binding(bindingType = BindingType.NONE)
-	public void setThreadPool(ThreadPool threadPool) {
+	public void setThreadPool(TaskThreadPool taskThreadPool) {
 		if (this.beanDesc.hasPropertyDesc(PROPERTY_NAME_THREADPOOL)) {
 			PropertyDesc pd = this.beanDesc
 					.getPropertyDesc(PROPERTY_NAME_THREADPOOL);
-			pd.setValue(this.task, threadPool);
+			pd.setValue(this.task, taskThreadPool);
 		}
 	}
 

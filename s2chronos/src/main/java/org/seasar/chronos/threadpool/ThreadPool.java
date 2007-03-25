@@ -1,15 +1,28 @@
 package org.seasar.chronos.threadpool;
 
+import org.seasar.chronos.TaskThreadPool;
 import org.seasar.chronos.ThreadPoolType;
 
-public interface ThreadPool {
+public class ThreadPool implements TaskThreadPool {
 
-	public void setThreadPoolType(ThreadPoolType threadPoolType);
+	private ThreadPoolType threadPoolType;
 
-	public void setThreadPoolSize(int threadPoolSize);
+	private int threadPoolSize;
 
-	public ThreadPoolType getThreadPoolType();
+	public int getThreadPoolSize() {
+		return threadPoolSize;
+	}
 
-	public int getThreadPoolSize();
+	public ThreadPoolType getThreadPoolType() {
+		return threadPoolType;
+	}
+
+	public void setThreadPoolSize(int threadPoolSize) {
+		this.threadPoolSize = threadPoolSize;
+	}
+
+	public void setThreadPoolType(ThreadPoolType threadPoolType) {
+		this.threadPoolType = threadPoolType;
+	}
 
 }

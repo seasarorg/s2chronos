@@ -1,19 +1,21 @@
-package org.seasar.chronos.trigger.impl;
+package org.seasar.chronos.trigger;
 
 import java.util.ArrayList;
 import java.util.Date;
 
-public class GenericCronTrigger extends AbstractTrigger {
+import org.seasar.chronos.trigger.cron.CronExpression;
+
+public class CronTrigger extends AbstractTrigger {
 
 	private CronExpression expression;
 
 	private ArrayList<Date> startTimeList;
 
-	public GenericCronTrigger() {
+	public CronTrigger() {
 
 	}
 
-	public GenericCronTrigger(String name) {
+	public CronTrigger(String name) {
 		super(name);
 	}
 

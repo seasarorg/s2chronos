@@ -1,8 +1,8 @@
-package org.seasar.chronos.trigger.impl;
+package org.seasar.chronos.trigger;
 
-import org.seasar.chronos.trigger.Trigger;
+import org.seasar.chronos.TaskTrigger;
 
-public abstract class AbstractTrigger implements Trigger {
+public abstract class AbstractTrigger implements TaskTrigger {
 
 	private long id;
 

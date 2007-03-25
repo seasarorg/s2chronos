@@ -2,12 +2,12 @@ package org.seasar.chronos.task.impl;
 
 import java.util.concurrent.TimeUnit;
 
+import org.seasar.chronos.TaskThreadPool;
 import org.seasar.chronos.ThreadPoolType;
+import org.seasar.chronos.TaskTrigger;
 import org.seasar.chronos.task.TaskExecutorService;
 import org.seasar.chronos.task.state.TaskExecuteContext;
 import org.seasar.chronos.task.state.TaskExecuteState;
-import org.seasar.chronos.threadpool.ThreadPool;
-import org.seasar.chronos.trigger.Trigger;
 import org.seasar.framework.container.ComponentDef;
 import org.seasar.framework.container.annotation.tiger.Binding;
 import org.seasar.framework.container.annotation.tiger.BindingType;
@@ -92,7 +92,7 @@ public class TaskExecutorServiceImpl implements TaskExecutorService {
 				.getThreadPoolType();
 	}
 
-	public Trigger getTrigger() {
+	public TaskTrigger getTrigger() {
 		return this.taskExecuteContext.getTaskExecuteStrategy().getTrigger();
 	}
 
@@ -111,17 +111,17 @@ public class TaskExecutorServiceImpl implements TaskExecutorService {
 	}
 
 	@Binding(bindingType = BindingType.NONE)
-	public void setTrigger(Trigger trigger) {
-		this.taskExecuteContext.getTaskExecuteStrategy().setTrigger(trigger);
+	public void setTrigger(TaskTrigger taskTrigger) {
+		this.taskExecuteContext.getTaskExecuteStrategy().setTrigger(taskTrigger);
 	}
 
-	public ThreadPool getThreadPool() {
+	public TaskThreadPool getThreadPool() {
 		return this.taskExecuteContext.getTaskExecuteStrategy().getThreadPool();
 	}
 
-	public void setThreadPool(ThreadPool threadPool) {
+	public void setThreadPool(TaskThreadPool taskThreadPool) {
 		this.taskExecuteContext.getTaskExecuteStrategy().setThreadPool(
-				threadPool);
+				taskThreadPool);
 	}
 
 	public void waitOne() throws InterruptedException {

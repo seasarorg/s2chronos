@@ -1,6 +1,6 @@
-package org.seasar.chronos.trigger.impl;
+package org.seasar.chronos.trigger;
 
-public class GenericDelayTrigger extends AbstractTrigger {
+public class DelayTrigger extends AbstractTrigger {
 
 	private long delay = 0;
 

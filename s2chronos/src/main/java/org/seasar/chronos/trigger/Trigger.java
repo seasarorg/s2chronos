@@ -1,33 +1,71 @@
 package org.seasar.chronos.trigger;
 
-public interface Trigger {
+import java.util.Date;
 
-	public boolean getStartTask();
+public class Trigger extends AbstractTrigger {
 
-	public void setStartTask(boolean startTask);
+	private Date startTime;
 
-	public boolean getEndTask();
+	private Date endTime;
 
-	public void setEndTask(boolean endTask);
+	public Trigger() {
 
-	public String getDescription();
+	}
 
-	public long getId();
+	public Trigger(String name) {
+		super(name);
+	}
 
-	public Object getTask();
+	public void setStartTime(Date startDate) {
+		this.startTime = startDate;
+	}
 
-	public String getName();
+	public Date getStartTime() {
+		return startTime;
+	}
 
-	public boolean isExecuted();
+	public void setEndTime(Date endDate) {
+		this.endTime = endDate;
+	}
 
-	public void setDescription(String description);
+	public Date getEndTime() {
+		return endTime;
+	}
 
-	public void setExecuted(boolean executed);
+	public boolean getStartTask() {
 
-	public void setId(long triggerId);
+		if (this.isExecuted()) {
+			return false;
+		}
 
-	public void setTask(Object jobComponent);
+		boolean startTimeCheck = false;
 
-	public void setName(String name);
+		// 開始時刻の確認
+		if (startTime != null) {
+			startTimeCheck = (System.currentTimeMillis() >= startTime.getTime());
+		}
+
+		return startTimeCheck;
+	}
+
+	public boolean getEndTask() {
+
+		boolean endTimeCheck = false;
+
+		// 終了時刻の確認
+		if (endTime != null) {
+			endTimeCheck = (System.currentTimeMillis() >= endTime.getTime());
+		}
+
+		return endTimeCheck;
+	}
+
+	public void setStartTask(boolean startTask) {
+
+	}
+
+	public void setEndTask(boolean endTask) {
+
+	}
 
 }

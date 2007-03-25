@@ -1,4 +1,4 @@
-package org.seasar.chronos.trigger.impl;
+package org.seasar.chronos.trigger.cron;
 
 import java.util.ArrayList;
 import java.util.Calendar;

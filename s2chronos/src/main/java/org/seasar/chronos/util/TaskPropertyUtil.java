@@ -1,9 +1,9 @@
 package org.seasar.chronos.util;
 
+import org.seasar.chronos.TaskThreadPool;
 import org.seasar.chronos.ThreadPoolType;
+import org.seasar.chronos.TaskTrigger;
 import org.seasar.chronos.task.TaskProperties;
-import org.seasar.chronos.threadpool.ThreadPool;
-import org.seasar.chronos.trigger.Trigger;
 
 public final class TaskPropertyUtil {
 
@@ -18,63 +18,63 @@ public final class TaskPropertyUtil {
 
 	public static boolean getEndTask(TaskProperties prop) {
 		boolean end = false;
-		Trigger trigger = prop.getTrigger();
-		if (trigger == null) {
+		TaskTrigger taskTrigger = prop.getTrigger();
+		if (taskTrigger == null) {
 			end = prop.getEndTask();
 		} else {
-			end = trigger.getEndTask();
+			end = taskTrigger.getEndTask();
 		}
 		return end;
 	}
 
 	public static void setEndTask(TaskProperties prop, boolean endTask) {
-		Trigger trigger = prop.getTrigger();
-		if (trigger == null) {
+		TaskTrigger taskTrigger = prop.getTrigger();
+		if (taskTrigger == null) {
 			prop.setEndTask(endTask);
 		} else {
-			trigger.setEndTask(endTask);
+			taskTrigger.setEndTask(endTask);
 		}
 	}
 
 	public static boolean getStartTask(TaskProperties prop) {
 		boolean start = false;
-		Trigger trigger = prop.getTrigger();
-		if (trigger == null) {
+		TaskTrigger taskTrigger = prop.getTrigger();
+		if (taskTrigger == null) {
 			start = prop.getStartTask();
 			prop.setStartTask(false);
 		} else {
-			start = trigger.getStartTask();
+			start = taskTrigger.getStartTask();
 		}
 		return start;
 	}
 
 	public static void setStartTask(TaskProperties prop, boolean startTask) {
-		Trigger trigger = prop.getTrigger();
-		if (trigger == null) {
+		TaskTrigger taskTrigger = prop.getTrigger();
+		if (taskTrigger == null) {
 			prop.setStartTask(startTask);
 		} else {
-			trigger.setStartTask(startTask);
+			taskTrigger.setStartTask(startTask);
 		}
 	}
 
 	public static ThreadPoolType getThreadPoolType(TaskProperties prop) {
 		ThreadPoolType threadPoolType = null;
-		ThreadPool threadPool = prop.getThreadPool();
-		if (threadPool == null) {
+		TaskThreadPool taskThreadPool = prop.getThreadPool();
+		if (taskThreadPool == null) {
 			return prop.getThreadPoolType();
 		} else {
-			threadPool.getThreadPoolType();
+			taskThreadPool.getThreadPoolType();
 		}
 		return threadPoolType;
 	}
 
 	public static int getThreadPoolSize(TaskProperties prop) {
 		int threadPoolSize = 1;
-		ThreadPool threadPool = prop.getThreadPool();
-		if (threadPool == null) {
+		TaskThreadPool taskThreadPool = prop.getThreadPool();
+		if (taskThreadPool == null) {
 			return prop.getThreadPoolSize();
 		} else {
-			threadPool.getThreadPoolSize();
+			taskThreadPool.getThreadPoolSize();
 		}
 		return threadPoolSize;
 	}
