@@ -1,20 +1,16 @@
 package org.seasar.chronos;
 
-import org.seasar.chronos.exception.SchedulerException;
-
 public interface Scheduler {
 
 	public SchedulerConfiguration getConfiguration();
 
 	public void setConfiguration(SchedulerConfiguration config);
 
-	public void start() throws SchedulerException;
+	public void start();
 
-	public void pause() throws SchedulerException;
+	public void pause();
 
 	public void shutdown() throws InterruptedException;
-
-	public void shutdown(boolean waitAllTaskFinish) throws InterruptedException;
 
 	public void join() throws InterruptedException;
 

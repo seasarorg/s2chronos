@@ -3,15 +3,10 @@ package org.seasar.chronos.task.state;
 import java.util.concurrent.TimeUnit;
 
 import org.seasar.chronos.task.strategy.TaskExecuteStrategy;
-import org.seasar.framework.container.ComponentDef;
 
 public interface TaskExecuteState {
 
 	public TaskExecuteStrategy getTaskExecuteStrategy();
-
-	public void setTaskComponentDef(ComponentDef taskComponentDef);
-
-	public void setGetterSignal(Object getterSignal);
 
 	public void prepare(TaskExecuteContext context);
 

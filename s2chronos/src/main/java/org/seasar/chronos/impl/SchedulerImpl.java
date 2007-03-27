@@ -9,12 +9,12 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.seasar.chronos.Scheduler;
 import org.seasar.chronos.SchedulerConfiguration;
 import org.seasar.chronos.SchedulerEventListener;
 import org.seasar.chronos.annotation.task.Task;
-import org.seasar.chronos.exception.SchedulerException;
 import org.seasar.chronos.handler.ScheduleExecuteHandler;
 import org.seasar.chronos.util.TaskPropertyUtil;
 import org.seasar.framework.container.ComponentDef;
@@ -48,6 +48,8 @@ public class SchedulerImpl implements Scheduler {
 	private ScheduleExecuteHandler scheduleExecuteStartHandler;
 
 	private ScheduleExecuteHandler scheduleExecuteShutdownHandler;
+
+	private AtomicBoolean pause = new AtomicBoolean();
 
 	public void setScheduleExecuteShutdownHandler(
 			ScheduleExecuteHandler sheduleExecuteShutdownHandler) {
@@ -90,8 +92,9 @@ public class SchedulerImpl implements Scheduler {
 		}
 	}
 
-	public void pause() throws SchedulerException {
-
+	public void pause() {
+		pause.set(!pause.get());
+		this.notify();
 	}
 
 	public void setConfiguration(SchedulerConfiguration config) {
@@ -99,10 +102,6 @@ public class SchedulerImpl implements Scheduler {
 	}
 
 	public void shutdown() throws InterruptedException {
-		shutdown(false);
-	}
-
-	public void shutdown(boolean waitAllTaskFinish) throws InterruptedException {
 		// キャンセルしたタスクが残っていれば
 		final List<TaskContena> runningTaskList = taskContenaStateManager
 				.getTaskContenaList(TaskStateType.RUNNING);
@@ -115,7 +114,7 @@ public class SchedulerImpl implements Scheduler {
 				log.debug("Task (" + taskName + ") のShutdown 待機中");
 			}
 		}
-		schedulerTaskFuture.cancel(!waitAllTaskFinish);
+		schedulerTaskFuture.cancel(true);
 	}
 
 	private boolean getSchedulerFinish() {
@@ -127,7 +126,7 @@ public class SchedulerImpl implements Scheduler {
 		return false;
 	}
 
-	public void start() throws SchedulerException {
+	public void start() {
 		this.registTaskFromS2Container();
 		this.setupHandler();
 		this.schedulerTaskFuture = this.executorService
@@ -146,6 +145,7 @@ public class SchedulerImpl implements Scheduler {
 	private void setupHandler() {
 		this.scheduleExecuteWaitHandler
 				.setExecutorService(this.executorService);
+		this.scheduleExecuteWaitHandler.setPause(this.pause);
 		this.scheduleExecuteStartHandler
 				.setExecutorService(this.executorService);
 		this.scheduleExecuteShutdownHandler

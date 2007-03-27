@@ -4,7 +4,6 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
 import org.seasar.chronos.Scheduler;
-import org.seasar.chronos.exception.SchedulerException;
 import org.seasar.framework.log.Logger;
 
 public class S2ChronosServletContextListener implements ServletContextListener {
@@ -32,11 +31,7 @@ public class S2ChronosServletContextListener implements ServletContextListener {
 	}
 
 	public void contextInitialized(ServletContextEvent arg0) {
-		try {
-			S2ChronosServletContextListener.scheduler.start();
-		} catch (SchedulerException e) {
-			log.error(e);
-		}
+		S2ChronosServletContextListener.scheduler.start();
 	}
 
 }

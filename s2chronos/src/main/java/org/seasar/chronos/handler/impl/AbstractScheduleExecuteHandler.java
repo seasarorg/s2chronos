@@ -1,6 +1,7 @@
 package org.seasar.chronos.handler.impl;
 
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.seasar.chronos.handler.ScheduleExecuteHandler;
 import org.seasar.chronos.impl.TaskContenaStateManager;
@@ -22,6 +23,12 @@ public abstract class AbstractScheduleExecuteHandler implements
 	@Binding(bindingType = BindingType.NONE)
 	public void setExecutorService(ExecutorService executorService) {
 		this.executorService = executorService;
+	}
+
+	protected AtomicBoolean pause;
+
+	public void setPause(AtomicBoolean pause) {
+		this.pause = pause;
 	}
 
 	public abstract void handleRequest() throws InterruptedException;

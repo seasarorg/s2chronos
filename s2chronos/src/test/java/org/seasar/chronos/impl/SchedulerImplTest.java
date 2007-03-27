@@ -3,7 +3,6 @@ package org.seasar.chronos.impl;
 import java.util.concurrent.TimeUnit;
 
 import org.seasar.chronos.Scheduler;
-import org.seasar.chronos.exception.SchedulerException;
 import org.seasar.extension.unit.S2TestCase;
 
 public class SchedulerImplTest extends S2TestCase {
@@ -34,10 +33,7 @@ public class SchedulerImplTest extends S2TestCase {
 			TimeUnit.SECONDS.sleep(5);
 			scheduler.shutdown();
 			scheduler.join();
-		} catch (SchedulerException e) {
-			e.printStackTrace();
 		} catch (InterruptedException e) {
-			// TODO é©ìÆê∂ê¨Ç≥ÇÍÇΩ catch ÉuÉçÉbÉN
 			e.printStackTrace();
 		}
 

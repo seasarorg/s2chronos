@@ -34,8 +34,9 @@ public class TaskExecuteContext {
 	}
 
 	public void prepare() {
-		this.currentState.setTaskComponentDef(this.taskComponentDef);
-		this.currentState.setGetterSignal(this.getterSignal);
+		this.getTaskExecuteStrategy()
+				.setTaskComponentDef(this.taskComponentDef);
+		this.getTaskExecuteStrategy().setGetterSignal(this.getterSignal);
 		this.currentState.prepare(this);
 	}
 

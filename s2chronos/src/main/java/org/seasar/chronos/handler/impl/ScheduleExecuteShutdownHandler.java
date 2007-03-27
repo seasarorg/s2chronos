@@ -32,14 +32,15 @@ public class ScheduleExecuteShutdownHandler extends
 								log.debug("cancel start");
 								if (tes.cancel()) {
 									log.debug("cancel ok");
-									if (tes.await(30, TimeUnit.SECONDS) == false) {
-										// TODO キャンセルできなかった．例外をスローすること．
+									while (!tes
+											.await(20, TimeUnit.MILLISECONDS)) {
+										log.debug("cancel wait");
 									}
 									if (cancelTaskList.contains(tc)) {
 										cancelTaskList.remove(tc);
 									}
 								} else {
-									runingTaskList.add(tc);
+									log.debug("cancel error!");
 								}
 								log.debug("cancel end");
 								return tes;

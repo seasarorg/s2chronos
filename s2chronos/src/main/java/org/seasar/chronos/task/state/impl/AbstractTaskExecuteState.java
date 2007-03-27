@@ -5,7 +5,6 @@ import java.util.concurrent.TimeUnit;
 import org.seasar.chronos.task.state.TaskExecuteContext;
 import org.seasar.chronos.task.state.TaskExecuteState;
 import org.seasar.chronos.task.strategy.TaskExecuteStrategy;
-import org.seasar.framework.container.ComponentDef;
 import org.seasar.framework.log.Logger;
 
 public abstract class AbstractTaskExecuteState implements TaskExecuteState {
@@ -26,10 +25,6 @@ public abstract class AbstractTaskExecuteState implements TaskExecuteState {
 	protected synchronized void changeState(TaskExecuteContext context,
 			TaskExecuteState nextState) {
 		context.changeState(nextState);
-	}
-
-	public void setTaskComponentDef(ComponentDef taskComponentDef) {
-		this.taskExecuteStrategy.setTaskComponentDef(taskComponentDef);
 	}
 
 	public void setGetterSignal(Object getterSignal) {
