@@ -20,7 +20,8 @@ public class ScheduleExecuteWaitHandler extends AbstractScheduleExecuteHandler {
 				.getTaskContenaList(TaskStateType.SCHEDULED);
 		final List<TaskContena> runningTaskList = taskContenaStateManager
 				.getTaskContenaList(TaskStateType.RUNNING);
-		if (scheduledTaskList.size() == 0 && runningTaskList.size() == 0) {
+		if (this.pause.get() || scheduledTaskList.size() == 0
+				&& runningTaskList.size() == 0) {
 			synchronized (scheduler) {
 				log.debug("scheduler.wait start");
 				try {

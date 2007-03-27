@@ -74,6 +74,8 @@ public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler 
 					runingTaskList.add(tc);
 					scheduledTaskList.remove(tc);
 					runingTaskList.wait();
+					log.debug("Task " + TaskPropertyUtil.getTaskName(tes)
+							+ " Start");
 				}
 			}
 		}

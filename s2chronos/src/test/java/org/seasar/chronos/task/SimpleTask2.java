@@ -8,9 +8,9 @@ import org.seasar.chronos.annotation.type.JoinType;
 import org.seasar.framework.log.Logger;
 
 @Task(name = "simple")
-public class SimpleTask {
+public class SimpleTask2 {
 
-	private static Logger log = Logger.getLogger(SimpleTask.class);
+	private static Logger log = Logger.getLogger(SimpleTask2.class);
 
 	private boolean startTask = true;
 
