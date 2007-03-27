@@ -52,7 +52,6 @@ public final class TaskPropertyUtil {
 		TaskTrigger taskTrigger = prop.getTrigger();
 		if (taskTrigger == null) {
 			start = prop.getStartTask();
-			prop.setStartTask(false);
 		} else {
 			start = taskTrigger.getStartTask();
 		}

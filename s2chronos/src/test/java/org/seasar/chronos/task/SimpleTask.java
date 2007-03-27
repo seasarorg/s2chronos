@@ -20,7 +20,7 @@ public class SimpleTask {
 	}
 
 	// タスクが実行されるときに最初に呼ばれる
-	@NextTask("groupA")
+	@NextTask("taskA")
 	public void initialize() {
 		log.info("initialize");
 	}
@@ -47,7 +47,7 @@ public class SimpleTask {
 	// タスクメソッドC 本体
 	// 非同期に100個タスクメソッドを生成して実行
 	@JoinTask(JoinType.NoWait)
-	@CloneTask(100)
+	@CloneTask(3)
 	public void doTaskC() {
 		log.info("doTaskC");
 	}
