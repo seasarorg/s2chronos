@@ -22,7 +22,7 @@ public class SimpleTask {
 	// タスクが実行されるときに最初に呼ばれる
 	@NextTask("taskA")
 	public void initialize() {
-		log.info("initialize");
+		log.info("SimpleTask::initialize");
 	}
 
 	// タスクメソッドA 本体
@@ -30,14 +30,14 @@ public class SimpleTask {
 	@NextTask("taskB")
 	@JoinTask(JoinType.NoWait)
 	public void doTaskA() {
-		log.info("doTaskA");
+		log.info("SimpleTask::doTaskA");
 	}
 
 	// タスクメソッドB 本体
 	// 同期で実行し遷移先を動的に指定する
 	@JoinTask(JoinType.Wait)
 	public String doTaskB() {
-		log.info("doTaskB");
+		log.info("SimpleTask::doTaskB");
 		if (System.currentTimeMillis() % 2 == 0) {
 			return "taskA";
 		}
@@ -49,13 +49,13 @@ public class SimpleTask {
 	@JoinTask(JoinType.NoWait)
 	@CloneTask(3)
 	public void doTaskC() {
-		log.info("doTaskC");
+		log.info("SimpleTask::doTaskC");
 	}
 
 	// すべてのタスクが終了したら呼ばれる
 	// @NextTask("example")
 	public void destroy() {
-		log.info("destroy");
+		log.info("SimpleTask::destroy");
 	}
 
 }

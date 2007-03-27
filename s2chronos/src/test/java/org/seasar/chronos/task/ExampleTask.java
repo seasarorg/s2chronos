@@ -30,20 +30,20 @@ public class ExampleTask {
 	// 最初に実行するジョブもしくはジョブグループを指定します。
 	@NextTask("groupA")
 	public void initialize() {
-		log.info("initialize");
+		log.info("ExampleTask::initialize");
 	}
 
 	// ------------------- Task GROUP A
 	// ジョブグループが開始したときに呼ばれます
 	@NextTask("taskA")
 	public void startGroupA() {
-		log.info("startGroupA");
+		log.info("ExampleTask::startGroupA");
 	}
 
 	@TaskGroup("groupA")
 	@NextTask("taskA")
 	public void doHoge() {
-		log.info("doHoge");
+		log.info("ExampleTask::doHoge");
 	}
 
 	// ジョブメソッドA
@@ -55,10 +55,11 @@ public class ExampleTask {
 		try {
 			TimeUnit.SECONDS.sleep(1);
 		} catch (InterruptedException e) {
-			log.info("doTaskAでInterruptedExceptionが発生しました．中断します", e);
+			log.info("ExampleTask::doTaskAでInterruptedExceptionが発生しました．中断します",
+					e);
 		}
 
-		// this.endTask = true;
+		log.info("ExampleTask::doTaskA");
 
 	}
 
@@ -70,66 +71,69 @@ public class ExampleTask {
 			try {
 				TimeUnit.SECONDS.sleep(10);
 			} catch (InterruptedException e) {
-				log.info("doTaskBでInterruptedExceptionが発生しました．中断します", e);
+				log
+						.info(
+								"ExampleTask::doTaskBでInterruptedExceptionが発生しました．中断します",
+								e);
 				break;
 			}
-			log.info("doTaskB");
+			log.info("ExampleTask::doTaskB");
 		}
 	}
 
 	// ジョブグループが終了したときに呼ばれます
 	// @Next("groupB")
 	public void endGroupA() {
-		log.info("endGroupA");
+		log.info("ExampleTask::endGroupA");
 	}
 
 	// ジョブメソッドC
 	// @TaskGroup("groupB")
 	@NextTask("groupB")
 	public void doTaskC() {
-		log.info("doTaskC");
+		log.info("ExampleTask::doTaskC");
 	}
 
 	// ------------------- JOB GROUP B
 	// ジョブグループが開始したときに呼ばれます
 	@NextTask("jobD")
 	public void startGroupB() {
-		log.info("startGroupB");
+		log.info("ExampleTask::startGroupB");
 	}
 
 	// ジョブメソッドD
 	@TaskGroup("groupB")
 	public void doTaskD() {
-		log.info("doTaskD");
+		log.info("ExampleTask::doTaskD");
 	}
 
 	// ジョブグループが終了したときに呼ばれます
 	@NextTask("taskE")
 	public void endGroupB() {
-		log.info("endGroupB");
+		log.info("ExampleTask::endGroupB");
 	}
 
 	// ------------------- JOB E
 	// ジョブE
 	@NextTask("taskF")
 	public void doTaskE() {
-		log.info("doTaskE");
+		log.info("ExampleTask::doTaskE");
 	}
 
 	// ------------------- JOB F
 	// ジョブF
 	public void doJobF() {
-		log.info("doJobF");
+		log.info("ExampleTask::doJobF");
 	}
 
 	// ジョブが破棄されるときに呼ばれます
 	public void destroy() {
-		log.info("destroy");
+		log.info("ExampleTask::destroy");
 	}
 
 	// ジョブで例外がスローされると呼ばれます
 	public void cancel() {
-		log.info("cancel");
+		log.info("ExampleTask::cancel");
 	}
 
 	private boolean executed = false;
