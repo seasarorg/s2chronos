@@ -14,12 +14,12 @@ public abstract class AbstractTaskExecuteState implements TaskExecuteState {
 
 	private TaskExecuteStrategy taskExecuteStrategy;
 
-	public TaskExecuteStrategy getTaskExecuteStrategy() {
-		return taskExecuteStrategy;
+	public AbstractTaskExecuteState(TaskExecuteStrategy taskExecuteStrategy) {
+		this.taskExecuteStrategy = taskExecuteStrategy;
 	}
 
-	public void setTaskExecuteStrategy(TaskExecuteStrategy taskExecuteStrategy) {
-		this.taskExecuteStrategy = taskExecuteStrategy;
+	public TaskExecuteStrategy getTaskExecuteStrategy() {
+		return taskExecuteStrategy;
 	}
 
 	protected synchronized void changeState(TaskExecuteContext context,
@@ -41,12 +41,12 @@ public abstract class AbstractTaskExecuteState implements TaskExecuteState {
 
 	public abstract boolean cancel(TaskExecuteContext context);
 
-	public abstract void destroy(TaskExecuteContext context)
+	public abstract void destroy(AbstractTaskExecuteContext context)
 			throws InterruptedException;
 
 	public abstract void prepare(TaskExecuteContext context);
 
-	public abstract String initialize(TaskExecuteContext context)
+	public abstract String initialize(AbstractTaskExecuteContext context)
 			throws InterruptedException;
 
 }

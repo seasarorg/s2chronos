@@ -20,6 +20,11 @@ public class TaskGroupMethodExecuteHandlerImpl extends
 
 	private TaskExecuteHandler taskMethodExecuteHandler;
 
+	public void setTaskMethodExecuteHandler(
+			TaskExecuteHandler jobMethodExecuteHandler) {
+		this.taskMethodExecuteHandler = jobMethodExecuteHandler;
+	}
+
 	@Override
 	public void setMethodGroupMap(TaskMethodManager taskMethodManager) {
 		super.setMethodGroupMap(taskMethodManager);
@@ -67,7 +72,8 @@ public class TaskGroupMethodExecuteHandlerImpl extends
 			return ts;
 		}
 
-		Transition transition = taskMethodExecuteHandler.handleRequest(nextTask);
+		Transition transition = taskMethodExecuteHandler
+				.handleRequest(nextTask);
 
 		ts = this.getTerminateTransition();
 		if (ts != null) {
@@ -137,11 +143,6 @@ public class TaskGroupMethodExecuteHandlerImpl extends
 			return md.getNextTask();
 		}
 		return null;
-	}
-
-	public void setTaskMethodExecuteHandler(
-			TaskExecuteHandler jobMethodExecuteHandler) {
-		this.taskMethodExecuteHandler = jobMethodExecuteHandler;
 	}
 
 }

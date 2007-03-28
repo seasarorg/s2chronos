@@ -33,53 +33,44 @@ public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler 
 		final List<TaskContena> runingTaskList = this.taskContenaStateManager
 				.getTaskContenaList(TaskStateType.RUNNING);
 		for (final TaskContena tc : scheduledTaskList) {
-			final TaskExecutorService tes = (TaskExecutorService) s2container
+			final TaskExecutorService tes = (TaskExecutorService) this.s2container
 					.getComponent(TaskExecutorService.class);
-			log.debug(tes.hashCode() + "[["
-					+ TaskExecutorService.class.getName());
 			tes.setTaskComponentDef(tc.getComponentDef());
 			tes.setGetterSignal(scheduler);
 			tes.prepare();
 			if (TaskPropertyUtil.getStartTask(tes)) {
 				// タスクの開始
-				Future<TaskExecutorService> taskStaterFuture = executorService
+				Future<TaskExecutorService> taskStaterFuture = this.executorService
 						.submit(new Callable<TaskExecutorService>() {
 							public TaskExecutorService call() throws Exception {
-								synchronized (runingTaskList) {
-									runingTaskList.notify();
-								}
-								log.debug("initialize start");
-								String nextTaskName = tes.initialize();
-								log.debug("initialize end");
+								TaskExecutorService _tes = tes;
+								String nextTaskName = _tes.initialize();
 								if (nextTaskName != null) {
 									try {
-										log.debug("execute start");
-										tes.execute(nextTaskName);
-										log.debug("waitOne start");
-										tes.waitOne();
+										_tes.execute(nextTaskName);
+										_tes.waitOne();
 									} catch (RejectedExecutionException ex) {
 										log.debug(ex);
 									}
 								}
-								log.debug("destory start");
-								tes.destroy();
-								log.debug("destory end");
+								_tes.destroy();
 								if (runingTaskList.contains(tc)) {
 									runingTaskList.remove(tc);
 								}
 								return tes;
 							}
 						});
-				synchronized (runingTaskList) {
-					tc.setTaskStaterFuture(taskStaterFuture);
-					tc.setTaskExecutorService(tes);
-					runingTaskList.add(tc);
-					scheduledTaskList.remove(tc);
-					runingTaskList.wait();
-					log.debug("Task " + TaskPropertyUtil.getTaskName(tes)
-							+ " Start");
-					break;
-				}
+
+				tc.setTaskStaterFuture(taskStaterFuture);
+				tc.setTaskExecutorService(tes);
+
+				runingTaskList.add(tc);
+
+				log.debug("Task " + TaskPropertyUtil.getTaskName(tes)
+						+ " Start");
+
+				scheduledTaskList.remove(tc);
+				break;
 			}
 		}
 	}

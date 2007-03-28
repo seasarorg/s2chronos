@@ -2,45 +2,22 @@
 <!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.3//EN"
 	"http://www.seasar.org/dtd/components23.dtd">
 <components>
-	<component name="traceInterceptor" class="org.seasar.framework.aop.interceptors.TraceInterceptor"/>
+	<include path="aop.dicon"/>
 
-	<component name="scheduleExecuteShutdownHandler" class="org.seasar.chronos.handler.impl.ScheduleExecuteShutdownHandler"/>
-	<component name="scheduleExecuteStartHandler" class="org.seasar.chronos.handler.impl.ScheduleExecuteStartHandler"/>
-	<component name="scheduleExecuteWaitHandler" class="org.seasar.chronos.handler.impl.ScheduleExecuteWaitHandler"/>
+	<component name="scheduleExecuteShutdownHandler" class="org.seasar.chronos.handler.impl.ScheduleExecuteShutdownHandler" />
+	<component name="scheduleExecuteStartHandler" class="org.seasar.chronos.handler.impl.ScheduleExecuteStartHandler" />
+	<component name="scheduleExecuteWaitHandler" class="org.seasar.chronos.handler.impl.ScheduleExecuteWaitHandler" />
 
 	<component class="org.seasar.chronos.impl.SchedulerImpl">
+		<aspect>aop.traceInterceptor</aspect>
 		<property name="scheduleExecuteShutdownHandler">scheduleExecuteShutdownHandler</property>
 		<property name="scheduleExecuteStartHandler">scheduleExecuteStartHandler</property>
 		<property name="scheduleExecuteWaitHandler">scheduleExecuteWaitHandler</property>
 	</component>
 	
-	<component name="taskExecuteContext" class="org.seasar.chronos.task.state.TaskExecuteContext"/>
-	
 	<component class="org.seasar.chronos.task.impl.TaskExecutorServiceImpl" instance="prototype">
-		<property name="taskExecuteStateNonInitialized">taskExecuteStateNonInitialized</property>
-		<property name="taskExecuteContext">taskExecuteContext</property>
 	</component>
 	
-	<component name="taskMethodExecuteHandler" class="org.seasar.chronos.task.handler.impl.TaskMethodExecuteHandlerImpl">
-	</component>
-	
-	<component name="taskGroupMethodExecuteHandler" class="org.seasar.chronos.task.handler.impl.TaskGroupMethodExecuteHandlerImpl">
-		<property name="taskMethodExecuteHandler">taskMethodExecuteHandler</property>
-	</component>
-	
-	<component name="taskExecuteStrategy" class="org.seasar.chronos.task.strategy.impl.TaskExecuteStrategyImpl">
-		<property name="taskMethodExecuteHandler">taskMethodExecuteHandler</property>
-		<property name="taskGroupMethodExecuteHandler">taskGroupMethodExecuteHandler</property>
-	</component>
-	
-	<component name="taskExecuteStateNonInitialized" class="org.seasar.chronos.task.state.impl.TaskExecuteStateNonInitialized">
-		<property name="taskExecuteStateInitialized">taskExecuteStateInitialized</property>
-		<property name="taskExecuteStrategy">taskExecuteStrategy</property>
-	</component>
-	<component name="taskExecuteStateInitialized" class="org.seasar.chronos.task.state.impl.TaskExecuteStateInitialized">
-		<property name="taskExecuteStateNonInitialized">taskExecuteStateNonInitialized</property>
-		<property name="taskExecuteStrategy">taskExecuteStrategy</property>
-	</component>
 	
 	
 </components>

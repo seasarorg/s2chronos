@@ -7,34 +7,22 @@ import org.seasar.chronos.TaskTrigger;
 import org.seasar.chronos.ThreadPoolType;
 import org.seasar.chronos.task.TaskExecutorService;
 import org.seasar.chronos.task.state.TaskExecuteContext;
-import org.seasar.chronos.task.state.TaskExecuteState;
+import org.seasar.chronos.task.state.impl.TaskExecuteContextImpl;
 import org.seasar.framework.container.ComponentDef;
 import org.seasar.framework.container.annotation.tiger.Binding;
 import org.seasar.framework.container.annotation.tiger.BindingType;
 
 public class TaskExecutorServiceImpl implements TaskExecutorService {
 
-	private TaskExecuteContext taskExecuteContext;
-
-	private TaskExecuteState taskExecuteStateNonInitialized;
+	private TaskExecuteContext taskExecuteContext = new TaskExecuteContextImpl();
 
 	public TaskExecutorServiceImpl() {
 
 	}
 
-	public void setTaskExecuteStateNonInitialized(
-			TaskExecuteState taskExecuteStateNonInitialized) {
-		this.taskExecuteStateNonInitialized = taskExecuteStateNonInitialized;
-	}
-
 	@Binding(bindingType = BindingType.NONE)
 	public void setGetterSignal(Object getterSignal) {
 		this.taskExecuteContext.setGetterSignal(getterSignal);
-	}
-
-	public void setTaskExecuteContext(TaskExecuteContext taskExecuteContext) {
-		this.taskExecuteContext = taskExecuteContext;
-
 	}
 
 	@Binding(bindingType = BindingType.NONE)
@@ -69,8 +57,6 @@ public class TaskExecutorServiceImpl implements TaskExecutorService {
 	}
 
 	public void prepare() {
-		this.taskExecuteContext
-				.changeState(this.taskExecuteStateNonInitialized);
 		this.taskExecuteContext.prepare();
 	}
 

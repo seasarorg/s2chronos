@@ -3,15 +3,13 @@ package org.seasar.chronos.task.state.impl;
 import java.util.concurrent.TimeUnit;
 
 import org.seasar.chronos.task.state.TaskExecuteContext;
-import org.seasar.chronos.task.state.TaskExecuteState;
+import org.seasar.chronos.task.strategy.TaskExecuteStrategy;
 
 public class TaskExecuteStateNonInitialized extends AbstractTaskExecuteState {
 
-	private TaskExecuteState taskExecuteStateInitialized;
-
-	public void setTaskExecuteStateInitialized(
-			TaskExecuteState taskExecuteStateInitialized) {
-		this.taskExecuteStateInitialized = taskExecuteStateInitialized;
+	public TaskExecuteStateNonInitialized(
+			TaskExecuteStrategy taskExecuteStrategy) {
+		super(taskExecuteStrategy);
 	}
 
 	@Override
@@ -32,15 +30,15 @@ public class TaskExecuteStateNonInitialized extends AbstractTaskExecuteState {
 	}
 
 	@Override
-	public void destroy(TaskExecuteContext context) {
+	public void destroy(AbstractTaskExecuteContext context) {
 
 	}
 
 	@Override
-	public String initialize(TaskExecuteContext context)
+	public String initialize(AbstractTaskExecuteContext context)
 			throws InterruptedException {
 		String result = this.getTaskExecuteStrategy().initialize();
-		this.changeState(context, taskExecuteStateInitialized);
+		this.changeState(context, context.getTaskExecuteStateInitialized());
 		return result;
 	}
 

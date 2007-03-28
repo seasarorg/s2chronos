@@ -26,7 +26,7 @@ public class SchedulerImpl implements Scheduler {
 
 	private static Logger log = Logger.getLogger(SchedulerImpl.class);
 
-	private ExecutorService executorService = Executors.newCachedThreadPool();
+	private ExecutorService executorService = Executors.newFixedThreadPool(100);
 
 	private Future<Void> schedulerTaskFuture;
 
@@ -88,7 +88,7 @@ public class SchedulerImpl implements Scheduler {
 			}
 			log.debug("キャンセルチェック完了");
 		} catch (ExecutionException e) {
-			log.debug(e);
+			e.printStackTrace();
 		}
 	}
 
