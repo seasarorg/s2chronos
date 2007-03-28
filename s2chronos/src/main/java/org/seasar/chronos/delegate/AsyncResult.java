@@ -24,7 +24,7 @@ public class AsyncResult {
 		return state;
 	}
 
-	public void setState(Object state) {
+	void setState(Object state) {
 		this.state = state;
 	}
 
