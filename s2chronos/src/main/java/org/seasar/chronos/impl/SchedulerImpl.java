@@ -100,7 +100,7 @@ public class SchedulerImpl implements Scheduler {
 	}
 
 	public void pause() {
-		pause.set(!pause.get());
+		this.pause.set(!this.pause.get());
 		this.notify();
 	}
 
