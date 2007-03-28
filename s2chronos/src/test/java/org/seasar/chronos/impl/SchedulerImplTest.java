@@ -1,6 +1,7 @@
 package org.seasar.chronos.impl;
 
 import org.seasar.chronos.Scheduler;
+import org.seasar.chronos.test.task.SmartTask;
 import org.seasar.extension.unit.S2TestCase;
 
 public class SchedulerImplTest extends S2TestCase {
@@ -9,9 +10,12 @@ public class SchedulerImplTest extends S2TestCase {
 
 	private Scheduler scheduler;
 
+	private SmartTask task;
+
 	protected void setUp() throws Exception {
 		include(PATH);
 		scheduler = (Scheduler) this.getComponent(Scheduler.class);
+		task = (SmartTask) this.getComponent(SmartTask.class);
 	}
 
 	public void testStart() {
@@ -22,17 +26,5 @@ public class SchedulerImplTest extends S2TestCase {
 			;
 		}
 	}
-
-	// public void testShutdown() {
-	// try {
-	// scheduler.start();
-	// TimeUnit.SECONDS.sleep(5);
-	// scheduler.shutdown();
-	// scheduler.join();
-	// } catch (InterruptedException e) {
-	// e.printStackTrace();
-	// }
-	//
-	//	}
 
 }

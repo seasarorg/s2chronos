@@ -26,7 +26,7 @@ public class SchedulerImpl implements Scheduler {
 
 	private static Logger log = Logger.getLogger(SchedulerImpl.class);
 
-	private ExecutorService executorService = Executors.newFixedThreadPool(100);
+	private ExecutorService executorService = Executors.newCachedThreadPool();
 
 	private Future<Void> schedulerTaskFuture;
 
@@ -74,7 +74,7 @@ public class SchedulerImpl implements Scheduler {
 
 	}
 
-	public SchedulerConfiguration getConfiguration() {
+	public SchedulerConfiguration getSchedulerConfiguration() {
 		return configuration;
 	}
 
@@ -97,7 +97,8 @@ public class SchedulerImpl implements Scheduler {
 		this.notify();
 	}
 
-	public void setConfiguration(SchedulerConfiguration schedulerConfiguration) {
+	public void setSchedulerConfiguration(
+			SchedulerConfiguration schedulerConfiguration) {
 		this.configuration = schedulerConfiguration;
 	}
 

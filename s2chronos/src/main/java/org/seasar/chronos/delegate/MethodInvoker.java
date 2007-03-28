@@ -192,7 +192,6 @@ public class MethodInvoker {
 
 		final AsyncResult asyncResult = new AsyncResult();
 		resultList.add(asyncResult);
-
 		asyncResult.setState(state);
 		final Future<Object> future = this.executorService
 				.submit(new Callable<Object>() {

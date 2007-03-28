@@ -2,9 +2,10 @@ package org.seasar.chronos;
 
 public interface Scheduler {
 
-	public SchedulerConfiguration getConfiguration();
+	public SchedulerConfiguration getSchedulerConfiguration();
 
-	public void setConfiguration(SchedulerConfiguration schedulerConfiguration);
+	public void setSchedulerConfiguration(
+			SchedulerConfiguration schedulerConfiguration);
 
 	public void start();
 
