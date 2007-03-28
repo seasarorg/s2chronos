@@ -392,7 +392,8 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 		TaskContenaStateManager tcsm = TaskContenaStateManager.getInstance();
 		CopyOnWriteArrayList<TaskContena> l = tcsm.getAllTaskContenaList();
 		for (TaskContena tc : l) {
-			Task task = (Task) tc.getTargetClass().getAnnotation(Task.class);
+			Class<?> clazz = tc.getTargetClass();
+			Task task = (Task) clazz.getAnnotation(Task.class);
 			if (task == null) {
 				continue;
 			}

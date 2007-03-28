@@ -165,7 +165,7 @@ public class SchedulerImpl implements Scheduler {
 		Traversal.forEachComponent(targetContainer,
 				new Traversal.ComponentDefHandler() {
 					public Object processComponent(ComponentDef componentDef) {
-						Class clazz = componentDef.getComponentClass();
+						Class<?> clazz = componentDef.getComponentClass();
 						Task task = (Task) clazz.getAnnotation(Task.class);
 						if (task != null) {
 							scheduleTask(componentDef);
