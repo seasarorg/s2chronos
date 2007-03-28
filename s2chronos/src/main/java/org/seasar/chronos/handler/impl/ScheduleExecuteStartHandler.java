@@ -35,6 +35,8 @@ public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler 
 		for (final TaskContena tc : scheduledTaskList) {
 			final TaskExecutorService tes = (TaskExecutorService) s2container
 					.getComponent(TaskExecutorService.class);
+			log.debug(tes.hashCode() + "[["
+					+ TaskExecutorService.class.getName());
 			tes.setTaskComponentDef(tc.getComponentDef());
 			tes.setGetterSignal(scheduler);
 			tes.prepare();
@@ -76,6 +78,7 @@ public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler 
 					runingTaskList.wait();
 					log.debug("Task " + TaskPropertyUtil.getTaskName(tes)
 							+ " Start");
+					break;
 				}
 			}
 		}
