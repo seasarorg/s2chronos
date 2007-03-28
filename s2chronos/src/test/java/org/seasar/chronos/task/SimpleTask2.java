@@ -1,6 +1,7 @@
 package org.seasar.chronos.task;
 
 import org.seasar.chronos.annotation.task.Task;
+import org.seasar.chronos.annotation.task.method.CloneTask;
 import org.seasar.chronos.annotation.task.method.JoinTask;
 import org.seasar.chronos.annotation.task.method.NextTask;
 import org.seasar.chronos.annotation.type.JoinType;
@@ -43,8 +44,9 @@ public class SimpleTask2 {
 	// タスクメソッドC 本体
 	// 非同期に100個タスクメソッドを生成して実行
 	@JoinTask(JoinType.NoWait)
+	@CloneTask(20)
 	public synchronized void doTaskC() {
-		log.info("SimpleTask2::doTaskC");
+		log.info(">>SimpleTask2::doTaskC");
 	}
 
 	// すべてのタスクが終了したら呼ばれる

@@ -97,8 +97,8 @@ public class SchedulerImpl implements Scheduler {
 		this.notify();
 	}
 
-	public void setConfiguration(SchedulerConfiguration config) {
-		this.configuration = config;
+	public void setConfiguration(SchedulerConfiguration schedulerConfiguration) {
+		this.configuration = schedulerConfiguration;
 	}
 
 	public void shutdown() throws InterruptedException {
@@ -120,7 +120,8 @@ public class SchedulerImpl implements Scheduler {
 	private boolean getSchedulerFinish() {
 		final List<TaskContena> runingTaskList = taskContenaStateManager
 				.getTaskContenaList(TaskStateType.RUNNING);
-		if (runingTaskList.size() == 0 && configuration.isAutoFinish()) {
+		if (this.schedulerTaskFuture != null && runingTaskList.size() == 0
+				&& configuration.isAutoFinish()) {
 			return true;
 		}
 		return false;
@@ -132,11 +133,11 @@ public class SchedulerImpl implements Scheduler {
 		this.schedulerTaskFuture = this.executorService
 				.submit(new Callable<Void>() {
 					public Void call() throws Exception {
-						while (!getSchedulerFinish()) {
+						do {
 							scheduleExecuteWaitHandler.handleRequest();
 							scheduleExecuteStartHandler.handleRequest();
 							scheduleExecuteShutdownHandler.handleRequest();
-						}
+						} while (!getSchedulerFinish());
 						return null;
 					}
 				});

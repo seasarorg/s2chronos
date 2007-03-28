@@ -3,19 +3,24 @@
 	"http://www.seasar.org/dtd/components23.dtd">
 <components>
 	<include path="aop.dicon"/>
-
+	
+	<component name="schedulerConfiguration" class="org.seasar.chronos.SchedulerConfiguration">
+		<property name="autoFinish">true</property>
+	</component>
+	
 	<component name="scheduleExecuteShutdownHandler" class="org.seasar.chronos.handler.impl.ScheduleExecuteShutdownHandler" />
 	<component name="scheduleExecuteStartHandler" class="org.seasar.chronos.handler.impl.ScheduleExecuteStartHandler" />
 	<component name="scheduleExecuteWaitHandler" class="org.seasar.chronos.handler.impl.ScheduleExecuteWaitHandler" />
 
 	<component class="org.seasar.chronos.impl.SchedulerImpl">
 		<aspect>aop.traceInterceptor</aspect>
+		<property name="configuration">schedulerConfiguration</property>
 		<property name="scheduleExecuteShutdownHandler">scheduleExecuteShutdownHandler</property>
 		<property name="scheduleExecuteStartHandler">scheduleExecuteStartHandler</property>
 		<property name="scheduleExecuteWaitHandler">scheduleExecuteWaitHandler</property>
 	</component>
 	
-	<component class="org.seasar.chronos.task.impl.TaskExecutorServiceImpl" instance="prototype">
+	<component class="org.seasar.chronos.task.impl.TaskExecutorServiceImpl" instance="prototype" autoBinding="none">
 	</component>
 	
 	

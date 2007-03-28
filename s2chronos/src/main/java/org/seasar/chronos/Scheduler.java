@@ -4,7 +4,7 @@ public interface Scheduler {
 
 	public SchedulerConfiguration getConfiguration();
 
-	public void setConfiguration(SchedulerConfiguration config);
+	public void setConfiguration(SchedulerConfiguration schedulerConfiguration);
 
 	public void start();
 
