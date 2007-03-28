@@ -26,7 +26,7 @@ public class ScheduleExecuteWaitHandler extends AbstractScheduleExecuteHandler {
 				log.debug("scheduler.wait start");
 				try {
 					do {
-						scheduler.wait();
+						scheduler.wait(1000);
 					} while (this.pause.get());
 				} catch (InterruptedException e) {
 					log.log("WCHNS0001", null, e);

@@ -191,13 +191,12 @@ public class MethodInvoker {
 			final Object state) throws InterruptedException {
 
 		final AsyncResult asyncResult = new AsyncResult();
+		resultList.add(asyncResult);
 
+		asyncResult.setState(state);
 		final Future<Object> future = this.executorService
 				.submit(new Callable<Object>() {
 					public Object call() throws Exception {
-						synchronized (asyncResult) {
-							asyncResult.notify();
-						}
 						// 対象メソッドを実行
 						Object result = invoke(methodName, args);
 						if (methodCallback != null) {
@@ -216,13 +215,7 @@ public class MethodInvoker {
 					}
 
 				});
-
-		synchronized (asyncResult) {
-			asyncResult.setFuture(future);
-			asyncResult.setState(state);
-			asyncResult.wait();
-		}
-		resultList.add(asyncResult);
+		asyncResult.setFuture(future);
 		return asyncResult;
 	}
 
