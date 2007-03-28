@@ -15,12 +15,17 @@ import org.seasar.chronos.Scheduler;
 import org.seasar.chronos.SchedulerConfiguration;
 import org.seasar.chronos.SchedulerEventListener;
 import org.seasar.chronos.annotation.task.Task;
+import org.seasar.chronos.autodetector.TaskClassAutoDetector;
 import org.seasar.chronos.handler.ScheduleExecuteHandler;
 import org.seasar.chronos.util.TaskPropertyUtil;
 import org.seasar.framework.container.ComponentDef;
 import org.seasar.framework.container.S2Container;
+import org.seasar.framework.container.util.SmartDeployUtil;
 import org.seasar.framework.container.util.Traversal;
 import org.seasar.framework.log.Logger;
+import org.seasar.framework.util.ClassTraversal;
+import org.seasar.framework.util.ClassUtil;
+import org.seasar.framework.util.tiger.ReflectionUtil;
 
 public class SchedulerImpl implements Scheduler {
 
@@ -42,6 +47,8 @@ public class SchedulerImpl implements Scheduler {
 	public void setS2Container(S2Container s2container) {
 		this.s2container = s2container;
 	}
+
+	private TaskClassAutoDetector taskClassAutoDetector;
 
 	private ScheduleExecuteHandler scheduleExecuteWaitHandler;
 
@@ -161,18 +168,43 @@ public class SchedulerImpl implements Scheduler {
 						Class clazz = componentDef.getComponentClass();
 						Task task = (Task) clazz.getAnnotation(Task.class);
 						if (task != null) {
-							CopyOnWriteArrayList<TaskContena> list = taskContenaStateManager
-									.getTaskContenaList(TaskStateType.SCHEDULED);
-							list.addIfAbsent(new TaskContena(componentDef));
+							scheduleTask(componentDef);
 						}
 						return null;
 					}
+
 				});
 	}
 
+	private void scheduleTask(ComponentDef componentDef) {
+		CopyOnWriteArrayList<TaskContena> list = taskContenaStateManager
+				.getTaskContenaList(TaskStateType.SCHEDULED);
+		list.addIfAbsent(new TaskContena(componentDef));
+	}
+
 	private void registTaskFromS2Container() {
-		S2Container target = this.s2container.getRoot();
+		final S2Container target = this.s2container.getRoot();
 		this.registChildTaskComponent(target);
+		this.registTaskFromS2ContainerOnSmartDeploy(target);
+	}
+
+	private void registTaskFromS2ContainerOnSmartDeploy(
+			final S2Container s2Container) {
+		if (SmartDeployUtil.isSmartdeployMode(s2Container)) {
+			this.taskClassAutoDetector
+					.detect(new ClassTraversal.ClassHandler() {
+						public void processClass(String packageName,
+								String shortClassName) {
+							String name = ClassUtil.concatName(packageName,
+									shortClassName);
+							Class clazz = ReflectionUtil
+									.forNameNoException(name);
+							ComponentDef componentDef = s2Container
+									.getComponentDef(clazz);
+							scheduleTask(componentDef);
+						}
+					});
+		}
 	}
 
 	public boolean addTask(Object task) {
@@ -197,6 +229,11 @@ public class SchedulerImpl implements Scheduler {
 			}
 		}
 		return false;
+	}
+
+	public void setTaskClassAutoDetector(
+			TaskClassAutoDetector taskClassAutoDetector) {
+		this.taskClassAutoDetector = taskClassAutoDetector;
 	}
 
 }
