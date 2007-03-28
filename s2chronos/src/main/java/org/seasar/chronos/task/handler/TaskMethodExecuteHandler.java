@@ -1,4 +1,4 @@
-package org.seasar.chronos.task.handler.impl;
+package org.seasar.chronos.task.handler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +9,7 @@ import org.seasar.chronos.delegate.MethodInvoker;
 import org.seasar.chronos.task.Transition;
 import org.seasar.chronos.task.impl.TaskMethodMetaData;
 
-public class TaskMethodExecuteHandlerImpl extends AbstractTaskExecuteHandler {
+public class TaskMethodExecuteHandler extends AbstractTaskExecuteHandler {
 
 	@Override
 	public Transition handleRequest(String startTaskName)

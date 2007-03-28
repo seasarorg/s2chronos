@@ -14,11 +14,11 @@ import org.seasar.chronos.delegate.AsyncResult;
 import org.seasar.chronos.delegate.MethodInvoker;
 import org.seasar.chronos.impl.TaskContena;
 import org.seasar.chronos.impl.TaskContenaStateManager;
+import org.seasar.chronos.task.TaskExecuteHandler;
 import org.seasar.chronos.task.TaskType;
 import org.seasar.chronos.task.Transition;
-import org.seasar.chronos.task.handler.TaskExecuteHandler;
-import org.seasar.chronos.task.handler.impl.TaskGroupMethodExecuteHandlerImpl;
-import org.seasar.chronos.task.handler.impl.TaskMethodExecuteHandlerImpl;
+import org.seasar.chronos.task.handler.TaskGroupMethodExecuteHandler;
+import org.seasar.chronos.task.handler.TaskMethodExecuteHandler;
 import org.seasar.chronos.task.impl.TaskMethodManager;
 import org.seasar.chronos.task.impl.TaskMethodMetaData;
 import org.seasar.chronos.task.strategy.TaskExecuteStrategy;
@@ -85,11 +85,11 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 	}
 
 	protected TaskExecuteHandler createTaskGroupMethodExecuteHandler() {
-		return new TaskGroupMethodExecuteHandlerImpl();
+		return new TaskGroupMethodExecuteHandler();
 	}
 
 	protected TaskExecuteHandler createTaskMethodExecuteHandler() {
-		return new TaskMethodExecuteHandlerImpl();
+		return new TaskMethodExecuteHandler();
 	}
 
 	private boolean isGroupMethod(String groupName) {
