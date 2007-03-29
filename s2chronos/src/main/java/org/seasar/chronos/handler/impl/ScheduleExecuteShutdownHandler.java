@@ -3,8 +3,8 @@ package org.seasar.chronos.handler.impl;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
 
+import org.seasar.chronos.impl.SchedulerImpl;
 import org.seasar.chronos.impl.TaskContena;
 import org.seasar.chronos.impl.TaskStateType;
 import org.seasar.chronos.task.TaskExecutorService;
@@ -22,19 +22,22 @@ public class ScheduleExecuteShutdownHandler extends
 		for (final TaskContena tc : runingTaskList) {
 			final TaskExecutorService tes = tc.getTaskExecutorService();
 			if (TaskPropertyUtil.getShutdownTask(tes)) {
-				log.debug("shutdownTask on");
+				log.log("DCHRONOS0011", new Object[] { TaskPropertyUtil
+						.getTaskName(tes) });
 				final Future<TaskExecutorService> future = this.executorService
 						.submit(new Callable<TaskExecutorService>() {
 							public TaskExecutorService call() throws Exception {
-								synchronized (runingTaskList) {
-									runingTaskList.notify();
-								}
-								log.debug("cancel start");
+								Object[] logArgs = new Object[] { TaskPropertyUtil
+										.getTaskName(tes) };
+								log.log("DCHRONOS0002", logArgs);
+								log.log("DCHRONOS0012", logArgs);
 								if (tes.cancel()) {
 									log.debug("cancel ok");
 									while (!tes
-											.await(20, TimeUnit.MILLISECONDS)) {
-										log.debug("cancel wait");
+											.await(
+													SchedulerImpl.SHUTDOWN_AWAIT_TIME,
+													SchedulerImpl.SHUTDOWN_AWAIT_TIMEUNIT)) {
+										log.log("DCHRONOS0013", logArgs);
 									}
 									if (cancelTaskList.contains(tc)) {
 										cancelTaskList.remove(tc);
@@ -42,16 +45,16 @@ public class ScheduleExecuteShutdownHandler extends
 								} else {
 									log.debug("cancel error!");
 								}
-								log.debug("cancel end");
+								log.log("DCHRONOS0014", logArgs);
+								log.log("DCHRONOS0003",
+										new Object[] { TaskPropertyUtil
+												.getTaskName(tes) });
 								return tes;
 							}
 						});
-				synchronized (runingTaskList) {
-					tc.setTaskStaterFuture(future);
-					cancelTaskList.add(tc);
-					runingTaskList.remove(tc);
-					runingTaskList.wait();
-				}
+				tc.setTaskStaterFuture(future);
+				cancelTaskList.add(tc);
+				runingTaskList.remove(tc);
 			}
 		}
 	}

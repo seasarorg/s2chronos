@@ -189,9 +189,8 @@ public class MethodInvoker {
 	public AsyncResult beginInvoke(final String methodName,
 			final Object[] args, final MethodCallback methodCallback,
 			final Object state) throws InterruptedException {
-
 		final AsyncResult asyncResult = new AsyncResult();
-		resultList.add(asyncResult);
+		this.resultList.add(asyncResult);
 		asyncResult.setState(state);
 		final Future<Object> future = this.executorService
 				.submit(new Callable<Object>() {
@@ -200,7 +199,7 @@ public class MethodInvoker {
 						Object result = invoke(methodName, args);
 						if (methodCallback != null) {
 							// さらにコールバックをスレッドプールから実行
-							callbackExecutorService
+							Future<Void> futureCallback = callbackExecutorService
 									.submit(new Callable<Void>() {
 										public Void call() throws Exception {
 											callbackHandler(methodName,
@@ -208,6 +207,7 @@ public class MethodInvoker {
 											return null;
 										}
 									});
+							// futureCallback.get();
 						}
 						resultList.remove(asyncResult);
 						return result;
@@ -235,7 +235,7 @@ public class MethodInvoker {
 			mt.setAccessible(true);
 			ReflectionUtil.invoke(mt, methodCallback.getTarget(), asyncResult);
 		} catch (Exception ex) {
-			log.error(ex);
+			log.log("ECHRONOS0001", null, ex);
 			throw ex;
 		}
 
@@ -257,9 +257,6 @@ public class MethodInvoker {
 			return asyncResult.getFuture().get();
 		} catch (ExecutionException e) {
 			throw new ExecutionRuntimeException(e);
-		} catch (InterruptedException e) {
-			log.warn(e);
-			throw e;
 		}
 	}
 
@@ -303,12 +300,7 @@ public class MethodInvoker {
 
 	public boolean awaitInvokes(long time, TimeUnit unit)
 			throws InterruptedException {
-		try {
-			return this.executorService.awaitTermination(time, unit);
-		} catch (InterruptedException e) {
-			log.warn(e);
-			throw e;
-		}
+		return this.executorService.awaitTermination(time, unit);
 	}
 
 	public void waitInvokes() throws InterruptedException {

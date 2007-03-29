@@ -5,9 +5,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.seasar.chronos.handler.ScheduleExecuteHandler;
 import org.seasar.chronos.impl.TaskContenaStateManager;
+import org.seasar.chronos.logger.Logger;
 import org.seasar.framework.container.annotation.tiger.Binding;
 import org.seasar.framework.container.annotation.tiger.BindingType;
-import org.seasar.framework.log.Logger;
 
 public abstract class AbstractScheduleExecuteHandler implements
 		ScheduleExecuteHandler {

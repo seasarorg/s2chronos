@@ -40,23 +40,29 @@ public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler 
 			tes.prepare();
 			if (TaskPropertyUtil.getStartTask(tes)) {
 				// タスクの開始
+				log.log("DCHRONOSSSTHRT001", new Object[] { TaskPropertyUtil
+						.getTaskName(tes) });
 				Future<TaskExecutorService> taskStaterFuture = this.executorService
 						.submit(new Callable<TaskExecutorService>() {
 							public TaskExecutorService call() throws Exception {
 								TaskExecutorService _tes = tes;
+								Object[] logArgs = new Object[] { TaskPropertyUtil
+										.getTaskName(_tes) };
+								log.log("DCHRONOS000111", logArgs);
 								String nextTaskName = _tes.initialize();
 								if (nextTaskName != null) {
 									try {
 										_tes.execute(nextTaskName);
 										_tes.waitOne();
 									} catch (RejectedExecutionException ex) {
-										log.debug(ex);
+										log.log("ECHRONOS0002", logArgs, ex);
 									}
 								}
 								_tes.destroy();
 								if (runingTaskList.contains(tc)) {
 									runingTaskList.remove(tc);
 								}
+								log.log("DCHRONOS000112", logArgs);
 								return tes;
 							}
 						});
@@ -65,9 +71,6 @@ public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler 
 				tc.setTaskExecutorService(tes);
 
 				runingTaskList.add(tc);
-
-				log.debug("Task " + TaskPropertyUtil.getTaskName(tes)
-						+ " Start");
 
 				scheduledTaskList.remove(tc);
 				break;

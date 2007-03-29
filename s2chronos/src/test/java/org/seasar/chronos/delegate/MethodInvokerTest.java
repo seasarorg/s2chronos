@@ -2,6 +2,7 @@ package org.seasar.chronos.delegate;
 
 import java.lang.reflect.Method;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import org.seasar.extension.unit.S2TestCase;
 import org.seasar.framework.container.ComponentDef;
@@ -49,7 +50,7 @@ public class MethodInvokerTest extends S2TestCase {
 		try {
 			ar = target.beginInvoke("testA");
 			target.endInvoke(ar);
-		} catch (InterruptedException e1) {
+		} catch (InterruptedException e) {
 			fail();
 		}
 	}
@@ -62,42 +63,35 @@ public class MethodInvokerTest extends S2TestCase {
 			assertNotNull(ar);
 			String result = (String) target.endInvoke(ar);
 			assertEquals(result, testValue);
-		} catch (InterruptedException e1) {
+			TimeUnit.SECONDS.sleep(10);
+		} catch (InterruptedException e) {
 			fail();
 		}
-
 	}
 
 	@SuppressWarnings("unused")
-	private void Callback(AsyncResult ar) {
-		try {
-			target.endInvoke(ar);
-		} catch (Throwable e) {
-			e.printStackTrace();
-		}
+	private void Callback(AsyncResult ar) throws Exception {
+		// try {
+		// target.endInvoke(ar);
+		// } catch (InterruptedException e) {
+		// fail();
+		// }
+		throw new Exception();
 	}
 
 	public void testBeginInvokeStringObjectArrayMethodCallbackObject() {
 		String testValue = "testB";
+		AsyncResult ar;
 		try {
-			AsyncResult ar = target.beginInvoke("testB",
-					new Object[] { testValue }, new MethodCallback(this,
-							"Callback"), null);
+			ar = target.beginInvoke("testB", new Object[] { testValue },
+					new MethodCallback(this, "Callback"), null);
 			ar.waitOne();
-		} catch (InterruptedException e1) {
-			e1.printStackTrace();
-		} catch (Throwable e) {
-			e.printStackTrace();
-		}
-		try {
-
-		} catch (Throwable e) {
-			e.printStackTrace();
+		} catch (InterruptedException e) {
+			fail();
 		}
 	}
 
 	public void testCancelInvokeAsyncResult() {
-
 		AsyncResult ar;
 		try {
 			ar = target.beginInvoke("testC");
@@ -106,16 +100,13 @@ public class MethodInvokerTest extends S2TestCase {
 			Thread.sleep(5);
 			assertEquals(ar.isCompleted(), true);
 			ar.waitOne();
-		} catch (InterruptedException e2) {
+		} catch (InterruptedException e) {
 			fail();
-		} catch (Throwable e) {
-			e.printStackTrace();
 		}
 
 	}
 
 	public void testCancelInvokeAsyncResultBoolean() {
-
 		try {
 			AsyncResult ar = target.beginInvoke("testC");
 			Thread.sleep(3);
@@ -125,10 +116,7 @@ public class MethodInvokerTest extends S2TestCase {
 			ar.waitOne();
 		} catch (InterruptedException e) {
 			fail();
-		} catch (Throwable e) {
-			e.printStackTrace();
 		}
-
 	}
 
 }

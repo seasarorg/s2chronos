@@ -16,18 +16,23 @@ import org.seasar.chronos.SchedulerConfiguration;
 import org.seasar.chronos.SchedulerEventListener;
 import org.seasar.chronos.annotation.task.Task;
 import org.seasar.chronos.autodetector.TaskClassAutoDetector;
+import org.seasar.chronos.exception.ExecutionRuntimeException;
 import org.seasar.chronos.handler.ScheduleExecuteHandler;
+import org.seasar.chronos.logger.Logger;
 import org.seasar.chronos.util.TaskPropertyUtil;
 import org.seasar.framework.container.ComponentDef;
 import org.seasar.framework.container.S2Container;
 import org.seasar.framework.container.util.SmartDeployUtil;
 import org.seasar.framework.container.util.Traversal;
-import org.seasar.framework.log.Logger;
 import org.seasar.framework.util.ClassTraversal;
 import org.seasar.framework.util.ClassUtil;
 import org.seasar.framework.util.tiger.ReflectionUtil;
 
 public class SchedulerImpl implements Scheduler {
+
+	public static final int SHUTDOWN_AWAIT_TIME = 10;
+
+	public static final TimeUnit SHUTDOWN_AWAIT_TIMEUNIT = TimeUnit.MILLISECONDS;
 
 	private static Logger log = Logger.getLogger(SchedulerImpl.class);
 
@@ -91,11 +96,12 @@ public class SchedulerImpl implements Scheduler {
 		} catch (CancellationException e) {
 			log.debug(e);
 			while (!schedulerTaskFuture.isDone()) {
-				log.debug("キャンセル待機中");
+				log.log("DCHRONOS0013", null);
 			}
 			log.debug("キャンセルチェック完了");
 		} catch (ExecutionException e) {
-			e.printStackTrace();
+			log.log("ECHRONOS0002", null, e);
+			throw new ExecutionRuntimeException(e);
 		}
 	}
 
@@ -115,8 +121,8 @@ public class SchedulerImpl implements Scheduler {
 				.getTaskContenaList(TaskStateType.RUNNING);
 		for (TaskContena tc : runningTaskList) {
 			tc.getTaskExecutorService().cancel();
-			while (!tc.getTaskExecutorService()
-					.await(10, TimeUnit.MILLISECONDS)) {
+			while (!tc.getTaskExecutorService().await(SHUTDOWN_AWAIT_TIME,
+					SHUTDOWN_AWAIT_TIMEUNIT)) {
 				String taskName = TaskPropertyUtil.getTaskName(tc
 						.getTaskExecutorService());
 				log.debug("Task (" + taskName + ") のShutdown 待機中");
