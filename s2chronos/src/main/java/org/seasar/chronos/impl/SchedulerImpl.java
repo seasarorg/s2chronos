@@ -188,7 +188,46 @@ public class SchedulerImpl implements Scheduler {
 				});
 	}
 
+	private Class findTaskComponentClassByTaskName(String taskName) {
+		TaskContenaStateManager tcsm = TaskContenaStateManager.getInstance();
+		CopyOnWriteArrayList<TaskContena> l = tcsm.getAllTaskContenaList();
+		for (TaskContena tc : l) {
+			Class<?> clazz = tc.getTaskClass();
+			Task task = (Task) clazz.getAnnotation(Task.class);
+			if (task == null) {
+				continue;
+			}
+			String _taskName = task.name();
+			if (taskName.equals(_taskName)) {
+				return clazz;
+			}
+		}
+		return null;
+	}
+
+	public void addTask(String taskName) {
+		Class clazz = findTaskComponentClassByTaskName(taskName);
+		if (clazz != null) {
+			addTask(clazz);
+		}
+	}
+
+	public void addTask(Class componentClass) {
+		scheduleTask(this.s2container, componentClass);
+	}
+
+	private void scheduleTask(final S2Container s2Container,
+			Class componentClass) {
+		ComponentDef componentDef = s2Container.getComponentDef(componentClass);
+		scheduleTask(componentDef);
+	}
+
 	private void scheduleTask(ComponentDef componentDef) {
+		Class<?> clazz = componentDef.getComponentClass();
+		Task task = clazz.getAnnotation(Task.class);
+		if (!task.autoSchedule()) {
+			return;
+		}
 		CopyOnWriteArrayList<TaskContena> list = taskContenaStateManager
 				.getTaskContenaList(TaskStateType.SCHEDULED);
 		TaskContena tc = new TaskContena(componentDef);
@@ -197,11 +236,12 @@ public class SchedulerImpl implements Scheduler {
 		tc.setTaskExecutorService(tes);
 		tes.setTaskComponentDef(tc.getComponentDef());
 		tes.setGetterSignal(this);
+		tes.setScheduler(this);
 		// ここでタスクに対してDIが実行されます
 		// なので，ここ以外のところで，getComponentしないように注意!
 		tes.prepare();
 		tc.setTask(tes.getTask());
-		list.addIfAbsent(tc);
+		list.add(tc);
 	}
 
 	private void registTaskFromS2Container() {
@@ -221,9 +261,7 @@ public class SchedulerImpl implements Scheduler {
 									shortClassName);
 							Class clazz = ReflectionUtil
 									.forNameNoException(name);
-							ComponentDef componentDef = s2Container
-									.getComponentDef(clazz);
-							scheduleTask(componentDef);
+							scheduleTask(s2Container, clazz);
 						}
 					});
 		}

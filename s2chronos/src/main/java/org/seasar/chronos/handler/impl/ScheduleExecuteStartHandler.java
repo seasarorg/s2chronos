@@ -54,7 +54,11 @@ public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler 
 										log.log("ECHRONOS0002", logArgs, ex);
 									}
 								}
-								_tes.destroy();
+								nextTaskName = null;
+								nextTaskName = _tes.destroy();
+								if (nextTaskName != null) {
+									_tes.getScheduler().addTask(nextTaskName);
+								}
 								if (runingTaskList.contains(tc)) {
 									runingTaskList.remove(tc);
 								}

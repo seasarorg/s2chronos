@@ -6,6 +6,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+import org.seasar.chronos.Scheduler;
 import org.seasar.chronos.TaskThreadPool;
 import org.seasar.chronos.TaskTrigger;
 import org.seasar.chronos.ThreadPoolType;
@@ -28,7 +29,6 @@ import org.seasar.framework.beans.factory.BeanDescFactory;
 import org.seasar.framework.container.ComponentDef;
 import org.seasar.framework.container.annotation.tiger.Binding;
 import org.seasar.framework.container.annotation.tiger.BindingType;
-import org.seasar.framework.container.hotdeploy.HotdeployUtil;
 
 public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 
@@ -82,6 +82,16 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 
 	public TaskExecuteStrategyImpl() {
 
+	}
+
+	private Scheduler scheduler;
+
+	public void setScheduler(Scheduler scheduler) {
+		this.scheduler = scheduler;
+	}
+
+	public Scheduler getScheduler() {
+		return this.scheduler;
 	}
 
 	protected TaskExecuteHandler createTaskGroupMethodExecuteHandler() {
@@ -145,14 +155,13 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 	}
 
 	public String initialize() throws InterruptedException {
-		try {
-			String className = taskComponentDef.getComponentClass().getName();
-			Class.forName(className);
-		} catch (ClassNotFoundException e) {
-			// TODO é©ìÆê∂ê¨Ç≥ÇÍÇΩ catch ÉuÉçÉbÉN
-			e.printStackTrace();
-		}
-		HotdeployUtil.start();
+		// try {
+		// String className = taskComponentDef.getComponentClass().getName();
+		// Class.forName(className);
+		// } catch (ClassNotFoundException e) {
+		// e.printStackTrace();
+		// }
+		// HotdeployUtil.start();
 		this.setExecuted(true);
 		if (this.lifecycleMethodInvoker.hasMethod(METHOD_NAME_INITIALIZE)) {
 			AsyncResult ar = this.lifecycleMethodInvoker
@@ -212,17 +221,22 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 		return this.taskMethodInvoker.awaitInvokes(time, timeUnit);
 	}
 
-	public void destroy() throws InterruptedException {
+	public String destroy() throws InterruptedException {
+		String nextTask = null;
 		if (this.lifecycleMethodInvoker.hasMethod(METHOD_NAME_DESTROY)) {
 			AsyncResult ar = this.lifecycleMethodInvoker
 					.beginInvoke(METHOD_NAME_DESTROY);
 			this.lifecycleMethodInvoker.endInvoke(ar);
+			TaskMethodMetaData md = new TaskMethodMetaData(this.beanDesc,
+					METHOD_NAME_DESTROY);
+			nextTask = md.getNextTask();
 		}
 		this.setExecuted(false);
 		this.notifyGetterSignal();
 		this.taskMethodInvoker = null;
 		this.lifecycleMethodInvoker = null;
-		HotdeployUtil.stop();
+		// HotdeployUtil.stop();
+		return nextTask;
 	}
 
 	private ExecutorService createJobMethodExecutorService(Object target) {
@@ -397,7 +411,8 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 			if (task == null) {
 				continue;
 			}
-			if (nextTaskName.equals(task.name())) {
+			String taskName = task.name();
+			if (nextTaskName.equals(taskName)) {
 				return true;
 			}
 		}

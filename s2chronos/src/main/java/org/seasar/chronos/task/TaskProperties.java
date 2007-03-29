@@ -1,5 +1,6 @@
 package org.seasar.chronos.task;
 
+import org.seasar.chronos.Scheduler;
 import org.seasar.chronos.TaskThreadPool;
 import org.seasar.chronos.TaskTrigger;
 import org.seasar.chronos.ThreadPoolType;
@@ -8,6 +9,10 @@ import org.seasar.framework.container.ComponentDef;
 public interface TaskProperties {
 
 	public String getTaskName();
+
+	public void setScheduler(Scheduler scheduler);
+
+	public Scheduler getScheduler();
 
 	public void setTaskComponentDef(ComponentDef taskComponentDef);
 

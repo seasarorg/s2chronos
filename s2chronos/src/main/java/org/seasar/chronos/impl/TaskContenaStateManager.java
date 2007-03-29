@@ -1,6 +1,5 @@
 package org.seasar.chronos.impl;
 
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -10,19 +9,14 @@ public class TaskContenaStateManager {
 
 	private ConcurrentHashMap<TaskStateType, CopyOnWriteArrayList<TaskContena>> taskContenaMap = new ConcurrentHashMap<TaskStateType, CopyOnWriteArrayList<TaskContena>>();
 
+	private CopyOnWriteArrayList<TaskContena> allTaskList = new CopyOnWriteArrayList<TaskContena>();
+
 	private TaskContenaStateManager() {
 
 	}
 
 	public CopyOnWriteArrayList<TaskContena> getAllTaskContenaList() {
-		CopyOnWriteArrayList<TaskContena> result = new CopyOnWriteArrayList<TaskContena>();
-		Set<TaskStateType> set = this.taskContenaMap.keySet();
-		for (TaskStateType type : set) {
-			CopyOnWriteArrayList<TaskContena> list = this.taskContenaMap
-					.get(type);
-			result.addAllAbsent(list);
-		}
-		return result;
+		return allTaskList;
 	}
 
 	public CopyOnWriteArrayList<TaskContena> getTaskContenaList(
@@ -32,12 +26,18 @@ public class TaskContenaStateManager {
 			result = new CopyOnWriteArrayList<TaskContena>();
 			this.putTaskContenaList(key, result);
 		}
-		return result;
+		CopyOnWriteArrayList<TaskContena> clone = (CopyOnWriteArrayList<TaskContena>) result.clone();
+		return clone;
 	}
 
 	private void putTaskContenaList(TaskStateType key,
 			CopyOnWriteArrayList<TaskContena> taskContenaList) {
 		this.taskContenaMap.put(key, taskContenaList);
+	}
+
+	public void addTaskContena(TaskStateType key, TaskContena taskContena) {
+		getTaskContenaList(key).add(taskContena);
+		allTaskList.add(taskContena);
 	}
 
 	public static TaskContenaStateManager getInstance() {

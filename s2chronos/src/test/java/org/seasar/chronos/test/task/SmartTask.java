@@ -61,7 +61,7 @@ public class SmartTask {
 	}
 
 	// すべてのタスクが終了したら呼ばれる
-	// @NextTask("example")
+	@NextTask("example")
 	public synchronized void destroy() {
 		log.info("SmartTask::destroy");
 	}

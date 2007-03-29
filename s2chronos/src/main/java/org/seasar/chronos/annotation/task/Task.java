@@ -13,4 +13,5 @@ public @interface Task {
 
 	String name() default TASK_NAME_NULL;
 
+	boolean autoSchedule() default true;
 }

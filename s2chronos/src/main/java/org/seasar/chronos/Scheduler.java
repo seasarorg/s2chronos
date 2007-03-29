@@ -15,8 +15,12 @@ public interface Scheduler {
 
 	public void join() throws InterruptedException;
 
+	public void addTask(Class componentClass);
+
 	public void addListener(SchedulerEventListener listener);
 
 	public void removeListener(SchedulerEventListener listener);
+
+	public void addTask(String taskName);
 
 }

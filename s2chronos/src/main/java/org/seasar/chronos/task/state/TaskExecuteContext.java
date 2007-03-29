@@ -34,7 +34,7 @@ public interface TaskExecuteContext {
 	public boolean await(long time, TimeUnit timeUnit)
 			throws InterruptedException;
 
-	public void destroy() throws InterruptedException;
+	public String destroy() throws InterruptedException;
 
 	public void waitOne() throws InterruptedException;
 

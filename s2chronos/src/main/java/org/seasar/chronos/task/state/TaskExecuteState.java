@@ -22,7 +22,8 @@ public interface TaskExecuteState {
 	public boolean await(TaskExecuteContext context, long time,
 			TimeUnit timeUnit) throws InterruptedException;
 
-	public void destroy(AbstractTaskExecuteContext context) throws InterruptedException;
+	public String destroy(AbstractTaskExecuteContext context)
+			throws InterruptedException;
 
 	public void waitOne() throws InterruptedException;
 

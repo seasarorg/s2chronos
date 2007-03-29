@@ -30,8 +30,8 @@ public class TaskExecuteStateNonInitialized extends AbstractTaskExecuteState {
 	}
 
 	@Override
-	public void destroy(AbstractTaskExecuteContext context) {
-
+	public String destroy(AbstractTaskExecuteContext context) {
+		return null;
 	}
 
 	@Override

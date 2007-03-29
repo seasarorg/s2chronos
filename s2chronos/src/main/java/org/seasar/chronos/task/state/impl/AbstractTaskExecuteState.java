@@ -41,7 +41,7 @@ public abstract class AbstractTaskExecuteState implements TaskExecuteState {
 
 	public abstract boolean cancel(TaskExecuteContext context);
 
-	public abstract void destroy(AbstractTaskExecuteContext context)
+	public abstract String destroy(AbstractTaskExecuteContext context)
 			throws InterruptedException;
 
 	public abstract void prepare(TaskExecuteContext context);

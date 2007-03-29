@@ -135,8 +135,8 @@ public abstract class AbstractTaskExecuteContext implements TaskExecuteContext {
 	 * 
 	 * @see org.seasar.chronos.task.state.impl.TaskExecuteContext#destroy()
 	 */
-	public void destroy() throws InterruptedException {
-		this.currentState.destroy(this);
+	public String destroy() throws InterruptedException {
+		return this.currentState.destroy(this);
 	}
 
 	/*

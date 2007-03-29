@@ -2,6 +2,7 @@ package org.seasar.chronos.task.impl;
 
 import java.util.concurrent.TimeUnit;
 
+import org.seasar.chronos.Scheduler;
 import org.seasar.chronos.TaskThreadPool;
 import org.seasar.chronos.TaskTrigger;
 import org.seasar.chronos.ThreadPoolType;
@@ -56,8 +57,8 @@ public class TaskExecutorServiceImpl implements TaskExecutorService {
 		return this.taskExecuteContext.cancel();
 	}
 
-	public void destroy() throws InterruptedException {
-		this.taskExecuteContext.destroy();
+	public String destroy() throws InterruptedException {
+		return this.taskExecuteContext.destroy();
 	}
 
 	public void prepare() {
@@ -126,6 +127,15 @@ public class TaskExecutorServiceImpl implements TaskExecutorService {
 
 	public void waitOne() throws InterruptedException {
 		this.taskExecuteContext.waitOne();
+	}
+
+	public Scheduler getScheduler() {
+		return this.taskExecuteContext.getTaskExecuteStrategy().getScheduler();
+	}
+
+	public void setScheduler(Scheduler scheduler) {
+		this.taskExecuteContext.getTaskExecuteStrategy()
+				.setScheduler(scheduler);
 	}
 
 }

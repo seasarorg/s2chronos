@@ -32,10 +32,11 @@ public class TaskExecuteStateInitialized extends AbstractTaskExecuteState {
 	}
 
 	@Override
-	public void destroy(AbstractTaskExecuteContext context)
+	public String destroy(AbstractTaskExecuteContext context)
 			throws InterruptedException {
-		this.getTaskExecuteStrategy().destroy();
+		String result = this.getTaskExecuteStrategy().destroy();
 		this.changeState(context, context.getTaskExecuteStateNonInitialize());
+		return result;
 	}
 
 	@Override
