@@ -13,6 +13,8 @@ public interface TaskProperties {
 
 	public ComponentDef getTaskComponentDef();
 
+	public Object getTask();
+
 	public void setGetterSignal(Object getterSignal);
 
 	public int getThreadPoolSize();

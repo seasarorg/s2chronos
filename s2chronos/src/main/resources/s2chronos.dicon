@@ -5,6 +5,11 @@
 	<include path="aop.dicon"/>
 	<include path="scheduler.dicon"/>
 	
+	<component name="timedTrigger" class="org.seasar.chronos.trigger.TimedTrigger" instance="prototype"/>
+	<component name="nonDelayTrigger" class="org.seasar.chronos.trigger.NonDelayTrigger" instance="prototype"/>
+	<component name="delayTrigger" class="org.seasar.chronos.trigger.DelayTrigger" instance="prototype"/>
+	<component name="cronTrigger" class="org.seasar.chronos.trigger.CronTrigger" instance="prototype"/>
+	
 	<component name="scheduleExecuteShutdownHandler" class="org.seasar.chronos.handler.impl.ScheduleExecuteShutdownHandler" />
 	<component name="scheduleExecuteStartHandler" class="org.seasar.chronos.handler.impl.ScheduleExecuteStartHandler" />
 	<component name="scheduleExecuteWaitHandler" class="org.seasar.chronos.handler.impl.ScheduleExecuteWaitHandler" />

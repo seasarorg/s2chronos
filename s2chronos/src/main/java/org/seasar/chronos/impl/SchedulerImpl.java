@@ -19,6 +19,7 @@ import org.seasar.chronos.autodetector.TaskClassAutoDetector;
 import org.seasar.chronos.exception.ExecutionRuntimeException;
 import org.seasar.chronos.handler.ScheduleExecuteHandler;
 import org.seasar.chronos.logger.Logger;
+import org.seasar.chronos.task.TaskExecutorService;
 import org.seasar.chronos.util.TaskPropertyUtil;
 import org.seasar.framework.container.ComponentDef;
 import org.seasar.framework.container.S2Container;
@@ -35,6 +36,8 @@ public class SchedulerImpl implements Scheduler {
 	public static final TimeUnit SHUTDOWN_AWAIT_TIMEUNIT = TimeUnit.MILLISECONDS;
 
 	private static Logger log = Logger.getLogger(SchedulerImpl.class);
+
+	private AtomicBoolean pause = new AtomicBoolean();
 
 	private ExecutorService executorService = Executors.newCachedThreadPool();
 
@@ -55,13 +58,16 @@ public class SchedulerImpl implements Scheduler {
 
 	private TaskClassAutoDetector taskClassAutoDetector;
 
+	public void setTaskClassAutoDetector(
+			TaskClassAutoDetector taskClassAutoDetector) {
+		this.taskClassAutoDetector = taskClassAutoDetector;
+	}
+
 	private ScheduleExecuteHandler scheduleExecuteWaitHandler;
 
 	private ScheduleExecuteHandler scheduleExecuteStartHandler;
 
 	private ScheduleExecuteHandler scheduleExecuteShutdownHandler;
-
-	private AtomicBoolean pause = new AtomicBoolean();
 
 	public void setScheduleExecuteShutdownHandler(
 			ScheduleExecuteHandler sheduleExecuteShutdownHandler) {
@@ -185,7 +191,17 @@ public class SchedulerImpl implements Scheduler {
 	private void scheduleTask(ComponentDef componentDef) {
 		CopyOnWriteArrayList<TaskContena> list = taskContenaStateManager
 				.getTaskContenaList(TaskStateType.SCHEDULED);
-		list.addIfAbsent(new TaskContena(componentDef));
+		TaskContena tc = new TaskContena(componentDef);
+		final TaskExecutorService tes = (TaskExecutorService) this.s2container
+				.getComponent(TaskExecutorService.class);
+		tc.setTaskExecutorService(tes);
+		tes.setTaskComponentDef(tc.getComponentDef());
+		tes.setGetterSignal(this);
+		// ここでタスクに対してDIが実行されます
+		// なので，ここ以外のところで，getComponentしないように注意!
+		tes.prepare();
+		tc.setTask(tes.getTask());
+		list.addIfAbsent(tc);
 	}
 
 	private void registTaskFromS2Container() {
@@ -211,35 +227,6 @@ public class SchedulerImpl implements Scheduler {
 						}
 					});
 		}
-	}
-
-	public boolean addTask(Object task) {
-		final CopyOnWriteArrayList<TaskContena> taskList = taskContenaStateManager
-				.getTaskContenaList(TaskStateType.SCHEDULED);
-		TaskContena tc = new TaskContena();
-		tc.setTarget(task);
-		tc.setTargetClass(task.getClass());
-		boolean result = taskList.add(tc);
-		synchronized (this) {
-			this.notify();
-		}
-		return result;
-	}
-
-	public boolean removeTask(Object task) {
-		final CopyOnWriteArrayList<TaskContena> taskList = taskContenaStateManager
-				.getTaskContenaList(TaskStateType.SCHEDULED);
-		for (TaskContena tc : taskList) {
-			if (tc.getTarget() == task) {
-				return taskList.remove(tc);
-			}
-		}
-		return false;
-	}
-
-	public void setTaskClassAutoDetector(
-			TaskClassAutoDetector taskClassAutoDetector) {
-		this.taskClassAutoDetector = taskClassAutoDetector;
 	}
 
 }

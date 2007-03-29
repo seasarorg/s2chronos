@@ -19,8 +19,4 @@ public interface Scheduler {
 
 	public void removeListener(SchedulerEventListener listener);
 
-	public boolean addTask(Object task);
-
-	public boolean removeTask(Object task);
-
 }

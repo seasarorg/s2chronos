@@ -33,11 +33,7 @@ public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler 
 		final List<TaskContena> runingTaskList = this.taskContenaStateManager
 				.getTaskContenaList(TaskStateType.RUNNING);
 		for (final TaskContena tc : scheduledTaskList) {
-			final TaskExecutorService tes = (TaskExecutorService) this.s2container
-					.getComponent(TaskExecutorService.class);
-			tes.setTaskComponentDef(tc.getComponentDef());
-			tes.setGetterSignal(scheduler);
-			tes.prepare();
+			final TaskExecutorService tes = tc.getTaskExecutorService();
 			if (TaskPropertyUtil.getStartTask(tes)) {
 				// タスクの開始
 				log.log("DCHRONOSSSTHRT001", new Object[] { TaskPropertyUtil
@@ -68,7 +64,6 @@ public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler 
 						});
 
 				tc.setTaskStaterFuture(taskStaterFuture);
-				tc.setTaskExecutorService(tes);
 
 				runingTaskList.add(tc);
 

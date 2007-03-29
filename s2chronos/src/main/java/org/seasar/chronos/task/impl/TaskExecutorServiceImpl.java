@@ -39,6 +39,10 @@ public class TaskExecutorServiceImpl implements TaskExecutorService {
 				.getTaskComponentDef();
 	}
 
+	public Object getTask() {
+		return this.taskExecuteContext.getTaskExecuteStrategy().getTask();
+	}
+
 	public boolean await(long time, TimeUnit timeUnit)
 			throws InterruptedException {
 		return taskExecuteContext.await(time, timeUnit);

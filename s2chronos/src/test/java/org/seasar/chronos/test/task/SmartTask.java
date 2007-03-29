@@ -1,5 +1,6 @@
 package org.seasar.chronos.test.task;
 
+import org.seasar.chronos.TaskTrigger;
 import org.seasar.chronos.annotation.task.Task;
 import org.seasar.chronos.annotation.task.method.CloneTask;
 import org.seasar.chronos.annotation.task.method.JoinTask;
@@ -12,12 +13,22 @@ public class SmartTask {
 
 	private static Logger log = Logger.getLogger(SmartTask.class);
 
-	private boolean startTask = true;
+	private TaskTrigger trigger;
 
-	// trueを返すとタスクの起動が開始される
-	public synchronized boolean getStartTask() {
-		return this.startTask;
+	public void setNonDelayTrigger(TaskTrigger trigger) {
+		this.trigger = trigger;
 	}
+
+	public TaskTrigger getTrigger() {
+		return this.trigger;
+	}
+
+	// private boolean startTask = true;
+	//
+	// // trueを返すとタスクの起動が開始される
+	// public synchronized boolean getStartTask() {
+	// return this.startTask;
+	// }
 
 	// タスクが実行されるときに最初に呼ばれる
 	@NextTask("taskA")

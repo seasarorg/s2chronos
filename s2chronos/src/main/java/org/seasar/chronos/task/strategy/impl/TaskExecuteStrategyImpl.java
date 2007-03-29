@@ -392,7 +392,7 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 		TaskContenaStateManager tcsm = TaskContenaStateManager.getInstance();
 		CopyOnWriteArrayList<TaskContena> l = tcsm.getAllTaskContenaList();
 		for (TaskContena tc : l) {
-			Class<?> clazz = tc.getTargetClass();
+			Class<?> clazz = tc.getTaskClass();
 			Task task = (Task) clazz.getAnnotation(Task.class);
 			if (task == null) {
 				continue;
@@ -416,6 +416,10 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 
 	public ComponentDef getTaskComponentDef() {
 		return this.taskComponentDef;
+	}
+
+	public Object getTask() {
+		return this.task;
 	}
 
 }

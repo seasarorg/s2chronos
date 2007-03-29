@@ -9,9 +9,9 @@ public class TaskContena {
 
 	private ComponentDef componentDef;
 
-	private Object target;
+	private Object task;
 
-	private Class targetClass;
+	private Class taskClass;
 
 	private TaskExecutorService taskExecutorService;
 
@@ -23,8 +23,7 @@ public class TaskContena {
 
 	public TaskContena(ComponentDef componentDef) {
 		this.setComponentDef(componentDef);
-		this.setTarget(componentDef.getComponent());
-		this.setTargetClass(componentDef.getComponentClass());
+		this.setTaskClass(componentDef.getComponentClass());
 	}
 
 	public ComponentDef getComponentDef() {
@@ -35,20 +34,20 @@ public class TaskContena {
 		this.componentDef = componentDef;
 	}
 
-	public Object getTarget() {
-		return target;
+	public Object getTask() {
+		return task;
 	}
 
-	public void setTarget(Object target) {
-		this.target = target;
+	public void setTask(Object target) {
+		this.task = target;
 	}
 
-	public Class getTargetClass() {
-		return targetClass;
+	public Class getTaskClass() {
+		return taskClass;
 	}
 
-	public void setTargetClass(Class targetClass) {
-		this.targetClass = targetClass;
+	public void setTaskClass(Class targetClass) {
+		this.taskClass = targetClass;
 	}
 
 	public Future<TaskExecutorService> getTaskStaterFuture() {

@@ -2,17 +2,17 @@ package org.seasar.chronos.trigger;
 
 import java.util.Date;
 
-public class Trigger extends AbstractTrigger {
+public class TimedTrigger extends AbstractTrigger {
 
 	private Date startTime;
 
 	private Date endTime;
 
-	public Trigger() {
+	public TimedTrigger() {
 
 	}
 
-	public Trigger(String name) {
+	public TimedTrigger(String name) {
 		super(name);
 	}
 
