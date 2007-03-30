@@ -5,6 +5,7 @@
 	<include path="convention.dicon"/>
 	<component name="taskClassAutoDetector" class="org.seasar.chronos.autodetector.TaskClassAutoDetector"/>
 	<component name="schedulerConfiguration" class="org.seasar.chronos.SchedulerConfiguration">
-		<property name="autoFinish">false</property>
+		<property name="autoFinish">true</property>
+		<property name="zeroScheduleTime">5000</property>
 	</component>
 </components>

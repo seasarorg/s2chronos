@@ -148,12 +148,32 @@ public class SchedulerImpl implements Scheduler {
 		schedulerTaskFuture.cancel(true);
 	}
 
+	private long finishStartTime = 0;
+
 	private boolean getSchedulerFinish() {
-		if (this.schedulerTaskFuture != null
-				&& taskContenaStateManager.size(TaskStateType.RUNNING) == 0
-				&& configuration.isAutoFinish()) {
+		// log.debug("getSchedulerFinish start");
+		if (finishStartTime != 0
+				&& taskContenaStateManager.size(TaskStateType.SCHEDULED) > 0) {
+			finishStartTime = 0;
+			log.debug(">>>>>>>>>>>>>>>>>getSchedulerFinish finish cancel!!!");
+			return false;
+		}
+		if (finishStartTime != 0
+				&& (System.currentTimeMillis() - finishStartTime) >= configuration
+						.getZeroScheduleTime()) {
+			log
+					.debug(">>>>>>>>>>>>>>>>>getSchedulerFinish finish!! return true");
+			finishStartTime = 0;
 			return true;
 		}
+		if (this.schedulerTaskFuture != null
+				&& taskContenaStateManager.size(TaskStateType.SCHEDULED) == 0
+				&& taskContenaStateManager.size(TaskStateType.RUNNING) == 0
+				&& configuration.isAutoFinish() && finishStartTime == 0) {
+			finishStartTime = System.currentTimeMillis();
+			log.debug(">>>>>>>>>>>>>>>>>getSchedulerFinish finish start");
+		}
+		// log.debug("getSchedulerFinish return false");
 		return false;
 	}
 
