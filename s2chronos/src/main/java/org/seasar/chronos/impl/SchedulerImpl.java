@@ -198,7 +198,7 @@ public class SchedulerImpl implements Scheduler {
 				});
 	}
 
-	private ComponentDef findTaskComponentClassByTaskName(final String taskName) {
+	private ComponentDef findTaskComponentDefByTaskName(final String taskName) {
 		TaskContenaStateManager tcsm = TaskContenaStateManager.getInstance();
 		Object componentDef = tcsm
 				.forEach(new TaskContenaStateManager.TaskContenaHanlder() {
@@ -225,7 +225,7 @@ public class SchedulerImpl implements Scheduler {
 	}
 
 	public void addTask(String taskName) {
-		ComponentDef componentDef = findTaskComponentClassByTaskName(taskName);
+		ComponentDef componentDef = findTaskComponentDefByTaskName(taskName);
 		if (componentDef != null) {
 			scheduleTask(componentDef);
 		}
