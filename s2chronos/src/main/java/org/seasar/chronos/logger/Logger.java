@@ -15,14 +15,18 @@ public final class Logger {
 
 	private final Log log;
 
-	public static synchronized Logger getLogger(final Class<?> clazz) {
+	public static Logger getLogger(final Class<?> clazz) {
 		if (!initialized) {
 			initialize();
 		}
 		Logger logger = (Logger) loggers.get(clazz);
 		if (logger == null) {
-			logger = new Logger(clazz);
-			loggers.put(clazz, logger);
+			synchronized (Logger.class) {
+				if (logger == null) {
+					logger = new Logger(clazz);
+					loggers.put(clazz, logger);
+				}
+			}
 		}
 		return logger;
 	}
