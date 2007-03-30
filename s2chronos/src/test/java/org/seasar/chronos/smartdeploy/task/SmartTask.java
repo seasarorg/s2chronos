@@ -1,4 +1,4 @@
-package org.seasar.chronos.test.task;
+package org.seasar.chronos.smartdeploy.task;
 
 import org.seasar.chronos.TaskTrigger;
 import org.seasar.chronos.annotation.task.Task;
