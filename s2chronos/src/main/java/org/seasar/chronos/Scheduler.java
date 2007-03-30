@@ -11,9 +11,9 @@ public interface Scheduler {
 
 	public void pause();
 
-	public void shutdown() throws InterruptedException;
+	public void shutdown();
 
-	public void join() throws InterruptedException;
+	public void join();
 
 	public void addTask(Class componentClass);
 

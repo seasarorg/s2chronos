@@ -1,6 +1,5 @@
 package org.seasar.chronos.handler.impl;
 
-import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
 import java.util.concurrent.RejectedExecutionException;
@@ -8,6 +7,7 @@ import java.util.concurrent.RejectedExecutionException;
 import org.seasar.chronos.Scheduler;
 import org.seasar.chronos.impl.TaskContena;
 import org.seasar.chronos.impl.TaskStateType;
+import org.seasar.chronos.impl.TaskContenaStateManager.TaskContenaHanlder;
 import org.seasar.chronos.task.TaskExecutorService;
 import org.seasar.chronos.util.TaskPropertyUtil;
 import org.seasar.framework.container.S2Container;
@@ -28,53 +28,66 @@ public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler 
 
 	@Override
 	public void handleRequest() throws InterruptedException {
-		final List<TaskContena> scheduledTaskList = this.taskContenaStateManager
-				.getTaskContenaList(TaskStateType.SCHEDULED);
-		final List<TaskContena> runingTaskList = this.taskContenaStateManager
-				.getTaskContenaList(TaskStateType.RUNNING);
-		for (final TaskContena tc : scheduledTaskList) {
-			final TaskExecutorService tes = tc.getTaskExecutorService();
-			if (TaskPropertyUtil.getStartTask(tes)) {
-				// タスクの開始
-				log.log("DCHRONOSSSTHRT001", new Object[] { TaskPropertyUtil
-						.getTaskName(tes) });
-				Future<TaskExecutorService> taskStaterFuture = this.executorService
-						.submit(new Callable<TaskExecutorService>() {
-							public TaskExecutorService call() throws Exception {
-								TaskExecutorService _tes = tes;
-								Object[] logArgs = new Object[] { TaskPropertyUtil
-										.getTaskName(_tes) };
-								log.log("DCHRONOS000111", logArgs);
-								String nextTaskName = _tes.initialize();
-								if (nextTaskName != null) {
-									try {
-										_tes.execute(nextTaskName);
-										_tes.waitOne();
-									} catch (RejectedExecutionException ex) {
-										log.log("ECHRONOS0002", logArgs, ex);
-									}
-								}
-								nextTaskName = null;
-								nextTaskName = _tes.destroy();
-								if (nextTaskName != null) {
-									_tes.getScheduler().addTask(nextTaskName);
-								}
-								if (runingTaskList.contains(tc)) {
-									runingTaskList.remove(tc);
-								}
-								log.log("DCHRONOS000112", logArgs);
-								return tes;
-							}
-						});
 
-				tc.setTaskStaterFuture(taskStaterFuture);
+		this.taskContenaStateManager.forEach(TaskStateType.SCHEDULED,
+				new TaskContenaHanlder() {
+					public Object processTaskContena(
+							final TaskContena taskContena) {
+						final TaskExecutorService tes = taskContena
+								.getTaskExecutorService();
+						log.debug("check task : "
+								+ TaskPropertyUtil.getTaskName(tes));
+						if (TaskPropertyUtil.getStartTask(tes)) {
+							log.debug("start task : "
+									+ TaskPropertyUtil.getTaskName(tes));
+							// タスクの開始
+							log.log("DCHRONOSSSTHRT001",
+									new Object[] { TaskPropertyUtil
+											.getTaskName(tes) });
+							Future<TaskExecutorService> taskStaterFuture = executorService
+									.submit(new Callable<TaskExecutorService>() {
+										public TaskExecutorService call()
+												throws Exception {
+											TaskExecutorService _tes = tes;
+											Object[] logArgs = new Object[] { TaskPropertyUtil
+													.getTaskName(_tes) };
+											log.log("DCHRONOS000111", logArgs);
+											String nextTaskName = _tes
+													.initialize();
+											if (nextTaskName != null) {
+												try {
+													_tes.execute(nextTaskName);
+													_tes.waitOne();
+												} catch (RejectedExecutionException ex) {
+													log.log("ECHRONOS0002",
+															logArgs, ex);
+												}
+											}
+											nextTaskName = null;
+											nextTaskName = _tes.destroy();
+											if (nextTaskName != null) {
+												Scheduler scheduler = _tes
+														.getScheduler();
+												scheduler.addTask(nextTaskName);
+											}
+											taskContenaStateManager
+													.removeTaskContena(
+															TaskStateType.RUNNING,
+															taskContena);
+											log.log("DCHRONOS000112", logArgs);
+											return tes;
+										}
+									});
 
-				runingTaskList.add(tc);
-
-				scheduledTaskList.remove(tc);
-				break;
-			}
-		}
+							taskContena.setTaskStaterFuture(taskStaterFuture);
+							taskContenaStateManager.addTaskContena(
+									TaskStateType.RUNNING, taskContena);
+							taskContenaStateManager.removeTaskContena(
+									TaskStateType.SCHEDULED, taskContena);
+						}
+						return new Object();
+					}
+				});
 	}
 
 }

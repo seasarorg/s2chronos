@@ -1,7 +1,6 @@
 package org.seasar.chronos.task.strategy.impl;
 
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -29,8 +28,11 @@ import org.seasar.framework.beans.factory.BeanDescFactory;
 import org.seasar.framework.container.ComponentDef;
 import org.seasar.framework.container.annotation.tiger.Binding;
 import org.seasar.framework.container.annotation.tiger.BindingType;
+import org.seasar.framework.log.Logger;
 
 public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
+
+	private static Logger log = Logger.getLogger(TaskExecuteStrategyImpl.class);
 
 	private static final String PROPERTY_NAME_THREAD_POOL_SIZE = "threadPoolSize";
 
@@ -200,14 +202,17 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 				: TaskType.JOB;
 		String nextTaskName = startTaskName;
 		while (true) {
+			log.debug("while begin");
 			TaskExecuteHandler teh = getTaskExecuteHandler(type);
 			Transition transition = handleRequest(teh, nextTaskName);
 			this.notifyGetterSignal();
 			if (transition.isProcessResult()) {
+				log.debug("while break");
 				break;
 			}
 			type = (type == TaskType.JOB) ? TaskType.JOBGROUP : TaskType.JOB;
 			nextTaskName = transition.getNextTaskName();
+			log.debug("while end");
 		}
 	}
 
@@ -402,19 +407,25 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 		this.getterSignal = getterSignal;
 	}
 
-	public boolean checkMoveAnotherTask(String nextTaskName) {
+	public boolean checkMoveAnotherTask(final String nextTaskName) {
 		TaskContenaStateManager tcsm = TaskContenaStateManager.getInstance();
-		CopyOnWriteArrayList<TaskContena> l = tcsm.getAllTaskContenaList();
-		for (TaskContena tc : l) {
-			Class<?> clazz = tc.getTaskClass();
-			Task task = (Task) clazz.getAnnotation(Task.class);
-			if (task == null) {
-				continue;
-			}
-			String taskName = task.name();
-			if (nextTaskName.equals(taskName)) {
-				return true;
-			}
+		Object result = tcsm
+				.forEach(new TaskContenaStateManager.TaskContenaHanlder() {
+					public Object processTaskContena(TaskContena taskContena) {
+						Class<?> clazz = taskContena.getTaskClass();
+						Task task = (Task) clazz.getAnnotation(Task.class);
+						if (task == null) {
+							return null;
+						}
+						String taskName = task.name();
+						if (nextTaskName.equals(taskName)) {
+							return new Object();
+						}
+						return null;
+					}
+				});
+		if (result != null) {
+			return true;
 		}
 		return false;
 	}

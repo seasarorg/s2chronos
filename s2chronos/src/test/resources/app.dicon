@@ -7,7 +7,7 @@
 	<include path="s2chronos.dicon" />
 	
 	<component class="org.seasar.chronos.delegate.InvokeTarget"/>
-	
+
 	<component class="org.seasar.chronos.task.SimpleTask">
 		<aspect pointcut="do.*,initailize,destroy">aop.traceInterceptor</aspect>
 	</component>

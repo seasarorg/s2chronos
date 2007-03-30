@@ -1,9 +1,6 @@
 package org.seasar.chronos.handler.impl;
 
-import java.util.List;
-
 import org.seasar.chronos.Scheduler;
-import org.seasar.chronos.impl.TaskContena;
 import org.seasar.chronos.impl.TaskStateType;
 
 public class ScheduleExecuteWaitHandler extends AbstractScheduleExecuteHandler {
@@ -16,12 +13,9 @@ public class ScheduleExecuteWaitHandler extends AbstractScheduleExecuteHandler {
 
 	@Override
 	public void handleRequest() throws InterruptedException {
-		final List<TaskContena> scheduledTaskList = taskContenaStateManager
-				.getTaskContenaList(TaskStateType.SCHEDULED);
-		final List<TaskContena> runningTaskList = taskContenaStateManager
-				.getTaskContenaList(TaskStateType.RUNNING);
-		if (this.pause.get() || scheduledTaskList.size() == 0
-				&& runningTaskList.size() == 0) {
+		if (this.pause.get()
+				|| taskContenaStateManager.size(TaskStateType.SCHEDULED) == 0
+				&& taskContenaStateManager.size(TaskStateType.RUNNING) == 0) {
 			synchronized (scheduler) {
 				log.debug("scheduler.wait start");
 				try {

@@ -28,14 +28,8 @@ public class S2ChronosServlet extends HttpServlet {
 	public void destroy() {
 		try {
 			this.scheduler.shutdown();
-		} catch (InterruptedException e) {
-			log.log(e);
 		} finally {
-			try {
-				this.scheduler.join();
-			} catch (InterruptedException e) {
-				log.log(e);
-			}
+			this.scheduler.join();
 		}
 		super.destroy();
 	}

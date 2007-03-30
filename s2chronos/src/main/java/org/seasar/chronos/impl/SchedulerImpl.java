@@ -1,9 +1,7 @@
 package org.seasar.chronos.impl;
 
-import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CancellationException;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -17,6 +15,7 @@ import org.seasar.chronos.SchedulerEventListener;
 import org.seasar.chronos.annotation.task.Task;
 import org.seasar.chronos.autodetector.TaskClassAutoDetector;
 import org.seasar.chronos.exception.ExecutionRuntimeException;
+import org.seasar.chronos.exception.InterruptedRuntimeException;
 import org.seasar.chronos.handler.ScheduleExecuteHandler;
 import org.seasar.chronos.logger.Logger;
 import org.seasar.chronos.task.TaskExecutorService;
@@ -96,7 +95,7 @@ public class SchedulerImpl implements Scheduler {
 		return configuration;
 	}
 
-	public void join() throws InterruptedException {
+	public void join() {
 		try {
 			this.schedulerTaskFuture.get();
 		} catch (CancellationException e) {
@@ -108,6 +107,8 @@ public class SchedulerImpl implements Scheduler {
 		} catch (ExecutionException e) {
 			log.log("ECHRONOS0002", null, e);
 			throw new ExecutionRuntimeException(e);
+		} catch (InterruptedException e) {
+			throw new InterruptedRuntimeException(e);
 		}
 	}
 
@@ -121,26 +122,35 @@ public class SchedulerImpl implements Scheduler {
 		this.configuration = schedulerConfiguration;
 	}
 
-	public void shutdown() throws InterruptedException {
+	public void shutdown() {
 		// キャンセルしたタスクが残っていれば
-		final List<TaskContena> runningTaskList = taskContenaStateManager
-				.getTaskContenaList(TaskStateType.RUNNING);
-		for (TaskContena tc : runningTaskList) {
-			tc.getTaskExecutorService().cancel();
-			while (!tc.getTaskExecutorService().await(SHUTDOWN_AWAIT_TIME,
-					SHUTDOWN_AWAIT_TIMEUNIT)) {
-				String taskName = TaskPropertyUtil.getTaskName(tc
-						.getTaskExecutorService());
-				log.debug("Task (" + taskName + ") のShutdown 待機中");
-			}
-		}
+		this.taskContenaStateManager.forEach(TaskStateType.RUNNING,
+				new TaskContenaStateManager.TaskContenaHanlder() {
+					public Object processTaskContena(TaskContena taskContena) {
+						taskContena.getTaskExecutorService().cancel();
+						try {
+							while (!taskContena.getTaskExecutorService().await(
+									SHUTDOWN_AWAIT_TIME,
+									SHUTDOWN_AWAIT_TIMEUNIT)) {
+								String taskName = TaskPropertyUtil
+										.getTaskName(taskContena
+												.getTaskExecutorService());
+								log.debug("Task (" + taskName
+										+ ") のShutdown 待機中");
+							}
+						} catch (InterruptedException e) {
+							throw new InterruptedRuntimeException(e);
+						}
+						return null;
+					}
+				});
+
 		schedulerTaskFuture.cancel(true);
 	}
 
 	private boolean getSchedulerFinish() {
-		final List<TaskContena> runingTaskList = taskContenaStateManager
-				.getTaskContenaList(TaskStateType.RUNNING);
-		if (this.schedulerTaskFuture != null && runingTaskList.size() == 0
+		if (this.schedulerTaskFuture != null
+				&& taskContenaStateManager.size(TaskStateType.RUNNING) == 0
 				&& configuration.isAutoFinish()) {
 			return true;
 		}
@@ -188,27 +198,36 @@ public class SchedulerImpl implements Scheduler {
 				});
 	}
 
-	private Class findTaskComponentClassByTaskName(String taskName) {
+	private ComponentDef findTaskComponentClassByTaskName(final String taskName) {
 		TaskContenaStateManager tcsm = TaskContenaStateManager.getInstance();
-		CopyOnWriteArrayList<TaskContena> l = tcsm.getAllTaskContenaList();
-		for (TaskContena tc : l) {
-			Class<?> clazz = tc.getTaskClass();
-			Task task = (Task) clazz.getAnnotation(Task.class);
-			if (task == null) {
-				continue;
-			}
-			String _taskName = task.name();
-			if (taskName.equals(_taskName)) {
-				return clazz;
-			}
+		Object componentDef = tcsm
+				.forEach(new TaskContenaStateManager.TaskContenaHanlder() {
+					public Object processTaskContena(TaskContena taskContena) {
+						ComponentDef componentDef = taskContena
+								.getComponentDef();
+						Class<?> clazz = componentDef.getComponentClass();
+						Task task = (Task) clazz.getAnnotation(Task.class);
+						if (task == null) {
+							return null;
+						}
+						String _taskName = task.name();
+						log.debug("[[[" + taskName + ":" + _taskName + "]]]");
+						if (taskName.equals(_taskName)) {
+							return componentDef;
+						}
+						return null;
+					}
+				});
+		if (componentDef != null) {
+			return (ComponentDef) componentDef;
 		}
 		return null;
 	}
 
 	public void addTask(String taskName) {
-		Class clazz = findTaskComponentClassByTaskName(taskName);
-		if (clazz != null) {
-			addTask(clazz);
+		ComponentDef componentDef = findTaskComponentClassByTaskName(taskName);
+		if (componentDef != null) {
+			scheduleTask(componentDef);
 		}
 	}
 
@@ -228,8 +247,6 @@ public class SchedulerImpl implements Scheduler {
 		if (!task.autoSchedule()) {
 			return;
 		}
-		CopyOnWriteArrayList<TaskContena> list = taskContenaStateManager
-				.getTaskContenaList(TaskStateType.SCHEDULED);
 		TaskContena tc = new TaskContena(componentDef);
 		final TaskExecutorService tes = (TaskExecutorService) this.s2container
 				.getComponent(TaskExecutorService.class);
@@ -241,7 +258,8 @@ public class SchedulerImpl implements Scheduler {
 		// なので，ここ以外のところで，getComponentしないように注意!
 		tes.prepare();
 		tc.setTask(tes.getTask());
-		list.add(tc);
+		this.taskContenaStateManager
+				.addTaskContena(TaskStateType.SCHEDULED, tc);
 	}
 
 	private void registTaskFromS2Container() {

@@ -15,12 +15,8 @@ public class SchedulerImplTest extends S2TestCase {
 	}
 
 	public void testStart() {
-		try {
-			scheduler.start();
-			scheduler.join();
-		} catch (InterruptedException e) {
-			;
-		}
+		scheduler.start();
+		scheduler.join();
 	}
 
 }

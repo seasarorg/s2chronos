@@ -7,7 +7,7 @@ import org.seasar.chronos.annotation.task.method.NextTask;
 import org.seasar.chronos.annotation.type.JoinType;
 import org.seasar.framework.log.Logger;
 
-@Task(name = "simple")
+@Task(name = "example")
 public class SimpleTask {
 
 	private static Logger log = Logger.getLogger(SimpleTask.class);
@@ -22,7 +22,8 @@ public class SimpleTask {
 	// タスクが実行されるときに最初に呼ばれる
 	@NextTask("taskA")
 	public synchronized void initialize() {
-		log.info("SimpleTask::initialize");
+		log
+				.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>SimpleTask::initialize");
 	}
 
 	// タスクメソッドA 本体
