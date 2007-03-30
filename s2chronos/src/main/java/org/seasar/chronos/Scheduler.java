@@ -2,25 +2,52 @@ package org.seasar.chronos;
 
 public interface Scheduler {
 
+	/**
+	 * スケジューラの設定を返します．
+	 * 
+	 * @return スケジューラの設定
+	 */
 	public SchedulerConfiguration getSchedulerConfiguration();
 
+	/**
+	 * スケジューラの設定を設定します．
+	 * 
+	 * @param schedulerConfiguration
+	 *            スケジューラの設定
+	 */
 	public void setSchedulerConfiguration(
 			SchedulerConfiguration schedulerConfiguration);
 
+	/**
+	 * スケジューラをスタートします．
+	 * 
+	 */
 	public void start();
 
+	/**
+	 * スケジューラを一時停止します．
+	 * 
+	 */
 	public void pause();
 
+	/**
+	 * スケジューラをシャットダウンします．
+	 * 
+	 */
 	public void shutdown();
 
+	/**
+	 * スケジューラを待機します．
+	 * 
+	 */
 	public void join();
+
+	public boolean addTask(String taskName);
 
 	public void addTask(Class componentClass);
 
-	public void addListener(SchedulerEventListener listener);
+	public boolean addListener(SchedulerEventListener listener);
 
-	public void removeListener(SchedulerEventListener listener);
-
-	public void addTask(String taskName);
+	public boolean removeListener(SchedulerEventListener listener);
 
 }

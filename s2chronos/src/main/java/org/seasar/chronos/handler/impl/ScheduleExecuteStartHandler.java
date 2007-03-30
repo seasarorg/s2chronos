@@ -10,25 +10,44 @@ import org.seasar.chronos.impl.TaskStateType;
 import org.seasar.chronos.impl.TaskContenaStateManager.TaskContenaHanlder;
 import org.seasar.chronos.task.TaskExecutorService;
 import org.seasar.chronos.util.TaskPropertyUtil;
-import org.seasar.framework.container.S2Container;
 
 public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler {
 
-	private S2Container s2container;
+	private String taskName;
 
-	public void setS2Container(S2Container s2container) {
-		this.s2container = s2container;
+	private void taskExecute(TaskExecutorService tes, String nextTaskName)
+			throws InterruptedException {
+		if (nextTaskName != null) {
+			try {
+				tes.execute(nextTaskName);
+				tes.waitOne();
+			} catch (RejectedExecutionException ex) {
+				log.log("ECHRONOS0002", new Object[] { taskName }, ex);
+			}
+		}
 	}
 
-	private Scheduler scheduler;
+	private void scheduleTask(TaskExecutorService tes, String nextTaskName) {
+		if (nextTaskName != null) {
+			Scheduler scheduler = tes.getScheduler();
+			scheduler.addTask(nextTaskName);
+		}
+	}
 
-	public void setScheduler(Scheduler scheduler) {
-		this.scheduler = scheduler;
+	private void fireStartTaskEvent(TaskExecutorService tes) {
+		if (schedulerEventHandler != null) {
+			schedulerEventHandler.fireStartTask(tes.getTask());
+		}
+	}
+
+	private void fireEndTaskEvent(TaskExecutorService tes) {
+		if (schedulerEventHandler != null) {
+			schedulerEventHandler.fireEndTask(tes.getTask());
+		}
 	}
 
 	@Override
 	public void handleRequest() throws InterruptedException {
-
 		this.taskContenaStateManager.forEach(TaskStateType.SCHEDULED,
 				new TaskContenaHanlder() {
 					public Object processTaskContena(
@@ -49,34 +68,32 @@ public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler 
 										public TaskExecutorService call()
 												throws Exception {
 											TaskExecutorService _tes = tes;
-											Object[] logArgs = new Object[] { TaskPropertyUtil
-													.getTaskName(_tes) };
-											log.log("DCHRONOS000111", logArgs);
+											taskName = TaskPropertyUtil
+													.getTaskName(_tes);
+
+											log.log("DCHRONOS000111",
+													new Object[] { taskName });
+											fireStartTaskEvent(_tes);
 											String nextTaskName = _tes
 													.initialize();
-											if (nextTaskName != null) {
-												try {
-													_tes.execute(nextTaskName);
-													_tes.waitOne();
-												} catch (RejectedExecutionException ex) {
-													log.log("ECHRONOS0002",
-															logArgs, ex);
-												}
-											}
+											taskExecute(_tes, nextTaskName);
 											nextTaskName = null;
 											nextTaskName = _tes.destroy();
-											if (nextTaskName != null) {
-												Scheduler scheduler = _tes
-														.getScheduler();
-												scheduler.addTask(nextTaskName);
-											}
+											scheduleTask(_tes, nextTaskName);
+											fireEndTaskEvent(_tes);
 											taskContenaStateManager
 													.removeTaskContena(
 															TaskStateType.RUNNING,
 															taskContena);
-											log.log("DCHRONOS000112", logArgs);
+											taskContenaStateManager
+													.addTaskContena(
+															TaskStateType.UNSCHEDULED,
+															taskContena);
+											log.log("DCHRONOS000112",
+													new Object[] { taskName });
 											return tes;
 										}
+
 									});
 
 							taskContena.setTaskStaterFuture(taskStaterFuture);

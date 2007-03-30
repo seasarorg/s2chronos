@@ -20,8 +20,7 @@ public class TaskMethodExecuteHandlerImpl extends AbstractTaskExecuteHandler {
 		String nextTaskName = startTaskName;
 		String lastTaskName = startTaskName;
 		while (true) {
-			if (getTaskExecuteStrategy().checkMoveAnotherTask(nextTaskName)) {
-				getTaskExecuteStrategy().getScheduler().addTask(nextTaskName);
+			if (getTaskExecuteStrategy().getScheduler().addTask(nextTaskName)) {
 				break;
 			}
 			final String methodName = toMethodName(nextTaskName);
@@ -43,12 +42,12 @@ public class TaskMethodExecuteHandlerImpl extends AbstractTaskExecuteHandler {
 
 			Object returnValue = null;
 			String _nextTaskName = null;
-			if (md.getJoinType() == JoinType.Wait) {
+			if (md.getJoinType() == JoinType.Wait
+					|| md.getReturnType() == String.class) {
 				for (AsyncResult ar : asyncResultList) {
 					returnValue = mi.endInvoke(ar);
 				}
-				// “¯Šú‚Ìê‡‚Å–ß‚è’l‚ÉString‚ÅƒWƒ‡ƒu–¼‚ğ•Ô‚µ‚½ê‡‚Í‘JˆÚæ‚ğã‘‚«
-				if (returnValue instanceof String) {
+				if (md.getReturnType() == String.class) {
 					_nextTaskName = (String) returnValue;
 				}
 			}

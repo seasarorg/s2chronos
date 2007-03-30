@@ -44,7 +44,6 @@ public class TaskContenaStateManager {
 
 	public Object forEach(TaskStateType key, TaskContenaHanlder handler) {
 		CopyOnWriteArrayList<TaskContena> taskContenaList = getTaskContenaList(key);
-		// log.debug("key = " + key + " size =" + taskContenaList.size());
 		for (TaskContena tc : taskContenaList) {
 			Object result = handler.processTaskContena(tc);
 			if (result != null) {
@@ -80,11 +79,18 @@ public class TaskContenaStateManager {
 
 	public void removeTaskContena(TaskStateType key, TaskContena taskContena) {
 		this.getTaskContenaList(key).remove(taskContena);
+		if (key == TaskStateType.UNSCHEDULED) {
+			this.allTaskList.remove(taskContena);
+		}
 	}
 
 	public static TaskContenaStateManager getInstance() {
 		if (instance == null) {
-			instance = new TaskContenaStateManager();
+			synchronized (TaskContenaStateManager.class) {
+				if (instance == null) {
+					instance = new TaskContenaStateManager();
+				}
+			}
 		}
 		return instance;
 	}

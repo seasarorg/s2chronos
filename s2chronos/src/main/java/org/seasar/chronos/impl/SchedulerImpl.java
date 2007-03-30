@@ -14,6 +14,7 @@ import org.seasar.chronos.SchedulerConfiguration;
 import org.seasar.chronos.SchedulerEventListener;
 import org.seasar.chronos.annotation.task.Task;
 import org.seasar.chronos.autodetector.TaskClassAutoDetector;
+import org.seasar.chronos.event.SchedulerEventHandler;
 import org.seasar.chronos.exception.ExecutionRuntimeException;
 import org.seasar.chronos.exception.InterruptedRuntimeException;
 import org.seasar.chronos.handler.ScheduleExecuteHandler;
@@ -35,6 +36,9 @@ public class SchedulerImpl implements Scheduler {
 	public static final TimeUnit SHUTDOWN_AWAIT_TIMEUNIT = TimeUnit.MILLISECONDS;
 
 	private static Logger log = Logger.getLogger(SchedulerImpl.class);
+
+	private SchedulerEventHandler schedulerEventHandler = new SchedulerEventHandler(
+			this);
 
 	private AtomicBoolean pause = new AtomicBoolean();
 
@@ -83,12 +87,12 @@ public class SchedulerImpl implements Scheduler {
 		this.scheduleExecuteWaitHandler = sheduleExecuteWaitHandler;
 	}
 
-	public void addListener(SchedulerEventListener listener) {
-
+	public boolean addListener(SchedulerEventListener listener) {
+		return schedulerEventHandler.add(listener);
 	}
 
-	public void removeListener(SchedulerEventListener listener) {
-
+	public boolean removeListener(SchedulerEventListener listener) {
+		return schedulerEventHandler.remove(listener);
 	}
 
 	public SchedulerConfiguration getSchedulerConfiguration() {
@@ -104,15 +108,20 @@ public class SchedulerImpl implements Scheduler {
 				log.log("DCHRONOS0013", null);
 			}
 			log.debug("キャンセルチェック完了");
+			this.schedulerEventHandler.fireShutdownScheduler();
 		} catch (ExecutionException e) {
 			log.log("ECHRONOS0002", null, e);
 			throw new ExecutionRuntimeException(e);
 		} catch (InterruptedException e) {
 			throw new InterruptedRuntimeException(e);
+		} finally {
+			if (!this.schedulerTaskFuture.isCancelled()) {
+				this.schedulerEventHandler.fireEndScheduler();
+			}
 		}
 	}
 
-	public void pause() {
+	public synchronized void pause() {
 		this.pause.set(!this.pause.get());
 		this.notify();
 	}
@@ -123,7 +132,6 @@ public class SchedulerImpl implements Scheduler {
 	}
 
 	public void shutdown() {
-		// キャンセルしたタスクが残っていれば
 		this.taskContenaStateManager.forEach(TaskStateType.RUNNING,
 				new TaskContenaStateManager.TaskContenaHanlder() {
 					public Object processTaskContena(TaskContena taskContena) {
@@ -144,7 +152,6 @@ public class SchedulerImpl implements Scheduler {
 						return null;
 					}
 				});
-
 		schedulerTaskFuture.cancel(true);
 	}
 
@@ -191,33 +198,34 @@ public class SchedulerImpl implements Scheduler {
 						return null;
 					}
 				});
+		this.schedulerEventHandler.fireStartScheduler();
 	}
 
+	/**
+	 * ハンドラを準備します．
+	 * 
+	 */
 	private void setupHandler() {
 		this.scheduleExecuteWaitHandler
 				.setExecutorService(this.executorService);
 		this.scheduleExecuteWaitHandler.setPause(this.pause);
 		this.scheduleExecuteStartHandler
 				.setExecutorService(this.executorService);
+		this.scheduleExecuteStartHandler
+				.setSchedulerEventHandler(this.schedulerEventHandler);
 		this.scheduleExecuteShutdownHandler
 				.setExecutorService(this.executorService);
+		this.scheduleExecuteShutdownHandler
+				.setSchedulerEventHandler(this.schedulerEventHandler);
 	}
 
-	private void registChildTaskComponent(S2Container targetContainer) {
-		Traversal.forEachComponent(targetContainer,
-				new Traversal.ComponentDefHandler() {
-					public Object processComponent(ComponentDef componentDef) {
-						Class<?> clazz = componentDef.getComponentClass();
-						Task task = (Task) clazz.getAnnotation(Task.class);
-						if (task != null) {
-							scheduleTask(componentDef);
-						}
-						return null;
-					}
-
-				});
-	}
-
+	/**
+	 * タスク名からComponentDefを返します．
+	 * 
+	 * @param taskName
+	 *            タスク名
+	 * @return ComponentDef
+	 */
 	private ComponentDef findTaskComponentDefByTaskName(final String taskName) {
 		TaskContenaStateManager tcsm = TaskContenaStateManager.getInstance();
 		Object componentDef = tcsm
@@ -244,11 +252,13 @@ public class SchedulerImpl implements Scheduler {
 		return null;
 	}
 
-	public void addTask(String taskName) {
+	public boolean addTask(String taskName) {
 		ComponentDef componentDef = findTaskComponentDefByTaskName(taskName);
 		if (componentDef != null) {
 			scheduleTask(componentDef);
+			return true;
 		}
+		return false;
 	}
 
 	public void addTask(Class componentClass) {
@@ -282,12 +292,43 @@ public class SchedulerImpl implements Scheduler {
 				.addTaskContena(TaskStateType.SCHEDULED, tc);
 	}
 
+	/**
+	 * S2コンテナ上のコンポーネントを検索し，スケジューラに登録します．
+	 * 
+	 */
 	private void registTaskFromS2Container() {
 		final S2Container target = this.s2container.getRoot();
 		this.registChildTaskComponent(target);
 		this.registTaskFromS2ContainerOnSmartDeploy(target);
 	}
 
+	/**
+	 * S2コンテナ(非SMART Deploy)上のコンポーネントを検索し，スケジューラに登録します．
+	 * 
+	 * @param s2Container
+	 *            S2コンテナ
+	 */
+	private void registChildTaskComponent(S2Container s2Container) {
+		Traversal.forEachComponent(s2Container,
+				new Traversal.ComponentDefHandler() {
+					public Object processComponent(ComponentDef componentDef) {
+						Class<?> clazz = componentDef.getComponentClass();
+						Task task = (Task) clazz.getAnnotation(Task.class);
+						if (task != null) {
+							scheduleTask(componentDef);
+						}
+						return null;
+					}
+
+				});
+	}
+
+	/**
+	 * SMART Deploy上のコンポーネントを検索し，スケジューラに登録します．
+	 * 
+	 * @param s2Container
+	 *            S2コンテナ
+	 */
 	private void registTaskFromS2ContainerOnSmartDeploy(
 			final S2Container s2Container) {
 		if (SmartDeployUtil.isSmartdeployMode(s2Container)) {

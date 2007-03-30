@@ -1,5 +1,5 @@
 package org.seasar.chronos.impl;
 
 public enum TaskStateType {
-	SCHEDULED, RUNNING, CANCELED,
+	SCHEDULED, RUNNING, CANCELING, UNSCHEDULED;
 }

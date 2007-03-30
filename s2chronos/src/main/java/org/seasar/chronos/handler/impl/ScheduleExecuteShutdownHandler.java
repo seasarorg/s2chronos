@@ -42,9 +42,16 @@ public class ScheduleExecuteShutdownHandler extends
 													log.log("DCHRONOS0013",
 															logArgs);
 												}
+												schedulerEventHandler
+														.fireCancelTask(tes
+																.getTask());
 												taskContenaStateManager
 														.removeTaskContena(
-																TaskStateType.CANCELED,
+																TaskStateType.CANCELING,
+																taskContena);
+												taskContenaStateManager
+														.addTaskContena(
+																TaskStateType.UNSCHEDULED,
 																taskContena);
 											} else {
 												log.debug("cancel error!");
@@ -60,7 +67,7 @@ public class ScheduleExecuteShutdownHandler extends
 									});
 							taskContena.setTaskStaterFuture(future);
 							taskContenaStateManager.addTaskContena(
-									TaskStateType.CANCELED, taskContena);
+									TaskStateType.CANCELING, taskContena);
 							taskContenaStateManager.removeTaskContena(
 									TaskStateType.RUNNING, taskContena);
 

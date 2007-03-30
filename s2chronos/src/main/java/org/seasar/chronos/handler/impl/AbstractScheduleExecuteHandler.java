@@ -3,6 +3,7 @@ package org.seasar.chronos.handler.impl;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import org.seasar.chronos.event.SchedulerEventHandler;
 import org.seasar.chronos.handler.ScheduleExecuteHandler;
 import org.seasar.chronos.impl.TaskContenaStateManager;
 import org.seasar.chronos.logger.Logger;
@@ -20,6 +21,8 @@ public abstract class AbstractScheduleExecuteHandler implements
 
 	protected ExecutorService executorService;
 
+	protected SchedulerEventHandler schedulerEventHandler;
+
 	@Binding(bindingType = BindingType.NONE)
 	public void setExecutorService(ExecutorService executorService) {
 		this.executorService = executorService;
@@ -32,5 +35,9 @@ public abstract class AbstractScheduleExecuteHandler implements
 	}
 
 	public abstract void handleRequest() throws InterruptedException;
+
+	public void setSchedulerEventHandler(SchedulerEventHandler schedulerEventHandler) {
+		this.schedulerEventHandler = schedulerEventHandler;
+	}
 
 }

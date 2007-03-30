@@ -21,6 +21,10 @@ public class TaskMethodMetaData {
 		this.method = method;
 	}
 
+	public Class<?> getReturnType() {
+		return this.method.getReturnType();
+	}
+
 	public JoinType getJoinType() {
 		JoinTask joinTask = method.getAnnotation(JoinTask.class);
 		if (joinTask != null) {
