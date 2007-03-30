@@ -199,7 +199,7 @@ public class MethodInvoker {
 						Object result = invoke(methodName, args);
 						if (methodCallback != null) {
 							// さらにコールバックをスレッドプールから実行
-							Future<Void> futureCallback = callbackExecutorService
+							callbackExecutorService
 									.submit(new Callable<Void>() {
 										public Void call() throws Exception {
 											callbackHandler(methodName,

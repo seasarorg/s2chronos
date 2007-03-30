@@ -6,13 +6,12 @@ import javax.servlet.http.HttpServlet;
 import org.seasar.chronos.Scheduler;
 import org.seasar.framework.container.S2Container;
 import org.seasar.framework.container.servlet.S2ContainerServlet;
-import org.seasar.framework.log.Logger;
 
 public class S2ChronosServlet extends HttpServlet {
 
 	private static final long serialVersionUID = -3292027493330778721L;
 
-	private static Logger log = Logger.getLogger(S2ChronosServlet.class);
+	// private static Logger log = Logger.getLogger(S2ChronosServlet.class);
 
 	private Scheduler scheduler;
 

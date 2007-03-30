@@ -9,13 +9,13 @@ import org.seasar.chronos.messages.MessageFormatter;
 
 public final class Logger {
 
-	private static final Map loggers = new HashMap();
+	private static final Map<Class<?>, Logger> loggers = new HashMap<Class<?>, Logger>();
 
 	private static boolean initialized;
 
 	private final Log log;
 
-	public static synchronized Logger getLogger(final Class clazz) {
+	public static synchronized Logger getLogger(final Class<?> clazz) {
 		if (!initialized) {
 			initialize();
 		}
