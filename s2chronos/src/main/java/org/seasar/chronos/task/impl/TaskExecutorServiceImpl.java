@@ -110,11 +110,11 @@ public class TaskExecutorServiceImpl implements TaskExecutorService {
 				.setStartTask(startTask);
 	}
 
-	@Binding(bindingType = BindingType.NONE)
-	public void setTrigger(TaskTrigger taskTrigger) {
-		this.taskExecuteContext.getTaskExecuteStrategy()
-				.setTrigger(taskTrigger);
-	}
+	// @Binding(bindingType = BindingType.NONE)
+	// public void setTrigger(TaskTrigger taskTrigger) {
+	// this.taskExecuteContext.getTaskExecuteStrategy()
+	// .setTrigger(taskTrigger);
+	//	}
 
 	public TaskThreadPool getThreadPool() {
 		return this.taskExecuteContext.getTaskExecuteStrategy().getThreadPool();

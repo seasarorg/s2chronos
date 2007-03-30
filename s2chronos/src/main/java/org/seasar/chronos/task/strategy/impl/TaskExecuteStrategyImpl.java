@@ -28,6 +28,8 @@ import org.seasar.framework.beans.factory.BeanDescFactory;
 import org.seasar.framework.container.ComponentDef;
 import org.seasar.framework.container.annotation.tiger.Binding;
 import org.seasar.framework.container.annotation.tiger.BindingType;
+import org.seasar.framework.container.hotdeploy.HotdeployUtil;
+import org.seasar.framework.exception.ClassNotFoundRuntimeException;
 import org.seasar.framework.log.Logger;
 
 public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
@@ -113,6 +115,13 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 	}
 
 	public void prepare() {
+		try {
+			String className = taskComponentDef.getComponentClass().getName();
+			Class.forName(className);
+		} catch (ClassNotFoundException e) {
+			throw new ClassNotFoundRuntimeException(e);
+		}
+		HotdeployUtil.start();
 		this.taskMethodExecuteHandler = this.createTaskMethodExecuteHandler();
 		this.taskGroupMethodExecuteHandler = this
 				.createTaskGroupMethodExecuteHandler();
@@ -157,13 +166,7 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 	}
 
 	public String initialize() throws InterruptedException {
-		// try {
-		// String className = taskComponentDef.getComponentClass().getName();
-		// Class.forName(className);
-		// } catch (ClassNotFoundException e) {
-		// e.printStackTrace();
-		// }
-		// HotdeployUtil.start();
+
 		this.setExecuted(true);
 		if (this.lifecycleMethodInvoker.hasMethod(METHOD_NAME_INITIALIZE)) {
 			AsyncResult ar = this.lifecycleMethodInvoker
@@ -240,7 +243,7 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 		this.notifyGetterSignal();
 		this.taskMethodInvoker = null;
 		this.lifecycleMethodInvoker = null;
-		// HotdeployUtil.stop();
+		HotdeployUtil.stop();
 		return nextTask;
 	}
 
@@ -371,14 +374,14 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 		return result;
 	}
 
-	@Binding(bindingType = BindingType.NONE)
-	public void setTrigger(TaskTrigger taskTrigger) {
-		if (this.beanDesc.hasPropertyDesc(PROPERTY_NAME_TRIGGER)) {
-			PropertyDesc pd = this.beanDesc
-					.getPropertyDesc(PROPERTY_NAME_TRIGGER);
-			pd.setValue(this.task, taskTrigger);
-		}
-	}
+	// @Binding(bindingType = BindingType.NONE)
+	// public void setTrigger(TaskTrigger taskTrigger) {
+	// if (this.beanDesc.hasPropertyDesc(PROPERTY_NAME_TRIGGER)) {
+	// PropertyDesc pd = this.beanDesc
+	// .getPropertyDesc(PROPERTY_NAME_TRIGGER);
+	// pd.setValue(this.task, taskTrigger);
+	// }
+	//	}
 
 	public TaskThreadPool getThreadPool() {
 		TaskThreadPool result = null;

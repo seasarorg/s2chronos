@@ -40,7 +40,7 @@ public interface TaskProperties {
 
 	public TaskTrigger getTrigger();
 
-	public void setTrigger(TaskTrigger taskTrigger);
+	// public void setTrigger(TaskTrigger taskTrigger);
 
 	public TaskThreadPool getThreadPool();
 
