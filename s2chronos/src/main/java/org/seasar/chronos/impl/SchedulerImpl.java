@@ -126,6 +126,10 @@ public class SchedulerImpl implements Scheduler {
 		this.notify();
 	}
 
+	public boolean isPaused() {
+		return pause.get();
+	}
+
 	public void setSchedulerConfiguration(
 			SchedulerConfiguration schedulerConfiguration) {
 		this.configuration = schedulerConfiguration;

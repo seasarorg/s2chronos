@@ -30,14 +30,21 @@ public abstract class AbstractScheduleExecuteHandler implements
 
 	protected AtomicBoolean pause;
 
+	protected AtomicBoolean paused;
+
 	public void setPause(AtomicBoolean pause) {
 		this.pause = pause;
 	}
 
 	public abstract void handleRequest() throws InterruptedException;
 
-	public void setSchedulerEventHandler(SchedulerEventHandler schedulerEventHandler) {
+	public void setSchedulerEventHandler(
+			SchedulerEventHandler schedulerEventHandler) {
 		this.schedulerEventHandler = schedulerEventHandler;
+	}
+
+	public void setPaused(AtomicBoolean paused) {
+		this.paused = paused;
 	}
 
 }

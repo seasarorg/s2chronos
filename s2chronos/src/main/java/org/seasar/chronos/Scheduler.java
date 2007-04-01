@@ -30,6 +30,8 @@ public interface Scheduler {
 	 */
 	public void pause();
 
+	public boolean isPaused();
+
 	/**
 	 * スケジューラをシャットダウンします．
 	 * 

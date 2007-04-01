@@ -6,6 +6,9 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import org.seasar.chronos.logger.Logger;
 import org.seasar.chronos.util.TaskPropertyUtil;
 
+// TODO : Taskへの更新などは，直接メモリを参照させずにメソッド経由にする必要あり．
+// そのメソッド内部で，永続化をサポートする．
+
 public class TaskContenaStateManager {
 
 	private static Logger log = Logger.getLogger(TaskContenaStateManager.class);

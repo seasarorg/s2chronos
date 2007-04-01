@@ -12,9 +12,11 @@
 	
 	<component name="scheduleExecuteShutdownHandler" class="org.seasar.chronos.handler.impl.ScheduleExecuteShutdownHandler" />
 	<component name="scheduleExecuteStartHandler" class="org.seasar.chronos.handler.impl.ScheduleExecuteStartHandler" />
-	<component name="scheduleExecuteWaitHandler" class="org.seasar.chronos.handler.impl.ScheduleExecuteWaitHandler" />
+	<component name="scheduleExecuteWaitHandler" class="org.seasar.chronos.handler.impl.ScheduleExecuteWaitHandler">
+		<property name="pauseLock">scheduler</property>
+	</component>
 
-	<component class="org.seasar.chronos.impl.SchedulerImpl">
+	<component name="scheduler" class="org.seasar.chronos.impl.SchedulerImpl">
 		<aspect>aop.traceInterceptor</aspect>
 		<property name="scheduleExecuteShutdownHandler">scheduleExecuteShutdownHandler</property>
 		<property name="scheduleExecuteStartHandler">scheduleExecuteStartHandler</property>

@@ -1,14 +1,13 @@
 package org.seasar.chronos.handler.impl;
 
-import org.seasar.chronos.Scheduler;
 import org.seasar.chronos.impl.TaskStateType;
 
 public class ScheduleExecuteWaitHandler extends AbstractScheduleExecuteHandler {
 
-	private Scheduler scheduler;
+	private Object pauseLock;
 
-	public void setScheduler(Scheduler scheduler) {
-		this.scheduler = scheduler;
+	public void setPauseLock(Object pauseLock) {
+		this.pauseLock = pauseLock;
 	}
 
 	@Override
@@ -16,15 +15,26 @@ public class ScheduleExecuteWaitHandler extends AbstractScheduleExecuteHandler {
 		if (this.pause.get()
 				|| taskContenaStateManager.size(TaskStateType.SCHEDULED) == 0
 				&& taskContenaStateManager.size(TaskStateType.RUNNING) == 0) {
-			synchronized (scheduler) {
+			synchronized (pauseLock) {
 				log.debug("scheduler.wait start");
 				try {
 					do {
-						scheduler.wait(1000);
+						if (this.paused != null) {
+							if (!this.paused.get() && this.pause.get()) {
+								this.paused.set(true);
+							}
+						}
+						pauseLock.wait(100L);
 					} while (this.pause.get());
 				} catch (InterruptedException e) {
 					log.log("WCHNS0001", null, e);
 					throw e;
+				} finally {
+					if (this.paused != null) {
+						if (this.paused.get()) {
+							this.paused.set(false);
+						}
+					}
 				}
 				log.debug("scheduler.wait end");
 			}

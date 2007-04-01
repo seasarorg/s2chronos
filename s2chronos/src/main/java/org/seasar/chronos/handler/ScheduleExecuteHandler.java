@@ -13,6 +13,8 @@ public interface ScheduleExecuteHandler {
 
 	public void setPause(AtomicBoolean pause);
 
+	public void setPaused(AtomicBoolean paused);
+
 	public void setSchedulerEventHandler(
 			SchedulerEventHandler schedulerEventHandler);
 
