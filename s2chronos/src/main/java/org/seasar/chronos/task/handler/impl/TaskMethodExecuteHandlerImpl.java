@@ -16,7 +16,7 @@ public class TaskMethodExecuteHandlerImpl extends AbstractTaskExecuteHandler {
 			throws InterruptedException {
 		MethodInvoker mi = this.getMethodInvoker();
 		List<AsyncResult> asyncResultList = new ArrayList<AsyncResult>();
-		// 連続でジョブを呼び出す
+		// 連続でdoメソッドを呼び出す
 		String nextTaskName = startTaskName;
 		String lastTaskName = startTaskName;
 		while (true) {
@@ -61,7 +61,7 @@ public class TaskMethodExecuteHandlerImpl extends AbstractTaskExecuteHandler {
 							mi.getMethod(toMethodName(nextTaskName)));
 					String nextGroupName = nextMethodMetaData.getGroupName();
 					String currentGroupName = md.getGroupName();
-					// ジョブグループ名が変更になったら
+					// グループ名が変更になったら
 					if (nextGroupName != null
 							&& !nextGroupName.equals(currentGroupName)) {
 						nextTaskName = nextGroupName;
