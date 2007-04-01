@@ -186,14 +186,15 @@ public class SchedulerImpl implements Scheduler {
 
 	public void start() {
 		this.registTaskFromS2Container();
-		this.setupHandler();
+		final ScheduleExecuteHandler[] scheduleExecuteHandlers = this
+				.setupHandler();
 		this.schedulerTaskFuture = this.executorService
 				.submit(new Callable<Void>() {
 					public Void call() throws Exception {
 						do {
-							scheduleExecuteWaitHandler.handleRequest();
-							scheduleExecuteStartHandler.handleRequest();
-							scheduleExecuteShutdownHandler.handleRequest();
+							for (ScheduleExecuteHandler seh : scheduleExecuteHandlers) {
+								seh.handleRequest();
+							}
 						} while (!getSchedulerFinish());
 						return null;
 					}
@@ -201,22 +202,26 @@ public class SchedulerImpl implements Scheduler {
 		this.schedulerEventHandler.fireStartScheduler();
 	}
 
-	/**
-	 * ÉnÉìÉhÉâÇèÄîıÇµÇ‹Ç∑ÅD
-	 * 
-	 */
-	private void setupHandler() {
+	private ScheduleExecuteHandler[] setupHandler() {
+		ScheduleExecuteHandler[] scheduleExecuteHandlers = new ScheduleExecuteHandler[] {
+				scheduleExecuteWaitHandler, scheduleExecuteStartHandler,
+				scheduleExecuteShutdownHandler };
+
 		this.scheduleExecuteWaitHandler
 				.setExecutorService(this.executorService);
 		this.scheduleExecuteWaitHandler.setPause(this.pause);
+
 		this.scheduleExecuteStartHandler
 				.setExecutorService(this.executorService);
 		this.scheduleExecuteStartHandler
 				.setSchedulerEventHandler(this.schedulerEventHandler);
+
 		this.scheduleExecuteShutdownHandler
 				.setExecutorService(this.executorService);
 		this.scheduleExecuteShutdownHandler
 				.setSchedulerEventHandler(this.schedulerEventHandler);
+
+		return scheduleExecuteHandlers;
 	}
 
 	/**
