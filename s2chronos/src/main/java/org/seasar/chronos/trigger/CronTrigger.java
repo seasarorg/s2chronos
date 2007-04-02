@@ -7,6 +7,8 @@ import org.seasar.chronos.trigger.cron.CronExpression;
 
 public class CronTrigger extends AbstractTrigger {
 
+	private static final long serialVersionUID = -6134078484287070849L;
+
 	private CronExpression expression;
 
 	private ArrayList<Date> startTimeList;

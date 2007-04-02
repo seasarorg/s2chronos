@@ -34,6 +34,8 @@ import org.seasar.framework.log.Logger;
 
 public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 
+	private static final long serialVersionUID = -6091926808483360988L;
+
 	private static Logger log = Logger.getLogger(TaskExecuteStrategyImpl.class);
 
 	private static final String PROPERTY_NAME_THREAD_POOL_SIZE = "threadPoolSize";
@@ -381,7 +383,7 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 	// .getPropertyDesc(PROPERTY_NAME_TRIGGER);
 	// pd.setValue(this.task, taskTrigger);
 	// }
-	//	}
+	// }
 
 	public TaskThreadPool getThreadPool() {
 		TaskThreadPool result = null;

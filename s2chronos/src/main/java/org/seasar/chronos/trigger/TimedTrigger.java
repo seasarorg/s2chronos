@@ -4,6 +4,8 @@ import java.util.Date;
 
 public class TimedTrigger extends AbstractTrigger {
 
+	private static final long serialVersionUID = -6653656597493889393L;
+
 	private Date startTime;
 
 	private Date endTime;

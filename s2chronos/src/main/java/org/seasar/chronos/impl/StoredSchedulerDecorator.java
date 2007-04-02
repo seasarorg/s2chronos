@@ -21,6 +21,7 @@ public class StoredSchedulerDecorator extends SchedulerDecorator {
 		TaskContena taskContena = taskContenaStateManager.getTaskContena(task);
 		log.debug("<<storeAddTask>> : " + taskContena.getTaskClass().getName()
 				+ " : " + taskContena.getTask());
+		// TODO: OutputObjectStreamでDBに書き出し
 	}
 
 	private void storeStartTask(Object task) {
@@ -44,8 +45,8 @@ public class StoredSchedulerDecorator extends SchedulerDecorator {
 	}
 
 	private void storePreparedScheduler() {
-		log.debug("<<storepreparedScheduler>>");
-		// TODO: DBから状態をリカバリする
+		log.debug("<<storePreparedScheduler>>");
+		// InputObjectStreamでDBからJavaオブジェクトを読み込む
 	}
 
 	private void storeStartScheduler() {

@@ -11,6 +11,8 @@ import org.seasar.chronos.task.impl.TaskMethodMetaData;
 
 public class TaskMethodExecuteHandlerImpl extends AbstractTaskExecuteHandler {
 
+	private static final long serialVersionUID = 2079527599646118983L;
+
 	@Override
 	public Transition handleRequest(String startTaskName)
 			throws InterruptedException {

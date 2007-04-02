@@ -15,6 +15,8 @@ import org.seasar.framework.log.Logger;
 public class TaskGroupMethodExecuteHandlerImpl extends
 		AbstractTaskExecuteHandler {
 
+	private static final long serialVersionUID = 7197512242818142008L;
+
 	private static Logger log = Logger
 			.getLogger(TaskGroupMethodExecuteHandlerImpl.class);
 

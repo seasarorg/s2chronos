@@ -1,6 +1,8 @@
 package org.seasar.chronos;
 
-public interface TaskTrigger {
+import java.io.Serializable;
+
+public interface TaskTrigger extends Serializable {
 
 	public boolean getStartTask();
 

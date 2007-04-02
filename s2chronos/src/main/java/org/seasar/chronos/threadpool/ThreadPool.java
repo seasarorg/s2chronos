@@ -5,6 +5,8 @@ import org.seasar.chronos.ThreadPoolType;
 
 public class ThreadPool implements TaskThreadPool {
 
+	private static final long serialVersionUID = 3092612895816238852L;
+
 	private ThreadPoolType threadPoolType;
 
 	private int threadPoolSize;

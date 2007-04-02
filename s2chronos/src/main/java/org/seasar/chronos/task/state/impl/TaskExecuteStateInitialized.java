@@ -7,6 +7,8 @@ import org.seasar.chronos.task.strategy.TaskExecuteStrategy;
 
 public class TaskExecuteStateInitialized extends AbstractTaskExecuteState {
 
+	private static final long serialVersionUID = -8369367234393535056L;
+
 	public TaskExecuteStateInitialized(TaskExecuteStrategy taskExecuteStrategy) {
 		super(taskExecuteStrategy);
 	}

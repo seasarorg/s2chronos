@@ -1,5 +1,6 @@
 package org.seasar.chronos.trigger.cron;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -8,7 +9,9 @@ import java.util.Vector;
 
 import org.seasar.framework.log.Logger;
 
-public class CronExpression {
+public class CronExpression implements Serializable {
+
+	private static final long serialVersionUID = 5223857768592175000L;
 
 	private static final String TOKEN_DELIMITER = " \t";
 
@@ -70,8 +73,8 @@ public class CronExpression {
 		int minute;
 		Vector<ArrayList<String>> digit = new Vector<ArrayList<String>>();
 		int index = 0;
-		StringTokenizer exprsTok = new StringTokenizer(cronExpression, TOKEN_DELIMITER,
-				false);
+		StringTokenizer exprsTok = new StringTokenizer(cronExpression,
+				TOKEN_DELIMITER, false);
 		while (exprsTok.hasMoreTokens()) {
 			String token = exprsTok.nextToken().trim();
 			StringTokenizer vTok = new StringTokenizer(token, DELIMITER);
