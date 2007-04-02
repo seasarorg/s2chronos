@@ -11,6 +11,15 @@ import org.seasar.framework.log.Logger;
 
 public class CronExpression implements Serializable {
 
+	@Override
+	public boolean equals(Object obj) {
+		boolean result = true;
+		CronExpression src = (CronExpression) obj;
+		result = result & cronExpression.equals(src.cronExpression);
+		result = result & startTimeList.equals(src.startTimeList);
+		return result;
+	}
+
 	private static final long serialVersionUID = 5223857768592175000L;
 
 	private static final String TOKEN_DELIMITER = " \t";
@@ -23,7 +32,7 @@ public class CronExpression implements Serializable {
 
 	private static final String ASTERISK = "*";
 
-	private Logger log = Logger.getLogger(CronExpression.class);
+	private static Logger log = Logger.getLogger(CronExpression.class);
 
 	private String cronExpression;
 
@@ -35,6 +44,10 @@ public class CronExpression implements Serializable {
 
 	public CronExpression(String cronExpression) {
 		this.setCronExpression(cronExpression);
+	}
+
+	public String getCronExprssion() {
+		return cronExpression;
 	}
 
 	public void setCronExpression(String cronExpression) {

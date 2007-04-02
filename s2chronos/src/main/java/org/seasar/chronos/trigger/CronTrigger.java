@@ -7,6 +7,19 @@ import org.seasar.chronos.trigger.cron.CronExpression;
 
 public class CronTrigger extends AbstractTrigger {
 
+	@Override
+	public boolean equals(Object obj) {
+		boolean result = super.equals(obj);
+		CronTrigger src = (CronTrigger) obj;
+		if (this.expression != null) {
+			result = result & expression.equals(src.expression);
+		}
+		if (this.startTimeList != null) {
+			result = result & startTimeList.equals(src.startTimeList);
+		}
+		return result;
+	}
+
 	private static final long serialVersionUID = -6134078484287070849L;
 
 	private CronExpression expression;
@@ -19,6 +32,10 @@ public class CronTrigger extends AbstractTrigger {
 
 	public CronTrigger(String name) {
 		super(name);
+	}
+
+	public String getCronExpression() {
+		return this.expression.getCronExprssion();
 	}
 
 	public void setCronExpression(String cronExpression) {
