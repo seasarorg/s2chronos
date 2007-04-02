@@ -19,6 +19,12 @@ public class TaskContenaStateManager {
 
 	private CopyOnWriteArrayList<TaskContena> allTaskList = new CopyOnWriteArrayList<TaskContena>();
 
+	private ConcurrentHashMap<Object, TaskContena> taskContenaObjectMap = new ConcurrentHashMap<Object, TaskContena>();
+
+	public interface TaskContenaHanlder {
+		public Object processTaskContena(TaskContena taskContena);
+	}
+
 	private TaskContenaStateManager() {
 
 	}
@@ -31,8 +37,15 @@ public class TaskContenaStateManager {
 		return taskContenaMap.get(key).size();
 	}
 
-	public interface TaskContenaHanlder {
-		public Object processTaskContena(TaskContena taskContena);
+	public boolean contains(Object key) {
+		if (key instanceof TaskContena) {
+			return this.allTaskList.contains((TaskContena) key);
+		}
+		return this.taskContenaObjectMap.containsKey(key);
+	}
+
+	public boolean contains(TaskStateType key, TaskContena taskContena) {
+		return taskContenaMap.get(key).contains(taskContena);
 	}
 
 	public Object forEach(TaskContenaHanlder handler) {
@@ -67,24 +80,43 @@ public class TaskContenaStateManager {
 		return taskContenaList;
 	}
 
-	public void addTaskContena(TaskStateType key, TaskContena taskContena) {
+	public boolean addTaskContena(TaskStateType key, TaskContena taskContena) {
 		log.debug("addTaskContena : key = "
 				+ key
 				+ " value = "
 				+ TaskPropertyUtil.getTaskName(taskContena
 						.getTaskExecutorService()) + " class = "
 				+ taskContena.getClass().getName());
-		this.getTaskContenaList(key).add(taskContena);
+		boolean result = this.getTaskContenaList(key).add(taskContena);
 		if (key == TaskStateType.SCHEDULED) {
-			this.allTaskList.addIfAbsent(taskContena);
+			result = result & this.allTaskList.addIfAbsent(taskContena);
+			result = result
+					& this.taskContenaObjectMap.put(taskContena.getTask(),
+							taskContena) != null;
+			result = result
+					& this.taskContenaObjectMap.put(TaskPropertyUtil
+							.getTaskName(taskContena.getTaskExecutorService()),
+							taskContena) != null;
 		}
+		return result;
 	}
 
-	public void removeTaskContena(TaskStateType key, TaskContena taskContena) {
-		this.getTaskContenaList(key).remove(taskContena);
+	public boolean removeTaskContena(TaskStateType key, TaskContena taskContena) {
+		boolean result = false;
+		result = this.getTaskContenaList(key).remove(taskContena);
 		if (key == TaskStateType.UNSCHEDULED) {
-			this.allTaskList.remove(taskContena);
+			result = result & this.allTaskList.remove(taskContena);
+			result = result
+					& this.taskContenaObjectMap.remove(taskContena.getTask()) != null;
+			result = result
+					& this.taskContenaObjectMap.remove(TaskPropertyUtil
+							.getTaskName(taskContena.getTaskExecutorService())) != null;
 		}
+		return result;
+	}
+
+	public TaskContena getTaskContena(Object key) {
+		return this.taskContenaObjectMap.get(key);
 	}
 
 	public static TaskContenaStateManager getInstance() {

@@ -5,11 +5,11 @@ import org.seasar.chronos.Scheduler;
 
 public class SchedulerImplTest extends S2TestCaseBase {
 
-	private Scheduler scheduler;
-
 	public void testStart() {
-		this.scheduler.start();
-		this.scheduler.join();
+
+		Scheduler scheduler = (Scheduler) this.getComponent("scheduler");
+		scheduler.start();
+		scheduler.join();
 	}
 
 }

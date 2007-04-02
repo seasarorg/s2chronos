@@ -16,11 +16,17 @@
 		<property name="pauseLock">scheduler</property>
 	</component>
 
-	<component name="scheduler" class="org.seasar.chronos.impl.SchedulerImpl">
+
+	
+	<component name="scheduler" class="org.seasar.chronos.impl.StoredSchedulerDecorator">
+		<arg>
+		<component class="org.seasar.chronos.impl.SchedulerImpl">
 		<aspect>aop.traceInterceptor</aspect>
 		<property name="scheduleExecuteShutdownHandler">scheduleExecuteShutdownHandler</property>
 		<property name="scheduleExecuteStartHandler">scheduleExecuteStartHandler</property>
 		<property name="scheduleExecuteWaitHandler">scheduleExecuteWaitHandler</property>
+		</component>
+		</arg>
 	</component>
 	
 	<component class="org.seasar.chronos.task.impl.TaskExecutorServiceImpl" instance="prototype" autoBinding="none">

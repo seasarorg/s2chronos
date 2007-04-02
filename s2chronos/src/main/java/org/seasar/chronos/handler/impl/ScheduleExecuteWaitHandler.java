@@ -22,6 +22,7 @@ public class ScheduleExecuteWaitHandler extends AbstractScheduleExecuteHandler {
 						if (this.paused != null) {
 							if (!this.paused.get() && this.pause.get()) {
 								this.paused.set(true);
+								this.schedulerEventHandler.firePauseScheduler();
 							}
 						}
 						pauseLock.wait(100L);

@@ -48,6 +48,8 @@ public interface Scheduler {
 
 	public void addTask(Class componentClass);
 
+	public boolean removeTask(Object task);
+
 	public boolean addListener(SchedulerEventListener listener);
 
 	public boolean removeListener(SchedulerEventListener listener);
