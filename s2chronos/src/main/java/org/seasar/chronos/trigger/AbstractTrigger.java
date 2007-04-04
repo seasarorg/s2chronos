@@ -4,6 +4,14 @@ import org.seasar.chronos.TaskTrigger;
 
 public abstract class AbstractTrigger implements TaskTrigger {
 
+	public void load() {
+
+	}
+
+	public void save() {
+
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof AbstractTrigger) {

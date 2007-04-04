@@ -7,7 +7,7 @@ import org.seasar.chronos.trigger.TimedTrigger;
 
 public interface TimedTriggerDxo {
 
-	public TimedTriggerEntity toEntity(TimedTrigger trigger);
+	public TimedTriggerEntity toEntity(TimedTrigger component);
 
 	public TimedTrigger toComponent(TimedTriggerEntity entity);
 
@@ -15,15 +15,15 @@ public interface TimedTriggerDxo {
 			TimedTriggerEntity entity);
 
 	public void fromEntityFromComponent(TimedTriggerEntity entity,
-			TimedTrigger trigger);
+			TimedTrigger component);
 
-	public List<TimedTriggerEntity> toEntities(List<TimedTrigger> trigger);
+	public List<TimedTriggerEntity> toEntities(List<TimedTrigger> components);
 
 	public List<TimedTrigger> toComponents(List<TimedTriggerEntity> entity);
 
-	public void fromComponentsToEntities(List<TimedTrigger> triggers,
+	public void fromComponentsToEntities(List<TimedTrigger> components,
 			List<TimedTriggerEntity> entities);
 
 	public void fromEntitiesToComponents(List<TimedTriggerEntity> entities,
-			List<TimedTrigger> triggers);
+			List<TimedTrigger> components);
 }

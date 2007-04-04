@@ -2,6 +2,10 @@ package org.seasar.chronos;
 
 public interface TaskTrigger {
 
+	public void save();
+
+	public void load();
+
 	public boolean getStartTask();
 
 	public void setStartTask(boolean startTask);
