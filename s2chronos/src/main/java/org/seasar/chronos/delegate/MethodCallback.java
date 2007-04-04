@@ -2,6 +2,8 @@ package org.seasar.chronos.delegate;
 
 public class MethodCallback {
 
+	private static final long serialVersionUID = -6508698553780517897L;
+
 	private Object target = null;
 
 	private String methodName = null;

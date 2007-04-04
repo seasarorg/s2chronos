@@ -5,6 +5,14 @@
 	<include path="aop.dicon"/>
 	<include path="scheduler.dicon"/>
 	
+	<component class="org.seasar.chronos.store.dao.TimedTriggerDao"/>
+	<component class="org.seasar.chronos.store.dxo.TimedTriggerDxo"/>
+	
+	<component name="storeIntercepter" class="org.seasar.chronos.store.interceptor.StoreInterceptor"/>
+	<component class="org.seasar.chronos.store.TimedTriggerStore">
+		<aspect>storeIntercepter</aspect>
+	</component>
+	
 	<component name="timedTrigger" class="org.seasar.chronos.trigger.TimedTrigger" instance="prototype"/>
 	<component name="nonDelayTrigger" class="org.seasar.chronos.trigger.NonDelayTrigger" instance="prototype"/>
 	<component name="delayTrigger" class="org.seasar.chronos.trigger.DelayTrigger" instance="prototype"/>

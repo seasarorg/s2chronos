@@ -1,12 +1,11 @@
 package org.seasar.chronos.task.state;
 
-import java.io.Serializable;
 import java.util.concurrent.TimeUnit;
 
 import org.seasar.chronos.task.state.impl.AbstractTaskExecuteContext;
 import org.seasar.chronos.task.strategy.TaskExecuteStrategy;
 
-public interface TaskExecuteState extends Serializable {
+public interface TaskExecuteState {
 
 	public TaskExecuteStrategy getTaskExecuteStrategy();
 

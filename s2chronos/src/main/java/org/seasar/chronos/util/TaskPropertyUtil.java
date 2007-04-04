@@ -11,7 +11,7 @@ public final class TaskPropertyUtil {
 	public static String getTaskName(TaskProperties prop) {
 		String taskName = prop.getTaskName();
 		if (taskName == null) {
-			Class<?> clazz = prop.getTaskComponentDef().getComponentClass();
+			Class<?> clazz = prop.getTaskClass();
 			Task task = (Task) clazz.getAnnotation(Task.class);
 			return task != null ? task.name() : taskName;
 		}

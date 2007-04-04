@@ -1,13 +1,12 @@
 package org.seasar.chronos.task.impl;
 
-import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class TaskMethodManager implements Serializable {
+public class TaskMethodManager {
 
 	private static final long serialVersionUID = -3749881053983590510L;
 

@@ -6,20 +6,24 @@ public abstract class AbstractTrigger implements TaskTrigger {
 
 	@Override
 	public boolean equals(Object obj) {
-		boolean result = true;
-		AbstractTrigger src = (AbstractTrigger) obj;
-		result = result & this.id == src.id;
-		if (this.name != null) {
-			result = result & this.name.equals(src.name);
+		if (obj instanceof AbstractTrigger) {
+			boolean result = true;
+			AbstractTrigger src = (AbstractTrigger) obj;
+			result = result & this.id == src.id;
+			if (this.name != null) {
+				result = result & this.name.equals(src.name);
+			}
+			if (this.task != null) {
+				result = result & this.task.equals(src.task);
+			}
+			if (this.description != null) {
+				result = result & this.description.equals(src.description);
+			}
+			result = result & this.executed == src.executed;
+			return result;
+		} else {
+			return super.equals(obj);
 		}
-		if (this.task != null) {
-			result = result & this.task.equals(src.task);
-		}
-		if (this.description != null) {
-			result = result & this.description.equals(src.description);
-		}
-		result = result & this.executed == src.executed;
-		return result;
 	}
 
 	private long id;

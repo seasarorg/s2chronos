@@ -2,11 +2,7 @@ package org.seasar.chronos.task;
 
 import java.util.concurrent.TimeUnit;
 
-import org.seasar.framework.container.ComponentDef;
-
 public interface TaskMethods {
-
-	public void setTaskComponentDef(ComponentDef taskComponentDef);
 
 	public void setGetterSignal(Object getterSignal);
 

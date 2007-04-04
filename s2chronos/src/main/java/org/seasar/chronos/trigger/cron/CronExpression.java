@@ -1,6 +1,5 @@
 package org.seasar.chronos.trigger.cron;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -9,7 +8,7 @@ import java.util.Vector;
 
 import org.seasar.framework.log.Logger;
 
-public class CronExpression implements Serializable {
+public class CronExpression {
 
 	@Override
 	public boolean equals(Object obj) {
@@ -19,8 +18,6 @@ public class CronExpression implements Serializable {
 		result = result & startTimeList.equals(src.startTimeList);
 		return result;
 	}
-
-	private static final long serialVersionUID = 5223857768592175000L;
 
 	private static final String TOKEN_DELIMITER = " \t";
 

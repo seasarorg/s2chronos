@@ -8,6 +8,8 @@ import org.seasar.chronos.exception.ExecutionRuntimeException;
 
 public class AsyncResult {
 
+	private static final long serialVersionUID = -5239879067321325795L;
+
 	private Future<Object> future = null;
 
 	private Object state = null;

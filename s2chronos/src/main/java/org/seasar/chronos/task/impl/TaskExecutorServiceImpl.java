@@ -1,6 +1,8 @@
 package org.seasar.chronos.task.impl;
 
-import java.io.Serializable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 import java.util.concurrent.TimeUnit;
 
 import org.seasar.chronos.Scheduler;
@@ -10,12 +12,10 @@ import org.seasar.chronos.ThreadPoolType;
 import org.seasar.chronos.task.TaskExecutorService;
 import org.seasar.chronos.task.state.TaskExecuteContext;
 import org.seasar.chronos.task.state.impl.TaskExecuteContextImpl;
-import org.seasar.framework.container.ComponentDef;
 import org.seasar.framework.container.annotation.tiger.Binding;
 import org.seasar.framework.container.annotation.tiger.BindingType;
 
-public class TaskExecutorServiceImpl implements TaskExecutorService,
-		Serializable {
+public class TaskExecutorServiceImpl implements TaskExecutorService {
 
 	private static final long serialVersionUID = 59104659363668777L;
 
@@ -30,18 +30,21 @@ public class TaskExecutorServiceImpl implements TaskExecutorService,
 		this.taskExecuteContext.setGetterSignal(getterSignal);
 	}
 
-	@Binding(bindingType = BindingType.NONE)
-	public void setTaskComponentDef(ComponentDef taskComponentDef) {
-		this.taskExecuteContext.setTaskComponentDef(taskComponentDef);
-	}
-
 	public String getTaskName() {
 		return this.taskExecuteContext.getTaskExecuteStrategy().getTaskName();
 	}
 
-	public ComponentDef getTaskComponentDef() {
-		return this.taskExecuteContext.getTaskExecuteStrategy()
-				.getTaskComponentDef();
+	public void setTaskClass(Class taskClass) {
+		this.taskExecuteContext.getTaskExecuteStrategy()
+				.setTaskClass(taskClass);
+	}
+
+	public Class getTaskClass() {
+		return this.taskExecuteContext.getTaskExecuteStrategy().getTaskClass();
+	}
+
+	public void setTask(Object task) {
+		this.taskExecuteContext.getTaskExecuteStrategy().setTask(task);
 	}
 
 	public Object getTask() {
@@ -140,6 +143,17 @@ public class TaskExecutorServiceImpl implements TaskExecutorService,
 	public void setScheduler(Scheduler scheduler) {
 		this.taskExecuteContext.getTaskExecuteStrategy()
 				.setScheduler(scheduler);
+	}
+
+	public void readExternal(ObjectInput arg0) throws IOException,
+			ClassNotFoundException {
+		// TODO 自動生成されたメソッド・スタブ
+
+	}
+
+	public void writeExternal(ObjectOutput arg0) throws IOException {
+		// TODO 自動生成されたメソッド・スタブ
+
 	}
 
 }

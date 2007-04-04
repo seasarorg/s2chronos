@@ -18,6 +18,8 @@ import org.seasar.framework.util.tiger.ReflectionUtil;
 
 public class MethodInvoker {
 
+	private static final long serialVersionUID = -3755599989232609874L;
+
 	private static Logger log = Logger.getLogger(MethodInvoker.class);
 
 	private static final String CALLBACK_SUFFIX = "Callback";

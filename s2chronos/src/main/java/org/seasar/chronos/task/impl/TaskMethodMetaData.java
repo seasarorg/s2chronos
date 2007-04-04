@@ -1,6 +1,5 @@
 package org.seasar.chronos.task.impl;
 
-import java.io.Serializable;
 import java.lang.reflect.Method;
 
 import org.seasar.chronos.annotation.task.method.CloneTask;
@@ -10,7 +9,7 @@ import org.seasar.chronos.annotation.task.method.TaskGroup;
 import org.seasar.chronos.annotation.type.JoinType;
 import org.seasar.framework.beans.BeanDesc;
 
-public class TaskMethodMetaData implements Serializable {
+public class TaskMethodMetaData {
 
 	private static final long serialVersionUID = -9051823745597260320L;
 

@@ -1,14 +1,12 @@
 package org.seasar.chronos.task.state;
 
-import java.io.Serializable;
 import java.util.concurrent.TimeUnit;
 
 import org.seasar.chronos.task.strategy.TaskExecuteStrategy;
-import org.seasar.framework.container.ComponentDef;
 import org.seasar.framework.container.annotation.tiger.Binding;
 import org.seasar.framework.container.annotation.tiger.BindingType;
 
-public interface TaskExecuteContext extends Serializable {
+public interface TaskExecuteContext {
 
 	public TaskExecuteStrategy getTaskExecuteStrategy();
 
@@ -17,9 +15,6 @@ public interface TaskExecuteContext extends Serializable {
 	public TaskExecuteState getTaskExecuteStateInitialized();
 
 	public TaskExecuteState getTaskExecuteStateNonInitialize();
-
-	@Binding(bindingType = BindingType.NONE)
-	public void setTaskComponentDef(ComponentDef taskComponentDef);
 
 	@Binding(bindingType = BindingType.NONE)
 	public void setGetterSignal(Object getterSignal);

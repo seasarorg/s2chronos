@@ -1,5 +1,8 @@
 package org.seasar.chronos.task.strategy.impl;
 
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -25,11 +28,9 @@ import org.seasar.chronos.task.strategy.TaskExecuteStrategy;
 import org.seasar.framework.beans.BeanDesc;
 import org.seasar.framework.beans.PropertyDesc;
 import org.seasar.framework.beans.factory.BeanDescFactory;
-import org.seasar.framework.container.ComponentDef;
 import org.seasar.framework.container.annotation.tiger.Binding;
 import org.seasar.framework.container.annotation.tiger.BindingType;
 import org.seasar.framework.container.hotdeploy.HotdeployUtil;
-import org.seasar.framework.exception.ClassNotFoundRuntimeException;
 import org.seasar.framework.log.Logger;
 
 public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
@@ -70,8 +71,6 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 
 	private Class taskClass;
 
-	private ComponentDef taskComponentDef;
-
 	private BeanDesc beanDesc;
 
 	private MethodInvoker taskMethodInvoker;
@@ -85,6 +84,53 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 	private TaskExecuteHandler taskGroupMethodExecuteHandler;
 
 	private Object getterSignal;
+
+	public void readExternal(ObjectInput in) throws IOException,
+			ClassNotFoundException {
+		taskClass = (Class) in.readObject();
+		task = in.readObject();
+		// BeanDesc beanDesc = BeanDescFactory.getBeanDesc(this.taskClass);
+		//
+		// try {
+		// String keyName = in.readUTF();
+		// Field field = beanDesc.getField(keyName);
+		// field.setAccessible(true);
+		// Object value = in.readObject();
+		// task = beanDesc.newInstance(null);
+		// field.set(task, value);
+		// } catch (SecurityException e) {
+		// e.printStackTrace();
+		// } catch (IllegalArgumentException e) {
+		// e.printStackTrace();
+		// } catch (IllegalAccessException e) {
+		// e.printStackTrace();
+		// }
+
+	}
+
+	public void writeExternal(ObjectOutput out) throws IOException {
+		out.writeObject(taskClass);
+		out.writeObject(task);
+		// BeanDesc beanDesc = BeanDescFactory.getBeanDesc(this.taskClass);
+		// for (int i = 0; i < beanDesc.getFieldSize(); i++) {
+		// Field field = beanDesc.getField(i);
+		// int modifier = field.getModifiers();
+		// if (!Modifier.isFinal(modifier) && !Modifier.isStatic(modifier)) {
+		// try {
+		// field.setAccessible(true);
+		// Object value = field.get(this.task);
+		// out.writeUTF(field.getName());
+		// out.writeObject(value);
+		// } catch (IllegalArgumentException e) {
+		// e.printStackTrace();
+		// } catch (IllegalAccessException e) {
+		// e.printStackTrace();
+		// }
+		// }
+		//
+		// }
+
+	}
 
 	public TaskExecuteStrategyImpl() {
 
@@ -112,24 +158,36 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 		return this.taskMethodManager.existGroup(groupName);
 	}
 
-	public void setTaskComponentDef(ComponentDef taskComponentDef) {
-		this.taskComponentDef = taskComponentDef;
+	// public void setTaskComponentDef(ComponentDef taskComponentDef) {
+	// this.taskComponentDef = taskComponentDef;
+	// }
+	//
+	// public ComponentDef getTaskComponentDef() {
+	// return this.taskComponentDef;
+	// }
+
+	public void setTaskClass(Class taskClass) {
+		this.taskClass = taskClass;
+	}
+
+	public Class getTaskClass() {
+		return this.taskClass;
+	}
+
+	public void setTask(Object task) {
+		this.task = task;
+	}
+
+	public Object getTask() {
+		return this.task;
 	}
 
 	public void prepare() {
-		try {
-			String className = taskComponentDef.getComponentClass().getName();
-			Class.forName(className);
-		} catch (ClassNotFoundException e) {
-			throw new ClassNotFoundRuntimeException(e);
-		}
-		HotdeployUtil.start();
+
 		this.taskMethodExecuteHandler = this.createTaskMethodExecuteHandler();
 		this.taskGroupMethodExecuteHandler = this
 				.createTaskGroupMethodExecuteHandler();
 
-		this.task = this.taskComponentDef.getComponent();
-		this.taskClass = this.taskComponentDef.getComponentClass();
 		this.beanDesc = BeanDescFactory.getBeanDesc(this.taskClass);
 		this.taskMethodManager = new TaskMethodManager(taskClass,
 				METHOD_PREFIX_NAME_DO);
@@ -443,14 +501,6 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 			result = (String) pd.getValue(this.task);
 		}
 		return result;
-	}
-
-	public ComponentDef getTaskComponentDef() {
-		return this.taskComponentDef;
-	}
-
-	public Object getTask() {
-		return this.task;
 	}
 
 }

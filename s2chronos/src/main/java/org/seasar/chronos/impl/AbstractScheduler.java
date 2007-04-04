@@ -7,8 +7,10 @@ import org.seasar.chronos.logger.Logger;
 import org.seasar.chronos.task.TaskExecutorService;
 import org.seasar.framework.container.ComponentDef;
 import org.seasar.framework.container.S2Container;
+import org.seasar.framework.container.hotdeploy.HotdeployUtil;
 import org.seasar.framework.container.util.SmartDeployUtil;
 import org.seasar.framework.container.util.Traversal;
+import org.seasar.framework.exception.ClassNotFoundRuntimeException;
 import org.seasar.framework.util.ClassTraversal;
 import org.seasar.framework.util.ClassUtil;
 import org.seasar.framework.util.tiger.ReflectionUtil;
@@ -50,12 +52,22 @@ public abstract class AbstractScheduler implements Scheduler {
 		final TaskExecutorService tes = (TaskExecutorService) this.s2container
 				.getComponent(TaskExecutorService.class);
 		tc.setTaskExecutorService(tes);
-		tes.setTaskComponentDef(tc.getComponentDef());
+
+		try {
+			String className = tc.getComponentDef().getComponentClass()
+					.getName();
+			Class.forName(className);
+		} catch (ClassNotFoundException e) {
+			throw new ClassNotFoundRuntimeException(e);
+		}
+		HotdeployUtil.start();
+		// ここでタスクに対してDIが実行されます
+		tes.setTask(componentDef.getComponent());
+		tes.setTaskClass(componentDef.getComponentClass());
 		tes.setGetterSignal(this);
 		tes.setScheduler(this);
-		// ここでタスクに対してDIが実行されます
 		tes.prepare();
-		tc.setTask(tes.getTask());
+
 		return tc;
 	}
 

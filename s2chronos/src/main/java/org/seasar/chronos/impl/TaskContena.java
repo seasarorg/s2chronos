@@ -1,12 +1,11 @@
 package org.seasar.chronos.impl;
 
-import java.io.Serializable;
 import java.util.concurrent.Future;
 
 import org.seasar.chronos.task.TaskExecutorService;
 import org.seasar.framework.container.ComponentDef;
 
-public class TaskContena implements Serializable {
+public class TaskContena {
 
 	private static final long serialVersionUID = -5656680297381222017L;
 

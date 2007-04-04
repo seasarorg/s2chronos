@@ -20,8 +20,6 @@ public class CronTrigger extends AbstractTrigger {
 		return result;
 	}
 
-	private static final long serialVersionUID = -6134078484287070849L;
-
 	private CronExpression expression;
 
 	private ArrayList<Date> startTimeList;

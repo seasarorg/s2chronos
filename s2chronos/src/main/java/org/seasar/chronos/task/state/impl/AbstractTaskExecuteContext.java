@@ -5,7 +5,6 @@ import java.util.concurrent.TimeUnit;
 import org.seasar.chronos.task.state.TaskExecuteContext;
 import org.seasar.chronos.task.state.TaskExecuteState;
 import org.seasar.chronos.task.strategy.TaskExecuteStrategy;
-import org.seasar.framework.container.ComponentDef;
 import org.seasar.framework.container.annotation.tiger.Binding;
 import org.seasar.framework.container.annotation.tiger.BindingType;
 
@@ -13,7 +12,9 @@ public abstract class AbstractTaskExecuteContext implements TaskExecuteContext {
 
 	private TaskExecuteState currentState;
 
-	private ComponentDef taskComponentDef;
+	private Object task;
+
+	private Class taskClass;
 
 	private Object getterSignal;
 
@@ -29,6 +30,22 @@ public abstract class AbstractTaskExecuteContext implements TaskExecuteContext {
 
 	public final TaskExecuteState getTaskExecuteStateNonInitialize() {
 		return taskExecuteStateNonInitialized;
+	}
+
+	public Object getTask() {
+		return task;
+	}
+
+	public void setTask(Object task) {
+		this.task = task;
+	}
+
+	public Class getTaskClass() {
+		return taskClass;
+	}
+
+	public void setTaskClass(Class taskClass) {
+		this.taskClass = taskClass;
 	}
 
 	protected abstract TaskExecuteStrategy createTaskExecuteStrategy();
@@ -60,15 +77,16 @@ public abstract class AbstractTaskExecuteContext implements TaskExecuteContext {
 		this.currentState = nextState;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.seasar.chronos.task.state.impl.TaskExecuteContext#setTaskComponentDef(org.seasar.framework.container.ComponentDef)
-	 */
-	@Binding(bindingType = BindingType.NONE)
-	public void setTaskComponentDef(ComponentDef taskComponentDef) {
-		this.taskComponentDef = taskComponentDef;
-	}
+	// /*
+	// * (non-Javadoc)
+	// *
+	// * @see
+	// org.seasar.chronos.task.state.impl.TaskExecuteContext#setTaskComponentDef(org.seasar.framework.container.ComponentDef)
+	// */
+	// @Binding(bindingType = BindingType.NONE)
+	// public void setTaskComponentDef(ComponentDef taskComponentDef) {
+	// this.taskComponentDef = taskComponentDef;
+	// }
 
 	/*
 	 * (non-Javadoc)
@@ -86,8 +104,8 @@ public abstract class AbstractTaskExecuteContext implements TaskExecuteContext {
 	 * @see org.seasar.chronos.task.state.impl.TaskExecuteContext#prepare()
 	 */
 	public void prepare() {
-		this.getTaskExecuteStrategy()
-				.setTaskComponentDef(this.taskComponentDef);
+		this.getTaskExecuteStrategy().setTask(this.task);
+		this.getTaskExecuteStrategy().setTaskClass(this.taskClass);
 		this.getTaskExecuteStrategy().setGetterSignal(this.getterSignal);
 		this.currentState.prepare(this);
 	}
