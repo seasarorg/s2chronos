@@ -14,4 +14,7 @@ public @interface Task {
 	String name() default TASK_NAME_NULL;
 
 	boolean autoSchedule() default true;
+
+	long cloneTask() default 1L;
+
 }
