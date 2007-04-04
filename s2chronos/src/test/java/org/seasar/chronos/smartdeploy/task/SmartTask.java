@@ -1,7 +1,5 @@
 package org.seasar.chronos.smartdeploy.task;
 
-import java.io.Serializable;
-
 import org.seasar.chronos.TaskTrigger;
 import org.seasar.chronos.annotation.task.Task;
 import org.seasar.chronos.annotation.task.method.CloneTask;
@@ -11,7 +9,7 @@ import org.seasar.chronos.annotation.type.JoinType;
 import org.seasar.framework.log.Logger;
 
 @Task(name = "smart")
-public class SmartTask implements Serializable {
+public class SmartTask {
 
 	@Override
 	public boolean equals(Object obj) {
@@ -20,8 +18,6 @@ public class SmartTask implements Serializable {
 		result = result & trigger.equals(src.trigger);
 		return result;
 	}
-
-	private static final long serialVersionUID = -3912446886777455855L;
 
 	private static final Logger log = Logger.getLogger(SmartTask.class);
 
@@ -34,13 +30,6 @@ public class SmartTask implements Serializable {
 	public TaskTrigger getTrigger() {
 		return this.trigger;
 	}
-
-	// private boolean startTask = true;
-	//
-	// // trueを返すとタスクの起動が開始される
-	// public synchronized boolean getStartTask() {
-	// return this.startTask;
-	// }
 
 	// タスクが実行されるときに最初に呼ばれる
 	@NextTask("taskA")

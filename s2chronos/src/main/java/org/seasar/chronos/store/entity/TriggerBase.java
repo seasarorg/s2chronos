@@ -8,8 +8,6 @@ public class TriggerBase {
 
 	private String name;
 
-	private Object task;
-
 	private String description;
 
 	private boolean executed;
@@ -46,14 +44,6 @@ public class TriggerBase {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public Object getTask() {
-		return task;
-	}
-
-	public void setTask(Object task) {
-		this.task = task;
 	}
 
 	public BigDecimal getVersionNo() {

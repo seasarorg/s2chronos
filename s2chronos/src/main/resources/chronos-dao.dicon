@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="Shift_JIS"?>
 <!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container//EN"
 "http://www.seasar.org/dtd/components.dtd">
-<components namespace="dao">
-	<include path="j2ee.dicon"/>
-	
+<components namespace="chronos-dao">
+	<include path="chronos-j2ee.dicon"/>
+
 	<component name="annotationReaderFactory"
 		class="org.seasar.dao.annotation.tiger.impl.AnnotationReaderFactoryImpl"/>
 
