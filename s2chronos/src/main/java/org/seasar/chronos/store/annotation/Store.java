@@ -11,4 +11,8 @@ public @interface Store {
 
 	Class<?> bean();
 
+	Class<?> dao();
+
+	Class<?> dxo();
+
 }

@@ -1,15 +1,17 @@
 package org.seasar.chronos.store;
 
-import org.seasar.chronos.store.annotation.Store;
 import org.seasar.chronos.trigger.TimedTrigger;
 
-@Store(bean = TimedTrigger.class)
-public interface TimedTriggerStore {
+public class TimedTriggerStore {
 
-	public void saveToStore(TimedTrigger trigger);
+	public void saveToStore(TimedTrigger trigger) {
+	}
 
-	public TimedTrigger loadFromStore(long id);
+	public TimedTrigger loadFromStore(long id) {
+		return null;
+	}
 
-	public void loadFromStore(long id, TimedTrigger trigger);
+	public void loadFromStore(long id, TimedTrigger trigger) {
+	}
 
 }

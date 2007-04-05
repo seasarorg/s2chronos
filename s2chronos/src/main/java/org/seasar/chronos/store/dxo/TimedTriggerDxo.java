@@ -2,28 +2,28 @@ package org.seasar.chronos.store.dxo;
 
 import java.util.List;
 
-import org.seasar.chronos.store.entity.TimedTriggerEntity;
+import org.seasar.chronos.store.entity.TriggerEntity;
 import org.seasar.chronos.trigger.TimedTrigger;
 
 public interface TimedTriggerDxo {
 
-	public TimedTriggerEntity toEntity(TimedTrigger component);
+	public TriggerEntity toEntity(TimedTrigger component);
 
-	public TimedTrigger toComponent(TimedTriggerEntity entity);
+	public TimedTrigger toComponent(TriggerEntity entity);
 
 	public void fromComponentToEntity(TimedTrigger trigger,
-			TimedTriggerEntity entity);
+			TriggerEntity entity);
 
-	public void fromEntityFromComponent(TimedTriggerEntity entity,
+	public void fromEntityFromComponent(TriggerEntity entity,
 			TimedTrigger component);
 
-	public List<TimedTriggerEntity> toEntities(List<TimedTrigger> components);
+	public List<TriggerEntity> toEntities(List<TimedTrigger> components);
 
-	public List<TimedTrigger> toComponents(List<TimedTriggerEntity> entity);
+	public List<TimedTrigger> toComponents(List<TriggerEntity> entity);
 
 	public void fromComponentsToEntities(List<TimedTrigger> components,
-			List<TimedTriggerEntity> entities);
+			List<TriggerEntity> entities);
 
-	public void fromEntitiesToComponents(List<TimedTriggerEntity> entities,
+	public void fromEntitiesToComponents(List<TriggerEntity> entities,
 			List<TimedTrigger> components);
 }

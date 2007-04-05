@@ -28,12 +28,12 @@ public class StoreInterceptor extends AbstractInterceptor {
 	private static class HandlerImpl implements
 			ImplementInterfaceWalker.Handler {
 
-		Class foundBeanClass;
+		Store foundStoreAnnotation;
 
 		public Status accept(Class ifs) {
-			final Class beanClass = getBeanClassFromStore(ifs);
-			if (beanClass != null) {
-				foundBeanClass = beanClass;
+			final Store store = getStoreAnnotaionFromStore(ifs);
+			if (store != null) {
+				foundStoreAnnotation = store;
 				return ImplementInterfaceWalker.BREAK;
 			}
 			return ImplementInterfaceWalker.CONTINUE;
@@ -41,27 +41,28 @@ public class StoreInterceptor extends AbstractInterceptor {
 
 	}
 
-	private static Class getBeanClassFromStore(Class<?> storeClass) {
+	private static Store getStoreAnnotaionFromStore(Class<?> storeClass) {
 		if (storeClass.isAnnotationPresent(Store.class)) {
 			Store store = (Store) storeClass.getAnnotation(Store.class);
-			return store.bean();
+			return store;
 		}
 		return null;
 	}
 
-	private Class<?> getBeanClass(Class<?> storeClass) {
-		final Class beanClass = getBeanClassFromStore(storeClass);
-		if (beanClass != null) {
-			return beanClass;
+	private Store getStoreAnnotaion(Class<?> storeClass) {
+		final Store store = getStoreAnnotaionFromStore(storeClass);
+		if (store != null) {
+			return store;
 		}
 
 		HandlerImpl handlerImpl = new HandlerImpl();
 		ImplementInterfaceWalker.walk(storeClass, handlerImpl);
-		return handlerImpl.foundBeanClass;
+		return handlerImpl.foundStoreAnnotation;
 	}
 
 	public Object invoke(MethodInvocation methodInvocation) throws Throwable {
 		Method mh = methodInvocation.getMethod();
+		String methodName = mh.getName();
 		if (!MethodUtil.isAbstract(mh)) {
 			return methodInvocation.proceed();
 		}
@@ -70,17 +71,11 @@ public class StoreInterceptor extends AbstractInterceptor {
 
 		Class<?> clazz = getTargetClass(methodInvocation);
 		BeanDesc beanDesc = BeanDescFactory.getBeanDesc(clazz);
-		Class<?> beanClass = getBeanClass(beanDesc.getBeanClass());
+		Store store = getStoreAnnotaion(beanDesc.getBeanClass());
 
-		String className = beanClass.getSimpleName();
-		String daoClassName = "org.seasar.chronos.store.dao." + className
-				+ "Dao";
-		String dxoClassName = "org.seasar.chronos.store.dxo." + className
-				+ "Dxo";
-		String methodName = mh.getName();
-
-		Class<?> daoClass = ReflectionUtil.forNameNoException(daoClassName);
-		Class<?> dxoClass = ReflectionUtil.forNameNoException(dxoClassName);
+		Class<?> beanClass = store.bean();
+		Class<?> daoClass = store.dao();
+		Class<?> dxoClass = store.dxo();
 		S2Dao s2Dao = (S2Dao) daoClass.getAnnotation(S2Dao.class);
 		Class<?> daoEntityClass = s2Dao.bean();
 
