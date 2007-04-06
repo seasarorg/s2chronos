@@ -3,7 +3,7 @@ package org.seasar.chronos.trigger;
 import java.util.ArrayList;
 import java.util.Date;
 
-import org.seasar.chronos.store.CronTriggerStore;
+import org.seasar.chronos.store.trigger.CronTriggerStore;
 import org.seasar.chronos.trigger.cron.CronExpression;
 
 public class CronTrigger extends AbstractTrigger {
@@ -87,7 +87,7 @@ public class CronTrigger extends AbstractTrigger {
 	}
 
 	@Override
-	public void setExecuted(boolean executed) {
+	public void setExecute(boolean executed) {
 		// this.expression.buildNextTime();
 	}
 

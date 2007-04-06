@@ -22,11 +22,11 @@ public interface TaskTrigger {
 
 	public String getName();
 
-	public boolean isExecuted();
+	public boolean isExecute();
 
 	public void setDescription(String description);
 
-	public void setExecuted(boolean executed);
+	public void setExecute(boolean executed);
 
 	public void setId(long triggerId);
 

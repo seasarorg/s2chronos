@@ -1,6 +1,6 @@
 package org.seasar.chronos.trigger;
 
-import org.seasar.chronos.store.DelayTriggerStore;
+import org.seasar.chronos.store.trigger.DelayTriggerStore;
 
 public class DelayTrigger extends AbstractTrigger {
 
@@ -19,7 +19,7 @@ public class DelayTrigger extends AbstractTrigger {
 	}
 
 	public boolean getStartTask() {
-		if (this.isExecuted()) {
+		if (this.isExecute()) {
 			return false;
 		}
 

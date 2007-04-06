@@ -1,6 +1,6 @@
 package org.seasar.chronos.trigger;
 
-import org.seasar.chronos.store.NonDelayTriggerStore;
+import org.seasar.chronos.store.trigger.NonDelayTriggerStore;
 
 public class NonDelayTrigger extends AbstractTrigger {
 

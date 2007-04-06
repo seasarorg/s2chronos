@@ -2,7 +2,7 @@ package org.seasar.chronos.trigger;
 
 import java.util.Date;
 
-import org.seasar.chronos.store.TimedTriggerStore;
+import org.seasar.chronos.store.trigger.TimedTriggerStore;
 
 public class TimedTrigger extends AbstractTrigger {
 
@@ -54,7 +54,7 @@ public class TimedTrigger extends AbstractTrigger {
 
 	public boolean getStartTask() {
 
-		if (this.isExecuted()) {
+		if (this.isExecute()) {
 			return false;
 		}
 

@@ -8,6 +8,11 @@ import org.seasar.chronos.task.TaskProperties;
 
 public final class TaskPropertyUtil {
 
+	public static Long getTaskId(TaskProperties prop) {
+		prop.getTaskId();
+		return 0L;
+	}
+
 	public static String getTaskName(TaskProperties prop) {
 		String taskName = prop.getTaskName();
 		if (taskName == null) {

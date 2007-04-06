@@ -27,7 +27,7 @@ public abstract class AbstractTrigger implements TaskTrigger {
 			if (this.description != null) {
 				result = result & this.description.equals(src.description);
 			}
-			result = result & this.executed == src.executed;
+			result = result & this.execute == src.execute;
 			return result;
 		} else {
 			return super.equals(obj);
@@ -42,7 +42,7 @@ public abstract class AbstractTrigger implements TaskTrigger {
 
 	private String description;
 
-	private boolean executed;
+	private boolean execute;
 
 	public AbstractTrigger() {
 
@@ -68,16 +68,16 @@ public abstract class AbstractTrigger implements TaskTrigger {
 		return name;
 	}
 
-	public boolean isExecuted() {
-		return this.executed;
+	public boolean isExecute() {
+		return this.execute;
 	}
 
 	public void setDescription(String description) {
 		this.description = description;
 	}
 
-	public void setExecuted(boolean executed) {
-		this.executed = executed;
+	public void setExecute(boolean executed) {
+		this.execute = executed;
 	}
 
 	public void setId(long id) {

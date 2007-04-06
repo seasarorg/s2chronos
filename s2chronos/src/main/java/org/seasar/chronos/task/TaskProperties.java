@@ -7,44 +7,49 @@ import org.seasar.chronos.ThreadPoolType;
 
 public interface TaskProperties {
 
-	public String getTaskName();
-
-	public void setScheduler(Scheduler scheduler);
+	public boolean getEndTask();
 
 	public Scheduler getScheduler();
 
-	public void setTaskClass(Class taskClass);
+	public boolean getShutdownTask();
 
-	public Class getTaskClass();
-
-	public void setTask(Object task);
+	public boolean getStartTask();
 
 	public Object getTask();
 
-	public void setGetterSignal(Object getterSignal);
+	public Class getTaskClass();
+
+	public int getTaskId();
+
+	public String getTaskName();
+
+	public TaskThreadPool getThreadPool();
 
 	public int getThreadPoolSize();
 
 	public ThreadPoolType getThreadPoolType();
 
-	public void setStartTask(boolean startTask);
+	public TaskTrigger getTrigger();
 
-	public boolean getStartTask();
-
-	public boolean getEndTask();
+	public boolean isExecute();
 
 	public void setEndTask(boolean endTask);
 
-	public boolean getShutdownTask();
+	public void setExecute(boolean executed);
+
+	public void setGetterSignal(Object getterSignal);
+
+	public void setScheduler(Scheduler scheduler);
 
 	public void setShutdownTask(boolean shutdownTask);
 
-	public TaskTrigger getTrigger();
-
 	// public void setTrigger(TaskTrigger taskTrigger);
 
-	public TaskThreadPool getThreadPool();
+	public void setStartTask(boolean startTask);
+
+	public void setTask(Object task);
+
+	public void setTaskClass(Class taskClass);
 
 	public void setThreadPool(TaskThreadPool taskThreadPool);
-
 }

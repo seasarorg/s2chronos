@@ -1,8 +1,5 @@
 package org.seasar.chronos.task.strategy.impl;
 
-import java.io.IOException;
-import java.io.ObjectInput;
-import java.io.ObjectOutput;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -67,6 +64,8 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 
 	private static final String PROPERTY_NAME_TASKNAME = "taskName";
 
+	private static final String PROPERTY_NAME_TASKID = "taskId";
+
 	private Object task;
 
 	private Class taskClass;
@@ -84,53 +83,6 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 	private TaskExecuteHandler taskGroupMethodExecuteHandler;
 
 	private Object getterSignal;
-
-	public void readExternal(ObjectInput in) throws IOException,
-			ClassNotFoundException {
-		taskClass = (Class) in.readObject();
-		task = in.readObject();
-		// BeanDesc beanDesc = BeanDescFactory.getBeanDesc(this.taskClass);
-		//
-		// try {
-		// String keyName = in.readUTF();
-		// Field field = beanDesc.getField(keyName);
-		// field.setAccessible(true);
-		// Object value = in.readObject();
-		// task = beanDesc.newInstance(null);
-		// field.set(task, value);
-		// } catch (SecurityException e) {
-		// e.printStackTrace();
-		// } catch (IllegalArgumentException e) {
-		// e.printStackTrace();
-		// } catch (IllegalAccessException e) {
-		// e.printStackTrace();
-		// }
-
-	}
-
-	public void writeExternal(ObjectOutput out) throws IOException {
-		out.writeObject(taskClass);
-		out.writeObject(task);
-		// BeanDesc beanDesc = BeanDescFactory.getBeanDesc(this.taskClass);
-		// for (int i = 0; i < beanDesc.getFieldSize(); i++) {
-		// Field field = beanDesc.getField(i);
-		// int modifier = field.getModifiers();
-		// if (!Modifier.isFinal(modifier) && !Modifier.isStatic(modifier)) {
-		// try {
-		// field.setAccessible(true);
-		// Object value = field.get(this.task);
-		// out.writeUTF(field.getName());
-		// out.writeObject(value);
-		// } catch (IllegalArgumentException e) {
-		// e.printStackTrace();
-		// } catch (IllegalAccessException e) {
-		// e.printStackTrace();
-		// }
-		// }
-		//
-		// }
-
-	}
 
 	public TaskExecuteStrategyImpl() {
 
@@ -157,14 +109,6 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 	private boolean isGroupMethod(String groupName) {
 		return this.taskMethodManager.existGroup(groupName);
 	}
-
-	// public void setTaskComponentDef(ComponentDef taskComponentDef) {
-	// this.taskComponentDef = taskComponentDef;
-	// }
-	//
-	// public ComponentDef getTaskComponentDef() {
-	// return this.taskComponentDef;
-	// }
 
 	public void setTaskClass(Class taskClass) {
 		this.taskClass = taskClass;
@@ -227,7 +171,7 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 
 	public String initialize() throws InterruptedException {
 
-		this.setExecuted(true);
+		this.setExecute(true);
 		if (this.lifecycleMethodInvoker.hasMethod(METHOD_NAME_INITIALIZE)) {
 			AsyncResult ar = this.lifecycleMethodInvoker
 					.beginInvoke(METHOD_NAME_INITIALIZE);
@@ -299,7 +243,7 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 					METHOD_NAME_DESTROY);
 			nextTask = md.getNextTask();
 		}
-		this.setExecuted(false);
+		this.setExecute(false);
 		this.notifyGetterSignal();
 		this.taskMethodInvoker = null;
 		this.lifecycleMethodInvoker = null;
@@ -352,7 +296,7 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 		return getThreadPoolType(this.task);
 	}
 
-	public void setExecuted(boolean executed) {
+	public void setExecute(boolean executed) {
 		if (this.beanDesc.hasPropertyDesc(PROPERTY_NAME_EXECUTED)) {
 			PropertyDesc pd = this.beanDesc
 					.getPropertyDesc(PROPERTY_NAME_EXECUTED);
@@ -360,7 +304,7 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 		}
 	}
 
-	public boolean isExecuted() {
+	public boolean isExecute() {
 		Boolean result = false;
 		if (this.beanDesc.hasPropertyDesc(PROPERTY_NAME_EXECUTED)) {
 			PropertyDesc pd = this.beanDesc
@@ -503,4 +447,15 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 		return result;
 	}
 
+	public int getTaskId() {
+		int result = 0;
+		if (this.beanDesc.hasPropertyDesc(PROPERTY_NAME_TASKID)) {
+			PropertyDesc pd = this.beanDesc
+					.getPropertyDesc(PROPERTY_NAME_TASKID);
+			result = (Integer) pd.getValue(this.task);
+		} else {
+			result = this.task.hashCode();
+		}
+		return result;
+	}
 }

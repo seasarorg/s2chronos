@@ -1,8 +1,5 @@
 package org.seasar.chronos.task.impl;
 
-import java.io.IOException;
-import java.io.ObjectInput;
-import java.io.ObjectOutput;
 import java.util.concurrent.TimeUnit;
 
 import org.seasar.chronos.Scheduler;
@@ -28,6 +25,10 @@ public class TaskExecutorServiceImpl implements TaskExecutorService {
 	@Binding(bindingType = BindingType.NONE)
 	public void setGetterSignal(Object getterSignal) {
 		this.taskExecuteContext.setGetterSignal(getterSignal);
+	}
+
+	public int getTaskId() {
+		return this.taskExecuteContext.getTaskExecuteStrategy().getTaskId();
 	}
 
 	public String getTaskName() {
@@ -145,15 +146,12 @@ public class TaskExecutorServiceImpl implements TaskExecutorService {
 				.setScheduler(scheduler);
 	}
 
-	public void readExternal(ObjectInput arg0) throws IOException,
-			ClassNotFoundException {
-		// TODO 自動生成されたメソッド・スタブ
-
+	public boolean isExecute() {
+		return this.taskExecuteContext.getTaskExecuteStrategy().isExecute();
 	}
 
-	public void writeExternal(ObjectOutput arg0) throws IOException {
-		// TODO 自動生成されたメソッド・スタブ
-
+	public void setExecute(boolean executed) {
+		this.taskExecuteContext.getTaskExecuteStrategy().setExecute(executed);
 	}
 
 }

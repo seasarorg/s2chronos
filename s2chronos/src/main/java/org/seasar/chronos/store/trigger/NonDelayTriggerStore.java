@@ -1,4 +1,4 @@
-package org.seasar.chronos.store;
+package org.seasar.chronos.store.trigger;
 
 import org.seasar.chronos.store.dxo.NonDelayTriggerDxo;
 import org.seasar.chronos.store.entity.TriggerEntity;
