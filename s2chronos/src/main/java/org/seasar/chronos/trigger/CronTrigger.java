@@ -3,9 +3,24 @@ package org.seasar.chronos.trigger;
 import java.util.ArrayList;
 import java.util.Date;
 
+import org.seasar.chronos.store.CronTriggerStore;
 import org.seasar.chronos.trigger.cron.CronExpression;
 
 public class CronTrigger extends AbstractTrigger {
+
+	private CronTriggerStore store;
+
+	private CronExpression expression;
+
+	private ArrayList<Date> startTimeList;
+
+	public CronTrigger() {
+
+	}
+
+	public CronTrigger(String name) {
+		super(name);
+	}
 
 	@Override
 	public boolean equals(Object obj) {
@@ -20,31 +35,12 @@ public class CronTrigger extends AbstractTrigger {
 		return result;
 	}
 
-	private CronExpression expression;
-
-	private ArrayList<Date> startTimeList;
-
-	public CronTrigger() {
-
-	}
-
-	public CronTrigger(String name) {
-		super(name);
-	}
-
 	public String getCronExpression() {
 		return this.expression.getCronExprssion();
 	}
 
-	public void setCronExpression(String cronExpression) {
-		this.expression = new CronExpression(cronExpression);
-		this.expression.buildNextTime();
-		this.startTimeList = this.expression.getStartTimes();
-	}
-
-	@Override
-	public void setExecuted(boolean executed) {
-		// this.expression.buildNextTime();
+	public boolean getEndTask() {
+		return false;
 	}
 
 	public boolean getStartTask() {
@@ -72,16 +68,35 @@ public class CronTrigger extends AbstractTrigger {
 		return startTimeCheck;
 	}
 
-	public boolean getEndTask() {
-		return false;
+	public void load() {
+		this.store.loadFromStore(this.getId(), this);
+	}
+
+	public void save() {
+		this.store.saveToStore(this);
+	}
+
+	public void setCronExpression(String cronExpression) {
+		this.expression = new CronExpression(cronExpression);
+		this.expression.buildNextTime();
+		this.startTimeList = this.expression.getStartTimes();
 	}
 
 	public void setEndTask(boolean endTask) {
 
 	}
 
+	@Override
+	public void setExecuted(boolean executed) {
+		// this.expression.buildNextTime();
+	}
+
 	public void setStartTask(boolean startTask) {
 
+	}
+
+	public void setStore(CronTriggerStore store) {
+		this.store = store;
 	}
 
 }

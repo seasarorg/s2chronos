@@ -26,10 +26,12 @@ public class TimedTrigger extends AbstractTrigger {
 		super(name);
 	}
 
+	@Override
 	public void save() {
 		this.store.saveToStore(this);
 	}
 
+	@Override
 	public void load() {
 		this.store.loadFromStore(this.getId(), this);
 	}
