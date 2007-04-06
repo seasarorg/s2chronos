@@ -1,8 +1,9 @@
 package org.seasar.chronos.trigger;
 
+import org.seasar.chronos.Serializable;
 import org.seasar.chronos.TaskTrigger;
 
-public abstract class AbstractTrigger implements TaskTrigger {
+public abstract class AbstractTrigger implements TaskTrigger, Serializable {
 
 	public void load() {
 
