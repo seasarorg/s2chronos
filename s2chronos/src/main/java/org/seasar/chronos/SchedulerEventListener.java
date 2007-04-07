@@ -2,7 +2,9 @@ package org.seasar.chronos;
 
 public interface SchedulerEventListener {
 
-	public void preparedScheduler(Scheduler scheduler);
+	public void resigtTaskBeforeScheduler(Scheduler scheduler);
+
+	public void resigtTaskAfterScheduler(Scheduler scheduler);
 
 	public void startScheduler(Scheduler scheduler);
 

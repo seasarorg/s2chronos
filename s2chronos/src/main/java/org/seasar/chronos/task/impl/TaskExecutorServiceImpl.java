@@ -3,7 +3,6 @@ package org.seasar.chronos.task.impl;
 import java.util.concurrent.TimeUnit;
 
 import org.seasar.chronos.Scheduler;
-import org.seasar.chronos.Serializable;
 import org.seasar.chronos.TaskThreadPool;
 import org.seasar.chronos.TaskTrigger;
 import org.seasar.chronos.ThreadPoolType;
@@ -13,8 +12,7 @@ import org.seasar.chronos.task.state.impl.TaskExecuteContextImpl;
 import org.seasar.framework.container.annotation.tiger.Binding;
 import org.seasar.framework.container.annotation.tiger.BindingType;
 
-public class TaskExecutorServiceImpl implements TaskExecutorService,
-		Serializable {
+public class TaskExecutorServiceImpl implements TaskExecutorService {
 
 	private static final long serialVersionUID = 59104659363668777L;
 
@@ -27,6 +25,10 @@ public class TaskExecutorServiceImpl implements TaskExecutorService,
 	@Binding(bindingType = BindingType.NONE)
 	public void setGetterSignal(Object getterSignal) {
 		this.taskExecuteContext.setGetterSignal(getterSignal);
+	}
+
+	public void setTaskId(int taskId) {
+		this.taskExecuteContext.getTaskExecuteStrategy().setTaskId(taskId);
 	}
 
 	public int getTaskId() {

@@ -19,6 +19,8 @@ public interface TaskProperties {
 
 	public Class getTaskClass();
 
+	public void setTaskId(int taskId);
+
 	public int getTaskId();
 
 	public String getTaskName();

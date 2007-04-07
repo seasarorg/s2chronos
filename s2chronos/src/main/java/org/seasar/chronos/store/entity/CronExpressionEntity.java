@@ -3,9 +3,12 @@ package org.seasar.chronos.store.entity;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 
+import org.seasar.dao.annotation.tiger.Bean;
+
+@Bean(table = "CRON_EXPRESSION")
 public class CronExpressionEntity {
 
-	private Long id;
+	private int id;
 
 	private Timestamp startTime;
 
@@ -19,12 +22,12 @@ public class CronExpressionEntity {
 		this.versionNo = versionNo;
 	}
 
-	public Long getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(Long cronTriggerId) {
-		this.id = cronTriggerId;
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public Timestamp getStartTime() {

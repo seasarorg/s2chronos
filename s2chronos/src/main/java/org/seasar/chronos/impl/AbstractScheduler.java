@@ -5,6 +5,7 @@ import org.seasar.chronos.annotation.task.Task;
 import org.seasar.chronos.autodetector.TaskClassAutoDetector;
 import org.seasar.chronos.logger.Logger;
 import org.seasar.chronos.task.TaskExecutorService;
+import org.seasar.chronos.util.TaskPropertyUtil;
 import org.seasar.framework.container.ComponentDef;
 import org.seasar.framework.container.S2Container;
 import org.seasar.framework.container.hotdeploy.HotdeployUtil;
@@ -43,9 +44,13 @@ public abstract class AbstractScheduler implements Scheduler {
 	}
 
 	protected TaskContena scheduleTask(ComponentDef componentDef) {
+		return scheduleTask(componentDef, false);
+	}
+
+	protected TaskContena scheduleTask(ComponentDef componentDef, boolean force) {
 		Class<?> clazz = componentDef.getComponentClass();
 		Task task = clazz.getAnnotation(Task.class);
-		if (!task.autoSchedule()) {
+		if (!task.autoSchedule() && !force) {
 			return null;
 		}
 		TaskContena tc = new TaskContena(componentDef);
@@ -83,17 +88,12 @@ public abstract class AbstractScheduler implements Scheduler {
 		Object componentDef = tcsm
 				.forEach(new TaskContenaStateManager.TaskContenaHanlder() {
 					public Object processTaskContena(TaskContena taskContena) {
-						ComponentDef componentDef = taskContena
-								.getComponentDef();
-						Class<?> clazz = componentDef.getComponentClass();
-						Task task = (Task) clazz.getAnnotation(Task.class);
-						if (task == null) {
-							return null;
-						}
-						String _taskName = task.name();
+						TaskExecutorService tes = taskContena
+								.getTaskExecutorService();
+						String _taskName = TaskPropertyUtil.getTaskName(tes);
 						log.debug("[[[" + taskName + ":" + _taskName + "]]]");
 						if (taskName.equals(_taskName)) {
-							return componentDef;
+							return taskContena.getComponentDef();
 						}
 						return null;
 					}

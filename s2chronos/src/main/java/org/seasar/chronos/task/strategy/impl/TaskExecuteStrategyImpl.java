@@ -450,16 +450,30 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 		return result;
 	}
 
-	public int getTaskId() {
-		int result = 0;
+	private int taskId = 0;
+
+	public void setTaskId(int taskId) {
 		if (this.beanDesc.hasPropertyDesc(PROPERTY_NAME_TASKID)) {
 			PropertyDesc pd = this.beanDesc
 					.getPropertyDesc(PROPERTY_NAME_TASKID);
-			result = (Integer) pd.getValue(this.task);
-		} else {
-			result = this.task.hashCode();
+			pd.setValue(this.task, taskId);
+			return;
 		}
-		return result;
+		this.taskId = taskId;
+	}
+
+	public int getTaskId() {
+		if (this.beanDesc.hasPropertyDesc(PROPERTY_NAME_TASKID)) {
+			int result = 0;
+			PropertyDesc pd = this.beanDesc
+					.getPropertyDesc(PROPERTY_NAME_TASKID);
+			result = (Integer) pd.getValue(this.task);
+			return result;
+		}
+		if (this.taskId == 0) {
+			this.taskId = this.task.hashCode();
+		}
+		return this.taskId;
 	}
 
 	public void load() {

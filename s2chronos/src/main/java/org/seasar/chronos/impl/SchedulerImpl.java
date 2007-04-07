@@ -164,10 +164,15 @@ public class SchedulerImpl extends AbstractScheduler {
 	}
 
 	public void start() {
+
+		this.schedulerEventHandler.fireRegistTaskBeforeScheduler();
+
 		this.registTaskFromS2Container();
 		final ScheduleExecuteHandler[] scheduleExecuteHandlers = this
 				.setupHandler();
-		this.schedulerEventHandler.firePreparedScheduler();
+
+		this.schedulerEventHandler.fireRegistTaskAfterScheduler();
+
 		this.schedulerTaskFuture = this.executorService
 				.submit(new Callable<Void>() {
 					public Void call() throws Exception {
@@ -205,7 +210,10 @@ public class SchedulerImpl extends AbstractScheduler {
 	}
 
 	public boolean addTask(String taskName) {
-		ComponentDef componentDef = findTaskComponentDefByTaskName(taskName);
+		ComponentDef componentDef = this.s2container.getComponentDef(taskName);
+		if (componentDef == null) {
+			componentDef = findTaskComponentDefByTaskName(taskName);
+		}
 		if (componentDef != null) {
 			scheduleTask(componentDef);
 			return true;

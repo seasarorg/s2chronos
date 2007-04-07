@@ -90,11 +90,13 @@ public class TaskContenaStateManager {
 		boolean result = this.getTaskContenaList(key).add(taskContena);
 		if (key == TaskStateType.SCHEDULED) {
 			result = result & this.allTaskList.addIfAbsent(taskContena);
+			// オブジェクトでput
 			result = result
-					& this.taskContenaObjectMap.put(taskContena.getTask(),
-							taskContena) != null;
+					& this.taskContenaObjectMap.putIfAbsent(taskContena
+							.getTask(), taskContena) != null;
+			// タスク名でput
 			result = result
-					& this.taskContenaObjectMap.put(TaskPropertyUtil
+					& this.taskContenaObjectMap.putIfAbsent(TaskPropertyUtil
 							.getTaskName(taskContena.getTaskExecutorService()),
 							taskContena) != null;
 		}
@@ -128,6 +130,10 @@ public class TaskContenaStateManager {
 			}
 		}
 		return instance;
+	}
+
+	public void allRemove(TaskStateType key) {
+		this.getTaskContenaList(key).clear();
 	}
 
 }
