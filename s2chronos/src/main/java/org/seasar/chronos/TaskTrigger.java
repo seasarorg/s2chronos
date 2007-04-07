@@ -12,7 +12,9 @@ public interface TaskTrigger {
 
 	public String getDescription();
 
-	public long getId();
+	public int getId();
+
+	public void setId(int id);
 
 	public Object getTask();
 
@@ -23,8 +25,6 @@ public interface TaskTrigger {
 	public void setDescription(String description);
 
 	public void setExecute(boolean executed);
-
-	public void setId(long triggerId);
 
 	public void setTask(Object task);
 

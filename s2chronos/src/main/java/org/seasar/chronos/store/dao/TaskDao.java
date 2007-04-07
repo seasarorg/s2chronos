@@ -12,7 +12,7 @@ public interface TaskDao {
 
 	public int delete(TaskEntity entity);
 
-	public TaskEntity selectById(Long id);
+	public TaskEntity selectById(int id);
 
 	public List<TaskEntity> selectAll();
 

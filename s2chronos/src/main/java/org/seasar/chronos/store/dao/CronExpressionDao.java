@@ -12,7 +12,7 @@ public interface CronExpressionDao {
 
 	public int delete(CronExpressionEntity entity);
 
-	public CronExpressionEntity selectById(Long id);
+	public CronExpressionEntity selectById(int id);
 
 	public List<CronExpressionEntity> selectAll();
 

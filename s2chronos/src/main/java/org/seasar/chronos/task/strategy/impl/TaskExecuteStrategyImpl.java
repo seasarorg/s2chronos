@@ -381,14 +381,14 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 		return result;
 	}
 
-	// @Binding(bindingType = BindingType.NONE)
-	// public void setTrigger(TaskTrigger taskTrigger) {
-	// if (this.beanDesc.hasPropertyDesc(PROPERTY_NAME_TRIGGER)) {
-	// PropertyDesc pd = this.beanDesc
-	// .getPropertyDesc(PROPERTY_NAME_TRIGGER);
-	// pd.setValue(this.task, taskTrigger);
-	// }
-	// }
+	@Binding(bindingType = BindingType.NONE)
+	public void setTrigger(TaskTrigger taskTrigger) {
+		if (this.beanDesc.hasPropertyDesc(PROPERTY_NAME_TRIGGER)) {
+			PropertyDesc pd = this.beanDesc
+					.getPropertyDesc(PROPERTY_NAME_TRIGGER);
+			pd.setValue(this.task, taskTrigger);
+		}
+	}
 
 	public TaskThreadPool getThreadPool() {
 		TaskThreadPool result = null;
@@ -469,4 +469,5 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 	public void save() {
 		this.store.saveToStore(this);
 	}
+
 }

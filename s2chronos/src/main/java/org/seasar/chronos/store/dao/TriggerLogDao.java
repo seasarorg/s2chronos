@@ -12,7 +12,7 @@ public interface TriggerLogDao {
 
 	public int delete(TriggerLogEntity entity);
 
-	public TriggerLogEntity selectById(Long id);
+	public TriggerLogEntity selectById(int id);
 
 	public List<TriggerLogEntity> selectAll();
 

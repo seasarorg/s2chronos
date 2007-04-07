@@ -2,8 +2,6 @@ package org.seasar.chronos.trigger;
 
 import java.util.Date;
 
-import org.seasar.chronos.store.trigger.TimedTriggerStore;
-
 public class TimedTrigger extends AbstractTrigger {
 
 	private static final long serialVersionUID = -6653656597493889393L;
@@ -12,28 +10,12 @@ public class TimedTrigger extends AbstractTrigger {
 
 	private Date endTime;
 
-	private TimedTriggerStore store;
-
-	public void setTimedTriggerStore(TimedTriggerStore store) {
-		this.store = store;
-	}
-
 	public TimedTrigger() {
 
 	}
 
 	public TimedTrigger(String name) {
 		super(name);
-	}
-
-	@Override
-	public void save() {
-		this.store.saveToStore(this);
-	}
-
-	@Override
-	public void load() {
-		this.store.loadFromStore(this.getId(), this);
 	}
 
 	public void setStartTime(Date startDate) {

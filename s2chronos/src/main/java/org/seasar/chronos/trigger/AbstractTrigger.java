@@ -2,15 +2,18 @@ package org.seasar.chronos.trigger;
 
 import org.seasar.chronos.Serializable;
 import org.seasar.chronos.TaskTrigger;
+import org.seasar.chronos.store.trigger.TriggerStore;
 
 public abstract class AbstractTrigger implements TaskTrigger, Serializable {
 
-	public void load() {
+	private TriggerStore store;
 
+	public void load() {
+		store.loadFromStore(this.getId(), this);
 	}
 
 	public void save() {
-
+		store.saveToStore(this);
 	}
 
 	@Override
@@ -35,7 +38,7 @@ public abstract class AbstractTrigger implements TaskTrigger, Serializable {
 		}
 	}
 
-	private long id;
+	private int id;
 
 	private String name;
 
@@ -57,7 +60,7 @@ public abstract class AbstractTrigger implements TaskTrigger, Serializable {
 		return description;
 	}
 
-	public long getId() {
+	public int getId() {
 		return this.id;
 	}
 
@@ -81,7 +84,7 @@ public abstract class AbstractTrigger implements TaskTrigger, Serializable {
 		this.execute = executed;
 	}
 
-	public void setId(long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 

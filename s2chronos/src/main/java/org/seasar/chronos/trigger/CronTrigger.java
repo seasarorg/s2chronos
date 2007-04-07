@@ -3,12 +3,9 @@ package org.seasar.chronos.trigger;
 import java.util.ArrayList;
 import java.util.Date;
 
-import org.seasar.chronos.store.trigger.CronTriggerStore;
 import org.seasar.chronos.trigger.cron.CronExpression;
 
 public class CronTrigger extends AbstractTrigger {
-
-	private CronTriggerStore store;
 
 	private CronExpression expression;
 
@@ -68,14 +65,6 @@ public class CronTrigger extends AbstractTrigger {
 		return startTimeCheck;
 	}
 
-	public void load() {
-		this.store.loadFromStore(this.getId(), this);
-	}
-
-	public void save() {
-		this.store.saveToStore(this);
-	}
-
 	public void setCronExpression(String cronExpression) {
 		this.expression = new CronExpression(cronExpression);
 		this.expression.buildNextTime();
@@ -93,10 +82,6 @@ public class CronTrigger extends AbstractTrigger {
 
 	public void setStartTask(boolean startTask) {
 
-	}
-
-	public void setStore(CronTriggerStore store) {
-		this.store = store;
 	}
 
 }

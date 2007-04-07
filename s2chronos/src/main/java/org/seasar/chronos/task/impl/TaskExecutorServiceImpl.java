@@ -157,11 +157,16 @@ public class TaskExecutorServiceImpl implements TaskExecutorService,
 	}
 
 	public void load() {
-
+		this.taskExecuteContext.getTaskExecuteStrategy().load();
 	}
 
 	public void save() {
+		this.taskExecuteContext.getTaskExecuteStrategy().save();
+	}
 
+	public void setTrigger(TaskTrigger taskTrigger) {
+		this.taskExecuteContext.getTaskExecuteStrategy()
+				.setTrigger(taskTrigger);
 	}
 
 }

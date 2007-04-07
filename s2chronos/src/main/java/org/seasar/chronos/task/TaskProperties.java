@@ -43,7 +43,7 @@ public interface TaskProperties {
 
 	public void setShutdownTask(boolean shutdownTask);
 
-	// public void setTrigger(TaskTrigger taskTrigger);
+	public void setTrigger(TaskTrigger taskTrigger);
 
 	public void setStartTask(boolean startTask);
 
