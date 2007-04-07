@@ -14,7 +14,6 @@ import org.seasar.chronos.delegate.AsyncResult;
 import org.seasar.chronos.delegate.MethodInvoker;
 import org.seasar.chronos.impl.TaskContena;
 import org.seasar.chronos.impl.TaskContenaStateManager;
-import org.seasar.chronos.store.TaskStore;
 import org.seasar.chronos.task.TaskType;
 import org.seasar.chronos.task.Transition;
 import org.seasar.chronos.task.handler.TaskExecuteHandler;
@@ -84,8 +83,6 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 	private TaskExecuteHandler taskGroupMethodExecuteHandler;
 
 	private Object getterSignal;
-
-	private TaskStore store;
 
 	public TaskExecuteStrategyImpl() {
 
@@ -477,11 +474,11 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 	}
 
 	public void load() {
-		this.store.loadFromStore(this.getTaskId(), this);
+
 	}
 
 	public void save() {
-		this.store.saveToStore(this);
+
 	}
 
 }

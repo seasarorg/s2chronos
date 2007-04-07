@@ -1,19 +1,15 @@
 package org.seasar.chronos.trigger;
 
-import org.seasar.chronos.Serializable;
 import org.seasar.chronos.TaskTrigger;
-import org.seasar.chronos.store.TriggerStore;
 
-public abstract class AbstractTrigger implements TaskTrigger, Serializable {
-
-	private TriggerStore store;
+public abstract class AbstractTrigger implements TaskTrigger {
 
 	public void load() {
-		store.loadFromStore(this.getId(), this);
+
 	}
 
 	public void save() {
-		store.saveToStore(this);
+
 	}
 
 	@Override

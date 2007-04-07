@@ -1,6 +1,6 @@
 package org.seasar.chronos;
 
-public interface TaskTrigger {
+public interface TaskTrigger extends Serializable {
 
 	public boolean getStartTask();
 
