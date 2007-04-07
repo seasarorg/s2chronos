@@ -1,4 +1,4 @@
-package org.seasar.chronos.store.trigger;
+package org.seasar.chronos.store;
 
 import org.seasar.chronos.TaskTrigger;
 import org.seasar.chronos.store.dao.TriggerDao;

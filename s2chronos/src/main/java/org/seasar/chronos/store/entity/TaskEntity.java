@@ -1,5 +1,7 @@
 package org.seasar.chronos.store.entity;
 
+import java.math.BigDecimal;
+
 import org.seasar.dao.annotation.tiger.Bean;
 
 @Bean(table = "TASK")
@@ -13,6 +15,8 @@ public class TaskEntity {
 
 	private boolean execute;
 
+	private int threadPoolId;
+
 	private int threadPoolSize;
 
 	private int threadPoolType;
@@ -22,6 +26,8 @@ public class TaskEntity {
 	private boolean endTask;
 
 	private boolean shutdownTask;
+
+	private BigDecimal versionNo;
 
 	public boolean isEndTask() {
 		return endTask;
@@ -93,6 +99,22 @@ public class TaskEntity {
 
 	public void setTriggerId(int triggerId) {
 		this.triggerId = triggerId;
+	}
+
+	public int getThreadPoolId() {
+		return threadPoolId;
+	}
+
+	public void setThreadPoolId(int threadPoolId) {
+		this.threadPoolId = threadPoolId;
+	}
+
+	public BigDecimal getVersionNo() {
+		return versionNo;
+	}
+
+	public void setVersionNo(BigDecimal versionNo) {
+		this.versionNo = versionNo;
 	}
 
 }

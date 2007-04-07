@@ -2,7 +2,7 @@ package org.seasar.chronos.trigger;
 
 import org.seasar.chronos.Serializable;
 import org.seasar.chronos.TaskTrigger;
-import org.seasar.chronos.store.trigger.TriggerStore;
+import org.seasar.chronos.store.TriggerStore;
 
 public abstract class AbstractTrigger implements TaskTrigger, Serializable {
 
