@@ -8,7 +8,6 @@ import org.seasar.chronos.TaskTrigger;
 import org.seasar.chronos.ThreadPoolType;
 import org.seasar.chronos.task.TaskExecutorService;
 import org.seasar.chronos.task.state.TaskExecuteContext;
-import org.seasar.chronos.task.state.impl.TaskExecuteContextImpl;
 import org.seasar.framework.container.annotation.tiger.Binding;
 import org.seasar.framework.container.annotation.tiger.BindingType;
 
@@ -16,10 +15,10 @@ public class TaskExecutorServiceImpl implements TaskExecutorService {
 
 	private static final long serialVersionUID = 59104659363668777L;
 
-	private TaskExecuteContext taskExecuteContext = new TaskExecuteContextImpl();
+	private TaskExecuteContext taskExecuteContext;
 
-	public TaskExecutorServiceImpl() {
-
+	public TaskExecutorServiceImpl(TaskExecuteContext taskExecuteContext) {
+		this.taskExecuteContext = taskExecuteContext;
 	}
 
 	@Binding(bindingType = BindingType.NONE)
@@ -122,11 +121,11 @@ public class TaskExecutorServiceImpl implements TaskExecutorService {
 				.setStartTask(startTask);
 	}
 
-	// @Binding(bindingType = BindingType.NONE)
-	// public void setTrigger(TaskTrigger taskTrigger) {
-	// this.taskExecuteContext.getTaskExecuteStrategy()
-	// .setTrigger(taskTrigger);
-	// }
+	@Binding(bindingType = BindingType.NONE)
+	public void setTrigger(TaskTrigger taskTrigger) {
+		this.taskExecuteContext.getTaskExecuteStrategy()
+				.setTrigger(taskTrigger);
+	}
 
 	public TaskThreadPool getThreadPool() {
 		return this.taskExecuteContext.getTaskExecuteStrategy().getThreadPool();
@@ -164,11 +163,6 @@ public class TaskExecutorServiceImpl implements TaskExecutorService {
 
 	public void save() {
 		this.taskExecuteContext.getTaskExecuteStrategy().save();
-	}
-
-	public void setTrigger(TaskTrigger taskTrigger) {
-		this.taskExecuteContext.getTaskExecuteStrategy()
-				.setTrigger(taskTrigger);
 	}
 
 }

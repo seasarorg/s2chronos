@@ -34,7 +34,7 @@ public abstract class AbstractTrigger implements TaskTrigger {
 		}
 	}
 
-	private int id;
+	private Integer id;
 
 	private String name;
 
@@ -42,7 +42,7 @@ public abstract class AbstractTrigger implements TaskTrigger {
 
 	private String description;
 
-	private boolean execute;
+	private Boolean execute;
 
 	public AbstractTrigger() {
 
@@ -56,7 +56,10 @@ public abstract class AbstractTrigger implements TaskTrigger {
 		return description;
 	}
 
-	public int getId() {
+	public Integer getId() {
+		if (this.id == null) {
+			this.id = this.hashCode();
+		}
 		return this.id;
 	}
 
@@ -68,7 +71,7 @@ public abstract class AbstractTrigger implements TaskTrigger {
 		return name;
 	}
 
-	public boolean isExecute() {
+	public Boolean isExecute() {
 		return this.execute;
 	}
 
@@ -76,11 +79,11 @@ public abstract class AbstractTrigger implements TaskTrigger {
 		this.description = description;
 	}
 
-	public void setExecute(boolean executed) {
+	public void setExecute(Boolean executed) {
 		this.execute = executed;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

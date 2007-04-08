@@ -8,7 +8,7 @@ import org.seasar.dao.annotation.tiger.Bean;
 @Bean(table = "CRON_EXPRESSION")
 public class CronExpressionEntity {
 
-	private int id;
+	private Integer id;
 
 	private Timestamp startTime;
 
@@ -22,11 +22,11 @@ public class CronExpressionEntity {
 		this.versionNo = versionNo;
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

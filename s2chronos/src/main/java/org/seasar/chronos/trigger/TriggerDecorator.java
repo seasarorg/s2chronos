@@ -10,19 +10,19 @@ public class TriggerDecorator extends AbstractTrigger {
 		this.taskTrigger = taskTrigger;
 	}
 
-	public boolean getEndTask() {
+	public Boolean getEndTask() {
 		return taskTrigger.getEndTask();
 	}
 
-	public boolean getStartTask() {
+	public Boolean getStartTask() {
 		return taskTrigger.getStartTask();
 	}
 
-	public void setEndTask(boolean endTask) {
+	public void setEndTask(Boolean endTask) {
 		taskTrigger.setEndTask(endTask);
 	}
 
-	public void setStartTask(boolean startTask) {
+	public void setStartTask(Boolean startTask) {
 		taskTrigger.setStartTask(startTask);
 	}
 

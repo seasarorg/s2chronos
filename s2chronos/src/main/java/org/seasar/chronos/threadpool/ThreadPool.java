@@ -1,23 +1,22 @@
 package org.seasar.chronos.threadpool;
 
-import org.seasar.chronos.Serializable;
 import org.seasar.chronos.TaskThreadPool;
 import org.seasar.chronos.ThreadPoolType;
 import org.seasar.chronos.store.ThreadPoolStore;
 
-public class ThreadPool implements TaskThreadPool, Serializable {
+public class ThreadPool implements TaskThreadPool {
 
 	private static final long serialVersionUID = 3092612895816238852L;
 
-	private int id;
+	private Integer id;
 
 	private ThreadPoolType threadPoolType;
 
-	private int threadPoolSize;
+	private Integer threadPoolSize;
 
 	private ThreadPoolStore threadPoolStore;
 
-	public int getThreadPoolSize() {
+	public Integer getThreadPoolSize() {
 		return threadPoolSize;
 	}
 
@@ -25,7 +24,7 @@ public class ThreadPool implements TaskThreadPool, Serializable {
 		return threadPoolType;
 	}
 
-	public void setThreadPoolSize(int threadPoolSize) {
+	public void setThreadPoolSize(Integer threadPoolSize) {
 		this.threadPoolSize = threadPoolSize;
 	}
 
@@ -42,7 +41,7 @@ public class ThreadPool implements TaskThreadPool, Serializable {
 	}
 
 	public int getId() {
-		if (id == 0) {
+		if (id == null) {
 			id = this.hashCode();
 		}
 		return id;

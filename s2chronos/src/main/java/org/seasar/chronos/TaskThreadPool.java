@@ -6,10 +6,10 @@ public interface TaskThreadPool extends Serializable {
 
 	public void setThreadPoolType(ThreadPoolType threadPoolType);
 
-	public void setThreadPoolSize(int threadPoolSize);
+	public void setThreadPoolSize(Integer threadPoolSize);
 
 	public ThreadPoolType getThreadPoolType();
 
-	public int getThreadPoolSize();
+	public Integer getThreadPoolSize();
 
 }

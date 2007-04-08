@@ -7,7 +7,7 @@ import org.seasar.dao.annotation.tiger.Bean;
 @Bean(table = "TASK")
 public class TaskEntity {
 
-	private int taskId;
+	private int id;
 
 	private int triggerId;
 
@@ -61,12 +61,12 @@ public class TaskEntity {
 		this.startTask = startTask;
 	}
 
-	public int getTaskId() {
-		return taskId;
+	public int getId() {
+		return id;
 	}
 
-	public void setTaskId(int taskId) {
-		this.taskId = taskId;
+	public void setId(int taskId) {
+		this.id = taskId;
 	}
 
 	public String getTaskName() {

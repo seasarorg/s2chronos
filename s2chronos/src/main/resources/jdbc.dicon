@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.4//EN"
 	"http://www.seasar.org/dtd/components24.dtd">
-<components namespace="chronos-jdbc">
+<components namespace="jdbc">
 	<include path="jta.dicon"/>
 	<include path="jdbc-extension.dicon"/>
 
@@ -17,8 +17,8 @@
 	</component>
 	<!--
 	<component class="org.seasar.extension.jdbc.impl.OracleResultSetFactory"/>
-	-->
 	<component class="org.seasar.extension.jdbc.impl.BooleanToIntStatementFactory"/>
+	-->
 
 	<!-- for H2 -->
 	<component name="xaDataSource"
@@ -27,11 +27,11 @@
 			"org.h2.Driver"
 		</property>
 		<property name="URL">
-			"jdbc:h2:tcp://localhost:9098/chronos"
+			"jdbc:h2:tcp://localhost:9088/chronos"
 		</property>
 		<property name="user">"sa"</property>
 		<property name="password">""</property>
-	</component>	
+	</component>
 
 	<!-- for Oracle -->
 	<!--

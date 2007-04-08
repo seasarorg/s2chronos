@@ -13,7 +13,7 @@ import org.seasar.chronos.trigger.NonDelayTrigger;
 import org.seasar.chronos.trigger.TimedTrigger;
 import org.seasar.framework.exception.SQLRuntimeException;
 
-public final class TriggerStore {
+public class TriggerStore {
 
 	private TriggerDao triggerDao;
 
@@ -63,19 +63,43 @@ public final class TriggerStore {
 		TriggerEntity triggerEntity = null;
 		if (trigger instanceof CronTrigger) {
 			triggerEntity = cronTriggerDxo.toEntity((CronTrigger) trigger);
+			triggerEntity.setExecType("CT");
 		} else if (trigger instanceof DelayTrigger) {
 			triggerEntity = delayTriggerDxo.toEntity((DelayTrigger) trigger);
+			triggerEntity.setExecType("DT");
 		} else if (trigger instanceof NonDelayTrigger) {
 			triggerEntity = nonDelayTriggerDxo
 					.toEntity((NonDelayTrigger) trigger);
+			triggerEntity.setExecType("NT");
 		} else if (trigger instanceof TimedTrigger) {
 			triggerEntity = timedTriggerDxo.toEntity((TimedTrigger) trigger);
+			triggerEntity.setExecType("TT");
 		}
 		try {
 			this.triggerDao.update(triggerEntity);
 		} catch (SQLRuntimeException ex) {
 			this.triggerDao.insert(triggerEntity);
 		}
+	}
+
+	public void setTriggerDao(TriggerDao triggerDao) {
+		this.triggerDao = triggerDao;
+	}
+
+	public void setCronTriggerDxo(CronTriggerDxo cronTriggerDxo) {
+		this.cronTriggerDxo = cronTriggerDxo;
+	}
+
+	public void setDelayTriggerDxo(DelayTriggerDxo delayTriggerDxo) {
+		this.delayTriggerDxo = delayTriggerDxo;
+	}
+
+	public void setNonDelayTriggerDxo(NonDelayTriggerDxo nonDelayTriggerDxo) {
+		this.nonDelayTriggerDxo = nonDelayTriggerDxo;
+	}
+
+	public void setTimedTriggerDxo(TimedTriggerDxo timedTriggerDxo) {
+		this.timedTriggerDxo = timedTriggerDxo;
 	}
 
 }

@@ -3,21 +3,57 @@
 	"http://www.seasar.org/dtd/components24.dtd">
 <components>
 	<include path="aop.dicon"/>
-	<include path="scheduler.dicon"/>
-	<include path="chronos-dao.dicon"/>
+	<include path="j2ee.dicon"/>
+	<include path="dao.dicon"/>
 	<include path="dxo.dicon"/>
-	
-	<component class="org.seasar.chronos.store.dao.TimedTriggerDao">
-		<aspect>chronos-dao.interceptor</aspect>
-	</component>
+
+	<include path="scheduler.dicon"/>
+
 	<component class="org.seasar.chronos.store.dxo.TimedTriggerDxo">
 		<aspect>dxo.interceptor</aspect>
 	</component>
-	
-	<component name="storeIntercepter" class="org.seasar.chronos.store.interceptor.StoreInterceptor"/>
-	<component class="org.seasar.chronos.store.TimedTriggerStore">
-		<aspect>storeIntercepter</aspect>
+
+	<component class="org.seasar.chronos.store.dxo.NonDelayTriggerDxo">
+		<aspect>dxo.interceptor</aspect>
+	</component>	
+
+	<component class="org.seasar.chronos.store.dxo.DelayTriggerDxo">
+		<aspect>dxo.interceptor</aspect>
 	</component>
+
+	<component class="org.seasar.chronos.store.dxo.CronTriggerDxo">
+		<aspect>dxo.interceptor</aspect>
+	</component>	
+
+	<component class="org.seasar.chronos.store.dxo.TaskDxo">
+		<aspect>dxo.interceptor</aspect>
+	</component>
+	
+	<component class="org.seasar.chronos.store.dxo.ThreadPoolDxo">
+		<aspect>dxo.interceptor</aspect>
+	</component>
+	
+	<component class="org.seasar.chronos.store.dao.TriggerDao">
+		<aspect>dao.interceptor</aspect>
+	</component>	
+
+	<component class="org.seasar.chronos.store.dao.TaskDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+
+	<component class="org.seasar.chronos.store.dao.ThreadPoolDao">
+		<aspect>dao.interceptor</aspect>
+	</component>
+		
+	<component name="triggerStore" class="org.seasar.chronos.store.TriggerStore">
+		<aspect pointcut="loadFromStore, saveToStore">j2ee.requiredTx</aspect>
+	</component>
+	<component name="taskStore" class="org.seasar.chronos.store.TaskStore">
+		<aspect pointcut="loadFromStore, saveToStore">j2ee.requiredTx</aspect>
+	</component>
+	<component name="threadPoolStore" class="org.seasar.chronos.store.ThreadPoolStore">
+		<aspect pointcut="loadFromStore, saveToStore">j2ee.requiredTx</aspect>
+	</component>	
 	
 	<component name="timedTrigger" class="org.seasar.chronos.trigger.TimedTrigger" instance="prototype"/>
 	<component name="nonDelayTrigger" class="org.seasar.chronos.trigger.NonDelayTrigger" instance="prototype"/>
@@ -32,19 +68,25 @@
 
 
 	
-	<component name="scheduler" class="org.seasar.chronos.impl.StoredSchedulerDecorator">
+	<component name="scheduler" class="org.seasar.chronos.store.impl.StoredSchedulerDecorator">
 		<arg>
 		<component class="org.seasar.chronos.impl.SchedulerImpl">
-		<aspect>aop.traceInterceptor</aspect>
-		<property name="scheduleExecuteShutdownHandler">scheduleExecuteShutdownHandler</property>
-		<property name="scheduleExecuteStartHandler">scheduleExecuteStartHandler</property>
-		<property name="scheduleExecuteWaitHandler">scheduleExecuteWaitHandler</property>
+			<aspect>aop.traceInterceptor</aspect>
+			<property name="scheduleExecuteShutdownHandler">scheduleExecuteShutdownHandler</property>
+			<property name="scheduleExecuteStartHandler">scheduleExecuteStartHandler</property>
+			<property name="scheduleExecuteWaitHandler">scheduleExecuteWaitHandler</property>
 		</component>
 		</arg>
 	</component>
 	
-	<component class="org.seasar.chronos.task.impl.TaskExecutorServiceImpl" instance="prototype" autoBinding="none">
-		
+	<component name="taskExecuteStrategy" class="org.seasar.chronos.store.task.strategy.impl.StoredTaskExecuteStrategyDecorator" instance="prototype" autoBinding="none">
+		<arg><component class="org.seasar.chronos.task.strategy.impl.TaskExecuteStrategyImpl" instance="prototype" autoBinding="none"/></arg>
+	</component>
+	
+	<component name="taskExecuteContext" class="org.seasar.chronos.task.state.impl.TaskExecuteContextImpl" instance="prototype"/>
+	
+	<component name="taskExecutorService" class="org.seasar.chronos.task.impl.TaskExecutorServiceImpl" instance="prototype" autoBinding="none">
+		<arg>taskExecuteContext</arg>
 	</component>
 	
 	

@@ -36,11 +36,11 @@ public class CronTrigger extends AbstractTrigger {
 		return this.expression.getCronExprssion();
 	}
 
-	public boolean getEndTask() {
+	public Boolean getEndTask() {
 		return false;
 	}
 
-	public boolean getStartTask() {
+	public Boolean getStartTask() {
 
 		long nowTime = System.currentTimeMillis();
 		boolean startTimeCheck = false;
@@ -71,16 +71,16 @@ public class CronTrigger extends AbstractTrigger {
 		this.startTimeList = this.expression.getStartTimes();
 	}
 
-	public void setEndTask(boolean endTask) {
+	public void setEndTask(Boolean endTask) {
 
 	}
 
 	@Override
-	public void setExecute(boolean executed) {
+	public void setExecute(Boolean executed) {
 		// this.expression.buildNextTime();
 	}
 
-	public void setStartTask(boolean startTask) {
+	public void setStartTask(Boolean startTask) {
 
 	}
 

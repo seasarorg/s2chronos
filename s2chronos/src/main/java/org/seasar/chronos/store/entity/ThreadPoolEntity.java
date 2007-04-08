@@ -3,39 +3,41 @@ package org.seasar.chronos.store.entity;
 import java.math.BigDecimal;
 
 import org.seasar.dao.annotation.tiger.Bean;
+import org.seasar.dao.annotation.tiger.Column;
 
 @Bean(table = "THREAD_POOL")
 public class ThreadPoolEntity {
 
-	private int threadPoolId;
+	private Integer id;
 
-	private int threadPoolSize;
+	private Integer threadPoolSize;
 
-	private int threadPoolType;
+	private Integer threadPoolType;
 
 	private BigDecimal versionNo;
 
-	public int getThreadPoolId() {
-		return threadPoolId;
+	public Integer getId() {
+		return id;
 	}
 
-	public void setThreadPoolId(int threadPoolId) {
-		this.threadPoolId = threadPoolId;
+	@Column("ID")
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
-	public int getThreadPoolSize() {
+	public Integer getThreadPoolSize() {
 		return threadPoolSize;
 	}
 
-	public void setThreadPoolSize(int threadPoolSize) {
+	public void setThreadPoolSize(Integer threadPoolSize) {
 		this.threadPoolSize = threadPoolSize;
 	}
 
-	public int getThreadPoolType() {
+	public Integer getThreadPoolType() {
 		return threadPoolType;
 	}
 
-	public void setThreadPoolType(int threadPoolType) {
+	public void setThreadPoolType(Integer threadPoolType) {
 		this.threadPoolType = threadPoolType;
 	}
 

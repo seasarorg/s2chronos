@@ -34,7 +34,7 @@ public class TimedTrigger extends AbstractTrigger {
 		return endTime;
 	}
 
-	public boolean getStartTask() {
+	public Boolean getStartTask() {
 
 		if (this.isExecute()) {
 			return false;
@@ -50,7 +50,7 @@ public class TimedTrigger extends AbstractTrigger {
 		return startTimeCheck;
 	}
 
-	public boolean getEndTask() {
+	public Boolean getEndTask() {
 
 		boolean endTimeCheck = false;
 
@@ -62,11 +62,11 @@ public class TimedTrigger extends AbstractTrigger {
 		return endTimeCheck;
 	}
 
-	public void setStartTask(boolean startTask) {
+	public void setStartTask(Boolean startTask) {
 
 	}
 
-	public void setEndTask(boolean endTask) {
+	public void setEndTask(Boolean endTask) {
 
 	}
 

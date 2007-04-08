@@ -48,10 +48,8 @@ public abstract class AbstractTaskExecuteContext implements TaskExecuteContext {
 		this.taskClass = taskClass;
 	}
 
-	protected abstract TaskExecuteStrategy createTaskExecuteStrategy();
-
-	public AbstractTaskExecuteContext() {
-		this.taskExecuteStrategy = createTaskExecuteStrategy();
+	public AbstractTaskExecuteContext(TaskExecuteStrategy taskExecuteStrategy) {
+		this.taskExecuteStrategy = taskExecuteStrategy;
 		this.taskExecuteStateInitialized = new TaskExecuteStateInitialized(
 				taskExecuteStrategy);
 		this.taskExecuteStateNonInitialized = new TaskExecuteStateNonInitialized(
@@ -76,17 +74,6 @@ public abstract class AbstractTaskExecuteContext implements TaskExecuteContext {
 	public void changeState(TaskExecuteState nextState) {
 		this.currentState = nextState;
 	}
-
-	// /*
-	// * (non-Javadoc)
-	// *
-	// * @see
-	// org.seasar.chronos.task.state.impl.TaskExecuteContext#setTaskComponentDef(org.seasar.framework.container.ComponentDef)
-	// */
-	// @Binding(bindingType = BindingType.NONE)
-	// public void setTaskComponentDef(ComponentDef taskComponentDef) {
-	// this.taskComponentDef = taskComponentDef;
-	// }
 
 	/*
 	 * (non-Javadoc)

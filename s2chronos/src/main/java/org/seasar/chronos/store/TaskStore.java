@@ -58,4 +58,8 @@ public class TaskStore {
 		this.triggerStore = triggerStore;
 	}
 
+	public void setThreadPoolStore(ThreadPoolStore threadPoolStore) {
+		this.threadPoolStore = threadPoolStore;
+	}
+
 }

@@ -8,13 +8,13 @@ import org.seasar.dao.annotation.tiger.Bean;
 @Bean(table = "TRIGGER")
 public class TriggerEntity {
 
-	private long id;
+	private Integer id;
 
 	private String name;
 
 	private String description;
 
-	private boolean executed;
+	private Boolean executed;
 
 	private String execType;
 
@@ -22,9 +22,9 @@ public class TriggerEntity {
 
 	private String cronExpression;
 
-	private Timestamp startDate;
+	private Timestamp startTime;
 
-	private Timestamp endDate;
+	private Timestamp endTime;
 
 	private BigDecimal versionNo;
 
@@ -40,15 +40,15 @@ public class TriggerEntity {
 		return description;
 	}
 
-	public Timestamp getEndDate() {
-		return endDate;
+	public Timestamp getEndTime() {
+		return endTime;
 	}
 
 	public String getExecType() {
 		return execType;
 	}
 
-	public long getId() {
+	public Integer getId() {
 		return id;
 	}
 
@@ -56,15 +56,15 @@ public class TriggerEntity {
 		return name;
 	}
 
-	public Timestamp getStartDate() {
-		return startDate;
+	public Timestamp getStartTime() {
+		return startTime;
 	}
 
 	public BigDecimal getVersionNo() {
 		return versionNo;
 	}
 
-	public boolean isExecuted() {
+	public Boolean isExecuted() {
 		return executed;
 	}
 
@@ -80,19 +80,19 @@ public class TriggerEntity {
 		this.description = description;
 	}
 
-	public void setEndDate(Timestamp endDate) {
-		this.endDate = endDate;
+	public void setEndTime(Timestamp endDate) {
+		this.endTime = endDate;
 	}
 
 	public void setExecType(String execType) {
 		this.execType = execType;
 	}
 
-	public void setExecuted(boolean executed) {
+	public void setExecuted(Boolean executed) {
 		this.executed = executed;
 	}
 
-	public void setId(long id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -100,8 +100,8 @@ public class TriggerEntity {
 		this.name = name;
 	}
 
-	public void setStartDate(Timestamp startDate) {
-		this.startDate = startDate;
+	public void setStartTime(Timestamp startDate) {
+		this.startTime = startDate;
 	}
 
 	public void setVersionNo(BigDecimal versionNo) {

@@ -2,29 +2,29 @@ package org.seasar.chronos;
 
 public interface TaskTrigger extends Serializable {
 
-	public boolean getStartTask();
+	public Boolean getStartTask();
 
-	public void setStartTask(boolean startTask);
+	public void setStartTask(Boolean startTask);
 
-	public boolean getEndTask();
+	public Boolean getEndTask();
 
-	public void setEndTask(boolean endTask);
+	public void setEndTask(Boolean endTask);
 
 	public String getDescription();
 
-	public int getId();
+	public Integer getId();
 
-	public void setId(int id);
+	public void setId(Integer id);
 
 	public Object getTask();
 
 	public String getName();
 
-	public boolean isExecute();
+	public Boolean isExecute();
 
 	public void setDescription(String description);
 
-	public void setExecute(boolean executed);
+	public void setExecute(Boolean execute);
 
 	public void setTask(Object task);
 

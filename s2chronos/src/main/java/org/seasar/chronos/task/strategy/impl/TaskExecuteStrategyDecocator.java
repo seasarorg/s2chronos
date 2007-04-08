@@ -7,6 +7,8 @@ import org.seasar.chronos.TaskThreadPool;
 import org.seasar.chronos.TaskTrigger;
 import org.seasar.chronos.ThreadPoolType;
 import org.seasar.chronos.task.strategy.TaskExecuteStrategy;
+import org.seasar.framework.container.annotation.tiger.Binding;
+import org.seasar.framework.container.annotation.tiger.BindingType;
 
 public class TaskExecuteStrategyDecocator implements TaskExecuteStrategy {
 
@@ -137,10 +139,12 @@ public class TaskExecuteStrategyDecocator implements TaskExecuteStrategy {
 		this.taskExecuteStrategy.setTaskId(taskId);
 	}
 
+	@Binding(bindingType = BindingType.NONE)
 	public void setThreadPool(TaskThreadPool taskThreadPool) {
 		this.taskExecuteStrategy.setThreadPool(taskThreadPool);
 	}
 
+	@Binding(bindingType = BindingType.NONE)
 	public void setTrigger(TaskTrigger taskTrigger) {
 		this.taskExecuteStrategy.setTrigger(taskTrigger);
 	}

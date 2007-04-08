@@ -34,4 +34,12 @@ public class ThreadPoolStore {
 		}
 	}
 
+	public void setThreadPoolDao(ThreadPoolDao threadPoolDao) {
+		this.threadPoolDao = threadPoolDao;
+	}
+
+	public void setThreadPoolDxo(ThreadPoolDxo threadPoolDxo) {
+		this.threadPoolDxo = threadPoolDxo;
+	}
+
 }
