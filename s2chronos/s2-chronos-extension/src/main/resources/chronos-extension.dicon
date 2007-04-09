@@ -59,7 +59,7 @@
 		<property name="pauseLock">scheduler</property>
 	</component>
 		
-	<component name="scheduler" class="org.seasar.chronos.extension.store.impl.StoredSchedulerDecorator">
+	<component name="scheduler" class="org.seasar.chronos.extension.store.impl.StoredSchedulerWrapperImpl">
 		<arg>
 		<component class="org.seasar.chronos.core.impl.SchedulerImpl">
 			<aspect>aop.traceInterceptor</aspect>
@@ -70,7 +70,7 @@
 		</arg>
 	</component>
 	
-	<component name="taskExecuteStrategy" class="org.seasar.chronos.extension.store.task.strategy.impl.StoredTaskExecuteStrategyDecorator" instance="prototype" autoBinding="none">
+	<component name="taskExecuteStrategy" class="org.seasar.chronos.extension.store.task.strategy.impl.StoredTaskExecuteStrategyWrapperImpl" instance="prototype" autoBinding="none">
 		<arg><component class="org.seasar.chronos.core.task.strategy.impl.TaskExecuteStrategyImpl" instance="prototype" autoBinding="none"/></arg>
 		<property name="taskStore">taskStore</property>
 	</component>
