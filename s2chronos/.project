@@ -24,5 +24,6 @@
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 		<nature>org.seasar.kijimuna.core.nature</nature>
+		<nature>org.seasar.dblauncher.nature</nature>
 	</natures>
 </projectDescription>
