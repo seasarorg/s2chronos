@@ -4,7 +4,7 @@
 <components>
 	<include path="convention.dicon"/>
 	<include path="aop.dicon"/>
-	<include path="chronos.dicon" />
+	<include path="chronos-extension.dicon" />
 	
 	<component class="org.seasar.chronos.delegate.InvokeTarget"/>
 

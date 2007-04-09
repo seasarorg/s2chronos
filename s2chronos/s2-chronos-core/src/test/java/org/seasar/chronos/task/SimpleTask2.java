@@ -1,9 +1,9 @@
 package org.seasar.chronos.task;
 
-import org.seasar.chronos.annotation.task.Task;
-import org.seasar.chronos.annotation.task.method.JoinTask;
-import org.seasar.chronos.annotation.task.method.NextTask;
-import org.seasar.chronos.annotation.type.JoinType;
+import org.seasar.chronos.core.annotation.task.Task;
+import org.seasar.chronos.core.annotation.task.method.JoinTask;
+import org.seasar.chronos.core.annotation.task.method.NextTask;
+import org.seasar.chronos.core.annotation.type.JoinType;
 import org.seasar.framework.log.Logger;
 
 @Task(name = "simple2")

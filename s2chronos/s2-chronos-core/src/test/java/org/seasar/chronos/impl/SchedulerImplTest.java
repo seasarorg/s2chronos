@@ -1,7 +1,7 @@
 package org.seasar.chronos.impl;
 
 import org.seasar.chronos.S2TestCaseBase;
-import org.seasar.chronos.Scheduler;
+import org.seasar.chronos.core.Scheduler;
 
 public class SchedulerImplTest extends S2TestCaseBase {
 

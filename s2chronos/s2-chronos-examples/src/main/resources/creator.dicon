@@ -4,6 +4,6 @@
 <components>
 	<include path="convention.dicon"/>
 	<include path="customizer.dicon"/>
-	<component class="org.seasar.chronos.creator.TaskCreator"/>
-	<component class="org.seasar.chronos.creator.TriggerCreator"/>
+	<component class="org.seasar.chronos.core.creator.TaskCreator"/>
+	<component class="org.seasar.chronos.core.creator.TriggerCreator"/>
 </components>

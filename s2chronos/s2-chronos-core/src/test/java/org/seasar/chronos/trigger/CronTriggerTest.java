@@ -10,6 +10,7 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 
 import org.seasar.chronos.S2TestCaseBase;
+import org.seasar.chronos.core.trigger.CronTrigger;
 
 public class CronTriggerTest extends S2TestCaseBase {
 

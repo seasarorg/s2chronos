@@ -3,8 +3,8 @@
 	"http://www.seasar.org/dtd/components24.dtd">
 <components>
 	<include path="convention.dicon"/>
-	<component name="taskClassAutoDetector" class="org.seasar.chronos.autodetector.TaskClassAutoDetector"/>
-	<component name="schedulerConfiguration" class="org.seasar.chronos.SchedulerConfiguration">
+	<component name="taskClassAutoDetector" class="org.seasar.chronos.core.autodetector.TaskClassAutoDetector"/>
+	<component name="schedulerConfiguration" class="org.seasar.chronos.core.SchedulerConfiguration">
 		<property name="autoFinish">false</property>
 		<property name="zeroScheduleTime">5000</property>
 	</component>
