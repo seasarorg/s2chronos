@@ -3,8 +3,8 @@ package org.seasar.chronos.extension.store.impl;
 import java.util.List;
 
 import org.seasar.chronos.core.Scheduler;
+import org.seasar.chronos.core.SchedulerWrapper;
 import org.seasar.chronos.core.SchedulerEventListener;
-import org.seasar.chronos.core.impl.SchedulerDecorator;
 import org.seasar.chronos.core.impl.TaskContena;
 import org.seasar.chronos.core.impl.TaskContenaStateManager;
 import org.seasar.chronos.core.impl.TaskStateType;
@@ -13,17 +13,17 @@ import org.seasar.chronos.core.task.TaskExecutorService;
 import org.seasar.chronos.extension.store.RecoveryTaskInfo;
 import org.seasar.chronos.extension.store.ScheduleStore;
 
-public class StoredSchedulerDecorator extends SchedulerDecorator {
+public class StoredSchedulerWrapperImpl extends SchedulerWrapper {
 
 	private static final Logger log = Logger
-			.getLogger(StoredSchedulerDecorator.class);
+			.getLogger(StoredSchedulerWrapperImpl.class);
 
 	private TaskContenaStateManager taskContenaStateManager = TaskContenaStateManager
 			.getInstance();
 
 	private ScheduleStore scheduleStore;
 
-	public StoredSchedulerDecorator(Scheduler scheduler) {
+	public StoredSchedulerWrapperImpl(Scheduler scheduler) {
 		super(scheduler);
 		this.addListener(new InternalSchedulerEventListener());
 	}

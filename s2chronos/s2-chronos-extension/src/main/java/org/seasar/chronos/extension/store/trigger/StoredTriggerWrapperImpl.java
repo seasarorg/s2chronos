@@ -1,14 +1,14 @@
 package org.seasar.chronos.extension.store.trigger;
 
 import org.seasar.chronos.core.TaskTrigger;
-import org.seasar.chronos.core.trigger.TriggerDecorator;
+import org.seasar.chronos.core.trigger.TriggerWrapper;
 import org.seasar.chronos.extension.store.TriggerStore;
 
-public class StoredTriggerDecorator extends TriggerDecorator {
+public class StoredTriggerWrapperImpl extends TriggerWrapper {
 
 	private TriggerStore triggerStore;
 
-	public StoredTriggerDecorator(TaskTrigger taskTrigger) {
+	public StoredTriggerWrapperImpl(TaskTrigger taskTrigger) {
 		super(taskTrigger);
 	}
 
