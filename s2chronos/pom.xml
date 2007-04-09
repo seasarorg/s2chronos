@@ -2,10 +2,38 @@
 <project>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.seasar.chronos</groupId>
-	<artifactId>s2chronos-project</artifactId>
+	<artifactId>s2-chronos-project</artifactId>
 	<packaging>pom</packaging>
 	<version>0.1.0-SNAPSHOT</version>
+	<name>S2Chronos Project</name>
 	<description></description>
+	<url>http://s2chronos.sandbox.seasar.org/</url>
+	<inceptionYear>2006</inceptionYear>
+	<developers>
+		<developer>
+			<id>j5ik2o</id>
+			<name>Junichi Kato</name>
+			<email>junichi_at_grandtech.jp</email>
+			<url>http://d.hatena.ne.jp/j5ik2o/</url>
+			<timezone>+9</timezone>
+		</developer>
+	</developers>
+	<licenses>
+		<license>
+			<name>The Apache Software License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+	<scm>
+		<connection>scm:svn:https://www.seasar.org/svn/sandbox/s2chronos/trunk/s2chronos/</connection>
+		<developerConnection>scm:svn:https://www.seasar.org/svn/sandbox/s2chronos/trunk/s2chronos/</developerConnection>
+		<url>http://svn.seasar.org/browse/?root=sandbox.s2chronos</url>
+	</scm>
+	<organization>
+		<name>The Seasar Foundation</name>
+		<url>http://www.seasar.org/</url>
+	</organization>
 	<build>
 		<defaultGoal>validate</defaultGoal>
 		<pluginManagement>
@@ -41,8 +69,8 @@
 		</extensions>
 	</build>
 	<modules>
-	<module>s2-chronos-core</module>
-	<module>s2-chronos-extension</module>
+		<module>s2-chronos-core</module>
+		<module>s2-chronos-extension</module>
 	</modules>
 	<repositories>
 		<repository>
