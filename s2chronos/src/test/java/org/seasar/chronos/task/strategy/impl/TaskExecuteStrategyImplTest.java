@@ -13,6 +13,10 @@ public class TaskExecuteStrategyImplTest extends S2TestCaseBase {
 
 	private int id;
 
+	public void testDeserialize() {
+
+	}
+
 	public void testSerialize() {
 		ComponentDef taskComponentDef = this.getComponentDef(SmartTask.class);
 		try {
@@ -29,9 +33,5 @@ public class TaskExecuteStrategyImplTest extends S2TestCaseBase {
 		taskExecuteStrategy.save();
 		this.id = taskExecuteStrategy.getTaskId();
 		HotdeployUtil.stop();
-	}
-
-	public void testDeserialize() {
-
 	}
 }

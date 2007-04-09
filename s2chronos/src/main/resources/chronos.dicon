@@ -81,6 +81,7 @@
 	
 	<component name="taskExecuteStrategy" class="org.seasar.chronos.store.task.strategy.impl.StoredTaskExecuteStrategyDecorator" instance="prototype" autoBinding="none">
 		<arg><component class="org.seasar.chronos.task.strategy.impl.TaskExecuteStrategyImpl" instance="prototype" autoBinding="none"/></arg>
+		<property name="taskStore">taskStore</property>
 	</component>
 	
 	<component name="taskExecuteContext" class="org.seasar.chronos.task.state.impl.TaskExecuteContextImpl" instance="prototype"/>

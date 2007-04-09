@@ -12,6 +12,6 @@
 	<component class="org.seasar.extension.dxo.builder.impl.BeanToMapDxoCommandBuilder"/>
 	<component class="org.seasar.extension.dxo.builder.impl.BeanToBeanDxoCommandBuilder"/>
 
-	<component class="org.seasar.chronos.store.dxo.converter.ThreadPoolTypeConverter"/>
-
+	<!--<component class="org.seasar.chronos.store.dxo.converter.ThreadPoolTypeConverter"/>
+	-->
 </components>
