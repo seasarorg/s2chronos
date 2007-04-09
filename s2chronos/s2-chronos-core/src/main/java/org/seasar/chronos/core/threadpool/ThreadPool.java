@@ -13,9 +13,7 @@ public class ThreadPool implements TaskThreadPool {
 
 	private Integer threadPoolSize;
 
-	// private ThreadPoolStore threadPoolStore;
-
-	public int getId() {
+	public Integer getId() {
 		if (id == null) {
 			id = this.hashCode();
 		}
@@ -31,24 +29,18 @@ public class ThreadPool implements TaskThreadPool {
 	}
 
 	public void load() {
-		// threadPoolStore.loadFromStore(this.getId(), this);
 	}
 
 	public void save() {
-		// threadPoolStore.saveToStore(this);
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
 	public void setThreadPoolSize(Integer threadPoolSize) {
 		this.threadPoolSize = threadPoolSize;
 	}
-
-	// public void setThreadPoolStore(ThreadPoolStore threadPoolStore) {
-	// this.threadPoolStore = threadPoolStore;
-	// }
 
 	public void setThreadPoolType(ThreadPoolType threadPoolType) {
 		this.threadPoolType = threadPoolType;

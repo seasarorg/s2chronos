@@ -1,14 +1,12 @@
-package org.seasar.chronos.core.impl;
+package org.seasar.chronos.core;
 
-import org.seasar.chronos.core.Scheduler;
-import org.seasar.chronos.core.SchedulerConfiguration;
-import org.seasar.chronos.core.SchedulerEventListener;
+import org.seasar.chronos.core.impl.AbstractScheduler;
 
-public abstract class SchedulerDecorator extends AbstractScheduler {
+public abstract class SchedulerWrapper extends AbstractScheduler {
 
 	private final Scheduler scheduler;
 
-	public SchedulerDecorator(Scheduler scheduler) {
+	public SchedulerWrapper(Scheduler scheduler) {
 		this.scheduler = scheduler;
 	}
 

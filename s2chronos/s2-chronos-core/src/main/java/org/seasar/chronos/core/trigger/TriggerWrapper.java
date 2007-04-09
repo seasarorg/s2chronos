@@ -2,11 +2,11 @@ package org.seasar.chronos.core.trigger;
 
 import org.seasar.chronos.core.TaskTrigger;
 
-public class TriggerDecorator extends AbstractTrigger {
+public class TriggerWrapper extends AbstractTrigger {
 
 	private TaskTrigger taskTrigger;
 
-	public TriggerDecorator(TaskTrigger taskTrigger) {
+	public TriggerWrapper(TaskTrigger taskTrigger) {
 		this.taskTrigger = taskTrigger;
 	}
 

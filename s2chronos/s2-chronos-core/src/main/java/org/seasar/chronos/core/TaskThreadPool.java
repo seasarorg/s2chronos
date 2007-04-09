@@ -1,8 +1,10 @@
 package org.seasar.chronos.core;
 
-import java.io.Serializable;
-
 public interface TaskThreadPool extends Serializable {
+
+	public void setId(Integer id);
+
+	public Integer getId();
 
 	public void setThreadPoolType(ThreadPoolType threadPoolType);
 

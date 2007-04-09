@@ -1,4 +1,4 @@
-package org.seasar.chronos.core.task.strategy.impl;
+package org.seasar.chronos.core.task.strategy;
 
 import java.util.concurrent.TimeUnit;
 
@@ -6,15 +6,14 @@ import org.seasar.chronos.core.Scheduler;
 import org.seasar.chronos.core.TaskThreadPool;
 import org.seasar.chronos.core.TaskTrigger;
 import org.seasar.chronos.core.ThreadPoolType;
-import org.seasar.chronos.core.task.strategy.TaskExecuteStrategy;
 import org.seasar.framework.container.annotation.tiger.Binding;
 import org.seasar.framework.container.annotation.tiger.BindingType;
 
-public class TaskExecuteStrategyDecocator implements TaskExecuteStrategy {
+public class TaskExecuteStrategyWrapper implements TaskExecuteStrategy {
 
 	private final TaskExecuteStrategy taskExecuteStrategy;
 
-	public TaskExecuteStrategyDecocator(TaskExecuteStrategy taskExecuteStrategy) {
+	public TaskExecuteStrategyWrapper(TaskExecuteStrategy taskExecuteStrategy) {
 		this.taskExecuteStrategy = taskExecuteStrategy;
 	}
 
