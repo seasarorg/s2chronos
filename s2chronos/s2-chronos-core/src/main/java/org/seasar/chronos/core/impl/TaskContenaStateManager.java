@@ -1,5 +1,6 @@
 package org.seasar.chronos.core.impl;
 
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -11,9 +12,24 @@ import org.seasar.chronos.core.util.TaskPropertyUtil;
 
 public class TaskContenaStateManager {
 
+	public interface TaskContenaHanlder {
+		public Object processTaskContena(TaskContena taskContena);
+	}
+
 	private static Logger log = Logger.getLogger(TaskContenaStateManager.class);
 
 	private static TaskContenaStateManager instance;
+
+	public static TaskContenaStateManager getInstance() {
+		if (instance == null) {
+			synchronized (TaskContenaStateManager.class) {
+				if (instance == null) {
+					instance = new TaskContenaStateManager();
+				}
+			}
+		}
+		return instance;
+	}
 
 	private ConcurrentHashMap<TaskStateType, CopyOnWriteArrayList<TaskContena>> taskContenaMap = new ConcurrentHashMap<TaskStateType, CopyOnWriteArrayList<TaskContena>>();
 
@@ -21,20 +37,35 @@ public class TaskContenaStateManager {
 
 	private ConcurrentHashMap<Object, TaskContena> taskContenaObjectMap = new ConcurrentHashMap<Object, TaskContena>();
 
-	public interface TaskContenaHanlder {
-		public Object processTaskContena(TaskContena taskContena);
-	}
-
 	private TaskContenaStateManager() {
 
 	}
 
-	public int size() {
-		return this.allTaskList.size();
+	public boolean addTaskContena(TaskStateType key, TaskContena taskContena) {
+		log.debug("addTaskContena : key = "
+				+ key
+				+ " value = "
+				+ TaskPropertyUtil.getTaskName(taskContena
+						.getTaskExecutorService()) + " class = "
+				+ taskContena.getClass().getName());
+		boolean result = this.getTaskContenaList(key).add(taskContena);
+		if (key == TaskStateType.SCHEDULED) {
+			result = result & this.allTaskList.addIfAbsent(taskContena);
+			// オブジェクトでput
+			result = result
+					& this.taskContenaObjectMap.putIfAbsent(taskContena
+							.getTask(), taskContena) != null;
+			// タスク名でput
+			result = result
+					& this.taskContenaObjectMap.putIfAbsent(TaskPropertyUtil
+							.getTaskName(taskContena.getTaskExecutorService()),
+							taskContena) != null;
+		}
+		return result;
 	}
 
-	public int size(TaskStateType key) {
-		return taskContenaMap.get(key).size();
+	public void allRemove(TaskStateType key) {
+		this.getTaskContenaList(key).clear();
 	}
 
 	public boolean contains(Object key) {
@@ -69,6 +100,10 @@ public class TaskContenaStateManager {
 		return null;
 	}
 
+	public TaskContena getTaskContena(Object key) {
+		return this.taskContenaObjectMap.get(key);
+	}
+
 	private CopyOnWriteArrayList<TaskContena> getTaskContenaList(
 			TaskStateType key) {
 		CopyOnWriteArrayList<TaskContena> taskContenaList = this.taskContenaMap
@@ -78,29 +113,6 @@ public class TaskContenaStateManager {
 			this.taskContenaMap.put(key, taskContenaList);
 		}
 		return taskContenaList;
-	}
-
-	public boolean addTaskContena(TaskStateType key, TaskContena taskContena) {
-		log.debug("addTaskContena : key = "
-				+ key
-				+ " value = "
-				+ TaskPropertyUtil.getTaskName(taskContena
-						.getTaskExecutorService()) + " class = "
-				+ taskContena.getClass().getName());
-		boolean result = this.getTaskContenaList(key).add(taskContena);
-		if (key == TaskStateType.SCHEDULED) {
-			result = result & this.allTaskList.addIfAbsent(taskContena);
-			// オブジェクトでput
-			result = result
-					& this.taskContenaObjectMap.putIfAbsent(taskContena
-							.getTask(), taskContena) != null;
-			// タスク名でput
-			result = result
-					& this.taskContenaObjectMap.putIfAbsent(TaskPropertyUtil
-							.getTaskName(taskContena.getTaskExecutorService()),
-							taskContena) != null;
-		}
-		return result;
 	}
 
 	public boolean removeTaskContena(TaskStateType key, TaskContena taskContena) {
@@ -117,23 +129,16 @@ public class TaskContenaStateManager {
 		return result;
 	}
 
-	public TaskContena getTaskContena(Object key) {
-		return this.taskContenaObjectMap.get(key);
+	public int size() {
+		return this.allTaskList.size();
 	}
 
-	public static TaskContenaStateManager getInstance() {
-		if (instance == null) {
-			synchronized (TaskContenaStateManager.class) {
-				if (instance == null) {
-					instance = new TaskContenaStateManager();
-				}
-			}
+	public int size(TaskStateType key) {
+		List list = taskContenaMap.get(key);
+		if (list == null) {
+			return 0;
 		}
-		return instance;
-	}
-
-	public void allRemove(TaskStateType key) {
-		this.getTaskContenaList(key).clear();
+		return list.size();
 	}
 
 }

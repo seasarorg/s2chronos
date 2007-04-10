@@ -17,6 +17,7 @@ import org.seasar.chronos.core.exception.InterruptedRuntimeException;
 import org.seasar.chronos.core.handler.ScheduleExecuteHandler;
 import org.seasar.chronos.core.util.TaskPropertyUtil;
 import org.seasar.framework.container.ComponentDef;
+import org.seasar.framework.container.ComponentNotFoundRuntimeException;
 import org.seasar.framework.container.S2Container;
 
 public class SchedulerImpl extends AbstractScheduler {
@@ -24,6 +25,8 @@ public class SchedulerImpl extends AbstractScheduler {
 	public static final int SHUTDOWN_AWAIT_TIME = 10;
 
 	public static final TimeUnit SHUTDOWN_AWAIT_TIMEUNIT = TimeUnit.MILLISECONDS;
+
+	private static final SchedulerConfiguration defaultConfiguration = new SchedulerConfiguration();
 
 	private SchedulerEventHandler schedulerEventHandler = new SchedulerEventHandler(
 			this);
@@ -39,39 +42,72 @@ public class SchedulerImpl extends AbstractScheduler {
 
 	private SchedulerConfiguration configuration = defaultConfiguration;
 
-	private static final SchedulerConfiguration defaultConfiguration = new SchedulerConfiguration();
-
 	private ScheduleExecuteHandler scheduleExecuteWaitHandler;
 
 	private ScheduleExecuteHandler scheduleExecuteStartHandler;
 
 	private ScheduleExecuteHandler scheduleExecuteShutdownHandler;
 
-	public void setScheduleExecuteShutdownHandler(
-			ScheduleExecuteHandler sheduleExecuteShutdownHandler) {
-		this.scheduleExecuteShutdownHandler = sheduleExecuteShutdownHandler;
-	}
-
-	public void setScheduleExecuteStartHandler(
-			ScheduleExecuteHandler sheduleExecuteStartHandler) {
-		this.scheduleExecuteStartHandler = sheduleExecuteStartHandler;
-	}
-
-	public void setScheduleExecuteWaitHandler(
-			ScheduleExecuteHandler sheduleExecuteWaitHandler) {
-		this.scheduleExecuteWaitHandler = sheduleExecuteWaitHandler;
-	}
+	private long finishStartTime = 0;
 
 	public boolean addListener(SchedulerEventListener listener) {
 		return schedulerEventHandler.add(listener);
 	}
 
-	public boolean removeListener(SchedulerEventListener listener) {
-		return schedulerEventHandler.remove(listener);
+	public void addTask(Class componentClass) {
+		scheduleTask(this.s2container, componentClass);
+	}
+
+	public boolean addTask(String taskName) {
+		ComponentDef componentDef = null;
+		try {
+			componentDef = this.s2container.getComponentDef(taskName);
+		} catch (ComponentNotFoundRuntimeException e) {
+			return false;
+		}
+		if (componentDef == null) {
+			componentDef = findTaskComponentDefByTaskName(taskName);
+		}
+		if (componentDef != null) {
+			scheduleTask(componentDef);
+			return true;
+		}
+		return false;
 	}
 
 	public SchedulerConfiguration getSchedulerConfiguration() {
 		return configuration;
+	}
+
+	private boolean getSchedulerFinish() {
+		// log.debug("getSchedulerFinish start");
+		if (finishStartTime != 0
+				&& taskContenaStateManager.size(TaskStateType.SCHEDULED) > 0) {
+			finishStartTime = 0;
+			log.debug(">>>>>>>>>>>>>>>>>getSchedulerFinish finish cancel!!!");
+			return false;
+		}
+		if (finishStartTime != 0
+				&& (System.currentTimeMillis() - finishStartTime) >= configuration
+						.getZeroScheduleTime()) {
+			log
+					.debug(">>>>>>>>>>>>>>>>>getSchedulerFinish finish!! return true");
+			finishStartTime = 0;
+			return true;
+		}
+		if (this.schedulerTaskFuture != null
+				&& taskContenaStateManager.size(TaskStateType.SCHEDULED) == 0
+				&& taskContenaStateManager.size(TaskStateType.RUNNING) == 0
+				&& configuration.isAutoFinish() && finishStartTime == 0) {
+			finishStartTime = System.currentTimeMillis();
+			log.debug(">>>>>>>>>>>>>>>>>getSchedulerFinish finish start");
+		}
+		// log.debug("getSchedulerFinish return false");
+		return false;
+	}
+
+	public boolean isPaused() {
+		return pause.get();
 	}
 
 	public void join() {
@@ -101,13 +137,77 @@ public class SchedulerImpl extends AbstractScheduler {
 		this.notify();
 	}
 
-	public boolean isPaused() {
-		return pause.get();
+	/**
+	 * S2コンテナ上のコンポーネントを検索し，スケジューラに登録します．
+	 * 
+	 */
+	protected void registTaskFromS2Container() {
+		final S2Container target = this.s2container.getRoot();
+		this.registChildTaskComponent(target);
+		this.registTaskFromS2ContainerOnSmartDeploy(target);
+	}
+
+	public boolean removeListener(SchedulerEventListener listener) {
+		return schedulerEventHandler.remove(listener);
+	}
+
+	public boolean removeTask(Object task) {
+		TaskContena taskContena = this.taskContenaStateManager
+				.getTaskContena(task);
+		this.taskContenaStateManager.removeTaskContena(
+				TaskStateType.UNSCHEDULED, taskContena);
+		return false;
+	}
+
+	protected TaskContena scheduleTask(ComponentDef componentDef) {
+		TaskContena tc = super.scheduleTask(componentDef);
+		this.taskContenaStateManager
+				.addTaskContena(TaskStateType.SCHEDULED, tc);
+		this.schedulerEventHandler.fireAddTask(tc.getTaskExecutorService()
+				.getTask());
+		return tc;
+	}
+
+	public void setScheduleExecuteShutdownHandler(
+			ScheduleExecuteHandler sheduleExecuteShutdownHandler) {
+		this.scheduleExecuteShutdownHandler = sheduleExecuteShutdownHandler;
+	}
+
+	public void setScheduleExecuteStartHandler(
+			ScheduleExecuteHandler sheduleExecuteStartHandler) {
+		this.scheduleExecuteStartHandler = sheduleExecuteStartHandler;
+	}
+
+	public void setScheduleExecuteWaitHandler(
+			ScheduleExecuteHandler sheduleExecuteWaitHandler) {
+		this.scheduleExecuteWaitHandler = sheduleExecuteWaitHandler;
 	}
 
 	public void setSchedulerConfiguration(
 			SchedulerConfiguration schedulerConfiguration) {
 		this.configuration = schedulerConfiguration;
+	}
+
+	private ScheduleExecuteHandler[] setupHandler() {
+		ScheduleExecuteHandler[] scheduleExecuteHandlers = new ScheduleExecuteHandler[] {
+				scheduleExecuteWaitHandler, scheduleExecuteStartHandler,
+				scheduleExecuteShutdownHandler };
+
+		this.scheduleExecuteWaitHandler
+				.setExecutorService(this.executorService);
+		this.scheduleExecuteWaitHandler.setPause(this.pause);
+
+		this.scheduleExecuteStartHandler
+				.setExecutorService(this.executorService);
+		this.scheduleExecuteStartHandler
+				.setSchedulerEventHandler(this.schedulerEventHandler);
+
+		this.scheduleExecuteShutdownHandler
+				.setExecutorService(this.executorService);
+		this.scheduleExecuteShutdownHandler
+				.setSchedulerEventHandler(this.schedulerEventHandler);
+
+		return scheduleExecuteHandlers;
 	}
 
 	public void shutdown() {
@@ -134,35 +234,6 @@ public class SchedulerImpl extends AbstractScheduler {
 		schedulerTaskFuture.cancel(true);
 	}
 
-	private long finishStartTime = 0;
-
-	private boolean getSchedulerFinish() {
-		// log.debug("getSchedulerFinish start");
-		if (finishStartTime != 0
-				&& taskContenaStateManager.size(TaskStateType.SCHEDULED) > 0) {
-			finishStartTime = 0;
-			log.debug(">>>>>>>>>>>>>>>>>getSchedulerFinish finish cancel!!!");
-			return false;
-		}
-		if (finishStartTime != 0
-				&& (System.currentTimeMillis() - finishStartTime) >= configuration
-						.getZeroScheduleTime()) {
-			log
-					.debug(">>>>>>>>>>>>>>>>>getSchedulerFinish finish!! return true");
-			finishStartTime = 0;
-			return true;
-		}
-		if (this.schedulerTaskFuture != null
-				&& taskContenaStateManager.size(TaskStateType.SCHEDULED) == 0
-				&& taskContenaStateManager.size(TaskStateType.RUNNING) == 0
-				&& configuration.isAutoFinish() && finishStartTime == 0) {
-			finishStartTime = System.currentTimeMillis();
-			log.debug(">>>>>>>>>>>>>>>>>getSchedulerFinish finish start");
-		}
-		// log.debug("getSchedulerFinish return false");
-		return false;
-	}
-
 	public void start() {
 
 		this.schedulerEventHandler.fireRegistTaskBeforeScheduler();
@@ -185,71 +256,6 @@ public class SchedulerImpl extends AbstractScheduler {
 					}
 				});
 		this.schedulerEventHandler.fireStartScheduler();
-	}
-
-	private ScheduleExecuteHandler[] setupHandler() {
-		ScheduleExecuteHandler[] scheduleExecuteHandlers = new ScheduleExecuteHandler[] {
-				scheduleExecuteWaitHandler, scheduleExecuteStartHandler,
-				scheduleExecuteShutdownHandler };
-
-		this.scheduleExecuteWaitHandler
-				.setExecutorService(this.executorService);
-		this.scheduleExecuteWaitHandler.setPause(this.pause);
-
-		this.scheduleExecuteStartHandler
-				.setExecutorService(this.executorService);
-		this.scheduleExecuteStartHandler
-				.setSchedulerEventHandler(this.schedulerEventHandler);
-
-		this.scheduleExecuteShutdownHandler
-				.setExecutorService(this.executorService);
-		this.scheduleExecuteShutdownHandler
-				.setSchedulerEventHandler(this.schedulerEventHandler);
-
-		return scheduleExecuteHandlers;
-	}
-
-	public boolean addTask(String taskName) {
-		ComponentDef componentDef = this.s2container.getComponentDef(taskName);
-		if (componentDef == null) {
-			componentDef = findTaskComponentDefByTaskName(taskName);
-		}
-		if (componentDef != null) {
-			scheduleTask(componentDef);
-			return true;
-		}
-		return false;
-	}
-
-	public void addTask(Class componentClass) {
-		scheduleTask(this.s2container, componentClass);
-	}
-
-	protected TaskContena scheduleTask(ComponentDef componentDef) {
-		TaskContena tc = super.scheduleTask(componentDef);
-		this.taskContenaStateManager
-				.addTaskContena(TaskStateType.SCHEDULED, tc);
-		this.schedulerEventHandler.fireAddTask(tc.getTaskExecutorService()
-				.getTask());
-		return tc;
-	}
-
-	/**
-	 * S2コンテナ上のコンポーネントを検索し，スケジューラに登録します．
-	 * 
-	 */
-	protected void registTaskFromS2Container() {
-		final S2Container target = this.s2container.getRoot();
-		this.registChildTaskComponent(target);
-		this.registTaskFromS2ContainerOnSmartDeploy(target);
-	}
-
-	public boolean removeTask(Object task) {
-		TaskContena taskContena = this.taskContenaStateManager
-				.getTaskContena(task);
-		this.taskContenaStateManager.removeTaskContena(
-				TaskStateType.UNSCHEDULED, taskContena);
-		return false;
 	}
 
 }

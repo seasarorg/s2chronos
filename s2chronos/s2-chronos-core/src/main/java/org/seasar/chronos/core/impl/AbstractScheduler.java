@@ -22,58 +22,10 @@ public abstract class AbstractScheduler implements Scheduler {
 
 	protected S2Container s2container;
 
-	public void setS2Container(S2Container s2container) {
-		this.s2container = s2container;
-	}
-
 	protected TaskClassAutoDetector taskClassAutoDetector;
-
-	public void setTaskClassAutoDetector(
-			TaskClassAutoDetector taskClassAutoDetector) {
-		this.taskClassAutoDetector = taskClassAutoDetector;
-	}
 
 	public AbstractScheduler() {
 		super();
-	}
-
-	protected TaskContena scheduleTask(final S2Container s2Container,
-			Class componentClass) {
-		ComponentDef componentDef = s2Container.getComponentDef(componentClass);
-		return scheduleTask(componentDef);
-	}
-
-	protected TaskContena scheduleTask(ComponentDef componentDef) {
-		return scheduleTask(componentDef, false);
-	}
-
-	protected TaskContena scheduleTask(ComponentDef componentDef, boolean force) {
-		Class<?> clazz = componentDef.getComponentClass();
-		Task task = clazz.getAnnotation(Task.class);
-		if (!task.autoSchedule() && !force) {
-			return null;
-		}
-		TaskContena tc = new TaskContena(componentDef);
-		final TaskExecutorService tes = (TaskExecutorService) this.s2container
-				.getComponent(TaskExecutorService.class);
-		tc.setTaskExecutorService(tes);
-
-		try {
-			String className = tc.getComponentDef().getComponentClass()
-					.getName();
-			Class.forName(className);
-		} catch (ClassNotFoundException e) {
-			throw new ClassNotFoundRuntimeException(e);
-		}
-		HotdeployUtil.start();
-		// ここでタスクに対してDIが実行されます
-		tes.setTask(componentDef.getComponent());
-		tes.setTaskClass(componentDef.getComponentClass());
-		tes.setGetterSignal(this);
-		tes.setScheduler(this);
-		tes.prepare();
-
-		return tc;
 	}
 
 	/**
@@ -125,6 +77,8 @@ public abstract class AbstractScheduler implements Scheduler {
 				});
 	}
 
+	protected abstract void registTaskFromS2Container();
+
 	/**
 	 * SMART Deploy上のコンポーネントを検索し，スケジューラに登録します．
 	 * 
@@ -148,5 +102,51 @@ public abstract class AbstractScheduler implements Scheduler {
 		}
 	}
 
-	protected abstract void registTaskFromS2Container();
+	protected TaskContena scheduleTask(ComponentDef componentDef) {
+		return scheduleTask(componentDef, false);
+	}
+
+	protected TaskContena scheduleTask(ComponentDef componentDef, boolean force) {
+		Class<?> clazz = componentDef.getComponentClass();
+		Task task = clazz.getAnnotation(Task.class);
+		if (!task.autoSchedule() && !force) {
+			return null;
+		}
+		TaskContena tc = new TaskContena(componentDef);
+		final TaskExecutorService tes = (TaskExecutorService) this.s2container
+				.getComponent(TaskExecutorService.class);
+		tc.setTaskExecutorService(tes);
+
+		try {
+			String className = tc.getComponentDef().getComponentClass()
+					.getName();
+			Class.forName(className);
+		} catch (ClassNotFoundException e) {
+			throw new ClassNotFoundRuntimeException(e);
+		}
+		HotdeployUtil.start();
+		// ここでタスクに対してDIが実行されます
+		tes.setTask(componentDef.getComponent());
+		tes.setTaskClass(componentDef.getComponentClass());
+		tes.setGetterSignal(this);
+		tes.setScheduler(this);
+		tes.prepare();
+		tc.setTask(tes.getTask());
+		return tc;
+	}
+
+	protected TaskContena scheduleTask(final S2Container s2Container,
+			Class componentClass) {
+		ComponentDef componentDef = s2Container.getComponentDef(componentClass);
+		return scheduleTask(componentDef);
+	}
+
+	public void setS2Container(S2Container s2container) {
+		this.s2container = s2container;
+	}
+
+	public void setTaskClassAutoDetector(
+			TaskClassAutoDetector taskClassAutoDetector) {
+		this.taskClassAutoDetector = taskClassAutoDetector;
+	}
 }

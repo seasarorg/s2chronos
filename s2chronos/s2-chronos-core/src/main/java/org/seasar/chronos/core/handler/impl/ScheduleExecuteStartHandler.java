@@ -15,34 +15,15 @@ public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler 
 
 	private String taskName;
 
-	private void taskExecute(TaskExecutorService tes, String nextTaskName)
-			throws InterruptedException {
-		if (nextTaskName != null) {
-			try {
-				tes.execute(nextTaskName);
-				tes.waitOne();
-			} catch (RejectedExecutionException ex) {
-				log.log("ECHRONOS0002", new Object[] { taskName }, ex);
-			}
-		}
-	}
-
-	private void scheduleTask(TaskExecutorService tes, String nextTaskName) {
-		if (nextTaskName != null) {
-			Scheduler scheduler = tes.getScheduler();
-			scheduler.addTask(nextTaskName);
+	private void fireEndTaskEvent(TaskExecutorService tes) {
+		if (schedulerEventHandler != null) {
+			schedulerEventHandler.fireEndTask(tes.getTask());
 		}
 	}
 
 	private void fireStartTaskEvent(TaskExecutorService tes) {
 		if (schedulerEventHandler != null) {
 			schedulerEventHandler.fireStartTask(tes.getTask());
-		}
-	}
-
-	private void fireEndTaskEvent(TaskExecutorService tes) {
-		if (schedulerEventHandler != null) {
-			schedulerEventHandler.fireEndTask(tes.getTask());
 		}
 	}
 
@@ -105,6 +86,25 @@ public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler 
 						return new Object();
 					}
 				});
+	}
+
+	private void scheduleTask(TaskExecutorService tes, String nextTaskName) {
+		if (nextTaskName != null) {
+			Scheduler scheduler = tes.getScheduler();
+			scheduler.addTask(nextTaskName);
+		}
+	}
+
+	private void taskExecute(TaskExecutorService tes, String nextTaskName)
+			throws InterruptedException {
+		if (nextTaskName != null) {
+			try {
+				tes.execute(nextTaskName);
+				tes.waitOne();
+			} catch (RejectedExecutionException ex) {
+				log.log("ECHRONOS0002", new Object[] { taskName }, ex);
+			}
+		}
 	}
 
 }
