@@ -1,16 +1,15 @@
-package org.seasar.chronos.task;
+package org.seasar.chronos.core.task;
 
 import org.seasar.chronos.core.annotation.task.Task;
-import org.seasar.chronos.core.annotation.task.method.CloneTask;
 import org.seasar.chronos.core.annotation.task.method.JoinTask;
 import org.seasar.chronos.core.annotation.task.method.NextTask;
 import org.seasar.chronos.core.annotation.type.JoinType;
 import org.seasar.framework.log.Logger;
 
-@Task(name = "example")
-public class SimpleTask {
+@Task(name = "simple2")
+public class SimpleTask2 {
 
-	private static Logger log = Logger.getLogger(SimpleTask.class);
+	private static Logger log = Logger.getLogger(SimpleTask2.class);
 
 	private boolean startTask = true;
 
@@ -22,8 +21,7 @@ public class SimpleTask {
 	// タスクが実行されるときに最初に呼ばれる
 	@NextTask("taskA")
 	public synchronized void initialize() {
-		log
-				.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>SimpleTask::initialize");
+		log.info("SimpleTask2::initialize");
 	}
 
 	// タスクメソッドA 本体
@@ -31,29 +29,28 @@ public class SimpleTask {
 	@NextTask("taskB")
 	@JoinTask(JoinType.NoWait)
 	public synchronized void doTaskA() {
-		log.info("SimpleTask::doTaskA");
+		log.info("SimpleTask2::doTaskA");
 	}
 
 	// タスクメソッドB 本体
 	// 同期で実行し遷移先を動的に指定する
 	@JoinTask(JoinType.Wait)
 	public synchronized String doTaskB() {
-		log.info("SimpleTask::doTaskB");
+		log.info("SimpleTask2::doTaskB");
 		return "taskC";
 	}
 
 	// タスクメソッドC 本体
 	// 非同期に100個タスクメソッドを生成して実行
 	@JoinTask(JoinType.NoWait)
-	@CloneTask(10)
 	public synchronized void doTaskC() {
-		log.info("<<SimpleTask::doTaskC");
+		log.info("SimpleTask2::doTaskC");
 	}
 
 	// すべてのタスクが終了したら呼ばれる
 	// @NextTask("example")
 	public synchronized void destroy() {
-		log.info("SimpleTask::destroy");
+		log.info("SimpleTask2::destroy");
 	}
 
 }

@@ -1,4 +1,4 @@
-package org.seasar.chronos.delegate;
+package org.seasar.chronos.core.delegate;
 
 import org.seasar.framework.log.Logger;
 

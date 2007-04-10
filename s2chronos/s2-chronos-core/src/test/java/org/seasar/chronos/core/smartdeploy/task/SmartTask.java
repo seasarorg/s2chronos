@@ -1,4 +1,4 @@
-package org.seasar.chronos.smartdeploy.task;
+package org.seasar.chronos.core.smartdeploy.task;
 
 import org.seasar.chronos.core.TaskTrigger;
 import org.seasar.chronos.core.annotation.task.Task;

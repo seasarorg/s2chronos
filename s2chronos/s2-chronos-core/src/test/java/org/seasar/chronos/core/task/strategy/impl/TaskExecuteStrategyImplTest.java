@@ -1,8 +1,8 @@
-package org.seasar.chronos.task.strategy.impl;
+package org.seasar.chronos.core.task.strategy.impl;
 
-import org.seasar.chronos.S2TestCaseBase;
+import org.seasar.chronos.core.S2TestCaseBase;
+import org.seasar.chronos.core.smartdeploy.task.SmartTask;
 import org.seasar.chronos.core.task.strategy.TaskExecuteStrategy;
-import org.seasar.chronos.smartdeploy.task.SmartTask;
 import org.seasar.framework.container.ComponentDef;
 import org.seasar.framework.container.hotdeploy.HotdeployUtil;
 import org.seasar.framework.exception.ClassNotFoundRuntimeException;

@@ -1,6 +1,6 @@
-package org.seasar.chronos.trigger;
+package org.seasar.chronos.core.trigger;
 
-import org.seasar.chronos.S2TestCaseBase;
+import org.seasar.chronos.core.S2TestCaseBase;
 import org.seasar.chronos.core.trigger.TimedTrigger;
 
 public class TimedTriggerTest extends S2TestCaseBase {

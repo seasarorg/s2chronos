@@ -1,4 +1,4 @@
-package org.seasar.chronos.trigger;
+package org.seasar.chronos.core.trigger;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -9,7 +9,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 
-import org.seasar.chronos.S2TestCaseBase;
+import org.seasar.chronos.core.S2TestCaseBase;
 import org.seasar.chronos.core.trigger.CronTrigger;
 
 public class CronTriggerTest extends S2TestCaseBase {
