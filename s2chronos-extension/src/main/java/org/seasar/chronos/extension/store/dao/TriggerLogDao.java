@@ -3,6 +3,7 @@ package org.seasar.chronos.extension.store.dao;
 import java.util.List;
 
 import org.seasar.chronos.extension.store.entity.TriggerLogEntity;
+import org.seasar.dao.annotation.tiger.Arguments;
 
 public interface TriggerLogDao {
 
@@ -12,7 +13,11 @@ public interface TriggerLogDao {
 
 	public int delete(TriggerLogEntity entity);
 
-	public TriggerLogEntity selectById(int id);
+	@Arguments("ID")
+	public TriggerLogEntity selectById(Long id);
+
+	@Arguments("TRIGGER_CODE")
+	public List<TriggerLogEntity> selectByTriggerCode(Integer triggerCode);
 
 	public List<TriggerLogEntity> selectAll();
 

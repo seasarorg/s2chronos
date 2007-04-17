@@ -8,7 +8,9 @@ import org.seasar.dao.annotation.tiger.Bean;
 @Bean(table = "CRON_EXPRESSION")
 public class CronExpressionEntity {
 
-	private Integer id;
+	private Long id;
+
+	private Integer cronExpressionCode;
 
 	private Timestamp startTime;
 
@@ -22,11 +24,11 @@ public class CronExpressionEntity {
 		this.versionNo = versionNo;
 	}
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -36,6 +38,14 @@ public class CronExpressionEntity {
 
 	public void setStartTime(Timestamp startTime) {
 		this.startTime = startTime;
+	}
+
+	public Integer getCronExpressionCode() {
+		return cronExpressionCode;
+	}
+
+	public void setCronExpressionCode(Integer cronExpressionCode) {
+		this.cronExpressionCode = cronExpressionCode;
 	}
 
 }

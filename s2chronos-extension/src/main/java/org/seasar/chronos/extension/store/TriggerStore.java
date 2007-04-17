@@ -25,7 +25,7 @@ public class TriggerStore {
 
 	private TimedTriggerDxo timedTriggerDxo;
 
-	public TaskTrigger loadFromStore(int id) {
+	public TaskTrigger loadFromStore(Long id) {
 		TriggerEntity triggerEntity = triggerDao.selectById(id);
 		if (triggerEntity == null) {
 			return null;
@@ -42,7 +42,7 @@ public class TriggerStore {
 		return null;
 	}
 
-	public void loadFromStore(int id, TaskTrigger trigger) {
+	public void loadFromStore(Long id, TaskTrigger trigger) {
 		TriggerEntity triggerEntity = triggerDao.selectById(id);
 		if ("CT".equals(triggerEntity.getExecType())) {
 			cronTriggerDxo.fromEntityFromComponent(triggerEntity,

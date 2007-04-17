@@ -4,9 +4,11 @@ import java.util.List;
 
 import org.seasar.chronos.core.task.TaskProperties;
 import org.seasar.chronos.extension.store.entity.TaskEntity;
+import org.seasar.extension.dxo.annotation.ConversionRule;
 
 public interface TaskDxo {
 
+	@ConversionRule("taskCode : taskId")
 	public TaskEntity toEntity(TaskProperties component);
 
 	public TaskProperties toComponent(TaskEntity entity);

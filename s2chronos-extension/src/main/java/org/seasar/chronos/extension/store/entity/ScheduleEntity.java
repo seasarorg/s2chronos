@@ -8,7 +8,9 @@ import org.seasar.dao.annotation.tiger.Bean;
 @Bean(table = "SCHEDULE")
 public class ScheduleEntity {
 
-	private Integer id;
+	private Long id;
+
+	private Integer schedulerCode;
 
 	private String taskName;
 
@@ -44,11 +46,11 @@ public class ScheduleEntity {
 		this.description = description;
 	}
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -86,6 +88,14 @@ public class ScheduleEntity {
 
 	public void setTaskName(String taskName) {
 		this.taskName = taskName;
+	}
+
+	public Integer getSchedulerCode() {
+		return schedulerCode;
+	}
+
+	public void setSchedulerCode(Integer schedulerCode) {
+		this.schedulerCode = schedulerCode;
 	}
 
 }

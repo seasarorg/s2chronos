@@ -13,7 +13,7 @@ public class StoredTriggerWrapperImpl extends TriggerWrapper {
 	}
 
 	public void load() {
-		triggerStore.loadFromStore(this.getId(), this);
+		// triggerStore.loadFromStore(this.getId(), this);
 	}
 
 	public void save() {

@@ -16,7 +16,7 @@ public class StoredThreadPoolWrapperImpl extends ThreadPoolWrapper {
 
 	@Override
 	public void load() {
-		threadPoolStore.loadFromStore(this.getId(), this);
+		// threadPoolStore.loadFromStore(this.getId(), this);
 	}
 
 	@Override

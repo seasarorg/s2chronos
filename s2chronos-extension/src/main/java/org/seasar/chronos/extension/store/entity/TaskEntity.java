@@ -2,21 +2,23 @@ package org.seasar.chronos.extension.store.entity;
 
 import java.math.BigDecimal;
 
+import org.seasar.dao.annotation.tiger.Arguments;
 import org.seasar.dao.annotation.tiger.Bean;
-import org.seasar.dao.annotation.tiger.Column;
 
 @Bean(table = "TASK")
 public class TaskEntity {
 
-	private int taskId;
+	private Long id;
 
-	private int triggerId;
+	private Integer taskCode;
+
+	private Long triggerId;
 
 	private String taskName;
 
 	private boolean execute;
 
-	private Integer threadPoolId;
+	private Long threadPoolId;
 
 	private int threadPoolSize;
 
@@ -30,15 +32,15 @@ public class TaskEntity {
 
 	private BigDecimal versionNo;
 
-	public int getTaskId() {
-		return taskId;
+	public Integer getTaskCode() {
+		return taskCode;
 	}
 
 	public String getTaskName() {
 		return taskName;
 	}
 
-	public int getThreadPoolId() {
+	public Long getThreadPoolId() {
 		return threadPoolId;
 	}
 
@@ -50,7 +52,7 @@ public class TaskEntity {
 		return threadPoolType;
 	}
 
-	public Integer getTriggerId() {
+	public Long getTriggerId() {
 		return triggerId;
 	}
 
@@ -90,16 +92,16 @@ public class TaskEntity {
 		this.startTask = startTask;
 	}
 
-	@Column("ID")
-	public void setTaskId(int taskId) {
-		this.taskId = taskId;
+	@Arguments("TASK_CODE")
+	public void setTaskCode(Integer taskCode) {
+		this.taskCode = taskCode;
 	}
 
 	public void setTaskName(String taskName) {
 		this.taskName = taskName;
 	}
 
-	public void setThreadPoolId(Integer threadPoolId) {
+	public void setThreadPoolId(Long threadPoolId) {
 		this.threadPoolId = threadPoolId;
 	}
 
@@ -111,12 +113,20 @@ public class TaskEntity {
 		this.threadPoolType = threadPoolType;
 	}
 
-	public void setTriggerId(int triggerId) {
+	public void setTriggerId(Long triggerId) {
 		this.triggerId = triggerId;
 	}
 
 	public void setVersionNo(BigDecimal versionNo) {
 		this.versionNo = versionNo;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long taskId) {
+		this.id = taskId;
 	}
 
 }

@@ -44,13 +44,13 @@
 	</component>
 		
 	<component name="triggerStore" class="org.seasar.chronos.extension.store.TriggerStore">
-		
+		<aspect>j2ee.requiredTx</aspect>
 	</component>
 	<component name="taskStore" class="org.seasar.chronos.extension.store.TaskStore">
-		
+		<aspect>j2ee.requiredTx</aspect>
 	</component>
 	<component name="threadPoolStore" class="org.seasar.chronos.extension.store.ThreadPoolStore">
-		
+		<aspect>j2ee.requiredTx</aspect>
 	</component>
 
 	<component name="scheduleExecuteShutdownHandler" class="org.seasar.chronos.core.handler.impl.ScheduleExecuteShutdownHandler" />

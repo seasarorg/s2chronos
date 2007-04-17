@@ -18,12 +18,13 @@ public class TaskStore {
 
 	private ThreadPoolStore threadPoolStore;
 
-	public void loadFromStore(int id, TaskProperties task) {
-		TaskEntity entity = this.taskDao.selectById(id);
+	public void loadFromStore(Integer code, TaskProperties task) {
+		TaskEntity entity = this.taskDao.selectByTaskCodeNewest(code);
 		TaskTrigger taskTrigger = triggerStore.loadFromStore(entity
 				.getTriggerId());
 		task.setTrigger(taskTrigger);
-		TaskThreadPool taskThreadPool = this.threadPoolStore.loadFromStore(id);
+		TaskThreadPool taskThreadPool = this.threadPoolStore
+				.loadFromStore(code);
 		task.setThreadPool(taskThreadPool);
 		this.taskDxo.fromEntityFromComponent(entity, task);
 	}

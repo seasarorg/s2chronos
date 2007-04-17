@@ -8,7 +8,9 @@ import org.seasar.dao.annotation.tiger.Bean;
 @Bean(table = "TRIGGER")
 public class TriggerEntity {
 
-	private Integer id;
+	private Long id;
+
+	private Integer triggerCode;
 
 	private String name;
 
@@ -48,7 +50,7 @@ public class TriggerEntity {
 		return execType;
 	}
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
@@ -92,7 +94,7 @@ public class TriggerEntity {
 		this.executed = executed;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -106,6 +108,14 @@ public class TriggerEntity {
 
 	public void setVersionNo(BigDecimal versionNo) {
 		this.versionNo = versionNo;
+	}
+
+	public Integer getTriggerCode() {
+		return triggerCode;
+	}
+
+	public void setTriggerCode(Integer triggerCode) {
+		this.triggerCode = triggerCode;
 	}
 
 }

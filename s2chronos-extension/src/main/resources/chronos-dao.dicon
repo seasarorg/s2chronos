@@ -17,5 +17,6 @@
 	<component 
 		name="stringClobType" 
 		class="org.seasar.extension.jdbc.types.StringClobType"/>
-					
+				
+				
 </components>

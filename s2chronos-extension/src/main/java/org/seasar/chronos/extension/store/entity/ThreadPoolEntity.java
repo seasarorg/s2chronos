@@ -8,7 +8,9 @@ import org.seasar.dao.annotation.tiger.Column;
 @Bean(table = "THREAD_POOL")
 public class ThreadPoolEntity {
 
-	private Integer id;
+	private Long id;
+
+	private Integer threadPoolCode;
 
 	private Integer threadPoolSize;
 
@@ -16,12 +18,12 @@ public class ThreadPoolEntity {
 
 	private BigDecimal versionNo;
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
 	@Column("ID")
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -47,5 +49,13 @@ public class ThreadPoolEntity {
 
 	public void setVersionNo(BigDecimal versionNo) {
 		this.versionNo = versionNo;
+	}
+
+	public Integer getThreadPoolCode() {
+		return threadPoolCode;
+	}
+
+	public void setThreadPoolCode(Integer threadPoolCode) {
+		this.threadPoolCode = threadPoolCode;
 	}
 }

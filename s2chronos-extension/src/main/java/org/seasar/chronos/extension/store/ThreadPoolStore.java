@@ -12,7 +12,16 @@ public class ThreadPoolStore {
 
 	private ThreadPoolDxo threadPoolDxo;
 
-	public TaskThreadPool loadFromStore(int id) {
+	public TaskThreadPool loadFromStore(Integer code) {
+		ThreadPoolEntity entity = threadPoolDao
+				.selectByThreadPoolCodeNewest(code);
+		if (entity == null) {
+			return null;
+		}
+		return this.threadPoolDxo.toComponent(entity);
+	}
+
+	public TaskThreadPool loadFromStore(Long id) {
 		ThreadPoolEntity entity = threadPoolDao.selectById(id);
 		if (entity == null) {
 			return null;
@@ -20,7 +29,7 @@ public class ThreadPoolStore {
 		return this.threadPoolDxo.toComponent(entity);
 	}
 
-	public void loadFromStore(int id, TaskThreadPool threadPool) {
+	public void loadFromStore(Long id, TaskThreadPool threadPool) {
 		ThreadPoolEntity entity = threadPoolDao.selectById(id);
 		this.threadPoolDxo.fromEntityFromComponent(entity, threadPool);
 	}
