@@ -3,8 +3,8 @@
 	"http://www.seasar.org/dtd/components24.dtd">
 <components>
 	<include path="chronos-base.dicon"/>
-	<include path="j2ee.dicon"/>
-	<include path="dao.dicon"/>
+	<include path="chronos-j2ee.dicon"/>
+	<include path="chronos-dao.dicon"/>
 	<include path="dxo.dicon"/>
 	
 	<component class="org.seasar.chronos.extension.store.dxo.TimedTriggerDxo">
@@ -44,13 +44,13 @@
 	</component>
 		
 	<component name="triggerStore" class="org.seasar.chronos.extension.store.TriggerStore">
-		<aspect pointcut="loadFromStore, saveToStore">j2ee.requiredTx</aspect>
+		
 	</component>
 	<component name="taskStore" class="org.seasar.chronos.extension.store.TaskStore">
-		<aspect pointcut="loadFromStore, saveToStore">j2ee.requiredTx</aspect>
+		
 	</component>
 	<component name="threadPoolStore" class="org.seasar.chronos.extension.store.ThreadPoolStore">
-		<aspect pointcut="loadFromStore, saveToStore">j2ee.requiredTx</aspect>
+		
 	</component>
 
 	<component name="scheduleExecuteShutdownHandler" class="org.seasar.chronos.core.handler.impl.ScheduleExecuteShutdownHandler" />
@@ -73,6 +73,10 @@
 	<component name="taskExecuteStrategy" class="org.seasar.chronos.extension.store.task.strategy.impl.StoredTaskExecuteStrategyWrapperImpl" instance="prototype" autoBinding="none">
 		<arg><component class="org.seasar.chronos.core.task.strategy.impl.TaskExecuteStrategyImpl" instance="prototype" autoBinding="none"/></arg>
 		<property name="taskStore">taskStore</property>
+	</component>
+	<component name="taskExecuteContext" class="org.seasar.chronos.core.task.state.impl.TaskExecuteContextImpl" instance="prototype"/>
+	<component name="taskExecutorService" class="org.seasar.chronos.core.task.impl.TaskExecutorServiceImpl" instance="prototype" autoBinding="none">
+		<arg>taskExecuteContext</arg>
 	</component>
 		
 </components>

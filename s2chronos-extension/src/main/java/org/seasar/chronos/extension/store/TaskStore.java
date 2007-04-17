@@ -33,10 +33,13 @@ public class TaskStore {
 		TaskTrigger taskTrigger = task.getTrigger();
 		TaskThreadPool taskThreadPool = task.getThreadPool();
 		// ‚È‚¯‚ê‚ÎDB‚É•Û‘¶
-		if (null == triggerStore.loadFromStore(entity.getTriggerId())) {
+		if (taskTrigger != null
+				&& null == triggerStore.loadFromStore(entity.getTriggerId())) {
 			triggerStore.saveToStore(taskTrigger);
 		}
-		if (null == threadPoolStore.loadFromStore(entity.getThreadPoolId())) {
+		if (taskThreadPool != null
+				&& null == threadPoolStore.loadFromStore(entity
+						.getThreadPoolId())) {
 			threadPoolStore.saveToStore(taskThreadPool);
 		}
 		try {
@@ -54,12 +57,12 @@ public class TaskStore {
 		this.taskDxo = taskDxo;
 	}
 
-	public void setTriggerStore(TriggerStore triggerStore) {
-		this.triggerStore = triggerStore;
-	}
-
 	public void setThreadPoolStore(ThreadPoolStore threadPoolStore) {
 		this.threadPoolStore = threadPoolStore;
+	}
+
+	public void setTriggerStore(TriggerStore triggerStore) {
+		this.triggerStore = triggerStore;
 	}
 
 }

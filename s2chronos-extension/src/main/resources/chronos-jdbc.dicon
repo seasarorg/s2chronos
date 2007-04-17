@@ -27,7 +27,7 @@
 			"org.h2.Driver"
 		</property>
 		<property name="URL">
-			"jdbc:h2:tcp://localhost:9088/chronos"
+			"jdbc:h2:tcp://localhost:9094/chronos"
 		</property>
 		<property name="user">"sa"</property>
 		<property name="password">""</property>
