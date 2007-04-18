@@ -3,7 +3,8 @@ package org.seasar.chronos.extension.store.entity;
 import java.math.BigDecimal;
 
 import org.seasar.dao.annotation.tiger.Bean;
-import org.seasar.dao.annotation.tiger.Column;
+import org.seasar.dao.annotation.tiger.Id;
+import org.seasar.dao.annotation.tiger.IdType;
 
 @Bean(table = "THREAD_POOL")
 public class ThreadPoolEntity {
@@ -22,40 +23,40 @@ public class ThreadPoolEntity {
 		return id;
 	}
 
-	@Column("ID")
-	public void setId(Long id) {
-		this.id = id;
+	public Integer getThreadPoolCode() {
+		return threadPoolCode;
 	}
 
 	public Integer getThreadPoolSize() {
 		return threadPoolSize;
 	}
 
-	public void setThreadPoolSize(Integer threadPoolSize) {
-		this.threadPoolSize = threadPoolSize;
-	}
-
 	public Integer getThreadPoolType() {
 		return threadPoolType;
-	}
-
-	public void setThreadPoolType(Integer threadPoolType) {
-		this.threadPoolType = threadPoolType;
 	}
 
 	public BigDecimal getVersionNo() {
 		return versionNo;
 	}
 
-	public void setVersionNo(BigDecimal versionNo) {
-		this.versionNo = versionNo;
-	}
-
-	public Integer getThreadPoolCode() {
-		return threadPoolCode;
+	@Id(value = IdType.SEQUENCE, sequenceName = "THREAD_POOL_ID_SEQ")
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public void setThreadPoolCode(Integer threadPoolCode) {
 		this.threadPoolCode = threadPoolCode;
+	}
+
+	public void setThreadPoolSize(Integer threadPoolSize) {
+		this.threadPoolSize = threadPoolSize;
+	}
+
+	public void setThreadPoolType(Integer threadPoolType) {
+		this.threadPoolType = threadPoolType;
+	}
+
+	public void setVersionNo(BigDecimal versionNo) {
+		this.versionNo = versionNo;
 	}
 }

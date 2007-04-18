@@ -7,7 +7,7 @@ import org.seasar.chronos.core.task.TaskExecutorService;
 public class TaskStoreTest extends S2TestCaseBase {
 
 	@Task
-	public class TestTask {
+	private class TestTask {
 		public String initialize() {
 			System.out.println("Task#initialize");
 			return null;
@@ -28,7 +28,9 @@ public class TaskStoreTest extends S2TestCaseBase {
 	}
 
 	public void testLoadFromStore() {
-
+		Long id = taskStore.saveToStore(taskExecutorService);
+		assertNotNull(id);
+		taskStore.loadFromStore(id, taskExecutorService);
 	}
 
 	public void testSaveToStore() {

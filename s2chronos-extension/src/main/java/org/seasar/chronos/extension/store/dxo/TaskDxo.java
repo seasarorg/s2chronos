@@ -8,25 +8,26 @@ import org.seasar.extension.dxo.annotation.ConversionRule;
 
 public interface TaskDxo {
 
-	@ConversionRule("taskCode : taskId")
-	public TaskEntity toEntity(TaskProperties component);
-
-	public TaskProperties toComponent(TaskEntity entity);
+	public void fromComponentsToEntities(List<TaskProperties> components,
+			List<TaskEntity> entities);
 
 	public void fromComponentToEntity(TaskProperties component,
 			TaskEntity entity);
 
+	public void fromEntitiesToComponents(List<TaskEntity> entities,
+			List<TaskProperties> components);
+
 	public void fromEntityFromComponent(TaskEntity entity,
 			TaskProperties component);
 
-	public List<TaskEntity> toEntities(List<TaskProperties> components);
+	@ConversionRule("taskId : taskCode")
+	public TaskProperties toComponent(TaskEntity entity);
 
 	public List<TaskProperties> toComponents(List<TaskEntity> entity);
 
-	public void fromComponentsToEntities(List<TaskProperties> components,
-			List<TaskEntity> entities);
+	public List<TaskEntity> toEntities(List<TaskProperties> components);
 
-	public void fromEntitiesToComponents(List<TaskEntity> entities,
-			List<TaskProperties> components);
+	@ConversionRule("taskCode : taskId")
+	public TaskEntity toEntity(TaskProperties component);
 
 }

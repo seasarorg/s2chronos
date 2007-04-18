@@ -8,7 +8,7 @@ import org.seasar.chronos.extension.store.dxo.TaskDxo;
 import org.seasar.chronos.extension.store.entity.TaskEntity;
 import org.seasar.framework.exception.SQLRuntimeException;
 
-public class TaskStore {
+public class TaskStoreImpl implements TaskStore{
 
 	private TaskDao taskDao;
 
@@ -20,16 +20,33 @@ public class TaskStore {
 
 	public void loadFromStore(Integer code, TaskProperties task) {
 		TaskEntity entity = this.taskDao.selectByTaskCodeNewest(code);
+		if (entity == null) {
+			return;
+		}
 		TaskTrigger taskTrigger = triggerStore.loadFromStore(entity
 				.getTriggerId());
 		task.setTrigger(taskTrigger);
 		TaskThreadPool taskThreadPool = this.threadPoolStore
-				.loadFromStore(code);
+				.loadFromStore(taskTrigger.getId());
 		task.setThreadPool(taskThreadPool);
 		this.taskDxo.fromEntityFromComponent(entity, task);
 	}
 
-	public void saveToStore(TaskProperties task) {
+	public void loadFromStore(Long id, TaskProperties task) {
+		TaskEntity entity = this.taskDao.selectById(id);
+		if (entity == null) {
+			return;
+		}
+		TaskTrigger taskTrigger = triggerStore.loadFromStore(entity
+				.getTriggerId());
+		task.setTrigger(taskTrigger);
+		TaskThreadPool taskThreadPool = this.threadPoolStore
+				.loadFromStore(taskTrigger.getId());
+		task.setThreadPool(taskThreadPool);
+		this.taskDxo.fromEntityFromComponent(entity, task);
+	}
+
+	public Long saveToStore(TaskProperties task) {
 		TaskEntity entity = this.taskDxo.toEntity(task);
 		TaskTrigger taskTrigger = task.getTrigger();
 		TaskThreadPool taskThreadPool = task.getThreadPool();
@@ -48,6 +65,7 @@ public class TaskStore {
 		} catch (SQLRuntimeException ex) {
 			this.taskDao.insert(entity);
 		}
+		return entity.getId();
 	}
 
 	public void setTaskDao(TaskDao taskDao) {

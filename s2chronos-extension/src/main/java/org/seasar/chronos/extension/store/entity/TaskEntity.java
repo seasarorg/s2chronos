@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 
 import org.seasar.dao.annotation.tiger.Arguments;
 import org.seasar.dao.annotation.tiger.Bean;
+import org.seasar.dao.annotation.tiger.Id;
+import org.seasar.dao.annotation.tiger.IdType;
 
 @Bean(table = "TASK")
 public class TaskEntity {
@@ -31,6 +33,10 @@ public class TaskEntity {
 	private boolean shutdownTask;
 
 	private BigDecimal versionNo;
+
+	public Long getId() {
+		return id;
+	}
 
 	public Integer getTaskCode() {
 		return taskCode;
@@ -84,6 +90,11 @@ public class TaskEntity {
 		this.execute = execute;
 	}
 
+	@Id(value = IdType.SEQUENCE, sequenceName = "TASK_ID_SEQ")
+	public void setId(Long id) {
+		this.id = id;
+	}
+
 	public void setShutdownTask(boolean shutdownTask) {
 		this.shutdownTask = shutdownTask;
 	}
@@ -119,14 +130,6 @@ public class TaskEntity {
 
 	public void setVersionNo(BigDecimal versionNo) {
 		this.versionNo = versionNo;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long taskId) {
-		this.id = taskId;
 	}
 
 }

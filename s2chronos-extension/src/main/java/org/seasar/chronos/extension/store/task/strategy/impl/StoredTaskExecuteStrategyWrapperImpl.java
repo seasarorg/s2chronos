@@ -2,12 +2,12 @@ package org.seasar.chronos.extension.store.task.strategy.impl;
 
 import org.seasar.chronos.core.task.strategy.TaskExecuteStrategy;
 import org.seasar.chronos.core.task.strategy.TaskExecuteStrategyWrapper;
-import org.seasar.chronos.extension.store.TaskStore;
+import org.seasar.chronos.extension.store.TaskStoreImpl;
 
 public class StoredTaskExecuteStrategyWrapperImpl extends
 		TaskExecuteStrategyWrapper {
 
-	private TaskStore taskStore;
+	private TaskStoreImpl taskStore;
 
 	public StoredTaskExecuteStrategyWrapperImpl(
 			TaskExecuteStrategy taskExecuteStrategy) {
@@ -24,7 +24,7 @@ public class StoredTaskExecuteStrategyWrapperImpl extends
 		this.taskStore.saveToStore(this);
 	}
 
-	public void setTaskStore(TaskStore taskStore) {
+	public void setTaskStore(TaskStoreImpl taskStore) {
 		this.taskStore = taskStore;
 	}
 

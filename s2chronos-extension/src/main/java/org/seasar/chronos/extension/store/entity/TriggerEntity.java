@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 import org.seasar.dao.annotation.tiger.Bean;
+import org.seasar.dao.annotation.tiger.Id;
+import org.seasar.dao.annotation.tiger.IdType;
 
 @Bean(table = "TRIGGER")
 public class TriggerEntity {
@@ -62,6 +64,10 @@ public class TriggerEntity {
 		return startTime;
 	}
 
+	public Integer getTriggerCode() {
+		return triggerCode;
+	}
+
 	public BigDecimal getVersionNo() {
 		return versionNo;
 	}
@@ -94,6 +100,7 @@ public class TriggerEntity {
 		this.executed = executed;
 	}
 
+	@Id(value = IdType.SEQUENCE, sequenceName = "TRIGGER_ID_SEQ")
 	public void setId(Long id) {
 		this.id = id;
 	}
@@ -106,16 +113,12 @@ public class TriggerEntity {
 		this.startTime = startDate;
 	}
 
-	public void setVersionNo(BigDecimal versionNo) {
-		this.versionNo = versionNo;
-	}
-
-	public Integer getTriggerCode() {
-		return triggerCode;
-	}
-
 	public void setTriggerCode(Integer triggerCode) {
 		this.triggerCode = triggerCode;
+	}
+
+	public void setVersionNo(BigDecimal versionNo) {
+		this.versionNo = versionNo;
 	}
 
 }

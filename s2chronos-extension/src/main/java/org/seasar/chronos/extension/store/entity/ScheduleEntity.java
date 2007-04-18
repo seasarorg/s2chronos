@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 import org.seasar.dao.annotation.tiger.Bean;
+import org.seasar.dao.annotation.tiger.Id;
+import org.seasar.dao.annotation.tiger.IdType;
 
 @Bean(table = "SCHEDULE")
 public class ScheduleEntity {
@@ -26,76 +28,77 @@ public class ScheduleEntity {
 
 	private BigDecimal versionNo;
 
-	public String getTaskName() {
-		return taskName;
-	}
-
 	public Timestamp getCreateDate() {
 		return createDate;
-	}
-
-	public void setCreateDate(Timestamp createDate) {
-		this.createDate = createDate;
 	}
 
 	public String getDescription() {
 		return description;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
 	public Long getId() {
 		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public Integer getStatus() {
-		return status;
-	}
-
-	public void setStatus(Integer status) {
-		this.status = status;
-	}
-
-	public Integer getTaskId() {
-		return taskId;
-	}
-
-	public void setTaskId(Integer taskId) {
-		this.taskId = taskId;
-	}
-
-	public Timestamp getUpdateDate() {
-		return updateDate;
-	}
-
-	public void setUpdateDate(Timestamp updateDate) {
-		this.updateDate = updateDate;
-	}
-
-	public BigDecimal getVersionNo() {
-		return versionNo;
-	}
-
-	public void setVersionNo(BigDecimal versionNo) {
-		this.versionNo = versionNo;
-	}
-
-	public void setTaskName(String taskName) {
-		this.taskName = taskName;
 	}
 
 	public Integer getSchedulerCode() {
 		return schedulerCode;
 	}
 
+	public Integer getStatus() {
+		return status;
+	}
+
+	public Integer getTaskId() {
+		return taskId;
+	}
+
+	public String getTaskName() {
+		return taskName;
+	}
+
+	public Timestamp getUpdateDate() {
+		return updateDate;
+	}
+
+	public BigDecimal getVersionNo() {
+		return versionNo;
+	}
+
+	public void setCreateDate(Timestamp createDate) {
+		this.createDate = createDate;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	@Id(value = IdType.SEQUENCE, sequenceName = "SCHEDULE_ID_SEQ")
+	public void setId(Long id) {
+		this.id = id;
+	}
+
 	public void setSchedulerCode(Integer schedulerCode) {
 		this.schedulerCode = schedulerCode;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
+
+	public void setTaskId(Integer taskId) {
+		this.taskId = taskId;
+	}
+
+	public void setTaskName(String taskName) {
+		this.taskName = taskName;
+	}
+
+	public void setUpdateDate(Timestamp updateDate) {
+		this.updateDate = updateDate;
+	}
+
+	public void setVersionNo(BigDecimal versionNo) {
+		this.versionNo = versionNo;
 	}
 
 }
