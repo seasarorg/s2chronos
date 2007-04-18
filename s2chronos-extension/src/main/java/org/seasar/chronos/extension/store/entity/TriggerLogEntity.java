@@ -11,6 +11,8 @@ public class TriggerLogEntity {
 
 	private Long id;
 
+	private Long objectId;
+
 	private BigDecimal versionNo;
 
 	public Long getId() {
@@ -21,12 +23,20 @@ public class TriggerLogEntity {
 		return versionNo;
 	}
 
-	@Id(value = IdType.SEQUENCE, sequenceName = "TRIGGER_LOG_ID_SEQ")
+	@Id(value = IdType.IDENTITY)
 	public void setId(Long id) {
 		this.id = id;
 	}
 
 	public void setVersionNo(BigDecimal versionNo) {
 		this.versionNo = versionNo;
+	}
+
+	public Long getObjectId() {
+		return objectId;
+	}
+
+	public void setObjectId(Long objectId) {
+		this.objectId = objectId;
 	}
 }

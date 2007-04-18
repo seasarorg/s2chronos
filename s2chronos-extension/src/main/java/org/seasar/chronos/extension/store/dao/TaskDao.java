@@ -18,11 +18,8 @@ public interface TaskDao {
 	@Arguments("ID")
 	public TaskEntity selectById(Long id);
 
-	@Arguments("TASK_CODE")
-	public List<TaskEntity> selectByTaskCode(Integer taskCode);
-
-	@Arguments("TASK_CODE")
-	public TaskEntity selectByTaskCodeNewest(Integer taskCode);
+	@Arguments("OBJECT_ID")
+	public TaskEntity selectByObjectId(Long objectId);
 
 	public List<TaskEntity> selectAll();
 

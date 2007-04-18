@@ -16,8 +16,8 @@ public interface TriggerLogDao {
 	@Arguments("ID")
 	public TriggerLogEntity selectById(Long id);
 
-	@Arguments("TRIGGER_CODE")
-	public List<TriggerLogEntity> selectByTriggerCode(Integer triggerCode);
+	@Arguments("OBJECT_ID")
+	public TriggerLogEntity selectByObjectId(Long objectId);
 
 	public List<TriggerLogEntity> selectAll();
 

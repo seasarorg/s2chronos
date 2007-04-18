@@ -12,7 +12,7 @@ public class ScheduleEntity {
 
 	private Long id;
 
-	private Integer schedulerCode;
+	private Long objectId;
 
 	private String taskName;
 
@@ -40,8 +40,8 @@ public class ScheduleEntity {
 		return id;
 	}
 
-	public Integer getSchedulerCode() {
-		return schedulerCode;
+	public Long getObjectId() {
+		return objectId;
 	}
 
 	public Integer getStatus() {
@@ -72,13 +72,13 @@ public class ScheduleEntity {
 		this.description = description;
 	}
 
-	@Id(value = IdType.SEQUENCE, sequenceName = "SCHEDULE_ID_SEQ")
+	@Id(value = IdType.IDENTITY)
 	public void setId(Long id) {
 		this.id = id;
 	}
 
-	public void setSchedulerCode(Integer schedulerCode) {
-		this.schedulerCode = schedulerCode;
+	public void setObjectId(Long schedulerCode) {
+		this.objectId = schedulerCode;
 	}
 
 	public void setStatus(Integer status) {

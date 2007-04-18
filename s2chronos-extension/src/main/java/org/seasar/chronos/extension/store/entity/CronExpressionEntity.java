@@ -12,14 +12,14 @@ public class CronExpressionEntity {
 
 	private Long id;
 
-	private Integer cronExpressionCode;
+	private Long objectId;
 
 	private Timestamp startTime;
 
 	private BigDecimal versionNo;
 
-	public Integer getCronExpressionCode() {
-		return cronExpressionCode;
+	public Long getObjectId() {
+		return objectId;
 	}
 
 	public Long getId() {
@@ -34,11 +34,11 @@ public class CronExpressionEntity {
 		return versionNo;
 	}
 
-	public void setCronExpressionCode(Integer cronExpressionCode) {
-		this.cronExpressionCode = cronExpressionCode;
+	public void setObjectId(Long cronExpressionCode) {
+		this.objectId = cronExpressionCode;
 	}
 
-	@Id(value = IdType.SEQUENCE, sequenceName = "CRON_EXPRESSION_ID_SEQ")
+	@Id(value = IdType.IDENTITY)
 	public void setId(Long id) {
 		this.id = id;
 	}

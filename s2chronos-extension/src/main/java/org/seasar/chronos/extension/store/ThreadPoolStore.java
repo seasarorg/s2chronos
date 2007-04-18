@@ -12,9 +12,8 @@ public class ThreadPoolStore {
 
 	private ThreadPoolDxo threadPoolDxo;
 
-	public TaskThreadPool loadFromStore(Integer code) {
-		ThreadPoolEntity entity = threadPoolDao
-				.selectByThreadPoolCodeNewest(code);
+	public TaskThreadPool loadFromStoreByObjectId(Long objectId) {
+		ThreadPoolEntity entity = threadPoolDao.selectByObjectId(objectId);
 		if (entity == null) {
 			return null;
 		}

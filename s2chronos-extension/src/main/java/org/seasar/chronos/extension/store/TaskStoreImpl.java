@@ -1,5 +1,7 @@
 package org.seasar.chronos.extension.store;
 
+import java.math.BigDecimal;
+
 import org.seasar.chronos.core.TaskThreadPool;
 import org.seasar.chronos.core.TaskTrigger;
 import org.seasar.chronos.core.task.TaskProperties;
@@ -17,18 +19,12 @@ public class TaskStoreImpl implements TaskStore {
 
 	private ThreadPoolStore threadPoolStore;
 
-	public void loadFromStore(Integer code, TaskProperties task) {
-		TaskEntity entity = this.taskDao.selectByTaskCodeNewest(code);
+	public void loadFromStoreByObjectId(Long objectId, TaskProperties task) {
+		TaskEntity entity = this.taskDao.selectByObjectId(objectId);
 		if (entity == null) {
 			return;
 		}
-		TaskTrigger taskTrigger = triggerStore.loadFromStore(entity
-				.getTriggerId());
-		task.setTrigger(taskTrigger);
-		TaskThreadPool taskThreadPool = this.threadPoolStore
-				.loadFromStore(taskTrigger.getId());
-		task.setThreadPool(taskThreadPool);
-		this.taskDxo.fromEntityToComponent(entity, task);
+		fromEntityToComponent(task, entity);
 	}
 
 	public void loadFromStore(Long id, TaskProperties task) {
@@ -36,6 +32,10 @@ public class TaskStoreImpl implements TaskStore {
 		if (entity == null) {
 			return;
 		}
+		fromEntityToComponent(task, entity);
+	}
+
+	private void fromEntityToComponent(TaskProperties task, TaskEntity entity) {
 		Long triggerId = entity.getTriggerId();
 		if (triggerId != null) {
 			TaskTrigger taskTrigger = triggerStore.loadFromStore(triggerId);
@@ -48,8 +48,12 @@ public class TaskStoreImpl implements TaskStore {
 	}
 
 	public Long saveToStore(TaskProperties task) {
-
-		TaskEntity entity = this.taskDxo.toEntity(task);
+		boolean update = true;
+		TaskEntity entity = this.taskDao.selectByObjectId(task.getTaskId());
+		if (entity == null) {
+			entity = this.taskDxo.toEntity(task);
+			update = false;
+		}
 		TaskTrigger taskTrigger = task.getTrigger();
 		TaskThreadPool taskThreadPool = task.getThreadPool();
 		if (taskTrigger != null
@@ -61,11 +65,14 @@ public class TaskStoreImpl implements TaskStore {
 						.getThreadPoolId())) {
 			threadPoolStore.saveToStore(taskThreadPool);
 		}
-		if (entity.getId() == null) {
-			this.taskDao.insert(entity);
-		} else {
+
+		if (update) {
 			this.taskDao.update(entity);
+		} else {
+			entity.setVersionNo(new BigDecimal(1L));
+			this.taskDao.insert(entity);
 		}
+
 		return entity.getId();
 
 	}

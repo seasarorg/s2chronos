@@ -12,7 +12,7 @@ public class TriggerEntity {
 
 	private Long id;
 
-	private Integer triggerCode;
+	private Long objectId;
 
 	private String name;
 
@@ -64,8 +64,8 @@ public class TriggerEntity {
 		return startTime;
 	}
 
-	public Integer getTriggerCode() {
-		return triggerCode;
+	public Long getObjectId() {
+		return objectId;
 	}
 
 	public BigDecimal getVersionNo() {
@@ -100,7 +100,7 @@ public class TriggerEntity {
 		this.executed = executed;
 	}
 
-	@Id(value = IdType.SEQUENCE, sequenceName = "TRIGGER_ID_SEQ")
+	@Id(value = IdType.IDENTITY)
 	public void setId(Long id) {
 		this.id = id;
 	}
@@ -113,8 +113,8 @@ public class TriggerEntity {
 		this.startTime = startDate;
 	}
 
-	public void setTriggerCode(Integer triggerCode) {
-		this.triggerCode = triggerCode;
+	public void setObjectId(Long triggerCode) {
+		this.objectId = triggerCode;
 	}
 
 	public void setVersionNo(BigDecimal versionNo) {

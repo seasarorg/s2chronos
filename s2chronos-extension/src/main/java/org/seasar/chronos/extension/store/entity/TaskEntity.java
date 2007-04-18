@@ -2,8 +2,8 @@ package org.seasar.chronos.extension.store.entity;
 
 import java.math.BigDecimal;
 
-import org.seasar.dao.annotation.tiger.Arguments;
 import org.seasar.dao.annotation.tiger.Bean;
+import org.seasar.dao.annotation.tiger.Column;
 import org.seasar.dao.annotation.tiger.Id;
 import org.seasar.dao.annotation.tiger.IdType;
 
@@ -12,7 +12,7 @@ public class TaskEntity {
 
 	private Long id;
 
-	private Integer taskCode;
+	private Long objectId;
 
 	private Long triggerId;
 
@@ -38,8 +38,8 @@ public class TaskEntity {
 		return id;
 	}
 
-	public Integer getTaskCode() {
-		return taskCode;
+	public Long getObjectId() {
+		return objectId;
 	}
 
 	public String getTaskName() {
@@ -90,7 +90,6 @@ public class TaskEntity {
 		this.execute = execute;
 	}
 
-	// @Id(value = IdType.SEQUENCE, sequenceName = "TASK_ID_SEQ")
 	@Id(value = IdType.IDENTITY)
 	public void setId(Long id) {
 		this.id = id;
@@ -104,9 +103,8 @@ public class TaskEntity {
 		this.startTask = startTask;
 	}
 
-	@Arguments("TASK_CODE")
-	public void setTaskCode(Integer taskCode) {
-		this.taskCode = taskCode;
+	public void setObjectId(Long objectId) {
+		this.objectId = objectId;
 	}
 
 	public void setTaskName(String taskName) {
@@ -129,6 +127,7 @@ public class TaskEntity {
 		this.triggerId = triggerId;
 	}
 
+	@Column("VERSION_NO")
 	public void setVersionNo(BigDecimal versionNo) {
 		this.versionNo = versionNo;
 	}

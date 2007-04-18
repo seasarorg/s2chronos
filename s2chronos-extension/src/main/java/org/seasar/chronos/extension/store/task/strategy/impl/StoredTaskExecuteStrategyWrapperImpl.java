@@ -16,7 +16,7 @@ public class StoredTaskExecuteStrategyWrapperImpl extends
 
 	@Override
 	public void load() {
-		this.taskStore.loadFromStore(this.getTaskId(), this);
+		this.taskStore.loadFromStoreByObjectId(this.getTaskId(), this);
 	}
 
 	@Override

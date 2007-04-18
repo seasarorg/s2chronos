@@ -4,7 +4,7 @@ import org.seasar.chronos.core.task.TaskProperties;
 
 public interface TaskStore {
 
-	public void loadFromStore(Integer code, TaskProperties task);
+	public void loadFromStoreByObjectId(Long objectId, TaskProperties task);
 
 	public void loadFromStore(Long id, TaskProperties task);
 

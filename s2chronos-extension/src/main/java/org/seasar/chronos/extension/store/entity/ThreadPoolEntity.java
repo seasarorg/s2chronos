@@ -11,7 +11,7 @@ public class ThreadPoolEntity {
 
 	private Long id;
 
-	private Integer threadPoolCode;
+	private Long objectId;
 
 	private Integer threadPoolSize;
 
@@ -23,11 +23,11 @@ public class ThreadPoolEntity {
 		return id;
 	}
 
-	public Integer getThreadPoolCode() {
-		return threadPoolCode;
+	public Long getObjectId() {
+		return objectId;
 	}
 
-	public Integer getThreadPoolSize() {
+	public int getThreadPoolSize() {
 		return threadPoolSize;
 	}
 
@@ -39,13 +39,13 @@ public class ThreadPoolEntity {
 		return versionNo;
 	}
 
-	@Id(value = IdType.SEQUENCE, sequenceName = "THREAD_POOL_ID_SEQ")
+	@Id(value = IdType.IDENTITY)
 	public void setId(Long id) {
 		this.id = id;
 	}
 
-	public void setThreadPoolCode(Integer threadPoolCode) {
-		this.threadPoolCode = threadPoolCode;
+	public void setObjectId(Long threadPoolCode) {
+		this.objectId = threadPoolCode;
 	}
 
 	public void setThreadPoolSize(Integer threadPoolSize) {

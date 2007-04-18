@@ -18,12 +18,9 @@ public interface ThreadPoolDao {
 	@Arguments("ID")
 	public ThreadPoolEntity selectById(Long id);
 
-	@Arguments("THREAD_POOL_CODE")
-	public List<ThreadPoolEntity> selectByThreadPoolCode(Integer threadPoolCode);
-
 	public List<ThreadPoolEntity> selectAll();
 
-	@Arguments("THREAD_POOL_CODE")
-	public ThreadPoolEntity selectByThreadPoolCodeNewest(Integer threadPoolCode);
+	@Arguments("OBJECT_ID")
+	public ThreadPoolEntity selectByObjectId(Long objectId);
 
 }
