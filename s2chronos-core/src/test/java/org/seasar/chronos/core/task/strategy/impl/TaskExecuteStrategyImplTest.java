@@ -11,7 +11,7 @@ public class TaskExecuteStrategyImplTest extends S2TestCaseBase {
 
 	private TaskExecuteStrategy taskExecuteStrategy;
 
-	private int id;
+	private Long id;
 
 	public void testDeserialize() {
 

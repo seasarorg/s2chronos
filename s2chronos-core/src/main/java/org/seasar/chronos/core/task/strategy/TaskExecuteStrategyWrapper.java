@@ -17,10 +17,6 @@ public class TaskExecuteStrategyWrapper implements TaskExecuteStrategy {
 		this.taskExecuteStrategy = taskExecuteStrategy;
 	}
 
-	public boolean checkMoveAnotherTask(String nextTaskName) {
-		return this.taskExecuteStrategy.checkMoveAnotherTask(nextTaskName);
-	}
-
 	public boolean await(long time, TimeUnit timeUnit)
 			throws InterruptedException {
 		return this.taskExecuteStrategy.await(time, timeUnit);
@@ -30,28 +26,16 @@ public class TaskExecuteStrategyWrapper implements TaskExecuteStrategy {
 		return this.taskExecuteStrategy.cancel();
 	}
 
+	public boolean checkMoveAnotherTask(String nextTaskName) {
+		return this.taskExecuteStrategy.checkMoveAnotherTask(nextTaskName);
+	}
+
 	public String destroy() throws InterruptedException {
 		return this.taskExecuteStrategy.destroy();
 	}
 
 	public void execute(String startTaskName) throws InterruptedException {
 		this.taskExecuteStrategy.execute(startTaskName);
-	}
-
-	public String initialize() throws InterruptedException {
-		return this.taskExecuteStrategy.initialize();
-	}
-
-	public void prepare() {
-		this.taskExecuteStrategy.prepare();
-	}
-
-	public void setGetterSignal(Object getterSignal) {
-		this.taskExecuteStrategy.setGetterSignal(getterSignal);
-	}
-
-	public void waitOne() throws InterruptedException {
-		this.taskExecuteStrategy.waitOne();
 	}
 
 	public boolean getEndTask() {
@@ -78,7 +62,7 @@ public class TaskExecuteStrategyWrapper implements TaskExecuteStrategy {
 		return this.taskExecuteStrategy.getTaskClass();
 	}
 
-	public int getTaskId() {
+	public long getTaskId() {
 		return this.taskExecuteStrategy.getTaskId();
 	}
 
@@ -102,8 +86,24 @@ public class TaskExecuteStrategyWrapper implements TaskExecuteStrategy {
 		return this.taskExecuteStrategy.getTrigger();
 	}
 
+	public String initialize() throws InterruptedException {
+		return this.taskExecuteStrategy.initialize();
+	}
+
 	public boolean isExecute() {
 		return this.taskExecuteStrategy.isExecute();
+	}
+
+	public void load() {
+		this.taskExecuteStrategy.load();
+	}
+
+	public void prepare() {
+		this.taskExecuteStrategy.prepare();
+	}
+
+	public void save() {
+		this.taskExecuteStrategy.save();
 	}
 
 	public void setEndTask(boolean endTask) {
@@ -112,6 +112,10 @@ public class TaskExecuteStrategyWrapper implements TaskExecuteStrategy {
 
 	public void setExecute(boolean executed) {
 		this.taskExecuteStrategy.setExecute(executed);
+	}
+
+	public void setGetterSignal(Object getterSignal) {
+		this.taskExecuteStrategy.setGetterSignal(getterSignal);
 	}
 
 	public void setScheduler(Scheduler scheduler) {
@@ -134,7 +138,7 @@ public class TaskExecuteStrategyWrapper implements TaskExecuteStrategy {
 		this.taskExecuteStrategy.setTaskClass(taskClass);
 	}
 
-	public void setTaskId(int taskId) {
+	public void setTaskId(long taskId) {
 		this.taskExecuteStrategy.setTaskId(taskId);
 	}
 
@@ -148,12 +152,8 @@ public class TaskExecuteStrategyWrapper implements TaskExecuteStrategy {
 		this.taskExecuteStrategy.setTrigger(taskTrigger);
 	}
 
-	public void load() {
-		this.taskExecuteStrategy.load();
-	}
-
-	public void save() {
-		this.taskExecuteStrategy.save();
+	public void waitOne() throws InterruptedException {
+		this.taskExecuteStrategy.waitOne();
 	}
 
 }

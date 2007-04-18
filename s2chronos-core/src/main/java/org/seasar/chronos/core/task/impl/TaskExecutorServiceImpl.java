@@ -21,47 +21,9 @@ public class TaskExecutorServiceImpl implements TaskExecutorService {
 		this.taskExecuteContext = taskExecuteContext;
 	}
 
-	@Binding(bindingType = BindingType.NONE)
-	public void setGetterSignal(Object getterSignal) {
-		this.taskExecuteContext.setGetterSignal(getterSignal);
-	}
-
-	public void setTaskId(int taskId) {
-		this.taskExecuteContext.getTaskExecuteStrategy().setTaskId(taskId);
-	}
-
-	public int getTaskId() {
-		return this.taskExecuteContext.getTaskExecuteStrategy().getTaskId();
-	}
-
-	public String getTaskName() {
-		return this.taskExecuteContext.getTaskExecuteStrategy().getTaskName();
-	}
-
-	public void setTaskClass(Class taskClass) {
-		this.taskExecuteContext.getTaskExecuteStrategy()
-				.setTaskClass(taskClass);
-	}
-
-	public Class getTaskClass() {
-		return this.taskExecuteContext.getTaskExecuteStrategy().getTaskClass();
-	}
-
-	public void setTask(Object task) {
-		this.taskExecuteContext.getTaskExecuteStrategy().setTask(task);
-	}
-
-	public Object getTask() {
-		return this.taskExecuteContext.getTaskExecuteStrategy().getTask();
-	}
-
 	public boolean await(long time, TimeUnit timeUnit)
 			throws InterruptedException {
 		return taskExecuteContext.await(time, timeUnit);
-	}
-
-	public void execute(String startTaskName) throws InterruptedException {
-		this.taskExecuteContext.execute(startTaskName);
 	}
 
 	public boolean cancel() {
@@ -72,16 +34,16 @@ public class TaskExecutorServiceImpl implements TaskExecutorService {
 		return this.taskExecuteContext.destroy();
 	}
 
-	public void prepare() {
-		this.taskExecuteContext.prepare();
-	}
-
-	public String initialize() throws InterruptedException {
-		return this.taskExecuteContext.initialize();
+	public void execute(String startTaskName) throws InterruptedException {
+		this.taskExecuteContext.execute(startTaskName);
 	}
 
 	public boolean getEndTask() {
 		return this.taskExecuteContext.getTaskExecuteStrategy().getEndTask();
+	}
+
+	public Scheduler getScheduler() {
+		return this.taskExecuteContext.getTaskExecuteStrategy().getScheduler();
 	}
 
 	public boolean getShutdownTask() {
@@ -91,6 +53,26 @@ public class TaskExecutorServiceImpl implements TaskExecutorService {
 
 	public boolean getStartTask() {
 		return this.taskExecuteContext.getTaskExecuteStrategy().getStartTask();
+	}
+
+	public Object getTask() {
+		return this.taskExecuteContext.getTaskExecuteStrategy().getTask();
+	}
+
+	public Class getTaskClass() {
+		return this.taskExecuteContext.getTaskExecuteStrategy().getTaskClass();
+	}
+
+	public long getTaskId() {
+		return this.taskExecuteContext.getTaskExecuteStrategy().getTaskId();
+	}
+
+	public String getTaskName() {
+		return this.taskExecuteContext.getTaskExecuteStrategy().getTaskName();
+	}
+
+	public TaskThreadPool getThreadPool() {
+		return this.taskExecuteContext.getTaskExecuteStrategy().getThreadPool();
 	}
 
 	public int getThreadPoolSize() {
@@ -107,8 +89,42 @@ public class TaskExecutorServiceImpl implements TaskExecutorService {
 		return this.taskExecuteContext.getTaskExecuteStrategy().getTrigger();
 	}
 
+	public String initialize() throws InterruptedException {
+		return this.taskExecuteContext.initialize();
+	}
+
+	public boolean isExecute() {
+		return this.taskExecuteContext.getTaskExecuteStrategy().isExecute();
+	}
+
+	public void load() {
+		this.taskExecuteContext.getTaskExecuteStrategy().load();
+	}
+
+	public void prepare() {
+		this.taskExecuteContext.prepare();
+	}
+
+	public void save() {
+		this.taskExecuteContext.getTaskExecuteStrategy().save();
+	}
+
 	public void setEndTask(boolean endTask) {
 		this.taskExecuteContext.getTaskExecuteStrategy().setEndTask(endTask);
+	}
+
+	public void setExecute(boolean executed) {
+		this.taskExecuteContext.getTaskExecuteStrategy().setExecute(executed);
+	}
+
+	@Binding(bindingType = BindingType.NONE)
+	public void setGetterSignal(Object getterSignal) {
+		this.taskExecuteContext.setGetterSignal(getterSignal);
+	}
+
+	public void setScheduler(Scheduler scheduler) {
+		this.taskExecuteContext.getTaskExecuteStrategy()
+				.setScheduler(scheduler);
 	}
 
 	public void setShutdownTask(boolean shutdownTask) {
@@ -121,14 +137,17 @@ public class TaskExecutorServiceImpl implements TaskExecutorService {
 				.setStartTask(startTask);
 	}
 
-	@Binding(bindingType = BindingType.NONE)
-	public void setTrigger(TaskTrigger taskTrigger) {
-		this.taskExecuteContext.getTaskExecuteStrategy()
-				.setTrigger(taskTrigger);
+	public void setTask(Object task) {
+		this.taskExecuteContext.getTaskExecuteStrategy().setTask(task);
 	}
 
-	public TaskThreadPool getThreadPool() {
-		return this.taskExecuteContext.getTaskExecuteStrategy().getThreadPool();
+	public void setTaskClass(Class taskClass) {
+		this.taskExecuteContext.getTaskExecuteStrategy()
+				.setTaskClass(taskClass);
+	}
+
+	public void setTaskId(long taskId) {
+		this.taskExecuteContext.getTaskExecuteStrategy().setTaskId(taskId);
 	}
 
 	public void setThreadPool(TaskThreadPool taskThreadPool) {
@@ -136,33 +155,14 @@ public class TaskExecutorServiceImpl implements TaskExecutorService {
 				taskThreadPool);
 	}
 
+	@Binding(bindingType = BindingType.NONE)
+	public void setTrigger(TaskTrigger taskTrigger) {
+		this.taskExecuteContext.getTaskExecuteStrategy()
+				.setTrigger(taskTrigger);
+	}
+
 	public void waitOne() throws InterruptedException {
 		this.taskExecuteContext.waitOne();
-	}
-
-	public Scheduler getScheduler() {
-		return this.taskExecuteContext.getTaskExecuteStrategy().getScheduler();
-	}
-
-	public void setScheduler(Scheduler scheduler) {
-		this.taskExecuteContext.getTaskExecuteStrategy()
-				.setScheduler(scheduler);
-	}
-
-	public boolean isExecute() {
-		return this.taskExecuteContext.getTaskExecuteStrategy().isExecute();
-	}
-
-	public void setExecute(boolean executed) {
-		this.taskExecuteContext.getTaskExecuteStrategy().setExecute(executed);
-	}
-
-	public void load() {
-		this.taskExecuteContext.getTaskExecuteStrategy().load();
-	}
-
-	public void save() {
-		this.taskExecuteContext.getTaskExecuteStrategy().save();
 	}
 
 }

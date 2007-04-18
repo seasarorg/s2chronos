@@ -1,15 +1,26 @@
 package org.seasar.chronos.core.trigger;
 
 import org.seasar.chronos.core.TaskTrigger;
+import org.seasar.chronos.core.util.ObjectUtil;
 
 public abstract class AbstractTrigger implements TaskTrigger {
 
-	public void load() {
+	private Long id;
+
+	private String name;
+
+	private Object task;
+
+	private String description;
+
+	private Boolean execute;
+
+	public AbstractTrigger() {
 
 	}
 
-	public void save() {
-
+	public AbstractTrigger(String name) {
+		this.setName(name);
 	}
 
 	@Override
@@ -34,45 +45,35 @@ public abstract class AbstractTrigger implements TaskTrigger {
 		}
 	}
 
-	private Integer id;
-
-	private String name;
-
-	private Object task;
-
-	private String description;
-
-	private Boolean execute;
-
-	public AbstractTrigger() {
-
-	}
-
-	public AbstractTrigger(String name) {
-		this.setName(name);
-	}
-
 	public String getDescription() {
 		return description;
 	}
 
-	public Integer getId() {
+	public Long getId() {
 		if (this.id == null) {
-			this.id = this.hashCode();
+			this.id = ObjectUtil.generateObjectId();
 		}
 		return this.id;
-	}
-
-	public Object getTask() {
-		return task;
 	}
 
 	public String getName() {
 		return name;
 	}
 
+	public Object getTask() {
+		return task;
+	}
+
 	public Boolean isExecute() {
 		return this.execute;
+	}
+
+	public void load() {
+
+	}
+
+	public void save() {
+
 	}
 
 	public void setDescription(String description) {
@@ -83,16 +84,16 @@ public abstract class AbstractTrigger implements TaskTrigger {
 		this.execute = executed;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public void setTask(Object task) {
-		this.task = task;
 	}
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public void setTask(Object task) {
+		this.task = task;
 	}
 
 }

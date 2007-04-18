@@ -8,30 +8,6 @@ import org.seasar.chronos.core.task.TaskProperties;
 
 public final class TaskPropertyUtil {
 
-	public static Long getTaskId(TaskProperties prop) {
-		prop.getTaskId();
-		return 0L;
-	}
-
-	public static String getTaskName(TaskProperties prop) {
-		String taskName = prop.getTaskName();
-		if (taskName == null) {
-			Class<?> clazz = prop.getTaskClass();
-			Task task = (Task) clazz.getAnnotation(Task.class);
-			return task != null ? task.name() : taskName;
-		}
-		return taskName;
-	}
-
-	public static boolean getShutdownTask(TaskProperties prop) {
-		boolean shutdown = prop.getShutdownTask();
-		return shutdown;
-	}
-
-	public static void setShutdownTask(TaskProperties prop, boolean shutdownTask) {
-		prop.setShutdownTask(shutdownTask);
-	}
-
 	public static boolean getEndTask(TaskProperties prop) {
 		boolean end = false;
 		TaskTrigger taskTrigger = prop.getTrigger();
@@ -43,13 +19,9 @@ public final class TaskPropertyUtil {
 		return end;
 	}
 
-	public static void setEndTask(TaskProperties prop, boolean endTask) {
-		TaskTrigger taskTrigger = prop.getTrigger();
-		if (taskTrigger == null) {
-			prop.setEndTask(endTask);
-		} else {
-			taskTrigger.setEndTask(endTask);
-		}
+	public static boolean getShutdownTask(TaskProperties prop) {
+		boolean shutdown = prop.getShutdownTask();
+		return shutdown;
 	}
 
 	public static boolean getStartTask(TaskProperties prop) {
@@ -63,13 +35,30 @@ public final class TaskPropertyUtil {
 		return start;
 	}
 
-	public static void setStartTask(TaskProperties prop, boolean startTask) {
-		TaskTrigger taskTrigger = prop.getTrigger();
-		if (taskTrigger == null) {
-			prop.setStartTask(startTask);
-		} else {
-			taskTrigger.setStartTask(startTask);
+	public static long getTaskId(TaskProperties prop) {
+		long result = prop.getTaskId();
+		return result;
+	}
+
+	public static String getTaskName(TaskProperties prop) {
+		String taskName = prop.getTaskName();
+		if (taskName == null) {
+			Class<?> clazz = prop.getTaskClass();
+			Task task = (Task) clazz.getAnnotation(Task.class);
+			return task != null ? task.name() : taskName;
 		}
+		return taskName;
+	}
+
+	public static int getThreadPoolSize(TaskProperties prop) {
+		int threadPoolSize = 1;
+		TaskThreadPool taskThreadPool = prop.getThreadPool();
+		if (taskThreadPool == null) {
+			return prop.getThreadPoolSize();
+		} else {
+			taskThreadPool.getThreadPoolSize();
+		}
+		return threadPoolSize;
 	}
 
 	public static ThreadPoolType getThreadPoolType(TaskProperties prop) {
@@ -83,15 +72,26 @@ public final class TaskPropertyUtil {
 		return threadPoolType;
 	}
 
-	public static int getThreadPoolSize(TaskProperties prop) {
-		int threadPoolSize = 1;
-		TaskThreadPool taskThreadPool = prop.getThreadPool();
-		if (taskThreadPool == null) {
-			return prop.getThreadPoolSize();
+	public static void setEndTask(TaskProperties prop, boolean endTask) {
+		TaskTrigger taskTrigger = prop.getTrigger();
+		if (taskTrigger == null) {
+			prop.setEndTask(endTask);
 		} else {
-			taskThreadPool.getThreadPoolSize();
+			taskTrigger.setEndTask(endTask);
 		}
-		return threadPoolSize;
+	}
+
+	public static void setShutdownTask(TaskProperties prop, boolean shutdownTask) {
+		prop.setShutdownTask(shutdownTask);
+	}
+
+	public static void setStartTask(TaskProperties prop, boolean startTask) {
+		TaskTrigger taskTrigger = prop.getTrigger();
+		if (taskTrigger == null) {
+			prop.setStartTask(startTask);
+		} else {
+			taskTrigger.setStartTask(startTask);
+		}
 	}
 
 }

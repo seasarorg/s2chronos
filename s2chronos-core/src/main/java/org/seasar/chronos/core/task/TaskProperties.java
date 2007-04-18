@@ -19,9 +19,7 @@ public interface TaskProperties {
 
 	public Class getTaskClass();
 
-	public void setTaskId(int taskId);
-
-	public int getTaskId();
+	public long getTaskId();
 
 	public String getTaskName();
 
@@ -45,13 +43,15 @@ public interface TaskProperties {
 
 	public void setShutdownTask(boolean shutdownTask);
 
-	public void setTrigger(TaskTrigger taskTrigger);
-
 	public void setStartTask(boolean startTask);
 
 	public void setTask(Object task);
 
 	public void setTaskClass(Class taskClass);
 
+	public void setTaskId(long taskId);
+
 	public void setThreadPool(TaskThreadPool taskThreadPool);
+
+	public void setTrigger(TaskTrigger taskTrigger);
 }
