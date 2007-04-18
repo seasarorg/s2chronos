@@ -28,10 +28,12 @@
 	</component>
 	
 	<component class="org.seasar.chronos.extension.store.dxo.ThreadPoolDxo">
+		<aspect>j2ee.requiredTx</aspect>
 		<aspect>dxo.interceptor</aspect>
 	</component>
 	
 	<component class="org.seasar.chronos.extension.store.dao.TriggerDao">
+		<aspect>j2ee.requiredTx</aspect>
 		<aspect>dao.interceptor</aspect>
 	</component>	
 
@@ -41,17 +43,18 @@
 	</component>
 
 	<component class="org.seasar.chronos.extension.store.dao.ThreadPoolDao">
+		<aspect>j2ee.requiredTx</aspect>
 		<aspect>dao.interceptor</aspect>
 	</component>
 		
 	<component name="triggerStore" class="org.seasar.chronos.extension.store.TriggerStore">
-
+		<aspect>j2ee.requiredTx</aspect>	
 	</component>
 	<component name="taskStore" class="org.seasar.chronos.extension.store.TaskStoreImpl">
 		<aspect>j2ee.requiredTx</aspect>
 	</component>
 	<component name="threadPoolStore" class="org.seasar.chronos.extension.store.ThreadPoolStore">
-		
+		<aspect>j2ee.requiredTx</aspect>
 	</component>
 
 	<component name="scheduleExecuteShutdownHandler" class="org.seasar.chronos.core.handler.impl.ScheduleExecuteShutdownHandler" />

@@ -17,7 +17,8 @@ public interface TaskDxo {
 	public void fromEntitiesToComponents(List<TaskEntity> entities,
 			List<TaskProperties> components);
 
-	public void fromEntityFromComponent(TaskEntity entity,
+	@ConversionRule("taskId : taskCode")
+	public void fromEntityToComponent(TaskEntity entity,
 			TaskProperties component);
 
 	@ConversionRule("taskId : taskCode")

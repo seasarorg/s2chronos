@@ -6,9 +6,8 @@ import org.seasar.chronos.core.task.TaskProperties;
 import org.seasar.chronos.extension.store.dao.TaskDao;
 import org.seasar.chronos.extension.store.dxo.TaskDxo;
 import org.seasar.chronos.extension.store.entity.TaskEntity;
-import org.seasar.framework.exception.SQLRuntimeException;
 
-public class TaskStoreImpl implements TaskStore{
+public class TaskStoreImpl implements TaskStore {
 
 	private TaskDao taskDao;
 
@@ -29,7 +28,7 @@ public class TaskStoreImpl implements TaskStore{
 		TaskThreadPool taskThreadPool = this.threadPoolStore
 				.loadFromStore(taskTrigger.getId());
 		task.setThreadPool(taskThreadPool);
-		this.taskDxo.fromEntityFromComponent(entity, task);
+		this.taskDxo.fromEntityToComponent(entity, task);
 	}
 
 	public void loadFromStore(Long id, TaskProperties task) {
@@ -37,20 +36,22 @@ public class TaskStoreImpl implements TaskStore{
 		if (entity == null) {
 			return;
 		}
-		TaskTrigger taskTrigger = triggerStore.loadFromStore(entity
-				.getTriggerId());
-		task.setTrigger(taskTrigger);
-		TaskThreadPool taskThreadPool = this.threadPoolStore
-				.loadFromStore(taskTrigger.getId());
-		task.setThreadPool(taskThreadPool);
-		this.taskDxo.fromEntityFromComponent(entity, task);
+		Long triggerId = entity.getTriggerId();
+		if (triggerId != null) {
+			TaskTrigger taskTrigger = triggerStore.loadFromStore(triggerId);
+			task.setTrigger(taskTrigger);
+			TaskThreadPool taskThreadPool = this.threadPoolStore
+					.loadFromStore(taskTrigger.getId());
+			task.setThreadPool(taskThreadPool);
+		}
+		this.taskDxo.fromEntityToComponent(entity, task);
 	}
 
 	public Long saveToStore(TaskProperties task) {
+
 		TaskEntity entity = this.taskDxo.toEntity(task);
 		TaskTrigger taskTrigger = task.getTrigger();
 		TaskThreadPool taskThreadPool = task.getThreadPool();
-		// ‚È‚¯‚ê‚ÎDB‚É•Û‘¶
 		if (taskTrigger != null
 				&& null == triggerStore.loadFromStore(entity.getTriggerId())) {
 			triggerStore.saveToStore(taskTrigger);
@@ -60,12 +61,13 @@ public class TaskStoreImpl implements TaskStore{
 						.getThreadPoolId())) {
 			threadPoolStore.saveToStore(taskThreadPool);
 		}
-		try {
-			this.taskDao.update(entity);
-		} catch (SQLRuntimeException ex) {
+		if (entity.getId() == null) {
 			this.taskDao.insert(entity);
+		} else {
+			this.taskDao.update(entity);
 		}
 		return entity.getId();
+
 	}
 
 	public void setTaskDao(TaskDao taskDao) {
