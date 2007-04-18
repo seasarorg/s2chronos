@@ -90,7 +90,8 @@ public class TaskEntity {
 		this.execute = execute;
 	}
 
-	@Id(value = IdType.SEQUENCE, sequenceName = "TASK_ID_SEQ")
+	// @Id(value = IdType.SEQUENCE, sequenceName = "TASK_ID_SEQ")
+	@Id(value = IdType.IDENTITY)
 	public void setId(Long id) {
 		this.id = id;
 	}

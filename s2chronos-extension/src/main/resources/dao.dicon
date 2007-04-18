@@ -2,7 +2,7 @@
 <!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container//EN"
 "http://www.seasar.org/dtd/components.dtd">
 <components namespace="dao">
-	<include path="chronos-jdbc.dicon"/>
+	<include path="jdbc.dicon"/>
 	
 	<component name="annotationReaderFactory"
 		class="org.seasar.dao.annotation.tiger.impl.AnnotationReaderFactoryImpl"/>
@@ -17,6 +17,5 @@
 	<component 
 		name="stringClobType" 
 		class="org.seasar.extension.jdbc.types.StringClobType"/>
-				
-				
+					
 </components>

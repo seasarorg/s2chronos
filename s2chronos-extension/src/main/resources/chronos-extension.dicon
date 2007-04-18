@@ -3,8 +3,8 @@
 	"http://www.seasar.org/dtd/components24.dtd">
 <components>
 	<include path="chronos-base.dicon"/>
-	<include path="chronos-j2ee.dicon"/>
-	<include path="chronos-dao.dicon"/>
+	<include path="j2ee.dicon"/>
+	<include path="dao.dicon"/>
 	<include path="dxo.dicon"/>
 	
 	<component class="org.seasar.chronos.extension.store.dxo.TimedTriggerDxo">
@@ -36,8 +36,8 @@
 	</component>	
 
 	<component class="org.seasar.chronos.extension.store.dao.TaskDao">
-		<aspect>dao.interceptor</aspect>
 		<aspect>j2ee.requiredTx</aspect>
+		<aspect>dao.interceptor</aspect>
 	</component>
 
 	<component class="org.seasar.chronos.extension.store.dao.ThreadPoolDao">
@@ -48,7 +48,7 @@
 
 	</component>
 	<component name="taskStore" class="org.seasar.chronos.extension.store.TaskStoreImpl">
-
+		<aspect>j2ee.requiredTx</aspect>
 	</component>
 	<component name="threadPoolStore" class="org.seasar.chronos.extension.store.ThreadPoolStore">
 		
