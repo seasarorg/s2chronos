@@ -1,10 +1,11 @@
-package org.seasar.chronos.extension.store;
+package org.seasar.chronos.extension.store.impl;
 
 import org.seasar.chronos.core.S2TestCaseBase;
 import org.seasar.chronos.core.annotation.task.Task;
 import org.seasar.chronos.core.task.TaskExecutorService;
+import org.seasar.chronos.extension.store.TaskStore;
 
-public class TaskStoreTest extends S2TestCaseBase {
+public class TaskStoreImplTest extends S2TestCaseBase {
 
 	@Task
 	private class TestTask {

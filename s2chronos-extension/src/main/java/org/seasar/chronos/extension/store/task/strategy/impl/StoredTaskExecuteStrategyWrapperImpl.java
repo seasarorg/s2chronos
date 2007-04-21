@@ -2,7 +2,7 @@ package org.seasar.chronos.extension.store.task.strategy.impl;
 
 import org.seasar.chronos.core.task.strategy.TaskExecuteStrategy;
 import org.seasar.chronos.core.task.strategy.TaskExecuteStrategyWrapper;
-import org.seasar.chronos.extension.store.TaskStoreImpl;
+import org.seasar.chronos.extension.store.impl.TaskStoreImpl;
 
 public class StoredTaskExecuteStrategyWrapperImpl extends
 		TaskExecuteStrategyWrapper {

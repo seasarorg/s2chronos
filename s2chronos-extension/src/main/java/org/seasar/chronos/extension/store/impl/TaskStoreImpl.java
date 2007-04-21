@@ -1,10 +1,13 @@
-package org.seasar.chronos.extension.store;
+package org.seasar.chronos.extension.store.impl;
 
 import java.math.BigDecimal;
 
 import org.seasar.chronos.core.TaskThreadPool;
 import org.seasar.chronos.core.TaskTrigger;
 import org.seasar.chronos.core.task.TaskProperties;
+import org.seasar.chronos.extension.store.TaskStore;
+import org.seasar.chronos.extension.store.ThreadPoolStore;
+import org.seasar.chronos.extension.store.TriggerStore;
 import org.seasar.chronos.extension.store.dao.TaskDao;
 import org.seasar.chronos.extension.store.dxo.TaskDxo;
 import org.seasar.chronos.extension.store.entity.TaskEntity;
@@ -53,6 +56,8 @@ public class TaskStoreImpl implements TaskStore {
 		if (entity == null) {
 			entity = this.taskDxo.toEntity(task);
 			update = false;
+		} else {
+			this.taskDxo.fromComponentToEntity(task, entity);
 		}
 		TaskTrigger taskTrigger = task.getTrigger();
 		TaskThreadPool taskThreadPool = task.getThreadPool();
