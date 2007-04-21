@@ -13,7 +13,7 @@ public interface DelayTriggerDxo {
 
 	public void fromComponentToEntity(DelayTrigger trigger, TriggerEntity entity);
 
-	public void fromEntityFromComponent(TriggerEntity entity,
+	public void fromEntityToComponent(TriggerEntity entity,
 			DelayTrigger component);
 
 	public List<TriggerEntity> toEntities(List<DelayTrigger> components);

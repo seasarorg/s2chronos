@@ -19,7 +19,7 @@ public interface TriggerDao {
 	public TriggerEntity selectById(Long id);
 
 	@Arguments("OBJECT_ID")
-	public TriggerEntity selectByObject(Long objectId);
+	public TriggerEntity selectByObjectId(Long objectId);
 
 	public List<TriggerEntity> selectAll();
 

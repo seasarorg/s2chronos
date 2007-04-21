@@ -18,9 +18,9 @@ public class TaskStoreImpl implements TaskStore {
 
 	private TaskDxo taskDxo;
 
-	private TriggerStore triggerStore;
+	private TriggerStore triggerStoreImpl;
 
-	private ThreadPoolStore threadPoolStore;
+	private ThreadPoolStore threadPoolStoreImpl;
 
 	public void loadFromStoreByObjectId(Long objectId, TaskProperties task) {
 		TaskEntity entity = this.taskDao.selectByObjectId(objectId);
@@ -41,10 +41,10 @@ public class TaskStoreImpl implements TaskStore {
 	private void fromEntityToComponent(TaskProperties task, TaskEntity entity) {
 		Long triggerId = entity.getTriggerId();
 		if (triggerId != null) {
-			TaskTrigger taskTrigger = triggerStore.loadFromStore(triggerId);
+			TaskTrigger taskTrigger = triggerStoreImpl.loadFromStore(triggerId);
 			task.setTrigger(taskTrigger);
-			TaskThreadPool taskThreadPool = this.threadPoolStore
-					.loadFromStore(taskTrigger.getId());
+			TaskThreadPool taskThreadPool = this.threadPoolStoreImpl
+					.loadFromStore(taskTrigger.getTriggerId());
 			task.setThreadPool(taskThreadPool);
 		}
 		this.taskDxo.fromEntityToComponent(entity, task);
@@ -62,13 +62,14 @@ public class TaskStoreImpl implements TaskStore {
 		TaskTrigger taskTrigger = task.getTrigger();
 		TaskThreadPool taskThreadPool = task.getThreadPool();
 		if (taskTrigger != null
-				&& null == triggerStore.loadFromStore(entity.getTriggerId())) {
-			triggerStore.saveToStore(taskTrigger);
+				&& null == triggerStoreImpl
+						.loadFromStore(entity.getTriggerId())) {
+			triggerStoreImpl.saveToStore(taskTrigger);
 		}
 		if (taskThreadPool != null
-				&& null == threadPoolStore.loadFromStore(entity
+				&& null == threadPoolStoreImpl.loadFromStore(entity
 						.getThreadPoolId())) {
-			threadPoolStore.saveToStore(taskThreadPool);
+			threadPoolStoreImpl.saveToStore(taskThreadPool);
 		}
 
 		if (update) {
@@ -90,12 +91,12 @@ public class TaskStoreImpl implements TaskStore {
 		this.taskDxo = taskDxo;
 	}
 
-	public void setThreadPoolStore(ThreadPoolStore threadPoolStore) {
-		this.threadPoolStore = threadPoolStore;
+	public void setThreadPoolStore(ThreadPoolStore threadPoolStoreImpl) {
+		this.threadPoolStoreImpl = threadPoolStoreImpl;
 	}
 
-	public void setTriggerStore(TriggerStore triggerStore) {
-		this.triggerStore = triggerStore;
+	public void setTriggerStore(TriggerStore triggerStoreImpl) {
+		this.triggerStoreImpl = triggerStoreImpl;
 	}
 
 }

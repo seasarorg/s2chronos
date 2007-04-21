@@ -8,7 +8,7 @@ public class StoredThreadPoolWrapperImpl extends ThreadPoolWrapper {
 
 	private static final long serialVersionUID = -3020909396727360370L;
 
-	private ThreadPoolStore threadPoolStore;
+	private ThreadPoolStore threadPoolStoreImpl;
 
 	public StoredThreadPoolWrapperImpl(TaskThreadPool taskThreadPool) {
 		super(taskThreadPool);
@@ -16,16 +16,16 @@ public class StoredThreadPoolWrapperImpl extends ThreadPoolWrapper {
 
 	@Override
 	public void load() {
-		// threadPoolStore.loadFromStore(this.getId(), this);
+		// threadPoolStoreImpl.loadFromStore(this.getId(), this);
 	}
 
 	@Override
 	public void save() {
-		threadPoolStore.saveToStore(this);
+		threadPoolStoreImpl.saveToStore(this);
 	}
 
-	public void setThreadPoolStore(ThreadPoolStore threadPoolStore) {
-		this.threadPoolStore = threadPoolStore;
+	public void setThreadPoolStore(ThreadPoolStore threadPoolStoreImpl) {
+		this.threadPoolStoreImpl = threadPoolStoreImpl;
 	}
 
 }

@@ -13,7 +13,7 @@ public interface CronTriggerDxo {
 
 	public void fromComponentToEntity(CronTrigger trigger, TriggerEntity entity);
 
-	public void fromEntityFromComponent(TriggerEntity entity,
+	public void fromEntityToComponent(TriggerEntity entity,
 			CronTrigger component);
 
 	public List<TriggerEntity> toEntities(List<CronTrigger> components);

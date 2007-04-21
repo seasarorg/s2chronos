@@ -6,7 +6,7 @@ import org.seasar.chronos.extension.store.TriggerStore;
 
 public class StoredTriggerWrapperImpl extends TriggerWrapper {
 
-	private TriggerStore triggerStore;
+	private TriggerStore triggerStoreImpl;
 
 	public StoredTriggerWrapperImpl(TaskTrigger taskTrigger) {
 		super(taskTrigger);
@@ -17,10 +17,10 @@ public class StoredTriggerWrapperImpl extends TriggerWrapper {
 	}
 
 	public void save() {
-		triggerStore.saveToStore(this);
+		triggerStoreImpl.saveToStore(this);
 	}
 
-	public void setTriggerStore(TriggerStore triggerStore) {
-		this.triggerStore = triggerStore;
+	public void setTriggerStore(TriggerStore triggerStoreImpl) {
+		this.triggerStoreImpl = triggerStoreImpl;
 	}
 }

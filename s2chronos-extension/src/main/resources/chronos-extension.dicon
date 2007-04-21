@@ -47,13 +47,13 @@
 		<aspect>dao.interceptor</aspect>
 	</component>
 		
-	<component name="triggerStore" class="org.seasar.chronos.extension.store.TriggerStore">
+	<component name="triggerStore" class="org.seasar.chronos.extension.store.impl.TriggerStoreImpl">
 		<aspect>j2ee.requiredTx</aspect>	
 	</component>
-	<component name="taskStore" class="org.seasar.chronos.extension.store.TaskStoreImpl">
+	<component name="taskStore" class="org.seasar.chronos.extension.store.impl.TaskStoreImpl">
 		<aspect>j2ee.requiredTx</aspect>
 	</component>
-	<component name="threadPoolStore" class="org.seasar.chronos.extension.store.ThreadPoolStore">
+	<component name="threadPoolStore" class="org.seasar.chronos.extension.store.impl.ThreadPoolStoreImpl">
 		<aspect>j2ee.requiredTx</aspect>
 	</component>
 
