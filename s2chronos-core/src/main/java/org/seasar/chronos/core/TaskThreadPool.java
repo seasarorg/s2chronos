@@ -2,16 +2,16 @@ package org.seasar.chronos.core;
 
 public interface TaskThreadPool extends Serializable {
 
-	public void setId(Integer id);
+	public Long getThreadPoolId();
 
-	public Integer getId();
-
-	public void setThreadPoolType(ThreadPoolType threadPoolType);
-
-	public void setThreadPoolSize(Integer threadPoolSize);
+	public Integer getThreadPoolSize();
 
 	public ThreadPoolType getThreadPoolType();
 
-	public Integer getThreadPoolSize();
+	public void setThreadPoolId(Long id);
+
+	public void setThreadPoolSize(Integer threadPoolSize);
+
+	public void setThreadPoolType(ThreadPoolType threadPoolType);
 
 }

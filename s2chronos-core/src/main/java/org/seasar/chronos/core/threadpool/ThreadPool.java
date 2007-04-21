@@ -2,20 +2,21 @@ package org.seasar.chronos.core.threadpool;
 
 import org.seasar.chronos.core.TaskThreadPool;
 import org.seasar.chronos.core.ThreadPoolType;
+import org.seasar.chronos.core.util.ObjectUtil;
 
 public class ThreadPool implements TaskThreadPool {
 
 	private static final long serialVersionUID = 3092612895816238852L;
 
-	private Integer id;
+	private Long id;
 
-	private ThreadPoolType threadPoolType;
+	private ThreadPoolType threadPoolType = ThreadPoolType.SINGLE;
 
 	private Integer threadPoolSize;
 
-	public Integer getId() {
+	public Long getThreadPoolId() {
 		if (id == null) {
-			id = this.hashCode();
+			id = ObjectUtil.generateObjectId();
 		}
 		return id;
 	}
@@ -34,7 +35,7 @@ public class ThreadPool implements TaskThreadPool {
 	public void save() {
 	}
 
-	public void setId(Integer id) {
+	public void setThreadPoolId(Long id) {
 		this.id = id;
 	}
 

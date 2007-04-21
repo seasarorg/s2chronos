@@ -6,7 +6,7 @@ public interface TaskTrigger extends Serializable {
 
 	public Boolean getEndTask();
 
-	public Long getId();
+	public Long getTriggerId();
 
 	public String getName();
 
@@ -22,7 +22,7 @@ public interface TaskTrigger extends Serializable {
 
 	public void setExecute(Boolean execute);
 
-	public void setId(Long id);
+	public void setTriggerId(Long id);
 
 	public void setName(String name);
 

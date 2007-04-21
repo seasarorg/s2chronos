@@ -5,7 +5,7 @@ import org.seasar.chronos.core.util.ObjectUtil;
 
 public abstract class AbstractTrigger implements TaskTrigger {
 
-	private Long id;
+	private Long triggerId;
 
 	private String name;
 
@@ -28,7 +28,7 @@ public abstract class AbstractTrigger implements TaskTrigger {
 		if (obj instanceof AbstractTrigger) {
 			boolean result = true;
 			AbstractTrigger src = (AbstractTrigger) obj;
-			result = result & this.id == src.id;
+			result = result & this.triggerId.equals(src.triggerId);
 			if (this.name != null) {
 				result = result & this.name.equals(src.name);
 			}
@@ -38,7 +38,9 @@ public abstract class AbstractTrigger implements TaskTrigger {
 			if (this.description != null) {
 				result = result & this.description.equals(src.description);
 			}
-			result = result & this.execute == src.execute;
+			if (this.execute != null) {
+				result = result & this.execute.equals(src.execute);
+			}
 			return result;
 		} else {
 			return super.equals(obj);
@@ -49,19 +51,19 @@ public abstract class AbstractTrigger implements TaskTrigger {
 		return description;
 	}
 
-	public Long getId() {
-		if (this.id == null) {
-			this.id = ObjectUtil.generateObjectId();
-		}
-		return this.id;
-	}
-
 	public String getName() {
 		return name;
 	}
 
 	public Object getTask() {
 		return task;
+	}
+
+	public Long getTriggerId() {
+		if (this.triggerId == null) {
+			this.triggerId = ObjectUtil.generateObjectId();
+		}
+		return this.triggerId;
 	}
 
 	public Boolean isExecute() {
@@ -84,16 +86,16 @@ public abstract class AbstractTrigger implements TaskTrigger {
 		this.execute = executed;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
-	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
 
 	public void setTask(Object task) {
 		this.task = task;
+	}
+
+	public void setTriggerId(Long id) {
+		this.triggerId = id;
 	}
 
 }

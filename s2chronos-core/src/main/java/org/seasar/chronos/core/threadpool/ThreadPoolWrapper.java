@@ -13,20 +13,16 @@ public class ThreadPoolWrapper implements TaskThreadPool {
 		this.taskThreadPool = taskThreadPool;
 	}
 
+	public Long getThreadPoolId() {
+		return taskThreadPool.getThreadPoolId();
+	}
+
 	public Integer getThreadPoolSize() {
 		return taskThreadPool.getThreadPoolSize();
 	}
 
 	public ThreadPoolType getThreadPoolType() {
 		return taskThreadPool.getThreadPoolType();
-	}
-
-	public void setThreadPoolSize(Integer threadPoolSize) {
-		taskThreadPool.setThreadPoolSize(threadPoolSize);
-	}
-
-	public void setThreadPoolType(ThreadPoolType threadPoolType) {
-		taskThreadPool.setThreadPoolType(threadPoolType);
 	}
 
 	public void load() {
@@ -37,12 +33,16 @@ public class ThreadPoolWrapper implements TaskThreadPool {
 		taskThreadPool.save();
 	}
 
-	public Integer getId() {
-		return taskThreadPool.getId();
+	public void setThreadPoolId(Long id) {
+		taskThreadPool.setThreadPoolId(id);
 	}
 
-	public void setId(Integer id) {
-		taskThreadPool.setId(id);
+	public void setThreadPoolSize(Integer threadPoolSize) {
+		taskThreadPool.setThreadPoolSize(threadPoolSize);
+	}
+
+	public void setThreadPoolType(ThreadPoolType threadPoolType) {
+		taskThreadPool.setThreadPoolType(threadPoolType);
 	}
 
 }
