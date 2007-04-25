@@ -8,8 +8,11 @@ import java.util.concurrent.Future;
 
 import org.seasar.chronos.core.Scheduler;
 import org.seasar.chronos.core.SchedulerEventListener;
+import org.seasar.chronos.core.logger.Logger;
 
 public class SchedulerEventHandler {
+
+	private Logger log = Logger.getLogger(SchedulerEventHandler.class);
 
 	private ExecutorService ExecutorService = Executors.newCachedThreadPool();
 
@@ -23,76 +26,8 @@ public class SchedulerEventHandler {
 		this.scheduler = scheduler;
 	}
 
-	public boolean isAsync() {
-		return async;
-	}
-
-	public void setAsync(boolean async) {
-		this.async = async;
-	}
-
 	public boolean add(SchedulerEventListener listener) {
 		return this.schedulerEventListener.add(listener);
-	}
-
-	public boolean remove(SchedulerEventListener listener) {
-		return this.schedulerEventListener.remove(listener);
-	}
-
-	public void fireStartScheduler() {
-		for (final SchedulerEventListener listener : schedulerEventListener) {
-			Future<?> future = ExecutorService.submit(new Runnable() {
-				public void run() {
-					listener.startScheduler(scheduler);
-				}
-			});
-			waitFuture(future);
-		}
-	}
-
-	private void waitFuture(Future<?> future) {
-		if (!async) {
-			try {
-				future.get();
-			} catch (InterruptedException e) {
-			} catch (ExecutionException e) {
-				// TODO 自動生成された catch ブロック
-				e.printStackTrace();
-			}
-		}
-	}
-
-	public void firePauseScheduler() {
-		for (final SchedulerEventListener listener : schedulerEventListener) {
-			Future<?> future = ExecutorService.submit(new Runnable() {
-				public void run() {
-					listener.pauseScheduler(scheduler);
-				}
-			});
-			waitFuture(future);
-		}
-	}
-
-	public void fireEndScheduler() {
-		for (final SchedulerEventListener listener : schedulerEventListener) {
-			Future<?> future = ExecutorService.submit(new Runnable() {
-				public void run() {
-					listener.endScheduler(scheduler);
-				}
-			});
-			waitFuture(future);
-		}
-	}
-
-	public void fireShutdownScheduler() {
-		for (final SchedulerEventListener listener : schedulerEventListener) {
-			Future<?> future = ExecutorService.submit(new Runnable() {
-				public void run() {
-					listener.shutdownScheduler(scheduler);
-				}
-			});
-			waitFuture(future);
-		}
 	}
 
 	public void fireAddTask(final Object task) {
@@ -100,28 +35,6 @@ public class SchedulerEventHandler {
 			Future<?> future = ExecutorService.submit(new Runnable() {
 				public void run() {
 					listener.addTask(scheduler, task);
-				}
-			});
-			waitFuture(future);
-		}
-	}
-
-	public void fireStartTask(final Object task) {
-		for (final SchedulerEventListener listener : schedulerEventListener) {
-			Future<?> future = ExecutorService.submit(new Runnable() {
-				public void run() {
-					listener.startTask(scheduler, task);
-				}
-			});
-			waitFuture(future);
-		}
-	}
-
-	public void fireEndTask(final Object task) {
-		for (final SchedulerEventListener listener : schedulerEventListener) {
-			Future<?> future = ExecutorService.submit(new Runnable() {
-				public void run() {
-					listener.endTask(scheduler, task);
 				}
 			});
 			waitFuture(future);
@@ -139,11 +52,33 @@ public class SchedulerEventHandler {
 		}
 	}
 
-	public void fireRegistTaskBeforeScheduler() {
+	public void fireEndScheduler() {
 		for (final SchedulerEventListener listener : schedulerEventListener) {
 			Future<?> future = ExecutorService.submit(new Runnable() {
 				public void run() {
-					listener.resigtTaskBeforeScheduler(scheduler);
+					listener.endScheduler(scheduler);
+				}
+			});
+			waitFuture(future);
+		}
+	}
+
+	public void fireEndTask(final Object task) {
+		for (final SchedulerEventListener listener : schedulerEventListener) {
+			Future<?> future = ExecutorService.submit(new Runnable() {
+				public void run() {
+					listener.endTask(scheduler, task);
+				}
+			});
+			waitFuture(future);
+		}
+	}
+
+	public void firePauseScheduler() {
+		for (final SchedulerEventListener listener : schedulerEventListener) {
+			Future<?> future = ExecutorService.submit(new Runnable() {
+				public void run() {
+					listener.pauseScheduler(scheduler);
 				}
 			});
 			waitFuture(future);
@@ -158,6 +93,73 @@ public class SchedulerEventHandler {
 				}
 			});
 			waitFuture(future);
+		}
+	}
+
+	public void fireRegistTaskBeforeScheduler() {
+		for (final SchedulerEventListener listener : schedulerEventListener) {
+			Future<?> future = ExecutorService.submit(new Runnable() {
+				public void run() {
+					listener.resigtTaskBeforeScheduler(scheduler);
+				}
+			});
+			waitFuture(future);
+		}
+	}
+
+	public void fireShutdownScheduler() {
+		for (final SchedulerEventListener listener : schedulerEventListener) {
+			Future<?> future = ExecutorService.submit(new Runnable() {
+				public void run() {
+					listener.shutdownScheduler(scheduler);
+				}
+			});
+			waitFuture(future);
+		}
+	}
+
+	public void fireStartScheduler() {
+		for (final SchedulerEventListener listener : schedulerEventListener) {
+			Future<?> future = ExecutorService.submit(new Runnable() {
+				public void run() {
+					listener.startScheduler(scheduler);
+				}
+			});
+			waitFuture(future);
+		}
+	}
+
+	public void fireStartTask(final Object task) {
+		for (final SchedulerEventListener listener : schedulerEventListener) {
+			Future<?> future = ExecutorService.submit(new Runnable() {
+				public void run() {
+					listener.startTask(scheduler, task);
+				}
+			});
+			waitFuture(future);
+		}
+	}
+
+	public boolean isAsync() {
+		return async;
+	}
+
+	public boolean remove(SchedulerEventListener listener) {
+		return this.schedulerEventListener.remove(listener);
+	}
+
+	public void setAsync(boolean async) {
+		this.async = async;
+	}
+
+	private void waitFuture(Future<?> future) {
+		if (!async) {
+			try {
+				future.get();
+			} catch (InterruptedException e) {
+			} catch (ExecutionException e) {
+				log.error("実行例外が発生しました", e);
+			}
 		}
 	}
 }
