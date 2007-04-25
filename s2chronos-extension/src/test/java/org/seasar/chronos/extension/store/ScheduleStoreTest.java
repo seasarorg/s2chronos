@@ -4,14 +4,14 @@ import org.seasar.chronos.core.S2TestCaseBase;
 
 public class ScheduleStoreTest extends S2TestCaseBase {
 
-	private ScheduleStore scheduleStoreImpl;
+	private ScheduleStore scheduleStore;
 
 	public void testLoadAllTasks() {
-		scheduleStoreImpl.loadAllTasks();
+		// scheduleStoreImpl.loadAllTasks();
 	}
 
 	public void testSaveAllTasks() {
-		scheduleStoreImpl.saveAllTasks();
+		scheduleStore.saveAllTasks();
 	}
 
 }
