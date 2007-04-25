@@ -18,7 +18,7 @@ public class ScheduleEntity {
 
 	private String description;
 
-	private Integer taskId;
+	private Long taskId;
 
 	private Integer status;
 
@@ -48,7 +48,7 @@ public class ScheduleEntity {
 		return status;
 	}
 
-	public Integer getTaskId() {
+	public Long getTaskId() {
 		return taskId;
 	}
 
@@ -85,7 +85,7 @@ public class ScheduleEntity {
 		this.status = status;
 	}
 
-	public void setTaskId(Integer taskId) {
+	public void setTaskId(Long taskId) {
 		this.taskId = taskId;
 	}
 

@@ -46,6 +46,10 @@
 		<aspect>j2ee.requiredTx</aspect>
 		<aspect>dao.interceptor</aspect>
 	</component>
+
+	<component name="scheduleStore" class="org.seasar.chronos.extension.store.impl.TriggerStoreImpl">
+		<aspect>j2ee.requiredTx</aspect>	
+	</component>
 		
 	<component name="triggerStore" class="org.seasar.chronos.extension.store.impl.TriggerStoreImpl">
 		<aspect>j2ee.requiredTx</aspect>	
