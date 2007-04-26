@@ -22,22 +22,6 @@ public class TaskStoreImpl implements TaskStore {
 
 	private ThreadPoolStore threadPoolStoreImpl;
 
-	public void loadFromStoreByObjectId(Long objectId, TaskProperties task) {
-		TaskEntity entity = this.taskDao.selectByObjectId(objectId);
-		if (entity == null) {
-			return;
-		}
-		fromEntityToComponent(task, entity);
-	}
-
-	public void loadFromStore(Long id, TaskProperties task) {
-		TaskEntity entity = this.taskDao.selectById(id);
-		if (entity == null) {
-			return;
-		}
-		fromEntityToComponent(task, entity);
-	}
-
 	private void fromEntityToComponent(TaskProperties task, TaskEntity entity) {
 		Long triggerId = entity.getTriggerId();
 		if (triggerId != null) {
@@ -48,6 +32,22 @@ public class TaskStoreImpl implements TaskStore {
 			task.setThreadPool(taskThreadPool);
 		}
 		this.taskDxo.fromEntityToComponent(entity, task);
+	}
+
+	public void loadFromStore(Long id, TaskProperties task) {
+		TaskEntity entity = this.taskDao.selectById(id);
+		if (entity == null) {
+			return;
+		}
+		fromEntityToComponent(task, entity);
+	}
+
+	public void loadFromStoreByObjectId(Long objectId, TaskProperties task) {
+		TaskEntity entity = this.taskDao.selectByObjectId(objectId);
+		if (entity == null) {
+			return;
+		}
+		fromEntityToComponent(task, entity);
 	}
 
 	public Long saveToStore(TaskProperties task) {
@@ -64,12 +64,14 @@ public class TaskStoreImpl implements TaskStore {
 		if (taskTrigger != null
 				&& null == triggerStoreImpl
 						.loadFromStore(entity.getTriggerId())) {
-			triggerStoreImpl.saveToStore(taskTrigger);
+			Long triggerId = triggerStoreImpl.saveToStore(taskTrigger);
+			entity.setTriggerId(triggerId);
 		}
 		if (taskThreadPool != null
 				&& null == threadPoolStoreImpl.loadFromStore(entity
 						.getThreadPoolId())) {
-			threadPoolStoreImpl.saveToStore(taskThreadPool);
+			Long threadPoolId = threadPoolStoreImpl.saveToStore(taskThreadPool);
+			entity.setThreadPoolId(threadPoolId);
 		}
 
 		if (update) {

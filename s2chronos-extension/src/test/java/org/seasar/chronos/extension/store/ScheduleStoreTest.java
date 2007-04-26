@@ -7,7 +7,7 @@ public class ScheduleStoreTest extends S2TestCaseBase {
 	private ScheduleStore scheduleStore;
 
 	public void testLoadAllTasks() {
-		// scheduleStoreImpl.loadAllTasks();
+		scheduleStore.loadAllTasks();
 	}
 
 	public void testSaveAllTasks() {

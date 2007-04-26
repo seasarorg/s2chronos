@@ -28,7 +28,6 @@
 	</component>
 	
 	<component class="org.seasar.chronos.extension.store.dxo.ThreadPoolDxo">
-		<aspect>j2ee.requiredTx</aspect>
 		<aspect>dxo.interceptor</aspect>
 	</component>
 	
@@ -48,7 +47,6 @@
 	</component>
 
 	<component class="org.seasar.chronos.extension.store.dao.ScheduleDao">
-		<aspect>j2ee.requiredTx</aspect>
 		<aspect>dao.interceptor</aspect>
 	</component>
 

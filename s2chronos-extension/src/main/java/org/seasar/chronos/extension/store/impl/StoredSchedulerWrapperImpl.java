@@ -5,16 +5,21 @@ import org.seasar.chronos.core.SchedulerEventListener;
 import org.seasar.chronos.core.SchedulerWrapper;
 import org.seasar.chronos.core.impl.TaskContena;
 import org.seasar.chronos.core.impl.TaskContenaStateManager;
+import org.seasar.chronos.core.impl.TaskStateType;
 import org.seasar.chronos.core.logger.Logger;
+import org.seasar.chronos.core.task.TaskExecutorService;
+import org.seasar.chronos.core.util.TaskPropertyUtil;
 import org.seasar.chronos.extension.store.ScheduleStore;
+import org.seasar.chronos.extension.store.entity.ScheduleEntity;
 
 public class StoredSchedulerWrapperImpl extends SchedulerWrapper {
 
 	private class InternalSchedulerEventListener implements
 			SchedulerEventListener {
 
-		public void addTask(Scheduler scheduler, Object task) {
-			storeAddTask(task);
+		public void addTask(Scheduler scheduler, TaskStateType type,
+				TaskExecutorService taskExecutorService) {
+			storeAddTask(type, taskExecutorService);
 		}
 
 		public void cancelTask(Scheduler scheduler, Object task) {
@@ -32,6 +37,17 @@ public class StoredSchedulerWrapperImpl extends SchedulerWrapper {
 
 		public void pauseScheduler(Scheduler scheduler) {
 			storePauseScheduler();
+		}
+
+		public void removeTask(Scheduler scheduler, TaskStateType type,
+				Object task) {
+			storeRemoveTask(type, task);
+		}
+
+		public void removeTask(Scheduler scheduler, TaskStateType type,
+				TaskExecutorService taskExecutorService) {
+			// TODO 自動生成されたメソッド・スタブ
+
 		}
 
 		public void resigtTaskAfterScheduler(Scheduler scheduler) {
@@ -54,6 +70,10 @@ public class StoredSchedulerWrapperImpl extends SchedulerWrapper {
 			storeStartTask(task);
 		}
 
+		private void storeAddTask(TaskStateType type, Object task) {
+
+		}
+
 	}
 
 	private static final Logger log = Logger
@@ -62,28 +82,44 @@ public class StoredSchedulerWrapperImpl extends SchedulerWrapper {
 	private TaskContenaStateManager taskContenaStateManager = TaskContenaStateManager
 			.getInstance();
 
-	private ScheduleStore scheduleStoreImpl;
+	private ScheduleStore scheduleStore;
 
 	public StoredSchedulerWrapperImpl(Scheduler scheduler) {
 		super(scheduler);
 		this.addListener(new InternalSchedulerEventListener());
 	}
 
+	public void addTask(TaskStateType type,
+			TaskExecutorService taskExecutorService) {
+		// TODO 作業途中
+		TaskContena taskContena = taskContenaStateManager
+				.getTaskContena(taskExecutorService.getTask());
+		log.debug("<<storeAddTask>> : " + taskContena.getTaskClass().getName()
+				+ " : " + taskContena.getTask());
+		taskContena.getTaskExecutorService().save();
+
+		String taskName = TaskPropertyUtil.getTaskName(taskExecutorService);
+		String description = TaskPropertyUtil
+				.getDescription(taskExecutorService);
+		Long taskId = TaskPropertyUtil.getTaskId(taskExecutorService);
+		ScheduleEntity se = new ScheduleEntity();
+		se.setTaskName(taskName);
+		se.setDescription(description);
+		se.setTaskId(taskId);
+		se.setStatus(type.ordinal());
+	}
+
 	private void recoverySchedule() {
-		this.scheduleStoreImpl.loadAllTasks();
+		this.scheduleStore.loadAllTasks();
 	}
 
 	@Override
 	protected void registTaskFromS2Container() {
-		// TODO 自動生成されたメソッド・スタブ
 
 	}
 
-	private void storeAddTask(Object task) {
-		TaskContena taskContena = taskContenaStateManager.getTaskContena(task);
-		log.debug("<<storeAddTask>> : " + taskContena.getTaskClass().getName()
-				+ " : " + taskContena.getTask());
-		// TODO: OutputObjectStreamでDBに書き出し
+	public void setScheduleStore(ScheduleStore scheduleStore) {
+		this.scheduleStore = scheduleStore;
 	}
 
 	private void storeCancelTask(Object task) {
@@ -105,6 +141,10 @@ public class StoredSchedulerWrapperImpl extends SchedulerWrapper {
 
 	private void storePauseScheduler() {
 		log.debug("<<storePauseScheduler>>");
+	}
+
+	private void storeRemoveTask(TaskStateType type, Object task) {
+		log.debug("<<storeRemoveTask>>");
 	}
 
 	private void storeResigtTaskAfterScheduler() {
