@@ -163,8 +163,8 @@ public class SchedulerImpl extends AbstractScheduler {
 		TaskContena tc = super.scheduleTask(componentDef);
 		this.taskContenaStateManager
 				.addTaskContena(TaskStateType.SCHEDULED, tc);
-		this.schedulerEventHandler.fireAddTask(tc.getTaskExecutorService()
-				.getTask());
+		this.schedulerEventHandler.fireAddTask(TaskStateType.SCHEDULED, tc
+				.getTaskExecutorService());
 		return tc;
 	}
 

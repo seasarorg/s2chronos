@@ -67,6 +67,8 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 
 	private static final String PROPERTY_NAME_TASKID = "taskId";
 
+	private static final String PROPERTY_NAME_DESCRIPTION = "description";
+
 	private static ConcurrentHashMap<TaskThreadPool, ExecutorService> threadPoolExecutorServiceMap = new ConcurrentHashMap<TaskThreadPool, ExecutorService>();
 
 	private Object task;
@@ -199,6 +201,16 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 			threadPoolExecutorServiceMap.put(taskThreadPool, executorService);
 		}
 		return executorService;
+	}
+
+	public String getDescription() {
+		String result = null;
+		if (this.beanDesc.hasPropertyDesc(PROPERTY_NAME_DESCRIPTION)) {
+			PropertyDesc pd = this.beanDesc
+					.getPropertyDesc(PROPERTY_NAME_DESCRIPTION);
+			result = (String) pd.getValue(this.task);
+		}
+		return result;
 	}
 
 	public boolean getEndTask() {

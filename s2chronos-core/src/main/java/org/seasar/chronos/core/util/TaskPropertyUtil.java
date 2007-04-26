@@ -8,6 +8,11 @@ import org.seasar.chronos.core.task.TaskProperties;
 
 public final class TaskPropertyUtil {
 
+	public static String getDescription(TaskProperties prop) {
+		String result = prop.getDescription();
+		return result;
+	}
+
 	public static boolean getEndTask(TaskProperties prop) {
 		boolean end = false;
 		TaskTrigger taskTrigger = prop.getTrigger();

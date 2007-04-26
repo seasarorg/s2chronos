@@ -28,7 +28,9 @@ public abstract class AbstractTrigger implements TaskTrigger {
 		if (obj instanceof AbstractTrigger) {
 			boolean result = true;
 			AbstractTrigger src = (AbstractTrigger) obj;
-			result = result & this.triggerId.equals(src.triggerId);
+			if (this.triggerId != null) {
+				result = result & this.triggerId.equals(src.triggerId);
+			}
 			if (this.name != null) {
 				result = result & this.name.equals(src.name);
 			}

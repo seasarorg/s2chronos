@@ -38,6 +38,10 @@ public class TaskExecuteStrategyWrapper implements TaskExecuteStrategy {
 		this.taskExecuteStrategy.execute(startTaskName);
 	}
 
+	public String getDescription() {
+		return this.taskExecuteStrategy.getDescription();
+	}
+
 	public boolean getEndTask() {
 		return this.taskExecuteStrategy.getEndTask();
 	}

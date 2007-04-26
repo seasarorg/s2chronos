@@ -38,6 +38,12 @@ public class TaskExecutorServiceImpl implements TaskExecutorService {
 		this.taskExecuteContext.execute(startTaskName);
 	}
 
+	public String getDescription() {
+		String result = this.taskExecuteContext.getTaskExecuteStrategy()
+				.getDescription();
+		return result;
+	}
+
 	public boolean getEndTask() {
 		return this.taskExecuteContext.getTaskExecuteStrategy().getEndTask();
 	}

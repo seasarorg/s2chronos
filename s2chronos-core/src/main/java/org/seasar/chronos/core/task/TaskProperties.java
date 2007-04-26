@@ -7,6 +7,8 @@ import org.seasar.chronos.core.ThreadPoolType;
 
 public interface TaskProperties {
 
+	public String getDescription();
+
 	public boolean getEndTask();
 
 	public Scheduler getScheduler();
