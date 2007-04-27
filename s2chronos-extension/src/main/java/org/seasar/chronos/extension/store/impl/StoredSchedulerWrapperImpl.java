@@ -3,23 +3,18 @@ package org.seasar.chronos.extension.store.impl;
 import org.seasar.chronos.core.Scheduler;
 import org.seasar.chronos.core.SchedulerEventListener;
 import org.seasar.chronos.core.SchedulerWrapper;
-import org.seasar.chronos.core.impl.TaskContena;
-import org.seasar.chronos.core.impl.TaskContenaStateManager;
-import org.seasar.chronos.core.impl.TaskStateType;
+import org.seasar.chronos.core.TaskScheduleEntry;
 import org.seasar.chronos.core.logger.Logger;
-import org.seasar.chronos.core.task.TaskExecutorService;
-import org.seasar.chronos.core.util.TaskPropertyUtil;
+import org.seasar.chronos.core.schedule.TaskScheduleEntryManager;
 import org.seasar.chronos.extension.store.ScheduleStore;
-import org.seasar.chronos.extension.store.entity.ScheduleEntity;
 
 public class StoredSchedulerWrapperImpl extends SchedulerWrapper {
-
 	private class InternalSchedulerEventListener implements
 			SchedulerEventListener {
 
-		public void addTask(Scheduler scheduler, TaskStateType type,
-				TaskExecutorService taskExecutorService) {
-			storeAddTask(type, taskExecutorService);
+		public void addTaskScheduleEntry(Scheduler scheduler,
+				TaskScheduleEntry taskScheduleEntry) {
+			storeAddTask(taskScheduleEntry);
 		}
 
 		public void cancelTask(Scheduler scheduler, Object task) {
@@ -39,15 +34,9 @@ public class StoredSchedulerWrapperImpl extends SchedulerWrapper {
 			storePauseScheduler();
 		}
 
-		public void removeTask(Scheduler scheduler, TaskStateType type,
-				Object task) {
-			storeRemoveTask(type, task);
-		}
-
-		public void removeTask(Scheduler scheduler, TaskStateType type,
-				TaskExecutorService taskExecutorService) {
-			// TODO 自動生成されたメソッド・スタブ
-
+		public void removeTaskScheduleEntry(Scheduler scheduler,
+				TaskScheduleEntry taskScheduleEntry) {
+			storeRemoveTask(taskScheduleEntry);
 		}
 
 		public void resigtTaskAfterScheduler(Scheduler scheduler) {
@@ -70,16 +59,12 @@ public class StoredSchedulerWrapperImpl extends SchedulerWrapper {
 			storeStartTask(task);
 		}
 
-		private void storeAddTask(TaskStateType type, Object task) {
-
-		}
-
 	}
 
 	private static final Logger log = Logger
 			.getLogger(StoredSchedulerWrapperImpl.class);
 
-	private TaskContenaStateManager taskContenaStateManager = TaskContenaStateManager
+	private TaskScheduleEntryManager taskScheduleEntryStateManager = TaskScheduleEntryManager
 			.getInstance();
 
 	private ScheduleStore scheduleStore;
@@ -87,26 +72,6 @@ public class StoredSchedulerWrapperImpl extends SchedulerWrapper {
 	public StoredSchedulerWrapperImpl(Scheduler scheduler) {
 		super(scheduler);
 		this.addListener(new InternalSchedulerEventListener());
-	}
-
-	public void addTask(TaskStateType type,
-			TaskExecutorService taskExecutorService) {
-		// TODO 作業途中
-		TaskContena taskContena = taskContenaStateManager
-				.getTaskContena(taskExecutorService.getTask());
-		log.debug("<<storeAddTask>> : " + taskContena.getTaskClass().getName()
-				+ " : " + taskContena.getTask());
-		taskContena.getTaskExecutorService().save();
-
-		String taskName = TaskPropertyUtil.getTaskName(taskExecutorService);
-		String description = TaskPropertyUtil
-				.getDescription(taskExecutorService);
-		Long taskId = TaskPropertyUtil.getTaskId(taskExecutorService);
-		ScheduleEntity se = new ScheduleEntity();
-		se.setTaskName(taskName);
-		se.setDescription(description);
-		se.setTaskId(taskId);
-		se.setStatus(type.ordinal());
 	}
 
 	private void recoverySchedule() {
@@ -122,8 +87,16 @@ public class StoredSchedulerWrapperImpl extends SchedulerWrapper {
 		this.scheduleStore = scheduleStore;
 	}
 
+	private void storeAddTask(TaskScheduleEntry taskScheduleEntry) {
+		log.debug("<<storeAddTask>> : "
+				+ taskScheduleEntry.getTaskClass().getName() + " : "
+				+ taskScheduleEntry.getTask());
+		taskScheduleEntry.save();
+	}
+
 	private void storeCancelTask(Object task) {
-		TaskContena taskContena = taskContenaStateManager.getTaskContena(task);
+		TaskScheduleEntry taskContena = taskScheduleEntryStateManager
+				.getTaskScheduleEntry(task);
 		log.debug("<<storeCancelTask>> : "
 				+ taskContena.getTaskClass().getName() + " : "
 				+ taskContena.getTask());
@@ -134,7 +107,8 @@ public class StoredSchedulerWrapperImpl extends SchedulerWrapper {
 	}
 
 	private void storeEndTask(Object task) {
-		TaskContena taskContena = taskContenaStateManager.getTaskContena(task);
+		TaskScheduleEntry taskContena = taskScheduleEntryStateManager
+				.getTaskScheduleEntry(task);
 		log.debug("<<storeEndTask>> : " + taskContena.getTaskClass().getName()
 				+ " : " + taskContena.getTask());
 	}
@@ -143,8 +117,11 @@ public class StoredSchedulerWrapperImpl extends SchedulerWrapper {
 		log.debug("<<storePauseScheduler>>");
 	}
 
-	private void storeRemoveTask(TaskStateType type, Object task) {
-		log.debug("<<storeRemoveTask>>");
+	private void storeRemoveTask(TaskScheduleEntry taskScheduleEntry) {
+		log.debug("<<storeRemoveTask>> : "
+				+ taskScheduleEntry.getTaskClass().getName() + " : "
+				+ taskScheduleEntry.getTask());
+		taskScheduleEntry.save();
 	}
 
 	private void storeResigtTaskAfterScheduler() {
@@ -165,10 +142,11 @@ public class StoredSchedulerWrapperImpl extends SchedulerWrapper {
 	}
 
 	private void storeStartTask(Object task) {
-		TaskContena taskContena = taskContenaStateManager.getTaskContena(task);
+		TaskScheduleEntry taskScheduleEntry = taskScheduleEntryStateManager
+				.getTaskScheduleEntry(task);
 		log.debug("<<storeStartTask>> : "
-				+ taskContena.getTaskClass().getName() + " : "
-				+ taskContena.getTask());
+				+ taskScheduleEntry.getTaskClass().getName() + " : "
+				+ taskScheduleEntry.getTask());
 	}
 
 }
