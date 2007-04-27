@@ -8,9 +8,8 @@ import java.util.concurrent.Future;
 
 import org.seasar.chronos.core.Scheduler;
 import org.seasar.chronos.core.SchedulerEventListener;
-import org.seasar.chronos.core.impl.TaskStateType;
+import org.seasar.chronos.core.TaskScheduleEntry;
 import org.seasar.chronos.core.logger.Logger;
-import org.seasar.chronos.core.task.TaskExecutorService;
 
 public class SchedulerEventHandler {
 
@@ -32,12 +31,11 @@ public class SchedulerEventHandler {
 		return this.schedulerEventListener.add(listener);
 	}
 
-	public void fireAddTask(final TaskStateType type,
-			final TaskExecutorService taskExecutorService) {
+	public void fireAddTaskScheduleEntry(final TaskScheduleEntry taskScheduleEntry) {
 		for (final SchedulerEventListener listener : schedulerEventListener) {
 			Future<?> future = ExecutorService.submit(new Runnable() {
 				public void run() {
-					listener.addTask(scheduler, type, taskExecutorService);
+					listener.addTaskScheduleEntry(scheduler, taskScheduleEntry);
 				}
 			});
 			waitFuture(future);
@@ -110,12 +108,11 @@ public class SchedulerEventHandler {
 		}
 	}
 
-	public void fireRemoveTask(final TaskStateType type,
-			final TaskExecutorService taskExecutorService) {
+	public void fireRemoveTaskScheduleEntry(final TaskScheduleEntry taskScheduleEntry) {
 		for (final SchedulerEventListener listener : schedulerEventListener) {
 			Future<?> future = ExecutorService.submit(new Runnable() {
 				public void run() {
-					listener.removeTask(scheduler, type, taskExecutorService);
+					listener.removeTaskScheduleEntry(scheduler, taskScheduleEntry);
 				}
 			});
 			waitFuture(future);

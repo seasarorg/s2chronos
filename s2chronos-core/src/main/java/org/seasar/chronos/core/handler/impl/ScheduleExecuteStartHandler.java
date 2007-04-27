@@ -5,9 +5,9 @@ import java.util.concurrent.Future;
 import java.util.concurrent.RejectedExecutionException;
 
 import org.seasar.chronos.core.Scheduler;
-import org.seasar.chronos.core.impl.TaskContena;
+import org.seasar.chronos.core.TaskScheduleEntry;
 import org.seasar.chronos.core.impl.TaskStateType;
-import org.seasar.chronos.core.impl.TaskContenaStateManager.TaskContenaHanlder;
+import org.seasar.chronos.core.schedule.TaskScheduleEntryManager.TaskScheduleEntryHanlder;
 import org.seasar.chronos.core.task.TaskExecutorService;
 import org.seasar.chronos.core.util.TaskPropertyUtil;
 
@@ -30,10 +30,10 @@ public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler 
 	@Override
 	public void handleRequest() throws InterruptedException {
 		this.taskContenaStateManager.forEach(TaskStateType.SCHEDULED,
-				new TaskContenaHanlder() {
-					public Object processTaskContena(
-							final TaskContena taskContena) {
-						final TaskExecutorService tes = taskContena
+				new TaskScheduleEntryHanlder() {
+					public Object processTaskScheduleEntry(
+							final TaskScheduleEntry taskScheduleEntry) {
+						final TaskExecutorService tes = taskScheduleEntry
 								.getTaskExecutorService();
 						log.debug("check task : "
 								+ TaskPropertyUtil.getTaskName(tes));
@@ -63,13 +63,13 @@ public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler 
 											scheduleTask(_tes, nextTaskName);
 											fireEndTaskEvent(_tes);
 											taskContenaStateManager
-													.removeTaskContena(
+													.removeTaskScheduleEntry(
 															TaskStateType.RUNNING,
-															taskContena);
+															taskScheduleEntry);
 											taskContenaStateManager
-													.addTaskContena(
+													.addTaskScheduleEntry(
 															TaskStateType.UNSCHEDULED,
-															taskContena);
+															taskScheduleEntry);
 											log.log("DCHRONOS000112",
 													new Object[] { taskName });
 											return tes;
@@ -77,11 +77,12 @@ public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler 
 
 									});
 
-							taskContena.setTaskStaterFuture(taskStaterFuture);
-							taskContenaStateManager.addTaskContena(
-									TaskStateType.RUNNING, taskContena);
-							taskContenaStateManager.removeTaskContena(
-									TaskStateType.SCHEDULED, taskContena);
+							taskScheduleEntry
+									.setTaskStaterFuture(taskStaterFuture);
+							taskContenaStateManager.addTaskScheduleEntry(
+									TaskStateType.RUNNING, taskScheduleEntry);
+							taskContenaStateManager.removeTaskScheduleEntry(
+									TaskStateType.SCHEDULED, taskScheduleEntry);
 						}
 						return new Object();
 					}

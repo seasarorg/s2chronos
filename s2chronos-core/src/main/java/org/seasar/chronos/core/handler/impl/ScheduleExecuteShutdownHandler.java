@@ -3,10 +3,10 @@ package org.seasar.chronos.core.handler.impl;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
 
+import org.seasar.chronos.core.TaskScheduleEntry;
 import org.seasar.chronos.core.impl.SchedulerImpl;
-import org.seasar.chronos.core.impl.TaskContena;
 import org.seasar.chronos.core.impl.TaskStateType;
-import org.seasar.chronos.core.impl.TaskContenaStateManager.TaskContenaHanlder;
+import org.seasar.chronos.core.schedule.TaskScheduleEntryManager.TaskScheduleEntryHanlder;
 import org.seasar.chronos.core.task.TaskExecutorService;
 import org.seasar.chronos.core.util.TaskPropertyUtil;
 
@@ -16,10 +16,10 @@ public class ScheduleExecuteShutdownHandler extends
 	@Override
 	public void handleRequest() throws InterruptedException {
 		this.taskContenaStateManager.forEach(TaskStateType.RUNNING,
-				new TaskContenaHanlder() {
-					public Object processTaskContena(
-							final TaskContena taskContena) {
-						final TaskExecutorService tes = taskContena
+				new TaskScheduleEntryHanlder() {
+					public Object processTaskScheduleEntry(
+							final TaskScheduleEntry taskScheduleEntry) {
+						final TaskExecutorService tes = taskScheduleEntry
 								.getTaskExecutorService();
 						if (TaskPropertyUtil.getShutdownTask(tes)) {
 							log.log("DCHRONOS0011",
@@ -46,13 +46,13 @@ public class ScheduleExecuteShutdownHandler extends
 														.fireCancelTask(tes
 																.getTask());
 												taskContenaStateManager
-														.removeTaskContena(
+														.removeTaskScheduleEntry(
 																TaskStateType.CANCELING,
-																taskContena);
+																taskScheduleEntry);
 												taskContenaStateManager
-														.addTaskContena(
+														.addTaskScheduleEntry(
 																TaskStateType.UNSCHEDULED,
-																taskContena);
+																taskScheduleEntry);
 											} else {
 												log.debug("cancel error!");
 											}
@@ -65,11 +65,11 @@ public class ScheduleExecuteShutdownHandler extends
 											return tes;
 										}
 									});
-							taskContena.setTaskStaterFuture(future);
-							taskContenaStateManager.addTaskContena(
-									TaskStateType.CANCELING, taskContena);
-							taskContenaStateManager.removeTaskContena(
-									TaskStateType.RUNNING, taskContena);
+							taskScheduleEntry.setTaskStaterFuture(future);
+							taskContenaStateManager.addTaskScheduleEntry(
+									TaskStateType.CANCELING, taskScheduleEntry);
+							taskContenaStateManager.removeTaskScheduleEntry(
+									TaskStateType.RUNNING, taskScheduleEntry);
 
 						}
 						return null;

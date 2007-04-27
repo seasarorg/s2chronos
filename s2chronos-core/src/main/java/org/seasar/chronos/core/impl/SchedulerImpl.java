@@ -11,10 +11,13 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.seasar.chronos.core.SchedulerConfiguration;
 import org.seasar.chronos.core.SchedulerEventListener;
+import org.seasar.chronos.core.TaskScheduleEntry;
 import org.seasar.chronos.core.event.SchedulerEventHandler;
 import org.seasar.chronos.core.exception.ExecutionRuntimeException;
 import org.seasar.chronos.core.exception.InterruptedRuntimeException;
 import org.seasar.chronos.core.handler.ScheduleExecuteHandler;
+import org.seasar.chronos.core.schedule.ScheduleEntry;
+import org.seasar.chronos.core.schedule.TaskScheduleEntryManager;
 import org.seasar.chronos.core.util.TaskPropertyUtil;
 import org.seasar.framework.container.ComponentDef;
 import org.seasar.framework.container.ComponentNotFoundRuntimeException;
@@ -37,7 +40,7 @@ public class SchedulerImpl extends AbstractScheduler {
 
 	private Future<Void> schedulerTaskFuture;
 
-	private TaskContenaStateManager taskContenaStateManager = TaskContenaStateManager
+	private TaskScheduleEntryManager taskContenaStateManager = TaskScheduleEntryManager
 			.getInstance();
 
 	private SchedulerConfiguration configuration = defaultConfiguration;
@@ -152,19 +155,18 @@ public class SchedulerImpl extends AbstractScheduler {
 	}
 
 	public boolean removeTask(Object task) {
-		TaskContena taskContena = this.taskContenaStateManager
-				.getTaskContena(task);
-		this.taskContenaStateManager.removeTaskContena(
+		TaskScheduleEntry taskContena = this.taskContenaStateManager
+				.getTaskScheduleEntry(task);
+		this.taskContenaStateManager.removeTaskScheduleEntry(
 				TaskStateType.UNSCHEDULED, taskContena);
 		return false;
 	}
 
-	protected TaskContena scheduleTask(ComponentDef componentDef) {
-		TaskContena tc = super.scheduleTask(componentDef);
-		this.taskContenaStateManager
-				.addTaskContena(TaskStateType.SCHEDULED, tc);
-		this.schedulerEventHandler.fireAddTask(TaskStateType.SCHEDULED, tc
-				.getTaskExecutorService());
+	protected ScheduleEntry scheduleTask(ComponentDef componentDef) {
+		ScheduleEntry tc = super.scheduleTask(componentDef);
+		this.taskContenaStateManager.addTaskScheduleEntry(
+				TaskStateType.SCHEDULED, tc);
+		this.schedulerEventHandler.fireAddTaskScheduleEntry(tc);
 		return tc;
 	}
 
@@ -212,15 +214,16 @@ public class SchedulerImpl extends AbstractScheduler {
 
 	public void shutdown() {
 		this.taskContenaStateManager.forEach(TaskStateType.RUNNING,
-				new TaskContenaStateManager.TaskContenaHanlder() {
-					public Object processTaskContena(TaskContena taskContena) {
-						taskContena.getTaskExecutorService().cancel();
+				new TaskScheduleEntryManager.TaskScheduleEntryHanlder() {
+					public Object processTaskScheduleEntry(
+							TaskScheduleEntry taskScheduleEntry) {
+						taskScheduleEntry.getTaskExecutorService().cancel();
 						try {
-							while (!taskContena.getTaskExecutorService().await(
-									SHUTDOWN_AWAIT_TIME,
-									SHUTDOWN_AWAIT_TIMEUNIT)) {
+							while (!taskScheduleEntry.getTaskExecutorService()
+									.await(SHUTDOWN_AWAIT_TIME,
+											SHUTDOWN_AWAIT_TIMEUNIT)) {
 								String taskName = TaskPropertyUtil
-										.getTaskName(taskContena
+										.getTaskName(taskScheduleEntry
 												.getTaskExecutorService());
 								log.debug("Task (" + taskName
 										+ ") ‚ÌShutdown ‘Ò‹@’†");

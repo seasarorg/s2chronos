@@ -5,8 +5,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.seasar.chronos.core.event.SchedulerEventHandler;
 import org.seasar.chronos.core.handler.ScheduleExecuteHandler;
-import org.seasar.chronos.core.impl.TaskContenaStateManager;
 import org.seasar.chronos.core.logger.Logger;
+import org.seasar.chronos.core.schedule.TaskScheduleEntryManager;
 import org.seasar.framework.container.annotation.tiger.Binding;
 import org.seasar.framework.container.annotation.tiger.BindingType;
 
@@ -16,7 +16,7 @@ public abstract class AbstractScheduleExecuteHandler implements
 	protected static Logger log = Logger
 			.getLogger(AbstractScheduleExecuteHandler.class);
 
-	protected TaskContenaStateManager taskContenaStateManager = TaskContenaStateManager
+	protected TaskScheduleEntryManager taskContenaStateManager = TaskScheduleEntryManager
 			.getInstance();
 
 	protected ExecutorService executorService;

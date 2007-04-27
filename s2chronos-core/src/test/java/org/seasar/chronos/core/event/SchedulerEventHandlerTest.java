@@ -4,23 +4,18 @@ import junit.framework.TestCase;
 
 import org.seasar.chronos.core.Scheduler;
 import org.seasar.chronos.core.SchedulerEventListener;
+import org.seasar.chronos.core.TaskScheduleEntry;
 import org.seasar.chronos.core.impl.SchedulerImpl;
-import org.seasar.chronos.core.impl.TaskStateType;
-import org.seasar.chronos.core.task.TaskExecutorService;
+import org.seasar.chronos.core.schedule.ScheduleEntry;
 
 public class SchedulerEventHandlerTest extends TestCase implements
 		SchedulerEventListener {
 
 	private SchedulerEventHandler target;
 
-	public void addTask(Scheduler scheduler, Object task) {
-		System.out.println("addTask");
-	}
-
-	public void addTask(Scheduler scheduler, TaskStateType type,
-			TaskExecutorService taskExecutorService) {
-		// TODO 自動生成されたメソッド・スタブ
-
+	public void addTaskScheduleEntry(Scheduler scheduler,
+			TaskScheduleEntry taskScheduleEntry) {
+		System.out.println("addTaskScheduleEntry");
 	}
 
 	public void cancelTask(Scheduler scheduler, Object task) {
@@ -39,10 +34,9 @@ public class SchedulerEventHandlerTest extends TestCase implements
 		System.out.println("pauseScheduler");
 	}
 
-	public void removeTask(Scheduler scheduler, TaskStateType type,
-			TaskExecutorService taskExecutorService) {
-		// TODO 自動生成されたメソッド・スタブ
-
+	public void removeTaskScheduleEntry(Scheduler scheduler,
+			TaskScheduleEntry taskScheduleEntry) {
+		System.out.println("removeTaskScheduleEntry");
 	}
 
 	public void resigtTaskAfterScheduler(Scheduler scheduler) {
@@ -73,7 +67,8 @@ public class SchedulerEventHandlerTest extends TestCase implements
 	}
 
 	public void testFireAddTask() {
-		target.fireAddTask(TaskStateType.SCHEDULED, null);
+		TaskScheduleEntry taskScheduleEntry = new ScheduleEntry();
+		target.fireAddTaskScheduleEntry(taskScheduleEntry);
 		try {
 			Thread.sleep(2000);
 		} catch (InterruptedException e) {

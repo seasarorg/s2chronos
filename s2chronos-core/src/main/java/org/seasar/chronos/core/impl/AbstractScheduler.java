@@ -1,9 +1,12 @@
 package org.seasar.chronos.core.impl;
 
 import org.seasar.chronos.core.Scheduler;
+import org.seasar.chronos.core.TaskScheduleEntry;
 import org.seasar.chronos.core.annotation.task.Task;
 import org.seasar.chronos.core.autodetector.TaskClassAutoDetector;
 import org.seasar.chronos.core.logger.Logger;
+import org.seasar.chronos.core.schedule.ScheduleEntry;
+import org.seasar.chronos.core.schedule.TaskScheduleEntryManager;
 import org.seasar.chronos.core.task.TaskExecutorService;
 import org.seasar.chronos.core.util.TaskPropertyUtil;
 import org.seasar.framework.container.ComponentDef;
@@ -36,16 +39,18 @@ public abstract class AbstractScheduler implements Scheduler {
 	 * @return ComponentDef
 	 */
 	protected ComponentDef findTaskComponentDefByTaskName(final String taskName) {
-		TaskContenaStateManager tcsm = TaskContenaStateManager.getInstance();
+		TaskScheduleEntryManager tcsm = TaskScheduleEntryManager
+				.getInstance();
 		Object componentDef = tcsm
-				.forEach(new TaskContenaStateManager.TaskContenaHanlder() {
-					public Object processTaskContena(TaskContena taskContena) {
-						TaskExecutorService tes = taskContena
+				.forEach(new TaskScheduleEntryManager.TaskScheduleEntryHanlder() {
+					public Object processTaskScheduleEntry(
+							TaskScheduleEntry taskScheduleEntry) {
+						TaskExecutorService tes = taskScheduleEntry
 								.getTaskExecutorService();
 						String _taskName = TaskPropertyUtil.getTaskName(tes);
 						log.debug("[[[" + taskName + ":" + _taskName + "]]]");
 						if (taskName.equals(_taskName)) {
-							return taskContena.getComponentDef();
+							return taskScheduleEntry.getComponentDef();
 						}
 						return null;
 					}
@@ -102,17 +107,18 @@ public abstract class AbstractScheduler implements Scheduler {
 		}
 	}
 
-	protected TaskContena scheduleTask(ComponentDef componentDef) {
+	protected ScheduleEntry scheduleTask(ComponentDef componentDef) {
 		return scheduleTask(componentDef, false);
 	}
 
-	protected TaskContena scheduleTask(ComponentDef componentDef, boolean force) {
+	protected ScheduleEntry scheduleTask(ComponentDef componentDef,
+			boolean force) {
 		Class<?> clazz = componentDef.getComponentClass();
 		Task task = clazz.getAnnotation(Task.class);
 		if (!task.autoSchedule() && !force) {
 			return null;
 		}
-		TaskContena tc = new TaskContena(componentDef);
+		ScheduleEntry tc = new ScheduleEntry(componentDef);
 		final TaskExecutorService tes = (TaskExecutorService) this.s2container
 				.getComponent(TaskExecutorService.class);
 		tc.setTaskExecutorService(tes);
@@ -135,7 +141,7 @@ public abstract class AbstractScheduler implements Scheduler {
 		return tc;
 	}
 
-	protected TaskContena scheduleTask(final S2Container s2Container,
+	protected TaskScheduleEntry scheduleTask(final S2Container s2Container,
 			Class componentClass) {
 		ComponentDef componentDef = s2Container.getComponentDef(componentClass);
 		return scheduleTask(componentDef);

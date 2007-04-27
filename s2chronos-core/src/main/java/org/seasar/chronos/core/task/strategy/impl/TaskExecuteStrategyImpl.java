@@ -6,14 +6,14 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import org.seasar.chronos.core.Scheduler;
+import org.seasar.chronos.core.TaskScheduleEntry;
 import org.seasar.chronos.core.TaskThreadPool;
 import org.seasar.chronos.core.TaskTrigger;
 import org.seasar.chronos.core.ThreadPoolType;
 import org.seasar.chronos.core.annotation.task.Task;
 import org.seasar.chronos.core.delegate.AsyncResult;
 import org.seasar.chronos.core.delegate.MethodInvoker;
-import org.seasar.chronos.core.impl.TaskContena;
-import org.seasar.chronos.core.impl.TaskContenaStateManager;
+import org.seasar.chronos.core.schedule.TaskScheduleEntryManager;
 import org.seasar.chronos.core.task.TaskType;
 import org.seasar.chronos.core.task.Transition;
 import org.seasar.chronos.core.task.handler.TaskExecuteHandler;
@@ -108,11 +108,13 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 	}
 
 	public boolean checkMoveAnotherTask(final String nextTaskName) {
-		TaskContenaStateManager tcsm = TaskContenaStateManager.getInstance();
+		TaskScheduleEntryManager tcsm = TaskScheduleEntryManager
+				.getInstance();
 		Object result = tcsm
-				.forEach(new TaskContenaStateManager.TaskContenaHanlder() {
-					public Object processTaskContena(TaskContena taskContena) {
-						Class<?> clazz = taskContena.getTaskClass();
+				.forEach(new TaskScheduleEntryManager.TaskScheduleEntryHanlder() {
+					public Object processTaskScheduleEntry(
+							TaskScheduleEntry taskScheduleEntry) {
+						Class<?> clazz = taskScheduleEntry.getTaskClass();
 						Task task = (Task) clazz.getAnnotation(Task.class);
 						if (task == null) {
 							return null;
