@@ -16,7 +16,6 @@ import org.seasar.chronos.core.event.SchedulerEventHandler;
 import org.seasar.chronos.core.exception.ExecutionRuntimeException;
 import org.seasar.chronos.core.exception.InterruptedRuntimeException;
 import org.seasar.chronos.core.handler.ScheduleExecuteHandler;
-import org.seasar.chronos.core.schedule.ScheduleEntry;
 import org.seasar.chronos.core.schedule.TaskScheduleEntryManager;
 import org.seasar.chronos.core.util.TaskPropertyUtil;
 import org.seasar.framework.container.ComponentDef;
@@ -162,12 +161,12 @@ public class SchedulerImpl extends AbstractScheduler {
 		return false;
 	}
 
-	protected ScheduleEntry scheduleTask(ComponentDef componentDef) {
-		ScheduleEntry tc = super.scheduleTask(componentDef);
+	protected TaskScheduleEntry scheduleTask(ComponentDef componentDef) {
+		TaskScheduleEntry taskScheduleEntry = super.scheduleTask(componentDef);
 		this.taskContenaStateManager.addTaskScheduleEntry(
-				TaskStateType.SCHEDULED, tc);
-		this.schedulerEventHandler.fireAddTaskScheduleEntry(tc);
-		return tc;
+				TaskStateType.SCHEDULED, taskScheduleEntry);
+		this.schedulerEventHandler.fireAddTaskScheduleEntry(taskScheduleEntry);
+		return taskScheduleEntry;
 	}
 
 	public void setScheduleExecuteShutdownHandler(

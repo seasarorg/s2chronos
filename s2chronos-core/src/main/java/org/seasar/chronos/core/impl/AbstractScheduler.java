@@ -5,7 +5,6 @@ import org.seasar.chronos.core.TaskScheduleEntry;
 import org.seasar.chronos.core.annotation.task.Task;
 import org.seasar.chronos.core.autodetector.TaskClassAutoDetector;
 import org.seasar.chronos.core.logger.Logger;
-import org.seasar.chronos.core.schedule.ScheduleEntry;
 import org.seasar.chronos.core.schedule.TaskScheduleEntryManager;
 import org.seasar.chronos.core.task.TaskExecutorService;
 import org.seasar.chronos.core.util.TaskPropertyUtil;
@@ -39,8 +38,7 @@ public abstract class AbstractScheduler implements Scheduler {
 	 * @return ComponentDef
 	 */
 	protected ComponentDef findTaskComponentDefByTaskName(final String taskName) {
-		TaskScheduleEntryManager tcsm = TaskScheduleEntryManager
-				.getInstance();
+		TaskScheduleEntryManager tcsm = TaskScheduleEntryManager.getInstance();
 		Object componentDef = tcsm
 				.forEach(new TaskScheduleEntryManager.TaskScheduleEntryHanlder() {
 					public Object processTaskScheduleEntry(
@@ -107,25 +105,28 @@ public abstract class AbstractScheduler implements Scheduler {
 		}
 	}
 
-	protected ScheduleEntry scheduleTask(ComponentDef componentDef) {
+	protected TaskScheduleEntry scheduleTask(ComponentDef componentDef) {
 		return scheduleTask(componentDef, false);
 	}
 
-	protected ScheduleEntry scheduleTask(ComponentDef componentDef,
+	protected TaskScheduleEntry scheduleTask(ComponentDef componentDef,
 			boolean force) {
 		Class<?> clazz = componentDef.getComponentClass();
 		Task task = clazz.getAnnotation(Task.class);
 		if (!task.autoSchedule() && !force) {
 			return null;
 		}
-		ScheduleEntry tc = new ScheduleEntry(componentDef);
+		TaskScheduleEntry taskScheduleEntry = (TaskScheduleEntry) this.s2container
+				.getComponent(TaskScheduleEntry.class);
+		taskScheduleEntry.setComponentDef(componentDef);
+
 		final TaskExecutorService tes = (TaskExecutorService) this.s2container
 				.getComponent(TaskExecutorService.class);
-		tc.setTaskExecutorService(tes);
+		taskScheduleEntry.setTaskExecutorService(tes);
 
 		try {
-			String className = tc.getComponentDef().getComponentClass()
-					.getName();
+			String className = taskScheduleEntry.getComponentDef()
+					.getComponentClass().getName();
 			Class.forName(className);
 		} catch (ClassNotFoundException e) {
 			throw new ClassNotFoundRuntimeException(e);
@@ -137,8 +138,8 @@ public abstract class AbstractScheduler implements Scheduler {
 		tes.setGetterSignal(this);
 		tes.setScheduler(this);
 		tes.prepare();
-		tc.setTask(tes.getTask());
-		return tc;
+		taskScheduleEntry.setTask(tes.getTask());
+		return taskScheduleEntry;
 	}
 
 	protected TaskScheduleEntry scheduleTask(final S2Container s2Container,

@@ -26,11 +26,6 @@ public class ScheduleEntry extends AbstractScheduleEntry {
 
 	}
 
-	public ScheduleEntry(ComponentDef componentDef) {
-		this.setComponentDef(componentDef);
-		this.setTaskClass(componentDef.getComponentClass());
-	}
-
 	public ComponentDef getComponentDef() {
 		return componentDef;
 	}
@@ -70,6 +65,7 @@ public class ScheduleEntry extends AbstractScheduleEntry {
 
 	public void setComponentDef(ComponentDef componentDef) {
 		this.componentDef = componentDef;
+		this.setTaskClass(componentDef.getComponentClass());
 	}
 
 	public void setTask(Object target) {
