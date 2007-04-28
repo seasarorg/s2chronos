@@ -87,4 +87,8 @@ public class ScheduleStoreImpl implements ScheduleStore {
 		this.scheduleDao = scheduleDao;
 	}
 
+	public void setScheduleDxo(ScheduleDxo scheduleDxo) {
+		this.scheduleDxo = scheduleDxo;
+	}
+
 }
