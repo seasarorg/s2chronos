@@ -9,11 +9,14 @@ import org.seasar.chronos.core.schedule.TaskScheduleEntryManager.TaskScheduleEnt
 import org.seasar.chronos.core.task.TaskExecutorService;
 import org.seasar.chronos.extension.store.ScheduleStore;
 import org.seasar.chronos.extension.store.dao.ScheduleDao;
+import org.seasar.chronos.extension.store.dxo.ScheduleDxo;
 import org.seasar.chronos.extension.store.entity.ScheduleEntity;
 
 public class ScheduleStoreImpl implements ScheduleStore {
 
 	private ScheduleDao scheduleDao;
+
+	private ScheduleDxo scheduleDxo;
 
 	private TaskScheduleEntryManager taskContenaStateManager = TaskScheduleEntryManager
 			.getInstance();
@@ -31,6 +34,21 @@ public class ScheduleStoreImpl implements ScheduleStore {
 		}
 	}
 
+	public void loadFromStore(Long id, TaskScheduleEntry taskScheduleEntry) {
+		taskScheduleEntry.getTaskExecutorService().load();
+
+	}
+
+	public void loadFromStoreByObjectId(Long id,
+			TaskScheduleEntry taskScheduleEntry) {
+		taskScheduleEntry.getTaskExecutorService().load();
+		ScheduleEntity scheduleEntity = this.scheduleDao.selectByObjectId(id);
+		if (scheduleEntity == null) {
+			return;
+		}
+
+	}
+
 	public void saveAllTasks() {
 		taskContenaStateManager.forEach(TaskStateType.SCHEDULED,
 				new TaskScheduleEntryHanlder() {
@@ -42,6 +60,11 @@ public class ScheduleStoreImpl implements ScheduleStore {
 						return null;
 					}
 				});
+	}
+
+	public Long saveToStore(TaskScheduleEntry taskScheduleEntry) {
+		// TODO 自動生成されたメソッド・スタブ
+		return null;
 	}
 
 	public void setScheduleDao(ScheduleDao scheduleDao) {
