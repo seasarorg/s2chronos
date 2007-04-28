@@ -9,9 +9,15 @@ import org.seasar.dao.annotation.tiger.S2Dao;
 @S2Dao(bean = ScheduleEntity.class)
 public interface ScheduleDao {
 
+	public int delete(ScheduleEntity entity);
+
+	public int insert(ScheduleEntity entity);
+
 	public List<ScheduleEntity> selectAll();
 
 	@Arguments("OBJECT_ID")
 	public ScheduleEntity selectByObjectId(Long id);
+
+	public int update(ScheduleEntity entity);
 
 }

@@ -1,4 +1,4 @@
-package org.seasar.chronos.extension.store.schedule;
+package org.seasar.chronos.extension.store.impl;
 
 import org.seasar.chronos.core.TaskScheduleEntry;
 import org.seasar.chronos.core.schedule.ScheduleEntryWrapper;

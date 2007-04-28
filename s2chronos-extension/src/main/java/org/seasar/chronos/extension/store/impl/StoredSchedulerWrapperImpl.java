@@ -6,7 +6,6 @@ import org.seasar.chronos.core.SchedulerWrapper;
 import org.seasar.chronos.core.TaskScheduleEntry;
 import org.seasar.chronos.core.logger.Logger;
 import org.seasar.chronos.core.schedule.TaskScheduleEntryManager;
-import org.seasar.chronos.extension.store.ScheduleStore;
 
 public class StoredSchedulerWrapperImpl extends SchedulerWrapper {
 	private class InternalSchedulerEventListener implements
@@ -67,24 +66,18 @@ public class StoredSchedulerWrapperImpl extends SchedulerWrapper {
 	private TaskScheduleEntryManager taskScheduleEntryStateManager = TaskScheduleEntryManager
 			.getInstance();
 
-	private ScheduleStore scheduleStore;
-
 	public StoredSchedulerWrapperImpl(Scheduler scheduler) {
 		super(scheduler);
 		this.addListener(new InternalSchedulerEventListener());
 	}
 
 	private void recoverySchedule() {
-		this.scheduleStore.loadAllTasks();
+		// this.scheduleStore.loadAllTasks();
 	}
 
 	@Override
 	protected void registTaskFromS2Container() {
 
-	}
-
-	public void setScheduleStore(ScheduleStore scheduleStore) {
-		this.scheduleStore = scheduleStore;
 	}
 
 	private void storeAddTask(TaskScheduleEntry taskScheduleEntry) {

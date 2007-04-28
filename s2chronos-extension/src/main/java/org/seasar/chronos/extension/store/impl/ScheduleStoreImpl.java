@@ -1,5 +1,6 @@
 package org.seasar.chronos.extension.store.impl;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.seasar.chronos.core.TaskScheduleEntry;
@@ -46,7 +47,7 @@ public class ScheduleStoreImpl implements ScheduleStore {
 		if (scheduleEntity == null) {
 			return;
 		}
-
+		scheduleDxo.fromEntityToComponent(scheduleEntity, taskScheduleEntry);
 	}
 
 	public void saveAllTasks() {
@@ -63,7 +64,22 @@ public class ScheduleStoreImpl implements ScheduleStore {
 	}
 
 	public Long saveToStore(TaskScheduleEntry taskScheduleEntry) {
-		// TODO 自動生成されたメソッド・スタブ
+		boolean update = true;
+		ScheduleEntity entity = this.scheduleDao
+				.selectByObjectId(taskScheduleEntry.getScheduleId());
+		if (entity == null) {
+			entity = this.scheduleDxo.toEntity(taskScheduleEntry);
+			update = false;
+		} else {
+			this.scheduleDxo.fromComponentToEntity(taskScheduleEntry, entity);
+		}
+		taskScheduleEntry.getTaskExecutorService().save();
+		if (update) {
+			this.scheduleDao.update(entity);
+		} else {
+			entity.setVersionNo(new BigDecimal(1L));
+			this.scheduleDao.insert(entity);
+		}
 		return null;
 	}
 

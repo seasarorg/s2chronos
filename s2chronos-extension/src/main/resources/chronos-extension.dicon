@@ -69,6 +69,14 @@
 	<component name="scheduleExecuteWaitHandler" class="org.seasar.chronos.core.handler.impl.ScheduleExecuteWaitHandler">
 		<property name="pauseLock">scheduler</property>
 	</component>
+	
+	<component name="scheduleEntry" class="org.seasar.chronos.extension.store.impl.StoredScheduleEntryWrapperImpl" instance="prototype" autoBinding="none">
+		<arg>
+			<component class="org.seasar.chronos.core.schedule.ScheduleEntry">
+			</component>
+		</arg>
+		<property name="scheduleStore">scheduleStore</property>
+	</component>
 		
 	<component name="scheduler" class="org.seasar.chronos.extension.store.impl.StoredSchedulerWrapperImpl">
 		<arg>
