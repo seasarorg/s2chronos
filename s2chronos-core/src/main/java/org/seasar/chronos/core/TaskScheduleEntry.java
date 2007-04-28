@@ -10,6 +10,8 @@ public interface TaskScheduleEntry extends Serializable {
 
 	public ComponentDef getComponentDef();
 
+	public Long getScheduleId();
+
 	public Object getTask();
 
 	public Class getTaskClass();
@@ -21,6 +23,8 @@ public interface TaskScheduleEntry extends Serializable {
 	public TaskStateType getTaskStateType();
 
 	public void setComponentDef(ComponentDef componentDef);
+
+	public void setScheduleId(Long scheduleId);
 
 	public void setTask(Object target);
 

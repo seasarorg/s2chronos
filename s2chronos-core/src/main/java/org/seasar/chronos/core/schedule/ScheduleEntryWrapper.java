@@ -19,6 +19,10 @@ public class ScheduleEntryWrapper extends AbstractScheduleEntry {
 		return taskScheduleEntry.getComponentDef();
 	}
 
+	public Long getScheduleId() {
+		return taskScheduleEntry.getScheduleId();
+	}
+
 	public Object getTask() {
 		return taskScheduleEntry.getTask();
 	}
@@ -41,6 +45,10 @@ public class ScheduleEntryWrapper extends AbstractScheduleEntry {
 
 	public void setComponentDef(ComponentDef componentDef) {
 		taskScheduleEntry.setComponentDef(componentDef);
+	}
+
+	public void setScheduleId(Long scheduleId) {
+		taskScheduleEntry.setScheduleId(scheduleId);
 	}
 
 	public void setTask(Object target) {
