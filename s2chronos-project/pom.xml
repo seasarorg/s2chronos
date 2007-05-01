@@ -34,6 +34,20 @@
 		<name>The Seasar Foundation</name>
 		<url>http://www.seasar.org/</url>
 	</organization>
+	<build>
+		<defaultGoal>validate</defaultGoal>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<configuration>
+						<source>1.5</source>
+						<target>1.5</target>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
 	<modules>
 		<module>../s2chronos-core</module>
 		<module>../s2chronos-extension</module>
