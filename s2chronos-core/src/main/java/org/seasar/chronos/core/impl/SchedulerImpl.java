@@ -154,10 +154,14 @@ public class SchedulerImpl extends AbstractScheduler {
 	}
 
 	public boolean removeTask(Object task) {
-		TaskScheduleEntry taskContena = this.taskContenaStateManager
+		TaskScheduleEntry taskScheduleEntry = this.taskContenaStateManager
 				.getTaskScheduleEntry(task);
-		this.taskContenaStateManager.removeTaskScheduleEntry(
-				TaskStateType.UNSCHEDULED, taskContena);
+		if (this.taskContenaStateManager.removeTaskScheduleEntry(
+				TaskStateType.UNSCHEDULED, taskScheduleEntry)) {
+			this.schedulerEventHandler
+					.fireRemoveTaskScheduleEntry(taskScheduleEntry);
+			return true;
+		}
 		return false;
 	}
 

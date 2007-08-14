@@ -4,7 +4,7 @@
 <components>
 	<include path="chronos-core.dicon"/>
 	
-	<component class="org.seasar.chronos.core.task.SimpleTask">
+	<component name="smartTask" class="org.seasar.chronos.core.task.SimpleTask">
 		<aspect pointcut="do.*,initailize,destroy">aop.traceInterceptor</aspect>
 	</component>
 	<!--

@@ -1,7 +1,6 @@
 package org.seasar.chronos.core.task.strategy.impl;
 
 import org.seasar.chronos.core.S2TestCaseBase;
-import org.seasar.chronos.core.smartdeploy.task.SmartTask;
 import org.seasar.chronos.core.task.strategy.TaskExecuteStrategy;
 import org.seasar.framework.container.ComponentDef;
 import org.seasar.framework.container.hotdeploy.HotdeployUtil;
@@ -18,7 +17,7 @@ public class TaskExecuteStrategyImplTest extends S2TestCaseBase {
 	}
 
 	public void testSerialize() {
-		ComponentDef taskComponentDef = this.getComponentDef(SmartTask.class);
+		ComponentDef taskComponentDef = this.getComponentDef("smartTask");
 		try {
 			String className = taskComponentDef.getComponentClass().getName();
 			Class.forName(className);
@@ -32,6 +31,7 @@ public class TaskExecuteStrategyImplTest extends S2TestCaseBase {
 		taskExecuteStrategy.prepare();
 		taskExecuteStrategy.save();
 		this.id = taskExecuteStrategy.getTaskId();
+
 		HotdeployUtil.stop();
 	}
 }

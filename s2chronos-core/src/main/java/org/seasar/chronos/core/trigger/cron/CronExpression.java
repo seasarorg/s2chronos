@@ -21,9 +21,9 @@ public class CronExpression {
 
 	private static final String TOKEN_DELIMITER = " \t";
 
-	private static final String SLISH = "/";
+	private static final String SLASH = "/";
 
-	private static final String ASTERISK_SLISH = "*/";
+	private static final String ASTERISK_SLASH = "*/";
 
 	private static final String DELIMITER = ",";
 
@@ -61,8 +61,8 @@ public class CronExpression {
 
 	private void buildInterval(ArrayList<String> list, int now, int min, int max) {
 		String option = list.get(0);
-		if (option.contains(ASTERISK_SLISH)) {
-			String[] ov = option.split(SLISH);
+		if (option.contains(ASTERISK_SLASH)) {
+			String[] ov = option.split(SLASH);
 			int ovi = Integer.parseInt(ov[1]);
 			list.clear();
 			for (int mi = now; mi <= max; mi += ovi) {
