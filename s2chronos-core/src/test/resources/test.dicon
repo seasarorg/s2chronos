@@ -7,6 +7,9 @@
 	<component name="smartTask" class="org.seasar.chronos.core.task.SimpleTask">
 		<aspect pointcut="do.*,initailize,destroy">aop.traceInterceptor</aspect>
 	</component>
+	<component name="cronTask" class="org.seasar.chronos.core.task.SimpleCronTask">
+		<aspect pointcut="do.*,initailize,destroy">aop.traceInterceptor</aspect>
+	</component>
 	<!--
 	<component class="org.seasar.chronos.core.task.SimpleTask2">
 		<aspect pointcut="do.*,initailize,destroy">aop.traceInterceptor</aspect>
