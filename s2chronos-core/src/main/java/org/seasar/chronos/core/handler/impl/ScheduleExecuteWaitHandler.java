@@ -6,6 +6,8 @@ public class ScheduleExecuteWaitHandler extends AbstractScheduleExecuteHandler {
 
 	private Object pauseLock;
 
+	private long waitInterval = 1000L;
+
 	@Override
 	public void handleRequest() throws InterruptedException {
 		if (this.pause.get()
@@ -21,7 +23,7 @@ public class ScheduleExecuteWaitHandler extends AbstractScheduleExecuteHandler {
 								this.schedulerEventHandler.firePauseScheduler();
 							}
 						}
-						pauseLock.wait(1000L);
+						pauseLock.wait(waitInterval);
 					} while (this.pause.get());
 				} catch (InterruptedException e) {
 					log.log("WCHNS0001", null, e);
@@ -40,6 +42,10 @@ public class ScheduleExecuteWaitHandler extends AbstractScheduleExecuteHandler {
 
 	public void setPauseLock(Object pauseLock) {
 		this.pauseLock = pauseLock;
+	}
+
+	public void setPauseLockWaitInterval(long waitInterval) {
+		this.waitInterval = waitInterval;
 	}
 
 }
