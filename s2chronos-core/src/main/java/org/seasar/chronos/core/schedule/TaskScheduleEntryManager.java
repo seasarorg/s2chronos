@@ -132,6 +132,7 @@ public class TaskScheduleEntryManager {
 							.getTaskName(taskScheduleEntry
 									.getTaskExecutorService())) != null;
 		}
+		taskScheduleEntry = null;
 		return result;
 	}
 

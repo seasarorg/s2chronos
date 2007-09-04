@@ -52,7 +52,8 @@ public class CronTrigger extends AbstractTrigger {
 				Date startTime = startTimeList.get(i);
 				startTimeCheck = (nowTime >= startTime.getTime());
 				if (startTimeCheck) {
-					startTimeList.remove(i);
+					Date r = startTimeList.remove(i);
+					r = null;
 					break;
 				}
 			}

@@ -1,29 +1,27 @@
 package org.seasar.chronos.core.task;
 
+import org.seasar.chronos.core.TaskTrigger;
 import org.seasar.chronos.core.annotation.task.Task;
 import org.seasar.chronos.core.annotation.task.method.CloneTask;
 import org.seasar.chronos.core.annotation.task.method.JoinTask;
 import org.seasar.chronos.core.annotation.task.method.NextTask;
 import org.seasar.chronos.core.annotation.type.JoinType;
+import org.seasar.chronos.core.trigger.CronTrigger;
 import org.seasar.framework.log.Logger;
 
-@Task(name = "example")
+@Task
 public class SimpleTask {
 
 	private static Logger log = Logger.getLogger(SimpleTask.class);
 
-	private boolean startTask = true;
+	// private boolean startTask = true;
 
-	// trueを返すとタスクの起動が開始される
-	public synchronized boolean getStartTask() {
-		return this.startTask;
-	}
+	private TaskTrigger trigger = new CronTrigger("0,15,30,45 0 * * *");
 
-	// タスクが実行されるときに最初に呼ばれる
-	@NextTask("taskA")
-	public synchronized void initialize() {
-		log
-				.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>SimpleTask::initialize");
+	// すべてのタスクが終了したら呼ばれる
+	// @NextTask("example")
+	public synchronized void destroy() {
+		log.info("SimpleTask::destroy");
 	}
 
 	// タスクメソッドA 本体
@@ -50,10 +48,20 @@ public class SimpleTask {
 		log.info("<<SimpleTask::doTaskC");
 	}
 
-	// すべてのタスクが終了したら呼ばれる
-	// @NextTask("example")
-	public synchronized void destroy() {
-		log.info("SimpleTask::destroy");
+	// trueを返すとタスクの起動が開始される
+	// public synchronized boolean getStartTask() {
+	// return this.startTask;
+	// }
+
+	public TaskTrigger getTrigger() {
+		return trigger;
+	}
+
+	// タスクが実行されるときに最初に呼ばれる
+	@NextTask("taskA")
+	public synchronized void initialize() {
+		log
+				.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>SimpleTask::initialize");
 	}
 
 }
