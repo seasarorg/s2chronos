@@ -70,9 +70,11 @@ public abstract class AbstractScheduler implements Scheduler {
 				new Traversal.ComponentDefHandler() {
 					public Object processComponent(ComponentDef componentDef) {
 						Class<?> clazz = componentDef.getComponentClass();
-						Task task = (Task) clazz.getAnnotation(Task.class);
-						if (task != null) {
-							scheduleTask(componentDef);
+						if (clazz != null) {
+							Task task = (Task) clazz.getAnnotation(Task.class);
+							if (task != null) {
+								scheduleTask(componentDef);
+							}
 						}
 						return null;
 					}
