@@ -92,7 +92,6 @@ public class CronExpression {
 			while (vTok.hasMoreTokens()) {
 				String v = vTok.nextToken();
 				list.add(v);
-				log.debug("index = " + index + ", v=" + v);
 			}
 			digit.add(list);
 			index++;
@@ -121,9 +120,7 @@ public class CronExpression {
 			String monthDigit = monthList.get(i);
 			if (!ASTERISK.equals(monthDigit)) {
 				month = Integer.parseInt(monthDigit);
-				// 古い場合は
 				if (calendar.get(Calendar.MONTH) > month) {
-					// 一年進みます
 					calendar.add(Calendar.YEAR, 1);
 				}
 				calendar.set(Calendar.MONTH, month);
@@ -135,9 +132,7 @@ public class CronExpression {
 				String dayDigit = dayList.get(j);
 				if (!ASTERISK.equals(dayDigit)) {
 					day = Integer.parseInt(dayDigit);
-					// 古い場合は
 					if (calendar.get(Calendar.DATE) > day) {
-						// 1ヶ月進みます
 						calendar.add(Calendar.MONTH, 1);
 					}
 					calendar.set(Calendar.DATE, day);
@@ -149,9 +144,7 @@ public class CronExpression {
 					String hourDigit = hourList.get(k);
 					if (!ASTERISK.equals(hourDigit)) {
 						hour = Integer.parseInt(hourDigit);
-						// 古い場合は
 						if (calendar.get(Calendar.HOUR_OF_DAY) > hour) {
-							// 一日進みます
 							calendar.add(Calendar.DATE, 1);
 						}
 						calendar.set(Calendar.HOUR_OF_DAY, hour);
@@ -163,9 +156,7 @@ public class CronExpression {
 						String minDigit = minList.get(h);
 						if (!ASTERISK.equals(minDigit)) {
 							minute = Integer.parseInt(minDigit);
-							// 古い場合は
 							if (calendar.get(Calendar.MINUTE) > minute) {
-								// 1時間進みます
 								calendar.add(Calendar.HOUR_OF_DAY, 1);
 							}
 							calendar.set(Calendar.MINUTE, minute);
@@ -173,13 +164,11 @@ public class CronExpression {
 							minute = calendar.get(Calendar.MINUTE);
 						}
 						Date date = calendar.getTime();
-						log.debug("nextTime = " + date);
 						dateList.add(date);
 					}
 				}
 			}
 		}
-
 		return dateList;
 	}
 

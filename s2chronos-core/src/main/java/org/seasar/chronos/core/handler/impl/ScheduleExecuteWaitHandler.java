@@ -14,7 +14,6 @@ public class ScheduleExecuteWaitHandler extends AbstractScheduleExecuteHandler {
 				|| taskContenaStateManager.size(TaskStateType.SCHEDULED) == 0
 				&& taskContenaStateManager.size(TaskStateType.RUNNING) == 0) {
 			synchronized (pauseLock) {
-				log.debug("scheduler.wait start");
 				try {
 					do {
 						if (this.paused != null) {
@@ -35,7 +34,6 @@ public class ScheduleExecuteWaitHandler extends AbstractScheduleExecuteHandler {
 						}
 					}
 				}
-				log.debug("scheduler.wait end");
 			}
 		}
 	}

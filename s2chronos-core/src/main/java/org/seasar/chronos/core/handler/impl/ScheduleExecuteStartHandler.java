@@ -35,12 +35,7 @@ public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler 
 							final TaskScheduleEntry taskScheduleEntry) {
 						final TaskExecutorService tes = taskScheduleEntry
 								.getTaskExecutorService();
-						// log.debug("check task : "
-						// + TaskPropertyUtil.getTaskName(tes));
 						if (TaskPropertyUtil.getStartTask(tes)) {
-							// log.debug("start task : "
-							// + TaskPropertyUtil.getTaskName(tes));
-							// タスクの開始
 							log.log("DCHRONOSSSTHRT001",
 									new Object[] { TaskPropertyUtil
 											.getTaskName(tes) });

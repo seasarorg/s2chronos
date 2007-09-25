@@ -43,21 +43,15 @@ public class TaskScheduleEntryManager {
 
 	public boolean addTaskScheduleEntry(TaskStateType key,
 			TaskScheduleEntry taskScheduleEntry) {
-		log.debug("addTaskScheduleEntry : key = "
-				+ key
-				+ " value = "
-				+ TaskPropertyUtil.getTaskName(taskScheduleEntry
-						.getTaskExecutorService()) + " class = "
-				+ taskScheduleEntry.getClass().getName());
 		taskScheduleEntry.setTaskStateType(key);
 		boolean result = this.getScheduleEntryList(key).add(taskScheduleEntry);
 		if (key == TaskStateType.SCHEDULED) {
 			result = result & this.allTaskList.addIfAbsent(taskScheduleEntry);
-			// オブジェクトでput
+			// 繧ｪ繝悶ず繧ｧ繧ｯ繝医〒put
 			result = result
 					& this.taskScheduleEntryObjectMap.putIfAbsent(
 							taskScheduleEntry.getTask(), taskScheduleEntry) != null;
-			// タスク名でput
+			// 繧ｿ繧ｹ繧ｯ蜷阪〒put
 			result = result
 					& this.taskScheduleEntryObjectMap.putIfAbsent(
 							TaskPropertyUtil.getTaskName(taskScheduleEntry

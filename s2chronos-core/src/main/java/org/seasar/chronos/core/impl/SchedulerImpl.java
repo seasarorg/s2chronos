@@ -13,6 +13,7 @@ import org.seasar.chronos.core.SchedulerConfiguration;
 import org.seasar.chronos.core.SchedulerEventListener;
 import org.seasar.chronos.core.TaskScheduleEntry;
 import org.seasar.chronos.core.event.SchedulerEventHandler;
+import org.seasar.chronos.core.exception.CancellationRuntimeException;
 import org.seasar.chronos.core.exception.ExecutionRuntimeException;
 import org.seasar.chronos.core.exception.InterruptedRuntimeException;
 import org.seasar.chronos.core.handler.ScheduleExecuteHandler;
@@ -82,18 +83,14 @@ public class SchedulerImpl extends AbstractScheduler {
 	}
 
 	private boolean getSchedulerFinish() {
-		// log.debug("getSchedulerFinish start");
 		if (finishStartTime != 0
 				&& taskContenaStateManager.size(TaskStateType.SCHEDULED) > 0) {
 			finishStartTime = 0;
-			log.debug(">>>>>>>>>>>>>>>>>getSchedulerFinish finish cancel!!!");
 			return false;
 		}
 		if (finishStartTime != 0
 				&& (System.currentTimeMillis() - finishStartTime) >= configuration
 						.getZeroScheduleTime()) {
-			log
-					.debug(">>>>>>>>>>>>>>>>>getSchedulerFinish finish!! return true");
 			finishStartTime = 0;
 			return true;
 		}
@@ -102,9 +99,7 @@ public class SchedulerImpl extends AbstractScheduler {
 				&& taskContenaStateManager.size(TaskStateType.RUNNING) == 0
 				&& configuration.isAutoFinish() && finishStartTime == 0) {
 			finishStartTime = System.currentTimeMillis();
-			log.debug(">>>>>>>>>>>>>>>>>getSchedulerFinish finish start");
 		}
-		// log.debug("getSchedulerFinish return false");
 		return false;
 	}
 
@@ -113,17 +108,12 @@ public class SchedulerImpl extends AbstractScheduler {
 	}
 
 	public void join() {
+		log.log("DCHRONOSSDRJINSTT", null);
 		try {
 			this.schedulerTaskFuture.get();
 		} catch (CancellationException e) {
-			log.debug(e);
-			while (!schedulerTaskFuture.isDone()) {
-				log.log("DCHRONOS0013", null);
-			}
-			log.debug("ÉLÉÉÉìÉZÉãÉ`ÉFÉbÉNäÆóπ");
-			this.schedulerEventHandler.fireShutdownScheduler();
+			throw new CancellationRuntimeException(e);
 		} catch (ExecutionException e) {
-			log.log("ECHRONOS0002", null, e);
 			throw new ExecutionRuntimeException(e);
 		} catch (InterruptedException e) {
 			throw new InterruptedRuntimeException(e);
@@ -132,6 +122,7 @@ public class SchedulerImpl extends AbstractScheduler {
 				this.schedulerEventHandler.fireEndScheduler();
 			}
 		}
+		log.log("DCHRONOSSDRJINEND", null);
 	}
 
 	public synchronized void pause() {
@@ -140,7 +131,7 @@ public class SchedulerImpl extends AbstractScheduler {
 	}
 
 	/**
-	 * S2ÉRÉìÉeÉiè„ÇÃÉRÉìÉ|Å[ÉlÉìÉgÇåüçıÇµÅCÉXÉPÉWÉÖÅ[ÉâÇ…ìoò^ÇµÇ‹Ç∑ÅD
+	 * S2„Ç≥„É≥„ÉÜ„Éä‰∏ä„ÅÆ„Ç≥„É≥„Éù„Éº„Éç„É≥„Éà„ÇíÊ§úÁ¥¢„ÅóÔºå„Çπ„Ç±„Ç∏„É•„Éº„É©„Å´ÁôªÈå≤„Åó„Åæ„ÅôÔºé
 	 * 
 	 */
 	protected void registTaskFromS2Container() {
@@ -216,6 +207,7 @@ public class SchedulerImpl extends AbstractScheduler {
 	}
 
 	public void shutdown() {
+		log.log("DCHRONOSSDRSTNING", null);
 		this.taskContenaStateManager.forEach(TaskStateType.RUNNING,
 				new TaskScheduleEntryManager.TaskScheduleEntryHanlder() {
 					public Object processTaskScheduleEntry(
@@ -228,8 +220,8 @@ public class SchedulerImpl extends AbstractScheduler {
 								String taskName = TaskPropertyUtil
 										.getTaskName(taskScheduleEntry
 												.getTaskExecutorService());
-								log.debug("Task (" + taskName
-										+ ") ÇÃShutdown ë“ã@íÜ");
+								log.log("DCHRONOSSSNHRTTCW",
+										new Object[] { taskName });
 							}
 						} catch (InterruptedException e) {
 							throw new InterruptedRuntimeException(e);
@@ -238,16 +230,16 @@ public class SchedulerImpl extends AbstractScheduler {
 					}
 				});
 		schedulerTaskFuture.cancel(true);
+		this.schedulerEventHandler.fireShutdownScheduler();
+		log.log("DCHRONOSSDRSTNEND", null);
 	}
 
 	public void start() {
-
+		log.log("DCHRONOSSDRSTTING", null);
 		this.schedulerEventHandler.fireRegistTaskBeforeScheduler();
-
 		this.registTaskFromS2Container();
 		final ScheduleExecuteHandler[] scheduleExecuteHandlers = this
 				.setupHandler();
-
 		this.schedulerEventHandler.fireRegistTaskAfterScheduler();
 
 		this.schedulerTaskFuture = this.executorService
@@ -262,6 +254,7 @@ public class SchedulerImpl extends AbstractScheduler {
 					}
 				});
 		this.schedulerEventHandler.fireStartScheduler();
+		log.log("DCHRONOSSDRSTTEND", null);
 	}
 
 }

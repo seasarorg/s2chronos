@@ -13,7 +13,7 @@ public class SimpleCronTask {
 	private CronTrigger cronTrigger = new CronTrigger();
 
 	public SimpleCronTask() {
-		cronTrigger.setCronExpression("21 * * * *");
+		cronTrigger.setCronExpression("1 * * * *");
 	}
 
 	public TaskTrigger getTrigger() {
