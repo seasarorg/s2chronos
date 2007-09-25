@@ -4,7 +4,7 @@
 	<groupId>org.seasar.chronos</groupId>
 	<artifactId>s2chronos-project</artifactId>
 	<packaging>pom</packaging>
-	<version>0.1.0-SNAPSHOT</version>
+	<version>0.1.1-SNAPSHOT</version>
 	<name>S2Chronos Project</name>
 	<description></description>
 	<url>http://s2chronos.sandbox.seasar.org/</url>
@@ -51,6 +51,7 @@
 	<modules>
 		<module>../s2chronos-core</module>
 		<module>../s2chronos-extension</module>
+		<module>../s2chronos-example</module>
 	</modules>
 	<repositories>
 		<repository>
