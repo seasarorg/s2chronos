@@ -114,6 +114,9 @@ public class SchedulerImpl extends AbstractScheduler {
 		} catch (CancellationException e) {
 			throw new CancellationRuntimeException(e);
 		} catch (ExecutionException e) {
+			if (e.getCause() instanceof InterruptedException) {
+				throw new InterruptedRuntimeException(e.getCause());
+			}
 			throw new ExecutionRuntimeException(e);
 		} catch (InterruptedException e) {
 			throw new InterruptedRuntimeException(e);
@@ -244,10 +247,13 @@ public class SchedulerImpl extends AbstractScheduler {
 
 		this.schedulerTaskFuture = this.executorService
 				.submit(new Callable<Void>() {
-					public Void call() throws Exception {
+					public Void call() throws InterruptedException {
 						do {
 							for (ScheduleExecuteHandler seh : scheduleExecuteHandlers) {
 								seh.handleRequest();
+								Thread.sleep(configuration
+										.getTaskScanIntervalTime());
+
 							}
 						} while (!getSchedulerFinish());
 						return null;

@@ -6,7 +6,8 @@
 	<component name="taskClassAutoDetector" class="org.seasar.chronos.core.autodetector.TaskClassAutoDetector"/>
 	<component name="schedulerConfiguration" class="org.seasar.chronos.core.SchedulerConfiguration">
 		<property name="autoFinish">true</property>
-		<property name="zeroScheduleTime">5000</property>
+		<property name="zeroScheduleTime">5000L</property>
+		<property name="taskScanIntervalTime">2000L</property>
 	</component>
 
 	

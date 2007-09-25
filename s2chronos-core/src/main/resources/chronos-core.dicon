@@ -8,7 +8,7 @@
 	<component name="scheduleExecuteStartHandler" class="org.seasar.chronos.core.handler.impl.ScheduleExecuteStartHandler" />
 	<component name="scheduleExecuteWaitHandler" class="org.seasar.chronos.core.handler.impl.ScheduleExecuteWaitHandler">
 		<property name="pauseLock">scheduler</property>
-		<property name="pauseLockWaitInterval">2000L</property>
+		<property name="pauseLockWaitInterval">schedulerConfiguration.taskScanIntervalTime</property>
 	</component>
 
 	<component name="scheduleEntry" class="org.seasar.chronos.core.schedule.ScheduleEntry" instance="prototype" autoBinding="none">

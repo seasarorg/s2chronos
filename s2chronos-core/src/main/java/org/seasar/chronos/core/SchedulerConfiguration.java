@@ -1,7 +1,7 @@
 package org.seasar.chronos.core;
 
 /**
- * ƒXƒPƒWƒ…[ƒ‰‚Ìİ’è‚ğŠÇ—‚µ‚Ü‚·.
+ * ï¿½Xï¿½Pï¿½Wï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½Ìİ’ï¿½ï¿½Ç—ï¿½ï¿½ï¿½ï¿½Ü‚ï¿½.
  * 
  * @author junichi
  * 
@@ -10,7 +10,9 @@ public final class SchedulerConfiguration {
 
 	private boolean autoFinish;
 
-	private int zeroScheduleTime;
+	private long zeroScheduleTime;
+
+	private long taskScanIntervalTime;
 
 	public boolean isAutoFinish() {
 		return autoFinish;
@@ -20,12 +22,20 @@ public final class SchedulerConfiguration {
 		this.autoFinish = autoFinish;
 	}
 
-	public int getZeroScheduleTime() {
+	public long getZeroScheduleTime() {
 		return zeroScheduleTime;
 	}
 
-	public void setZeroScheduleTime(int zeroScheduleTime) {
+	public void setZeroScheduleTime(long zeroScheduleTime) {
 		this.zeroScheduleTime = zeroScheduleTime;
+	}
+
+	public long getTaskScanIntervalTime() {
+		return taskScanIntervalTime;
+	}
+
+	public void setTaskScanIntervalTime(long taskScanIntervalTime) {
+		this.taskScanIntervalTime = taskScanIntervalTime;
 	}
 
 }
