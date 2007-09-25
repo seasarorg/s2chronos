@@ -31,10 +31,10 @@ public abstract class AbstractScheduler implements Scheduler {
 	}
 
 	/**
-	 * ƒ^ƒXƒN–¼‚©‚çComponentDef‚ğ•Ô‚µ‚Ü‚·D
+	 * ã‚¿ã‚¹ã‚¯åã‹ã‚‰ComponentDefã‚’è¿”ã—ã¾ã™ï¼
 	 * 
 	 * @param taskName
-	 *            ƒ^ƒXƒN–¼
+	 *            ã‚¿ã‚¹ã‚¯å
 	 * @return ComponentDef
 	 */
 	protected ComponentDef findTaskComponentDefByTaskName(final String taskName) {
@@ -60,10 +60,10 @@ public abstract class AbstractScheduler implements Scheduler {
 	}
 
 	/**
-	 * S2ƒRƒ“ƒeƒi(”ñSMART Deploy)ã‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚ğŒŸõ‚µCƒXƒPƒWƒ…[ƒ‰‚É“o˜^‚µ‚Ü‚·D
+	 * S2ã‚³ãƒ³ãƒ†ãƒŠ(éSMART Deploy)ä¸Šã®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚’æ¤œç´¢ã—ï¼Œã‚¹ã‚±ã‚¸ãƒ¥ãƒ¼ãƒ©ã«ç™»éŒ²ã—ã¾ã™ï¼
 	 * 
 	 * @param s2Container
-	 *            S2ƒRƒ“ƒeƒi
+	 *            S2ã‚³ãƒ³ãƒ†ãƒŠ
 	 */
 	protected void registChildTaskComponent(S2Container s2Container) {
 		Traversal.forEachComponent(s2Container,
@@ -83,10 +83,10 @@ public abstract class AbstractScheduler implements Scheduler {
 	protected abstract void registTaskFromS2Container();
 
 	/**
-	 * SMART Deployã‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚ğŒŸõ‚µCƒXƒPƒWƒ…[ƒ‰‚É“o˜^‚µ‚Ü‚·D
+	 * SMART Deployä¸Šã®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚’æ¤œç´¢ã—ï¼Œã‚¹ã‚±ã‚¸ãƒ¥ãƒ¼ãƒ©ã«ç™»éŒ²ã—ã¾ã™ï¼
 	 * 
 	 * @param s2Container
-	 *            S2ƒRƒ“ƒeƒi
+	 *            S2ã‚³ãƒ³ãƒ†ãƒŠ
 	 */
 	protected void registTaskFromS2ContainerOnSmartDeploy(
 			final S2Container s2Container) {
@@ -132,7 +132,7 @@ public abstract class AbstractScheduler implements Scheduler {
 			throw new ClassNotFoundRuntimeException(e);
 		}
 		HotdeployUtil.start();
-		// ‚±‚±‚Åƒ^ƒXƒN‚É‘Î‚µ‚ÄDI‚ªÀs‚³‚ê‚Ü‚·
+		// ã“ã“ã§ã‚¿ã‚¹ã‚¯ã«å¯¾ã—ã¦DIãŒå®Ÿè¡Œã•ã‚Œã¾ã™
 		tes.setTask(componentDef.getComponent());
 		tes.setTaskClass(componentDef.getComponentClass());
 		tes.setGetterSignal(this);

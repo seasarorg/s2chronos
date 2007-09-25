@@ -170,7 +170,7 @@ public class SchedulerEventHandler {
 				future.get();
 			} catch (InterruptedException e) {
 			} catch (ExecutionException e) {
-				log.error("Às—áŠO‚ª”­¶‚µ‚Ü‚µ‚½", e);
+				log.error("å®Ÿè¡Œä¾‹å¤–ãŒç™ºç”Ÿã—ã¾ã—ãŸ", e);
 			}
 		}
 	}

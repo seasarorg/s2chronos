@@ -38,12 +38,12 @@ public class MethodInvoker {
 			.newSingleThreadExecutor();
 
 	/**
-	 * ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	 * ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	 * 
 	 * @param executorService
 	 *            ExecutorService
 	 * @param componentDef
-	 *            ƒRƒ“ƒ|[ƒlƒ“ƒg’è‹`
+	 *            ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆå®šç¾©
 	 */
 	public MethodInvoker(ExecutorService executorService,
 			ComponentDef componentDef) {
@@ -54,12 +54,12 @@ public class MethodInvoker {
 	}
 
 	/**
-	 * ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	 * ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	 * 
 	 * @param executorService
 	 *            ExecutorService
 	 * @param target
-	 *            ƒ^[ƒQƒbƒgƒIƒuƒWƒFƒNƒg
+	 *            ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	 * @param beanDesc
 	 *            BeanDesc
 	 */
@@ -77,11 +77,11 @@ public class MethodInvoker {
 	}
 
 	/**
-	 * w’è‚µ‚½ƒƒ\ƒbƒh‚ğ”ñ“¯Šú‚ÅŒÄ‚Ño‚µ‚Ü‚·D
+	 * æŒ‡å®šã—ãŸãƒ¡ã‚½ãƒƒãƒ‰ã‚’éåŒæœŸã§å‘¼ã³å‡ºã—ã¾ã™ï¼
 	 * 
 	 * @param methodName
-	 *            ƒƒ\ƒbƒh–¼
-	 * @return ”ñ“¯ŠúŒ‹‰ÊƒIƒuƒWƒFƒNƒg
+	 *            ãƒ¡ã‚½ãƒƒãƒ‰å
+	 * @return éåŒæœŸçµæœã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	 * @throws InterruptedException
 	 */
 	public AsyncResult beginInvoke(final String methodName)
@@ -90,15 +90,15 @@ public class MethodInvoker {
 	}
 
 	/**
-	 * w’è‚µ‚½ƒƒ\ƒbƒh‚ğ”ñ“¯Šú‚ÅŒÄ‚Ño‚µ‚Ü‚·D
+	 * æŒ‡å®šã—ãŸãƒ¡ã‚½ãƒƒãƒ‰ã‚’éåŒæœŸã§å‘¼ã³å‡ºã—ã¾ã™ï¼
 	 * 
 	 * @param methodName
-	 *            ƒƒ\ƒbƒh–¼
+	 *            ãƒ¡ã‚½ãƒƒãƒ‰å
 	 * @param methodCallback
-	 *            ƒƒ\ƒbƒhƒR[ƒ‹ƒoƒbƒN(ƒƒ\ƒbƒh–¼‚É‚Í”ñPublic‚‡‚ªw’è‚Å‚«‚Ü‚·)
+	 *            ãƒ¡ã‚½ãƒƒãƒ‰ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯(ãƒ¡ã‚½ãƒƒãƒ‰åã«ã¯éPublicï½‡ãŒæŒ‡å®šã§ãã¾ã™)
 	 * @param state
-	 *            ƒXƒe[ƒg
-	 * @return ”ñ“¯ŠúŒ‹‰ÊƒIƒuƒWƒFƒNƒg
+	 *            ã‚¹ãƒ†ãƒ¼ãƒˆ
+	 * @return éåŒæœŸçµæœã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	 * @throws InterruptedException
 	 */
 	public AsyncResult beginInvoke(final String methodName,
@@ -108,13 +108,13 @@ public class MethodInvoker {
 	}
 
 	/**
-	 * w’è‚µ‚½ƒƒ\ƒbƒh‚ğ”ñ“¯Šú‚ÅŒÄ‚Ño‚µ‚Ü‚·D
+	 * æŒ‡å®šã—ãŸãƒ¡ã‚½ãƒƒãƒ‰ã‚’éåŒæœŸã§å‘¼ã³å‡ºã—ã¾ã™ï¼
 	 * 
 	 * @param methodName
-	 *            ƒƒ\ƒbƒh–¼
+	 *            ãƒ¡ã‚½ãƒƒãƒ‰å
 	 * @param args
-	 *            ƒƒ\ƒbƒh‚Ìˆø”
-	 * @return ”ñ“¯ŠúŒ‹‰ÊƒIƒuƒWƒFƒNƒg
+	 *            ãƒ¡ã‚½ãƒƒãƒ‰ã®å¼•æ•°
+	 * @return éåŒæœŸçµæœã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	 * @throws InterruptedException
 	 */
 	public AsyncResult beginInvoke(final String methodName, final Object[] args)
@@ -123,17 +123,17 @@ public class MethodInvoker {
 	}
 
 	/**
-	 * w’è‚µ‚½ƒƒ\ƒbƒh‚ğ”ñ“¯Šú‚ÅŒÄ‚Ño‚µ‚Ü‚·D
+	 * æŒ‡å®šã—ãŸãƒ¡ã‚½ãƒƒãƒ‰ã‚’éåŒæœŸã§å‘¼ã³å‡ºã—ã¾ã™ï¼
 	 * 
 	 * @param methodName
-	 *            ƒƒ\ƒbƒh–¼
+	 *            ãƒ¡ã‚½ãƒƒãƒ‰å
 	 * @param args
-	 *            ƒƒ\ƒbƒh‚Ìˆø”–¼
+	 *            ãƒ¡ã‚½ãƒƒãƒ‰ã®å¼•æ•°å
 	 * @param methodCallback
-	 *            ƒƒ\ƒbƒhƒR[ƒ‹ƒoƒbƒNƒIƒuƒWƒFƒNƒg
+	 *            ãƒ¡ã‚½ãƒƒãƒ‰ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	 * @param state
-	 *            ƒXƒe[ƒg
-	 * @return ”ñ“¯ŠúŒ‹‰ÊƒIƒuƒWƒFƒNƒg
+	 *            ã‚¹ãƒ†ãƒ¼ãƒˆ
+	 * @return éåŒæœŸçµæœã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	 * @throws InterruptedException
 	 */
 	public AsyncResult beginInvoke(final String methodName,
@@ -145,10 +145,10 @@ public class MethodInvoker {
 		final Future<Object> future = this.executorService
 				.submit(new Callable<Object>() {
 					public Object call() throws Exception {
-						// ‘ÎÛƒƒ\ƒbƒh‚ğÀs
+						// å¯¾è±¡ãƒ¡ã‚½ãƒƒãƒ‰ã‚’å®Ÿè¡Œ
 						Object result = invoke(methodName, args);
 						if (methodCallback != null) {
-							// ‚³‚ç‚ÉƒR[ƒ‹ƒoƒbƒN‚ğƒXƒŒƒbƒhƒv[ƒ‹‚©‚çÀs
+							// ã•ã‚‰ã«ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ã‚’ã‚¹ãƒ¬ãƒƒãƒ‰ãƒ—ãƒ¼ãƒ«ã‹ã‚‰å®Ÿè¡Œ
 							callbackExecutorService
 									.submit(new Callable<Void>() {
 										public Void call() throws Exception {
@@ -168,7 +168,7 @@ public class MethodInvoker {
 		return asyncResult;
 	}
 
-	// ƒR[ƒ‹ƒoƒbƒN‚ğÀs‚µ‚Ü‚·
+	// ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ã‚’å®Ÿè¡Œã—ã¾ã™
 	private void callbackHandler(final String methodName,
 			final MethodCallback methodCallback, final AsyncResult asyncResult)
 			throws Exception {
@@ -194,18 +194,18 @@ public class MethodInvoker {
 	}
 
 	/**
-	 * ”ñ“¯ŠúŒÄ‚Ño‚µ‚ğƒLƒƒƒ“ƒZƒ‹‚µ‚Ü‚·D
+	 * éåŒæœŸå‘¼ã³å‡ºã—ã‚’ã‚­ãƒ£ãƒ³ã‚»ãƒ«ã—ã¾ã™ï¼
 	 * 
 	 * @param asyncResult
-	 *            ”ñ“¯ŠúŒ‹‰ÊƒIƒuƒWƒFƒNƒg
-	 * @return –ß‚è’l‚ÌƒIƒuƒWƒFƒNƒg
+	 *            éåŒæœŸçµæœã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+	 * @return æˆ»ã‚Šå€¤ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	 */
 	public boolean cancelInvoke(AsyncResult asyncResult) {
 		return cancelInvoke(asyncResult, true);
 	}
 
 	/**
-	 * ”ñ“¯ŠúŒÄ‚Ño‚µ‚ğƒLƒƒƒ“ƒZƒ‹‚µ‚Ü‚·D
+	 * éåŒæœŸå‘¼ã³å‡ºã—ã‚’ã‚­ãƒ£ãƒ³ã‚»ãƒ«ã—ã¾ã™ï¼
 	 * 
 	 * @param asyncResult
 	 * @param shutdown
@@ -232,14 +232,14 @@ public class MethodInvoker {
 	}
 
 	/**
-	 * ”ñ“¯ŠúŒÄ‚Ño‚µ‚Ì–ß‚è’l‚ğ•Ô‚µ‚Ü‚·D<br>
-	 * ”ñ“¯ŠúŒÄ‚Ño‚µ‚ªŠ®—¹‚µ‚Ä‚¢‚È‚¢ê‡‚ÍCŠ®—¹‚ğ‘Ò‹@‚µ‚Ü‚·D
+	 * éåŒæœŸå‘¼ã³å‡ºã—ã®æˆ»ã‚Šå€¤ã‚’è¿”ã—ã¾ã™ï¼<br>
+	 * éåŒæœŸå‘¼ã³å‡ºã—ãŒå®Œäº†ã—ã¦ã„ãªã„å ´åˆã¯ï¼Œå®Œäº†ã‚’å¾…æ©Ÿã—ã¾ã™ï¼
 	 * 
 	 * @param asyncResult
-	 *            ”ñ“¯ŠúŒ‹‰ÊƒIƒuƒWƒFƒNƒg
-	 * @return –ß‚è’l‚ÌƒIƒuƒWƒFƒNƒg
+	 *            éåŒæœŸçµæœã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+	 * @return æˆ»ã‚Šå€¤ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	 * @throws InterruptedException
-	 *             —áŠO
+	 *             ä¾‹å¤–
 	 */
 	public Object endInvoke(AsyncResult asyncResult)
 			throws InterruptedException {
@@ -251,7 +251,7 @@ public class MethodInvoker {
 	}
 
 	/**
-	 * ExecutorService‚ğ•Ô‚µ‚Ü‚·D
+	 * ExecutorServiceã‚’è¿”ã—ã¾ã™ï¼
 	 * 
 	 * @return ExecutorService
 	 */
@@ -260,46 +260,46 @@ public class MethodInvoker {
 	}
 
 	/**
-	 * ƒƒ\ƒbƒh‚ğ•Ô‚µ‚Ü‚·D
+	 * ãƒ¡ã‚½ãƒƒãƒ‰ã‚’è¿”ã—ã¾ã™ï¼
 	 * 
 	 * @param methodName
-	 *            ƒƒ\ƒbƒh–¼
-	 * @return ƒƒ\ƒbƒhƒIƒuƒWƒFƒNƒg
+	 *            ãƒ¡ã‚½ãƒƒãƒ‰å
+	 * @return ãƒ¡ã‚½ãƒƒãƒ‰ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	 */
 	public Method getMethod(String methodName) {
 		return this.beanDesc.getMethod(methodName);
 	}
 
 	/**
-	 * ƒƒ\ƒbƒh‚Ì‘¶İ‚Ì—L–³‚ğ•Ô‚µ‚Ü‚·D
+	 * ãƒ¡ã‚½ãƒƒãƒ‰ã®å­˜åœ¨ã®æœ‰ç„¡ã‚’è¿”ã—ã¾ã™ï¼
 	 * 
 	 * @param methodName
-	 *            ƒƒ\ƒbƒh–¼
-	 * @return ‚ ‚è=true, ‚È‚µ=false
+	 *            ãƒ¡ã‚½ãƒƒãƒ‰å
+	 * @return ã‚ã‚Š=true, ãªã—=false
 	 */
 	public boolean hasMethod(String methodName) {
 		return this.beanDesc.hasMethod(methodName);
 	}
 
 	/**
-	 * w’è‚µ‚½ƒƒ\ƒbƒh‚ğ“¯Šú‚ÅŒÄ‚Ño‚µ‚Ü‚·D
+	 * æŒ‡å®šã—ãŸãƒ¡ã‚½ãƒƒãƒ‰ã‚’åŒæœŸã§å‘¼ã³å‡ºã—ã¾ã™ï¼
 	 * 
 	 * @param methodName
-	 *            ƒƒ\ƒbƒh–¼
-	 * @return –ß‚è’l
+	 *            ãƒ¡ã‚½ãƒƒãƒ‰å
+	 * @return æˆ»ã‚Šå€¤
 	 */
 	public Object invoke(String methodName) {
 		return invoke(methodName, null);
 	}
 
 	/**
-	 * w’è‚µ‚½ƒƒ\ƒbƒh‚ğ“¯Šú‚ÅŒÄ‚Ño‚µ‚Ü‚·D
+	 * æŒ‡å®šã—ãŸãƒ¡ã‚½ãƒƒãƒ‰ã‚’åŒæœŸã§å‘¼ã³å‡ºã—ã¾ã™ï¼
 	 * 
 	 * @param methodName
-	 *            ƒƒ\ƒbƒh–¼
+	 *            ãƒ¡ã‚½ãƒƒãƒ‰å
 	 * @param args
-	 *            ƒƒ\ƒbƒhˆø”
-	 * @return –ß‚è’l
+	 *            ãƒ¡ã‚½ãƒƒãƒ‰å¼•æ•°
+	 * @return æˆ»ã‚Šå€¤
 	 */
 	public Object invoke(final String methodName, final Object[] args) {
 		Object result = (Object) this.beanDesc.invoke(this.target, methodName,

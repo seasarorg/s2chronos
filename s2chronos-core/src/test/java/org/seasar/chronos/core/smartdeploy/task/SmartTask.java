@@ -31,37 +31,37 @@ public class SmartTask {
 		return this.trigger;
 	}
 
-	// ƒ^ƒXƒN‚ªÀs‚³‚ê‚é‚Æ‚«‚ÉÅ‰‚ÉŒÄ‚Î‚ê‚é
+	// ã‚¿ã‚¹ã‚¯ãŒå®Ÿè¡Œã•ã‚Œã‚‹ã¨ãã«æœ€åˆã«å‘¼ã°ã‚Œã‚‹
 	@NextTask("taskA")
 	public synchronized void initialize() {
 		log.info("SmartTask::initialize");
 	}
 
-	// ƒ^ƒXƒNƒƒ\ƒbƒhA –{‘Ì
-	// ‘JˆÚæ‚ğÃ“I‚Éİ’è‚µC”ñ“¯Šú‚ÅÀs
+	// ã‚¿ã‚¹ã‚¯ãƒ¡ã‚½ãƒƒãƒ‰A æœ¬ä½“
+	// é·ç§»å…ˆã‚’é™çš„ã«è¨­å®šã—ï¼ŒéåŒæœŸã§å®Ÿè¡Œ
 	@NextTask("taskB")
 	@JoinTask(JoinType.NoWait)
 	public synchronized void doTaskA() {
 		log.info("SmartTask::doTaskA");
 	}
 
-	// ƒ^ƒXƒNƒƒ\ƒbƒhB –{‘Ì
-	// “¯Šú‚ÅÀs‚µ‘JˆÚæ‚ğ“®“I‚Éw’è‚·‚é
+	// ã‚¿ã‚¹ã‚¯ãƒ¡ã‚½ãƒƒãƒ‰B æœ¬ä½“
+	// åŒæœŸã§å®Ÿè¡Œã—é·ç§»å…ˆã‚’å‹•çš„ã«æŒ‡å®šã™ã‚‹
 	@JoinTask(JoinType.Wait)
 	public synchronized String doTaskB() {
 		log.info("SmartTask::doTaskB");
 		return "taskC";
 	}
 
-	// ƒ^ƒXƒNƒƒ\ƒbƒhC –{‘Ì
-	// ”ñ“¯Šú‚É100ŒÂƒ^ƒXƒNƒƒ\ƒbƒh‚ğ¶¬‚µ‚ÄÀs
+	// ã‚¿ã‚¹ã‚¯ãƒ¡ã‚½ãƒƒãƒ‰C æœ¬ä½“
+	// éåŒæœŸã«100å€‹ã‚¿ã‚¹ã‚¯ãƒ¡ã‚½ãƒƒãƒ‰ã‚’ç”Ÿæˆã—ã¦å®Ÿè¡Œ
 	@JoinTask(JoinType.NoWait)
 	@CloneTask(10)
 	public synchronized void doTaskC() {
 		log.info("<<SmartTask::doTaskC");
 	}
 
-	// ‚·‚×‚Ä‚Ìƒ^ƒXƒN‚ªI—¹‚µ‚½‚çŒÄ‚Î‚ê‚é
+	// ã™ã¹ã¦ã®ã‚¿ã‚¹ã‚¯ãŒçµ‚äº†ã—ãŸã‚‰å‘¼ã°ã‚Œã‚‹
 	@NextTask("example")
 	public synchronized void destroy() {
 		log.info("SmartTask::destroy");

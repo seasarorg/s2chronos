@@ -63,9 +63,9 @@ public class TaskGroupMethodExecuteHandlerImpl extends
 			String firstFunction = getFirstFunction(startTaskName);
 			nextTask = toTaskName(firstFunction);
 		} else if (this.taskMethodManager.existGroup(nextTask)) {
-			log.debug("startGroup�̎��̓��\�b�h���w�肵�Ă�������");
+			log.debug("startGroupの次はメソッドを指定してください");
 			// throw new InvalidNextJobMethodException(
-			// "startGroup�̎��̓��\�b�h���w�肵�Ă�������");
+			// "startGroupの次はメソッドを指定してください");
 			return new Transition(true, nextTask);
 		}
 

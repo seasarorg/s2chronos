@@ -20,7 +20,7 @@ public class SimpleCronTask {
 		return cronTrigger;
 	}
 
-	// タスクが実行されるときに最初に呼ばれる
+	// 繧ｿ繧ｹ繧ｯ縺悟ｮ溯｡後＆繧後ｋ縺ｨ縺阪↓譛蛻昴↓蜻ｼ縺ｰ繧後ｋ
 	public synchronized void initialize() {
 		log.info("======================SimpleCronTask::initialize");
 	}
