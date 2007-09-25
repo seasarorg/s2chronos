@@ -7,7 +7,5 @@
 	<component name="schedulerConfiguration" class="org.seasar.chronos.core.SchedulerConfiguration">
 		<property name="autoFinish">true</property>
 		<property name="zeroScheduleTime">5000</property>
-	</component>
-
-	
+	</component>	
 </components>
