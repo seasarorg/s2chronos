@@ -2,15 +2,18 @@
 <!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.4//EN"
 	"http://www.seasar.org/dtd/components24.dtd">
 <components>
+	<include path="convention.dicon"/>
+	<include path="aop.dicon"/>
 	<include path="chronos-core.dicon"/>
 	
+	<!--
 	<component name="smartTask" class="org.seasar.chronos.core.task.SimpleTask">
 		<aspect pointcut="do.*,initailize,destroy">aop.traceInterceptor</aspect>
 	</component>
 	<component name="cronTask" class="org.seasar.chronos.core.task.SimpleCronTask">
 		<aspect pointcut="do.*,initailize,destroy">aop.traceInterceptor</aspect>
 	</component>
-	<!--
+
 	<component class="org.seasar.chronos.core.task.SimpleTask2">
 		<aspect pointcut="do.*,initailize,destroy">aop.traceInterceptor</aspect>
 	</component>

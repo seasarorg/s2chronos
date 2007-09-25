@@ -9,6 +9,7 @@ import org.seasar.chronos.core.annotation.task.Task;
 import org.seasar.framework.autodetector.impl.AbstractClassAutoDetector;
 import org.seasar.framework.container.annotation.tiger.Binding;
 import org.seasar.framework.container.annotation.tiger.BindingType;
+import org.seasar.framework.container.annotation.tiger.Component;
 import org.seasar.framework.container.annotation.tiger.InitMethod;
 import org.seasar.framework.convention.NamingConvention;
 import org.seasar.framework.util.ClassLoaderUtil;
@@ -17,6 +18,7 @@ import org.seasar.framework.util.ClassTraversal.ClassHandler;
 import org.seasar.framework.util.tiger.CollectionsUtil;
 import org.seasar.framework.util.tiger.ReflectionUtil;
 
+@Component
 public class TaskClassAutoDetector extends AbstractClassAutoDetector {
 
 	private static final String PACKAGE_NAME_TASK = "task";
