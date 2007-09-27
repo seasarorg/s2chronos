@@ -74,8 +74,15 @@ public abstract class AbstractScheduler implements Scheduler {
 						Class<?> clazz = componentDef.getComponentClass();
 						if (clazz != null) {
 							Task task = (Task) clazz.getAnnotation(Task.class);
-							MetaDef taskMetaDef = componentDef
-									.getMetaDef("task");
+							MetaDef taskMetaDef = null;
+							try {
+								if (componentDef.getMetaDefSize() > 0) {
+									taskMetaDef = componentDef
+											.getMetaDef("task");
+								}
+							} catch (UnsupportedOperationException e) {
+								;
+							}
 							if (task != null || taskMetaDef != null) {
 								scheduleTask(componentDef);
 							}
