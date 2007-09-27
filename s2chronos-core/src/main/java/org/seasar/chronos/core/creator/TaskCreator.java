@@ -12,7 +12,7 @@ public class TaskCreator extends ComponentCreatorImpl {
 	public TaskCreator(NamingConvention namingConvention) {
 		super(namingConvention);
 		this.setNameSuffix(NAME_SUFFIX_TASK);
-		this.setInstanceDef(InstanceDefFactory.SINGLETON);
+		this.setInstanceDef(InstanceDefFactory.PROTOTYPE);
 		this.setExternalBinding(false);
 		this.setEnableAbstract(false);
 		this.setEnableInterface(false);

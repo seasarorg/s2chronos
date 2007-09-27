@@ -9,6 +9,7 @@ import org.seasar.chronos.core.schedule.TaskScheduleEntryManager;
 import org.seasar.chronos.core.task.TaskExecutorService;
 import org.seasar.chronos.core.util.TaskPropertyUtil;
 import org.seasar.framework.container.ComponentDef;
+import org.seasar.framework.container.MetaDef;
 import org.seasar.framework.container.S2Container;
 import org.seasar.framework.container.hotdeploy.HotdeployUtil;
 import org.seasar.framework.container.util.SmartDeployUtil;
@@ -46,7 +47,8 @@ public abstract class AbstractScheduler implements Scheduler {
 						TaskExecutorService tes = taskScheduleEntry
 								.getTaskExecutorService();
 						String _taskName = TaskPropertyUtil.getTaskName(tes);
-						log.debug("[[[" + taskName + ":" + _taskName + "]]]");
+						// log.debug("[[[" + taskName + ":" + _taskName +
+						// "]]]");
 						if (taskName.equals(_taskName)) {
 							return taskScheduleEntry.getComponentDef();
 						}
@@ -72,7 +74,9 @@ public abstract class AbstractScheduler implements Scheduler {
 						Class<?> clazz = componentDef.getComponentClass();
 						if (clazz != null) {
 							Task task = (Task) clazz.getAnnotation(Task.class);
-							if (task != null) {
+							MetaDef taskMetaDef = componentDef
+									.getMetaDef("task");
+							if (task != null || taskMetaDef != null) {
 								scheduleTask(componentDef);
 							}
 						}
