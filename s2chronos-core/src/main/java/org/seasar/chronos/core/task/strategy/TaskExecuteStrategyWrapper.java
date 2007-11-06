@@ -17,6 +17,10 @@ public class TaskExecuteStrategyWrapper implements TaskExecuteStrategy {
 		this.taskExecuteStrategy = taskExecuteStrategy;
 	}
 
+	public boolean isReSchedule() {
+		return this.taskExecuteStrategy.isReSchedule();
+	}
+
 	public boolean await(long time, TimeUnit timeUnit)
 			throws InterruptedException {
 		return this.taskExecuteStrategy.await(time, timeUnit);
@@ -42,20 +46,20 @@ public class TaskExecuteStrategyWrapper implements TaskExecuteStrategy {
 		return this.taskExecuteStrategy.getDescription();
 	}
 
-	public boolean getEndTask() {
-		return this.taskExecuteStrategy.getEndTask();
+	public boolean isEndTask() {
+		return this.taskExecuteStrategy.isEndTask();
 	}
 
 	public Scheduler getScheduler() {
 		return this.taskExecuteStrategy.getScheduler();
 	}
 
-	public boolean getShutdownTask() {
-		return this.taskExecuteStrategy.getShutdownTask();
+	public boolean isShutdownTask() {
+		return this.taskExecuteStrategy.isShutdownTask();
 	}
 
-	public boolean getStartTask() {
-		return this.taskExecuteStrategy.getStartTask();
+	public boolean isStartTask() {
+		return this.taskExecuteStrategy.isStartTask();
 	}
 
 	public Object getTask() {

@@ -13,27 +13,27 @@ public final class TaskPropertyUtil {
 		return result;
 	}
 
-	public static boolean getEndTask(TaskProperties prop) {
+	public static boolean isEndTask(TaskProperties prop) {
 		boolean end = false;
 		TaskTrigger taskTrigger = prop.getTrigger();
 		if (taskTrigger == null) {
-			end = prop.getEndTask();
+			end = prop.isEndTask();
 		} else {
 			end = taskTrigger.getEndTask();
 		}
 		return end;
 	}
 
-	public static boolean getShutdownTask(TaskProperties prop) {
-		boolean shutdown = prop.getShutdownTask();
+	public static boolean isShutdownTask(TaskProperties prop) {
+		boolean shutdown = prop.isShutdownTask();
 		return shutdown;
 	}
 
-	public static boolean getStartTask(TaskProperties prop) {
+	public static boolean isStartTask(TaskProperties prop) {
 		boolean start = false;
 		TaskTrigger taskTrigger = prop.getTrigger();
 		if (taskTrigger == null) {
-			start = prop.getStartTask();
+			start = prop.isStartTask();
 		} else {
 			start = taskTrigger.getStartTask();
 		}
@@ -97,6 +97,11 @@ public final class TaskPropertyUtil {
 		} else {
 			taskTrigger.setStartTask(startTask);
 		}
+	}
+
+	public static boolean isReSchedule(TaskProperties prop) {
+		boolean reSchedule = prop.isReSchedule();
+		return reSchedule;
 	}
 
 }

@@ -35,7 +35,7 @@ public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler 
 							final TaskScheduleEntry taskScheduleEntry) {
 						final TaskExecutorService tes = taskScheduleEntry
 								.getTaskExecutorService();
-						if (TaskPropertyUtil.getStartTask(tes)) {
+						if (TaskPropertyUtil.isStartTask(tes)) {
 							log.log("DCHRONOSSSTHRT001",
 									new Object[] { TaskPropertyUtil
 											.getTaskName(tes) });
@@ -61,10 +61,19 @@ public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler 
 													.removeTaskScheduleEntry(
 															TaskStateType.RUNNING,
 															taskScheduleEntry);
-											taskContenaStateManager
-													.addTaskScheduleEntry(
-															TaskStateType.UNSCHEDULED,
-															taskScheduleEntry);
+
+											if (TaskPropertyUtil
+													.isReSchedule(tes)) {
+												taskContenaStateManager
+														.addTaskScheduleEntry(
+																TaskStateType.SCHEDULED,
+																taskScheduleEntry);
+											} else {
+												taskContenaStateManager
+														.addTaskScheduleEntry(
+																TaskStateType.UNSCHEDULED,
+																taskScheduleEntry);
+											}
 											log.log("DCHRONOS000112",
 													new Object[] { taskName });
 											return tes;
@@ -79,7 +88,7 @@ public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler 
 							taskContenaStateManager.removeTaskScheduleEntry(
 									TaskStateType.SCHEDULED, taskScheduleEntry);
 						}
-						return new Object();
+						return null;
 					}
 				});
 	}

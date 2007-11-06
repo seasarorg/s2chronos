@@ -37,6 +37,8 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 
 	private static Logger log = Logger.getLogger(TaskExecuteStrategyImpl.class);
 
+	private static final String PROPERTY_NAME_RESCHEDULE = "reSchedule";
+
 	private static final String PROPERTY_NAME_THREAD_POOL_SIZE = "threadPoolSize";
 
 	private static final String PROPERTY_NAME_EXECUTED = "executed";
@@ -108,8 +110,7 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 	}
 
 	public boolean checkMoveAnotherTask(final String nextTaskName) {
-		TaskScheduleEntryManager tcsm = TaskScheduleEntryManager
-				.getInstance();
+		TaskScheduleEntryManager tcsm = TaskScheduleEntryManager.getInstance();
 		Object result = tcsm
 				.forEach(new TaskScheduleEntryManager.TaskScheduleEntryHanlder() {
 					public Object processTaskScheduleEntry(
@@ -205,6 +206,16 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 		return executorService;
 	}
 
+	public boolean isReSchedule() {
+		Boolean result = false;
+		if (this.beanDesc.hasPropertyDesc(PROPERTY_NAME_RESCHEDULE)) {
+			PropertyDesc pd = this.beanDesc
+					.getPropertyDesc(PROPERTY_NAME_RESCHEDULE);
+			result = (Boolean) pd.getValue(this.task);
+		}
+		return result;
+	}
+
 	public String getDescription() {
 		String result = null;
 		if (this.beanDesc.hasPropertyDesc(PROPERTY_NAME_DESCRIPTION)) {
@@ -215,7 +226,7 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 		return result;
 	}
 
-	public boolean getEndTask() {
+	public boolean isEndTask() {
 		Boolean result = false;
 		if (this.beanDesc.hasPropertyDesc(PROPERTY_NAME_END_TASK)) {
 			PropertyDesc pd = this.beanDesc
@@ -240,7 +251,7 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 		return this.scheduler;
 	}
 
-	public boolean getShutdownTask() {
+	public boolean isShutdownTask() {
 		Boolean result = false;
 		if (this.beanDesc.hasPropertyDesc(PROPERTY_NAME_SHUTDOWN_TASK)) {
 			PropertyDesc pd = this.beanDesc
@@ -250,7 +261,7 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 		return result;
 	}
 
-	public boolean getStartTask() {
+	public boolean isStartTask() {
 		Boolean result = false;
 		if (this.beanDesc.hasPropertyDesc(PROPERTY_NAME_START_TASK)) {
 			PropertyDesc pd = this.beanDesc

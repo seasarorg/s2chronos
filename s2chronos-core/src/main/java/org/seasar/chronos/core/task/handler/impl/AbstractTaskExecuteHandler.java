@@ -83,10 +83,10 @@ public abstract class AbstractTaskExecuteHandler implements TaskExecuteHandler {
 		if (taskTrigger != null) {
 			terminate = taskTrigger.getEndTask();
 		} else {
-			terminate = getTaskExecuteStrategy().getEndTask();
+			terminate = getTaskExecuteStrategy().isEndTask();
 		}
 		if (terminate) {
-			log.info("ƒ^ƒXƒN‚ªI—¹‚µ‚Ü‚µ‚½");
+			log.info("ï¿½^ï¿½Xï¿½Nï¿½ï¿½ï¿½Iï¿½ï¿½ï¿½ï¿½ï¿½Ü‚ï¿½ï¿½ï¿½");
 			return new Transition(true, null, lastTaskName);
 		}
 		return null;

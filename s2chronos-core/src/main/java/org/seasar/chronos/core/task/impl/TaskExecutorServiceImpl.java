@@ -21,6 +21,10 @@ public class TaskExecutorServiceImpl implements TaskExecutorService {
 		this.taskExecuteContext = taskExecuteContext;
 	}
 
+	public boolean isReSchedule() {
+		return taskExecuteContext.getTaskExecuteStrategy().isReSchedule();
+	}
+
 	public boolean await(long time, TimeUnit timeUnit)
 			throws InterruptedException {
 		return taskExecuteContext.await(time, timeUnit);
@@ -44,21 +48,21 @@ public class TaskExecutorServiceImpl implements TaskExecutorService {
 		return result;
 	}
 
-	public boolean getEndTask() {
-		return this.taskExecuteContext.getTaskExecuteStrategy().getEndTask();
+	public boolean isEndTask() {
+		return this.taskExecuteContext.getTaskExecuteStrategy().isEndTask();
 	}
 
 	public Scheduler getScheduler() {
 		return this.taskExecuteContext.getTaskExecuteStrategy().getScheduler();
 	}
 
-	public boolean getShutdownTask() {
+	public boolean isShutdownTask() {
 		return this.taskExecuteContext.getTaskExecuteStrategy()
-				.getShutdownTask();
+				.isShutdownTask();
 	}
 
-	public boolean getStartTask() {
-		return this.taskExecuteContext.getTaskExecuteStrategy().getStartTask();
+	public boolean isStartTask() {
+		return this.taskExecuteContext.getTaskExecuteStrategy().isStartTask();
 	}
 
 	public Object getTask() {

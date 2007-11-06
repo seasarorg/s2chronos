@@ -7,15 +7,17 @@ import org.seasar.chronos.core.ThreadPoolType;
 
 public interface TaskProperties {
 
+	public boolean isReSchedule();
+
 	public String getDescription();
 
-	public boolean getEndTask();
+	public boolean isEndTask();
 
 	public Scheduler getScheduler();
 
-	public boolean getShutdownTask();
+	public boolean isShutdownTask();
 
-	public boolean getStartTask();
+	public boolean isStartTask();
 
 	public Object getTask();
 

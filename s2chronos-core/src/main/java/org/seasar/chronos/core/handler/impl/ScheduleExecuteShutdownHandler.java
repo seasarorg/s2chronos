@@ -21,7 +21,7 @@ public class ScheduleExecuteShutdownHandler extends
 							final TaskScheduleEntry taskScheduleEntry) {
 						final TaskExecutorService tes = taskScheduleEntry
 								.getTaskExecutorService();
-						if (TaskPropertyUtil.getShutdownTask(tes)) {
+						if (TaskPropertyUtil.isShutdownTask(tes)) {
 							log.log("DCHRONOS0011",
 									new Object[] { TaskPropertyUtil
 											.getTaskName(tes) });
