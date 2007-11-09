@@ -12,7 +12,7 @@ public class TaskMethodManager {
 
 	private static final String NO_GROUP = "noGroup";
 
-	private final Class clazz;
+	private final Class<?> clazz;
 
 	private final String prefixMethodName;
 
@@ -24,7 +24,7 @@ public class TaskMethodManager {
 
 	private ArrayList<Method> methodAllList = new ArrayList<Method>();
 
-	public TaskMethodManager(Class clazz, String prefixMethodName) {
+	public TaskMethodManager(Class<?> clazz, String prefixMethodName) {
 		this.clazz = clazz;
 		this.prefixMethodName = prefixMethodName;
 		this.initialize();

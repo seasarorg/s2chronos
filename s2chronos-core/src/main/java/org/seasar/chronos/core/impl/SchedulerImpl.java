@@ -61,6 +61,10 @@ public class SchedulerImpl extends AbstractScheduler {
 		scheduleTask(this.s2container, componentClass);
 	}
 
+	/**
+	 * タスク名でスケジューラに登録する．<br>
+	 * タスク名とは，S2上のコンポーネント名，もしくはTaskアノテーション名
+	 */
 	public boolean addTask(String taskName) {
 		ComponentDef componentDef = null;
 		try {

@@ -95,7 +95,7 @@ public class MethodInvoker {
 	 * @param methodName
 	 *            メソッド名
 	 * @param methodCallback
-	 *            メソッドコールバック(メソッド名には非Publicｇが指定できます)
+	 *            メソッドコールバック(メソッド名には非Publicが指定できます)
 	 * @param state
 	 *            ステート
 	 * @return 非同期結果オブジェクト

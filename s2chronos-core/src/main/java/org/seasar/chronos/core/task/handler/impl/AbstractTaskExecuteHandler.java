@@ -16,6 +16,7 @@ public abstract class AbstractTaskExecuteHandler implements TaskExecuteHandler {
 
 	protected static final String METHOD_PREFIX_NAME_END = "end";
 
+	@SuppressWarnings("unused")
 	private static Logger log = Logger
 			.getLogger(AbstractTaskExecuteHandler.class);
 

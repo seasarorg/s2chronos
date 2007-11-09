@@ -15,6 +15,7 @@ public class TaskScheduleEntryManager {
 		public Object processTaskScheduleEntry(TaskScheduleEntry scheduleEntry);
 	}
 
+	@SuppressWarnings("unused")
 	private static Logger log = Logger
 			.getLogger(TaskScheduleEntryManager.class);
 

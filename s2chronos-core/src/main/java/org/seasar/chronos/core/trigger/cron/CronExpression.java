@@ -29,6 +29,7 @@ public class CronExpression {
 
 	private static final String ASTERISK = "*";
 
+	@SuppressWarnings("unused")
 	private static Logger log = Logger.getLogger(CronExpression.class);
 
 	private String cronExpression;

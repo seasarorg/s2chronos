@@ -46,8 +46,6 @@ public abstract class AbstractScheduler implements Scheduler {
 						TaskExecutorService tes = taskScheduleEntry
 								.getTaskExecutorService();
 						String _taskName = TaskPropertyUtil.getTaskName(tes);
-						// log.debug("[[[" + taskName + ":" + _taskName +
-						// "]]]");
 						if (taskName.equals(_taskName)) {
 							return taskScheduleEntry.getComponentDef();
 						}

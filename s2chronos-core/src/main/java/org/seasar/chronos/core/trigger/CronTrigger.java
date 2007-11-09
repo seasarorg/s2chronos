@@ -47,10 +47,8 @@ public class CronTrigger extends AbstractTrigger {
 	}
 
 	public boolean isStartTask() {
-
 		long nowTime = System.currentTimeMillis();
 		boolean startTimeCheck = false;
-
 		// 開始時刻の確認
 		if (startTimeList != null) {
 			int size = startTimeList.size();
@@ -58,8 +56,7 @@ public class CronTrigger extends AbstractTrigger {
 				Date startTime = startTimeList.get(i);
 				startTimeCheck = (nowTime >= startTime.getTime());
 				if (startTimeCheck) {
-					Date r = startTimeList.remove(i);
-					r = null;
+					startTimeList.remove(i);
 					break;
 				}
 			}
@@ -68,7 +65,6 @@ public class CronTrigger extends AbstractTrigger {
 				this.startTimeList = this.expression.getStartTimes();
 			}
 		}
-
 		return startTimeCheck;
 	}
 
