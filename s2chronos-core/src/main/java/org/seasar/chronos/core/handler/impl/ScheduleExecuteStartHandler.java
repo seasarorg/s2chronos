@@ -37,7 +37,6 @@ public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler 
 						final TaskExecutorService tes = taskScheduleEntry
 								.getTaskExecutorService();
 						if (TaskPropertyUtil.isStartTask(tes)) {
-							final Object signal = new Object();
 							log.log("DCHRONOSSSTHRT001",
 									new Object[] { TaskPropertyUtil
 											.getTaskName(tes) });

@@ -41,7 +41,7 @@ public final class Logger {
 		initialized = false;
 	}
 
-	private Logger(final Class clazz) {
+	private Logger(final Class<?> clazz) {
 		log = LogFactory.getLog(clazz);
 	}
 

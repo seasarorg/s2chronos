@@ -18,7 +18,7 @@ public abstract class SchedulerWrapper extends AbstractScheduler {
 		return scheduler.addTask(taskName);
 	}
 
-	public void addTask(Class componentClass) {
+	public void addTask(Class<?> componentClass) {
 		scheduler.addTask(componentClass);
 	}
 

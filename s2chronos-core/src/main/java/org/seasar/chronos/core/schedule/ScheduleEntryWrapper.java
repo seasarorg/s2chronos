@@ -27,7 +27,7 @@ public class ScheduleEntryWrapper extends AbstractScheduleEntry {
 		return taskScheduleEntry.getTask();
 	}
 
-	public Class getTaskClass() {
+	public Class<?> getTaskClass() {
 		return taskScheduleEntry.getTaskClass();
 	}
 
@@ -55,7 +55,7 @@ public class ScheduleEntryWrapper extends AbstractScheduleEntry {
 		taskScheduleEntry.setTask(target);
 	}
 
-	public void setTaskClass(Class targetClass) {
+	public void setTaskClass(Class<?> targetClass) {
 		taskScheduleEntry.setTaskClass(targetClass);
 	}
 

@@ -1,11 +1,5 @@
 package org.seasar.chronos.core;
 
-/**
- * �X�P�W���[���̐ݒ��Ǘ����܂�.
- * 
- * @author junichi
- * 
- */
 public final class SchedulerConfiguration {
 
 	private boolean autoFinish;

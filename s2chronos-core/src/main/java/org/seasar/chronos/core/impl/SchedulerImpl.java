@@ -57,7 +57,7 @@ public class SchedulerImpl extends AbstractScheduler {
 		return schedulerEventHandler.add(listener);
 	}
 
-	public void addTask(Class componentClass) {
+	public void addTask(Class<?> componentClass) {
 		scheduleTask(this.s2container, componentClass);
 	}
 

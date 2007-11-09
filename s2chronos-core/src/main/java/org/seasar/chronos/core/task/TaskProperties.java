@@ -21,7 +21,7 @@ public interface TaskProperties {
 
 	public Object getTask();
 
-	public Class getTaskClass();
+	public Class<?> getTaskClass();
 
 	public long getTaskId();
 
@@ -51,7 +51,7 @@ public interface TaskProperties {
 
 	public void setTask(Object task);
 
-	public void setTaskClass(Class taskClass);
+	public void setTaskClass(Class<?> taskClass);
 
 	public void setTaskId(long taskId);
 

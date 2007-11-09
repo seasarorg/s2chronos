@@ -69,7 +69,7 @@ public class TaskExecutorServiceImpl implements TaskExecutorService {
 		return this.taskExecuteContext.getTaskExecuteStrategy().getTask();
 	}
 
-	public Class getTaskClass() {
+	public Class<?> getTaskClass() {
 		return this.taskExecuteContext.getTaskExecuteStrategy().getTaskClass();
 	}
 
@@ -151,7 +151,7 @@ public class TaskExecutorServiceImpl implements TaskExecutorService {
 		this.taskExecuteContext.getTaskExecuteStrategy().setTask(task);
 	}
 
-	public void setTaskClass(Class taskClass) {
+	public void setTaskClass(Class<?> taskClass) {
 		this.taskExecuteContext.getTaskExecuteStrategy()
 				.setTaskClass(taskClass);
 	}

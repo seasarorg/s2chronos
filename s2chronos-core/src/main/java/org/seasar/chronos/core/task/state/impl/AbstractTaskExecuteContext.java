@@ -84,7 +84,7 @@ public abstract class AbstractTaskExecuteContext implements TaskExecuteContext {
 		return taskExecuteStrategy.getTask();
 	}
 
-	public Class getTaskClass() {
+	public Class<?> getTaskClass() {
 		return taskExecuteStrategy.getTaskClass();
 	}
 
@@ -140,7 +140,7 @@ public abstract class AbstractTaskExecuteContext implements TaskExecuteContext {
 		this.taskExecuteStrategy.setTask(task);
 	}
 
-	public void setTaskClass(Class taskClass) {
+	public void setTaskClass(Class<?> taskClass) {
 		this.taskExecuteStrategy.setTaskClass(taskClass);
 	}
 

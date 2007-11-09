@@ -135,7 +135,7 @@ public class TaskScheduleEntryManager {
 	}
 
 	public int size(TaskStateType key) {
-		List list = taskScheduleEntryMap.get(key);
+		List<?> list = taskScheduleEntryMap.get(key);
 		if (list == null) {
 			return 0;
 		}

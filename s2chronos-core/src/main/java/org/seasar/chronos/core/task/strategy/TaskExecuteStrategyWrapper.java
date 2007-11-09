@@ -66,7 +66,7 @@ public class TaskExecuteStrategyWrapper implements TaskExecuteStrategy {
 		return this.taskExecuteStrategy.getTask();
 	}
 
-	public Class getTaskClass() {
+	public Class<?> getTaskClass() {
 		return this.taskExecuteStrategy.getTaskClass();
 	}
 
@@ -142,7 +142,7 @@ public class TaskExecuteStrategyWrapper implements TaskExecuteStrategy {
 		this.taskExecuteStrategy.setTask(task);
 	}
 
-	public void setTaskClass(Class taskClass) {
+	public void setTaskClass(Class<?> taskClass) {
 		this.taskExecuteStrategy.setTaskClass(taskClass);
 	}
 

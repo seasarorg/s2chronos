@@ -26,7 +26,7 @@ public class MethodInvoker {
 
 	private CopyOnWriteArrayList<AsyncResult> resultList = new CopyOnWriteArrayList<AsyncResult>();
 
-	private Class targetClass;
+	private Class<?> targetClass;
 
 	private Object target;
 

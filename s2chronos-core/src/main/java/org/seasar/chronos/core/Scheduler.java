@@ -1,52 +1,31 @@
 package org.seasar.chronos.core;
 
+/**
+ * ã‚¹ã‚±ã‚¸ãƒ¥ãƒ¼ãƒ©ã®ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ã‚¤ã‚¹ã§ã™ï¼
+ * 
+ * @author junichi
+ * 
+ */
 public interface Scheduler {
 
-	/**
-	 * ƒXƒPƒWƒ…[ƒ‰‚Ìİ’è‚ğ•Ô‚µ‚Ü‚·D
-	 * 
-	 * @return ƒXƒPƒWƒ…[ƒ‰‚Ìİ’è
-	 */
 	public SchedulerConfiguration getSchedulerConfiguration();
 
-	/**
-	 * ƒXƒPƒWƒ…[ƒ‰‚Ìİ’è‚ğİ’è‚µ‚Ü‚·D
-	 * 
-	 * @param schedulerConfiguration
-	 *            ƒXƒPƒWƒ…[ƒ‰‚Ìİ’è
-	 */
 	public void setSchedulerConfiguration(
 			SchedulerConfiguration schedulerConfiguration);
 
-	/**
-	 * ƒXƒPƒWƒ…[ƒ‰‚ğƒXƒ^[ƒg‚µ‚Ü‚·D
-	 * 
-	 */
 	public void start();
 
-	/**
-	 * ƒXƒPƒWƒ…[ƒ‰‚ğˆê’â~‚µ‚Ü‚·D
-	 * 
-	 */
 	public void pause();
 
 	public boolean isPaused();
 
-	/**
-	 * ƒXƒPƒWƒ…[ƒ‰‚ğƒVƒƒƒbƒgƒ_ƒEƒ“‚µ‚Ü‚·D
-	 * 
-	 */
 	public void shutdown();
 
-	/**
-	 * ƒXƒPƒWƒ…[ƒ‰‚ğ‘Ò‹@‚µ‚Ü‚·D
-	 * 
-	 */
 	public void join();
 
 	public boolean addTask(String taskName);
 
-	public void addTask(Class componentClass);
+	public void addTask(Class<?> componentClass);
 
 	public boolean removeTask(Object task);
 

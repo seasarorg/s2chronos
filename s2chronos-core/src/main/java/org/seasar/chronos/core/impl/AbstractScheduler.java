@@ -109,7 +109,7 @@ public abstract class AbstractScheduler implements Scheduler {
 								String shortClassName) {
 							String name = ClassUtil.concatName(packageName,
 									shortClassName);
-							Class clazz = ReflectionUtil
+							Class<?> clazz = ReflectionUtil
 									.forNameNoException(name);
 							scheduleTask(s2Container, clazz);
 						}
@@ -155,7 +155,7 @@ public abstract class AbstractScheduler implements Scheduler {
 	}
 
 	protected TaskScheduleEntry scheduleTask(final S2Container s2Container,
-			Class componentClass) {
+			Class<?> componentClass) {
 		ComponentDef componentDef = s2Container.getComponentDef(componentClass);
 		return scheduleTask(componentDef);
 	}

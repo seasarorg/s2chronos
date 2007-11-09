@@ -9,6 +9,6 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 public @interface Trigger {
 
-	Class[] task();
+	Class<?>[] task();
 
 }

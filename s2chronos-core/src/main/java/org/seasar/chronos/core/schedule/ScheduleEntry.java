@@ -14,7 +14,7 @@ public class ScheduleEntry extends AbstractScheduleEntry {
 
 	private Object task;
 
-	private Class taskClass;
+	private Class<?> taskClass;
 
 	private TaskStateType taskStateType;
 
@@ -34,7 +34,7 @@ public class ScheduleEntry extends AbstractScheduleEntry {
 		return task;
 	}
 
-	public Class getTaskClass() {
+	public Class<?> getTaskClass() {
 		return taskClass;
 	}
 
@@ -51,7 +51,7 @@ public class ScheduleEntry extends AbstractScheduleEntry {
 	}
 
 	public void save() {
-		// TODO ©“®¶¬‚³‚ê‚½ƒƒ\ƒbƒhEƒXƒ^ƒu
+		// TODO ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ê‚½ï¿½ï¿½ï¿½\ï¿½bï¿½hï¿½Eï¿½Xï¿½^ï¿½u
 
 		// String taskName = TaskPropertyUtil.getTaskName(tes);
 		// String description = TaskPropertyUtil.getDescription(tes);
@@ -72,7 +72,7 @@ public class ScheduleEntry extends AbstractScheduleEntry {
 		this.task = target;
 	}
 
-	public void setTaskClass(Class targetClass) {
+	public void setTaskClass(Class<?> targetClass) {
 		this.taskClass = targetClass;
 	}
 

@@ -14,7 +14,7 @@ public interface TaskScheduleEntry extends Serializable {
 
 	public Object getTask();
 
-	public Class getTaskClass();
+	public Class<?> getTaskClass();
 
 	public TaskExecutorService getTaskExecutorService();
 
@@ -28,7 +28,7 @@ public interface TaskScheduleEntry extends Serializable {
 
 	public void setTask(Object target);
 
-	public void setTaskClass(Class targetClass);
+	public void setTaskClass(Class<?> targetClass);
 
 	public void setTaskExecutorService(TaskExecutorService taskExecutorService);
 

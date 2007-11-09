@@ -25,7 +25,7 @@ public class MethodCallback {
 		return target;
 	}
 
-	public Class getTargetClass() {
+	public Class<?> getTargetClass() {
 		return target.getClass();
 	}
 

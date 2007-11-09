@@ -74,7 +74,7 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 
 	private Object task;
 
-	private Class taskClass;
+	private Class<?> taskClass;
 
 	private BeanDesc beanDesc;
 
@@ -274,7 +274,7 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 		return this.task;
 	}
 
-	public Class getTaskClass() {
+	public Class<?> getTaskClass() {
 		return this.taskClass;
 	}
 
@@ -470,7 +470,7 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 		this.task = task;
 	}
 
-	public void setTaskClass(Class taskClass) {
+	public void setTaskClass(Class<?> taskClass) {
 		this.taskClass = taskClass;
 	}
 
