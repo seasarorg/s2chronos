@@ -10,12 +10,12 @@ public class TriggerWrapper extends AbstractTrigger {
 		this.taskTrigger = taskTrigger;
 	}
 
-	public Boolean getEndTask() {
-		return taskTrigger.getEndTask();
+	public boolean isEndTask() {
+		return taskTrigger.isEndTask();
 	}
 
-	public Boolean getStartTask() {
-		return taskTrigger.getStartTask();
+	public boolean isStartTask() {
+		return taskTrigger.isStartTask();
 	}
 
 	public void setEndTask(Boolean endTask) {

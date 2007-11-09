@@ -11,11 +11,7 @@ public class TimedTrigger extends AbstractTrigger {
 	private Date endTime;
 
 	public TimedTrigger() {
-
-	}
-
-	public TimedTrigger(String name) {
-		super(name);
+		super("timedTrigger");
 	}
 
 	public void setStartTime(Date startDate) {
@@ -34,7 +30,7 @@ public class TimedTrigger extends AbstractTrigger {
 		return endTime;
 	}
 
-	public Boolean getStartTask() {
+	public boolean isStartTask() {
 
 		if (this.isExecute()) {
 			return false;
@@ -42,7 +38,7 @@ public class TimedTrigger extends AbstractTrigger {
 
 		boolean startTimeCheck = false;
 
-		// ŠJŽnŽž‚ÌŠm”F
+		// é–‹å§‹æ™‚åˆ»ã®ç¢ºèª
 		if (startTime != null) {
 			startTimeCheck = (System.currentTimeMillis() >= startTime.getTime());
 		}
@@ -50,11 +46,11 @@ public class TimedTrigger extends AbstractTrigger {
 		return startTimeCheck;
 	}
 
-	public Boolean getEndTask() {
+	public boolean isEndTask() {
 
 		boolean endTimeCheck = false;
 
-		// I—¹Žž‚ÌŠm”F
+		// çµ‚äº†æ™‚åˆ»ã®ç¢ºèª
 		if (endTime != null) {
 			endTimeCheck = (System.currentTimeMillis() >= endTime.getTime());
 		}

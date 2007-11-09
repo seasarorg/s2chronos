@@ -4,11 +4,15 @@ public class NonDelayTrigger extends AbstractTrigger {
 
 	private static final long serialVersionUID = 9118006820441048598L;
 
-	public Boolean getStartTask() {
+	public NonDelayTrigger() {
+		super("nonDelayTrigger");
+	}
+
+	public boolean isStartTask() {
 		return true;
 	}
 
-	public Boolean getEndTask() {
+	public boolean isEndTask() {
 		return false;
 	}
 

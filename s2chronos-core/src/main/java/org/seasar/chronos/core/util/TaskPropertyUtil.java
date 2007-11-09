@@ -19,7 +19,7 @@ public final class TaskPropertyUtil {
 		if (taskTrigger == null) {
 			end = prop.isEndTask();
 		} else {
-			end = taskTrigger.getEndTask();
+			end = taskTrigger.isEndTask();
 		}
 		return end;
 	}
@@ -35,7 +35,7 @@ public final class TaskPropertyUtil {
 		if (taskTrigger == null) {
 			start = prop.isStartTask();
 		} else {
-			start = taskTrigger.getStartTask();
+			start = taskTrigger.isStartTask();
 		}
 		return start;
 	}
@@ -100,8 +100,13 @@ public final class TaskPropertyUtil {
 	}
 
 	public static boolean isReSchedule(TaskProperties prop) {
-		boolean reSchedule = prop.isReSchedule();
+		boolean reSchedule = false;
+		TaskTrigger taskTrigger = prop.getTrigger();
+		if (taskTrigger == null) {
+			reSchedule = prop.isReSchedule();
+		} else {
+			reSchedule = taskTrigger.isReSchedule();
+		}
 		return reSchedule;
 	}
-
 }

@@ -6,6 +6,10 @@ public class DelayTrigger extends AbstractTrigger {
 
 	private long delay = 0;
 
+	public DelayTrigger() {
+		super("delayTrigger");
+	}
+
 	public void setDelay(long delay) {
 		this.delay = System.currentTimeMillis() + delay;
 	}
@@ -14,20 +18,20 @@ public class DelayTrigger extends AbstractTrigger {
 		return delay;
 	}
 
-	public Boolean getStartTask() {
+	public boolean isStartTask() {
 		if (this.isExecute()) {
 			return false;
 		}
 
 		boolean startTimeCheck = false;
 
-		// ŠJn‚ÌŠm”F
+		// é–‹å§‹æ™‚åˆ»ã®ç¢ºèª
 		startTimeCheck = (System.currentTimeMillis() >= delay);
 
 		return startTimeCheck;
 	}
 
-	public Boolean getEndTask() {
+	public boolean isEndTask() {
 		return false;
 	}
 

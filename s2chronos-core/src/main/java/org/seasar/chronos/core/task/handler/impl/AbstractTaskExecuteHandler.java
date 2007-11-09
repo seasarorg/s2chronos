@@ -81,12 +81,11 @@ public abstract class AbstractTaskExecuteHandler implements TaskExecuteHandler {
 		boolean terminate = false;
 		TaskTrigger taskTrigger = getTaskExecuteStrategy().getTrigger();
 		if (taskTrigger != null) {
-			terminate = taskTrigger.getEndTask();
+			terminate = taskTrigger.isEndTask();
 		} else {
 			terminate = getTaskExecuteStrategy().isEndTask();
 		}
 		if (terminate) {
-			log.info("�^�X�N���I�����܂���");
 			return new Transition(true, null, lastTaskName);
 		}
 		return null;

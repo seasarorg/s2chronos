@@ -4,17 +4,17 @@ public interface TaskTrigger extends Serializable {
 
 	public String getDescription();
 
-	public Boolean getEndTask();
+	public boolean isEndTask();
 
 	public Long getTriggerId();
 
 	public String getName();
 
-	public Boolean getStartTask();
+	public boolean isStartTask();
 
 	public Object getTask();
 
-	public Boolean isExecute();
+	public boolean isExecute();
 
 	public void setDescription(String description);
 
@@ -29,5 +29,7 @@ public interface TaskTrigger extends Serializable {
 	public void setStartTask(Boolean startTask);
 
 	public void setTask(Object task);
+
+	public boolean isReSchedule();
 
 }

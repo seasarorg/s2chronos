@@ -12,11 +12,12 @@ public class CronTrigger extends AbstractTrigger {
 	private ArrayList<Date> startTimeList;
 
 	public CronTrigger() {
-
+		super("cronTrigger");
 	}
 
-	public CronTrigger(String name) {
-		super(name);
+	public CronTrigger(String cronExpression) {
+		super("cronTrigger");
+		this.setCronExpression(cronExpression);
 	}
 
 	@Override
@@ -36,16 +37,16 @@ public class CronTrigger extends AbstractTrigger {
 		return this.expression.getCronExprssion();
 	}
 
-	public Boolean getEndTask() {
+	public boolean isEndTask() {
 		return false;
 	}
 
-	public Boolean getStartTask() {
+	public boolean isStartTask() {
 
 		long nowTime = System.currentTimeMillis();
 		boolean startTimeCheck = false;
 
-		// ŠJn‚ÌŠm”F
+		// é–‹å§‹æ™‚åˆ»ã®ç¢ºèª
 		if (startTimeList != null) {
 			int size = startTimeList.size();
 			for (int i = 0; i < size; i++) {
