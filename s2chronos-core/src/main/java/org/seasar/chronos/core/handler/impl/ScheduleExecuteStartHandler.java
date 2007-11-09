@@ -45,27 +45,28 @@ public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler 
 							Callable<TaskExecutorService> task = new Callable<TaskExecutorService>() {
 								public TaskExecutorService call()
 										throws Exception {
-
-									taskContenaStateManager
-											.addTaskScheduleEntry(
-													TaskStateType.RUNNING,
-													taskScheduleEntry);
 									log
 											.debug("ADD RUNNING = "
 													+ TaskPropertyUtil
 															.getTaskId(taskScheduleEntry
 																	.getTaskExecutorService()));
+									taskContenaStateManager
+											.addTaskScheduleEntry(
+													TaskStateType.RUNNING,
+													taskScheduleEntry);
+
 									// 定期スケジュール以外ならスケジュールドリストから削除する
 									if (!TaskPropertyUtil.isReSchedule(tes)) {
-										taskContenaStateManager
-												.removeTaskScheduleEntry(
-														TaskStateType.SCHEDULED,
-														taskScheduleEntry);
 										log
 												.debug("REMOVE SCHEDULED = "
 														+ TaskPropertyUtil
 																.getTaskId(taskScheduleEntry
 																		.getTaskExecutorService()));
+										taskContenaStateManager
+												.removeTaskScheduleEntry(
+														TaskStateType.SCHEDULED,
+														taskScheduleEntry);
+
 									}
 									TaskExecutorService _tes = tes;
 									taskName = TaskPropertyUtil
@@ -73,29 +74,45 @@ public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler 
 
 									log.log("DCHRONOS000111",
 											new Object[] { taskName });
+									log.debug("fireStartTaskEvent(_tes);");
 									fireStartTaskEvent(_tes);
+									log
+											.debug("String nextTaskName = _tes.initialize();");
 									String nextTaskName = _tes.initialize();
+									log
+											.debug("taskExecute(_tes, nextTaskName);");
 									taskExecute(_tes, nextTaskName);
+									log.debug("nextTaskName = _tes.destroy();");
 									nextTaskName = null;
 									nextTaskName = _tes.destroy();
+									log
+											.debug("scheduleTask(_tes, nextTaskName);");
 									scheduleTask(_tes, nextTaskName);
+									log.debug("fireEndTaskEvent(_tes);");
 									fireEndTaskEvent(_tes);
 
+									log
+											.debug("REMOVE RUNNING = "
+													+ TaskPropertyUtil
+															.getTaskId(taskScheduleEntry
+																	.getTaskExecutorService()));
 									taskContenaStateManager
 											.removeTaskScheduleEntry(
 													TaskStateType.RUNNING,
 													taskScheduleEntry);
+
 									// 定期スケジュール以外ならアンスケジュールドリストに登録する
 									if (!TaskPropertyUtil.isReSchedule(tes)) {
-										taskContenaStateManager
-												.addTaskScheduleEntry(
-														TaskStateType.UNSCHEDULED,
-														taskScheduleEntry);
 										log
 												.debug("ADD UNSCHEDULED = "
 														+ TaskPropertyUtil
 																.getTaskId(taskScheduleEntry
 																		.getTaskExecutorService()));
+										taskContenaStateManager
+												.addTaskScheduleEntry(
+														TaskStateType.UNSCHEDULED,
+														taskScheduleEntry);
+
 									}
 									log.log("DCHRONOS000112",
 											new Object[] { taskName });

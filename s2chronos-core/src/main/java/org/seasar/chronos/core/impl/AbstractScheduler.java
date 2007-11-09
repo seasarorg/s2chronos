@@ -11,7 +11,6 @@ import org.seasar.chronos.core.util.TaskPropertyUtil;
 import org.seasar.framework.container.ComponentDef;
 import org.seasar.framework.container.MetaDef;
 import org.seasar.framework.container.S2Container;
-import org.seasar.framework.container.hotdeploy.HotdeployUtil;
 import org.seasar.framework.container.util.SmartDeployUtil;
 import org.seasar.framework.container.util.Traversal;
 import org.seasar.framework.exception.ClassNotFoundRuntimeException;
@@ -144,7 +143,7 @@ public abstract class AbstractScheduler implements Scheduler {
 		} catch (ClassNotFoundException e) {
 			throw new ClassNotFoundRuntimeException(e);
 		}
-		HotdeployUtil.start();
+		// HotdeployUtil.start();
 		// ここでタスクに対してDIが実行されます
 		tes.setTask(componentDef.getComponent());
 		tes.setTaskClass(componentDef.getComponentClass());

@@ -21,6 +21,11 @@ public class CronTrigger extends AbstractTrigger {
 	}
 
 	@Override
+	public boolean isReSchedule() {
+		return true;
+	}
+
+	@Override
 	public boolean equals(Object obj) {
 		boolean result = super.equals(obj);
 		CronTrigger src = (CronTrigger) obj;

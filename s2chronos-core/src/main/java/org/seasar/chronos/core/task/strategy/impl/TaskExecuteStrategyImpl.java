@@ -28,7 +28,6 @@ import org.seasar.framework.beans.PropertyDesc;
 import org.seasar.framework.beans.factory.BeanDescFactory;
 import org.seasar.framework.container.annotation.tiger.Binding;
 import org.seasar.framework.container.annotation.tiger.BindingType;
-import org.seasar.framework.container.hotdeploy.HotdeployUtil;
 import org.seasar.framework.log.Logger;
 
 public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
@@ -170,9 +169,9 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 		}
 		this.setExecute(false);
 		this.notifyGetterSignal();
-		this.taskMethodInvoker = null;
-		this.lifecycleMethodInvoker = null;
-		HotdeployUtil.stop();
+		// this.taskMethodInvoker = null;
+		// this.lifecycleMethodInvoker = null;
+		// HotdeployUtil.stop();
 		return nextTask;
 	}
 

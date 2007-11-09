@@ -9,18 +9,15 @@ import org.seasar.framework.log.Logger;
 public class TestTask {
 
 	private static Logger log = Logger.getLogger(TestTask.class);
-	private TaskTrigger trigger = new CronTrigger("1 * * * *");
+	private TaskTrigger trigger = new CronTrigger("*/1 * * * *");
 
 	public TaskTrigger getTrigger() {
 		return trigger;
 	}
 
-	public synchronized void initialize() {
+	public void initialize() {
 		log
 				.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>SimpleTask::initialize");
 	}
 
-	public boolean isReSchedule() {
-		return false;
-	}
 }
