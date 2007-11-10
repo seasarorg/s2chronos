@@ -23,7 +23,7 @@ public class ScheduleEntryWrapper extends AbstractScheduleEntry {
 		return taskScheduleEntry.getScheduleId();
 	}
 
-	public Object getTask() {
+	 public Object getTask() {
 		return taskScheduleEntry.getTask();
 	}
 

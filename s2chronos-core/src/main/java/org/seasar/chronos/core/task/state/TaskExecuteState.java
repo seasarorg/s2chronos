@@ -9,8 +9,6 @@ public interface TaskExecuteState {
 
 	public TaskExecuteStrategy getTaskExecuteStrategy();
 
-	public void prepare(TaskExecuteContext context);
-
 	public String initialize(AbstractTaskExecuteContext context)
 			throws InterruptedException;
 

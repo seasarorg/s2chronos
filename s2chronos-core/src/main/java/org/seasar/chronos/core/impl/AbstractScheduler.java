@@ -13,7 +13,6 @@ import org.seasar.framework.container.MetaDef;
 import org.seasar.framework.container.S2Container;
 import org.seasar.framework.container.util.SmartDeployUtil;
 import org.seasar.framework.container.util.Traversal;
-import org.seasar.framework.exception.ClassNotFoundRuntimeException;
 import org.seasar.framework.util.ClassTraversal;
 import org.seasar.framework.util.ClassUtil;
 import org.seasar.framework.util.tiger.ReflectionUtil;
@@ -134,21 +133,16 @@ public abstract class AbstractScheduler implements Scheduler {
 				.getComponent(TaskExecutorService.class);
 		taskScheduleEntry.setTaskExecutorService(tes);
 
-		try {
-			String className = taskScheduleEntry.getComponentDef()
-					.getComponentClass().getName();
-			Class.forName(className);
-		} catch (ClassNotFoundException e) {
-			throw new ClassNotFoundRuntimeException(e);
-		}
 		// HotdeployUtil.start();
 		// ここでタスクに対してDIが実行されます
-		tes.setTask(componentDef.getComponent());
-		tes.setTaskClass(componentDef.getComponentClass());
+		// tes.setTask(componentDef.getComponent());
+		// tes.setTaskClass(componentDef.getComponentClass());
+		tes.setComponentDef(componentDef);
 		tes.setGetterSignal(this);
 		tes.setScheduler(this);
-		tes.prepare();
-		taskScheduleEntry.setTask(tes.getTask());
+		// tes.prepare();
+		taskScheduleEntry.setComponentDef(componentDef);
+		// taskScheduleEntry.setTask(tes.getTask());
 		return taskScheduleEntry;
 	}
 

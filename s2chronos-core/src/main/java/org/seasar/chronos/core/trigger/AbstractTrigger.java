@@ -42,9 +42,7 @@ public abstract class AbstractTrigger implements TaskTrigger {
 			if (this.description != null) {
 				result = result & this.description.equals(src.description);
 			}
-
 			result = result & this.execute == src.execute;
-
 			return result;
 		} else {
 			return super.equals(obj);

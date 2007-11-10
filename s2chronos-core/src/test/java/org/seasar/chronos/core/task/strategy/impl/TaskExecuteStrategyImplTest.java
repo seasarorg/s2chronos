@@ -28,7 +28,7 @@ public class TaskExecuteStrategyImplTest extends S2TestCaseBase {
 
 		taskExecuteStrategy.setTask(taskComponentDef.getComponent());
 		taskExecuteStrategy.setTaskClass(taskComponentDef.getComponentClass());
-		taskExecuteStrategy.prepare();
+		// taskExecuteStrategy.prepare();
 		taskExecuteStrategy.save();
 		this.id = taskExecuteStrategy.getTaskId();
 

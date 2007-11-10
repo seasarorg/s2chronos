@@ -10,6 +10,11 @@ public class DelayTrigger extends AbstractTrigger {
 		super("delayTrigger");
 	}
 
+	@Override
+	public boolean isReSchedule() {
+		return false;
+	}
+
 	public void setDelay(long delay) {
 		this.delay = System.currentTimeMillis() + delay;
 	}

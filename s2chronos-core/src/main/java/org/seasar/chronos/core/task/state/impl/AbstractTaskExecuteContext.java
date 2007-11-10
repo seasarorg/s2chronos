@@ -117,18 +117,6 @@ public abstract class AbstractTaskExecuteContext implements TaskExecuteContext {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.seasar.chronos.core.task.state.impl.TaskExecuteContext#prepare()
-	 */
-	public void prepare() {
-		// this.getTaskExecuteStrategy().setTask(this.task);
-		// this.getTaskExecuteStrategy().setTaskClass(this.taskClass);
-		// this.getTaskExecuteStrategy().setGetterSignal(this.getterSignal);
-		this.currentState.prepare(this);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
 	 * @see org.seasar.chronos.core.task.state.impl.TaskExecuteContext#setGetterSignal(java.lang.Object)
 	 */
 	@Binding(bindingType = BindingType.NONE)

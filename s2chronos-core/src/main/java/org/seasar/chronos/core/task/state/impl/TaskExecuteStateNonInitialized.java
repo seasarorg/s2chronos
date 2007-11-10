@@ -45,11 +45,6 @@ public class TaskExecuteStateNonInitialized extends AbstractTaskExecuteState {
 	}
 
 	@Override
-	public void prepare(TaskExecuteContext context) {
-		this.getTaskExecuteStrategy().prepare();
-	}
-
-	@Override
 	public void waitOne() {
 
 	}

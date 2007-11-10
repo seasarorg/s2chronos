@@ -27,7 +27,7 @@ public interface Scheduler {
 
 	public void addTask(Class<?> componentClass);
 
-	public boolean removeTask(Object task);
+	// public boolean removeTask(Object task);
 
 	public boolean addListener(SchedulerEventListener listener);
 

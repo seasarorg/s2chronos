@@ -7,7 +7,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import org.seasar.chronos.core.TaskScheduleEntry;
 import org.seasar.chronos.core.impl.TaskStateType;
 import org.seasar.chronos.core.logger.Logger;
-import org.seasar.chronos.core.util.TaskPropertyUtil;
 
 public class TaskScheduleEntryManager {
 
@@ -36,7 +35,9 @@ public class TaskScheduleEntryManager {
 
 	private CopyOnWriteArrayList<TaskScheduleEntry> allTaskList = new CopyOnWriteArrayList<TaskScheduleEntry>();
 
-	private ConcurrentHashMap<Object, TaskScheduleEntry> taskScheduleEntryObjectMap = new ConcurrentHashMap<Object, TaskScheduleEntry>();
+	// private ConcurrentHashMap<Object, TaskScheduleEntry>
+	// taskScheduleEntryObjectMap = new ConcurrentHashMap<Object,
+	// TaskScheduleEntry>();
 
 	private TaskScheduleEntryManager() {
 
@@ -48,16 +49,6 @@ public class TaskScheduleEntryManager {
 		boolean result = this.getScheduleEntryList(key).add(taskScheduleEntry);
 		if (key == TaskStateType.SCHEDULED) {
 			result = result & this.allTaskList.addIfAbsent(taskScheduleEntry);
-			// オブジェクトでput
-			result = result
-					& this.taskScheduleEntryObjectMap.putIfAbsent(
-							taskScheduleEntry.getTask(), taskScheduleEntry) != null;
-			// タスク名でput
-			result = result
-					& this.taskScheduleEntryObjectMap.putIfAbsent(
-							TaskPropertyUtil.getTaskName(taskScheduleEntry
-									.getTaskExecutorService()),
-							taskScheduleEntry) != null;
 		}
 		return result;
 	}
@@ -70,7 +61,8 @@ public class TaskScheduleEntryManager {
 		if (key instanceof ScheduleEntry) {
 			return this.allTaskList.contains((TaskScheduleEntry) key);
 		}
-		return this.taskScheduleEntryObjectMap.containsKey(key);
+		return false;
+		// return this.taskScheduleEntryObjectMap.containsKey(key);
 	}
 
 	public boolean contains(TaskStateType key, TaskScheduleEntry taskContena) {
@@ -109,9 +101,9 @@ public class TaskScheduleEntryManager {
 		return result;
 	}
 
-	public TaskScheduleEntry getTaskScheduleEntry(Object key) {
-		return this.taskScheduleEntryObjectMap.get(key);
-	}
+	// public TaskScheduleEntry getTaskScheduleEntry(Object key) {
+	// return this.taskScheduleEntryObjectMap.get(key);
+	// }
 
 	public boolean removeTaskScheduleEntry(TaskStateType key,
 			TaskScheduleEntry taskScheduleEntry) {
@@ -119,13 +111,6 @@ public class TaskScheduleEntryManager {
 		result = this.getScheduleEntryList(key).remove(taskScheduleEntry);
 		if (key == TaskStateType.UNSCHEDULED) {
 			result = result & this.allTaskList.remove(taskScheduleEntry);
-			result = result
-					& this.taskScheduleEntryObjectMap.remove(taskScheduleEntry
-							.getTask()) != null;
-			result = result
-					& this.taskScheduleEntryObjectMap.remove(TaskPropertyUtil
-							.getTaskName(taskScheduleEntry
-									.getTaskExecutorService())) != null;
 		}
 		taskScheduleEntry = null;
 		return result;

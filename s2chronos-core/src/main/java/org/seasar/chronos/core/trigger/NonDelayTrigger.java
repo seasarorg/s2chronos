@@ -8,6 +8,11 @@ public class NonDelayTrigger extends AbstractTrigger {
 		super("nonDelayTrigger");
 	}
 
+	@Override
+	public boolean isReSchedule() {
+		return false;
+	}
+
 	public boolean isStartTask() {
 		return true;
 	}

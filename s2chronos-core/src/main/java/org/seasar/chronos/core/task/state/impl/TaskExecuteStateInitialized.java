@@ -48,11 +48,6 @@ public class TaskExecuteStateInitialized extends AbstractTaskExecuteState {
 	}
 
 	@Override
-	public void prepare(TaskExecuteContext context) {
-
-	}
-
-	@Override
 	public void waitOne() throws InterruptedException {
 		this.getTaskExecuteStrategy().waitOne();
 

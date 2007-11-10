@@ -12,7 +12,7 @@ public interface TaskScheduleEntry extends Serializable {
 
 	public Long getScheduleId();
 
-	public Object getTask();
+	 public Object getTask();
 
 	public Class<?> getTaskClass();
 

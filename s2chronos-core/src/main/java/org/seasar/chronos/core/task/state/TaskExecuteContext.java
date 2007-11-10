@@ -19,8 +19,6 @@ public interface TaskExecuteContext {
 	@Binding(bindingType = BindingType.NONE)
 	public void setGetterSignal(Object getterSignal);
 
-	public void prepare();
-
 	public String initialize() throws InterruptedException;
 
 	public void execute(String startTaskName) throws InterruptedException;

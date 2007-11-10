@@ -51,20 +51,12 @@ public class ScheduleEntry extends AbstractScheduleEntry {
 	}
 
 	public void save() {
-		// TODO �����������ꂽ���\�b�h�E�X�^�u
 
-		// String taskName = TaskPropertyUtil.getTaskName(tes);
-		// String description = TaskPropertyUtil.getDescription(tes);
-		// Long taskId = TaskPropertyUtil.getTaskId(tes);
-		// ScheduleEntity se = new ScheduleEntity();
-		// se.setTaskName(taskName);
-		// se.setDescription(description);
-		// se.setTaskId(taskId);
-		// se.setStatus(type.ordinal());
 	}
 
 	public void setComponentDef(ComponentDef componentDef) {
 		this.componentDef = componentDef;
+		// this.setTask(componentDef.getComponent());
 		this.setTaskClass(componentDef.getComponentClass());
 	}
 

@@ -8,6 +8,7 @@ import org.seasar.chronos.core.TaskTrigger;
 import org.seasar.chronos.core.ThreadPoolType;
 import org.seasar.chronos.core.task.TaskExecutorService;
 import org.seasar.chronos.core.task.state.TaskExecuteContext;
+import org.seasar.framework.container.ComponentDef;
 import org.seasar.framework.container.annotation.tiger.Binding;
 import org.seasar.framework.container.annotation.tiger.BindingType;
 
@@ -111,10 +112,6 @@ public class TaskExecutorServiceImpl implements TaskExecutorService {
 		this.taskExecuteContext.getTaskExecuteStrategy().load();
 	}
 
-	public void prepare() {
-		this.taskExecuteContext.prepare();
-	}
-
 	public void save() {
 		this.taskExecuteContext.getTaskExecuteStrategy().save();
 	}
@@ -175,4 +172,16 @@ public class TaskExecutorServiceImpl implements TaskExecutorService {
 		this.taskExecuteContext.waitOne();
 	}
 
+	public void setComponentDef(ComponentDef componentDef) {
+		this.taskExecuteContext.getTaskExecuteStrategy().setComponentDef(
+				componentDef);
+	}
+
+	public void prepare() {
+		this.taskExecuteContext.getTaskExecuteStrategy().prepare();
+	}
+
+	public void unprepare() {
+		this.taskExecuteContext.getTaskExecuteStrategy().unprepare();
+	}
 }

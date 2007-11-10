@@ -5,6 +5,8 @@ import org.seasar.chronos.core.TaskTrigger;
 import org.seasar.chronos.core.ThreadPoolType;
 import org.seasar.chronos.core.annotation.task.Task;
 import org.seasar.chronos.core.task.TaskProperties;
+import org.seasar.framework.container.annotation.tiger.Component;
+import org.seasar.framework.util.StringUtil;
 
 public final class TaskPropertyUtil {
 
@@ -50,6 +52,11 @@ public final class TaskPropertyUtil {
 		if (taskName == null) {
 			Class<?> clazz = prop.getTaskClass();
 			Task task = (Task) clazz.getAnnotation(Task.class);
+			if (task != null && StringUtil.isEmpty(task.name())) {
+				Component component = (Component) clazz
+						.getAnnotation(Component.class);
+				return component != null ? component.name() : taskName;
+			}
 			return task != null ? task.name() : taskName;
 		}
 		return taskName;

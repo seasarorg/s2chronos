@@ -22,9 +22,9 @@ public abstract class SchedulerWrapper extends AbstractScheduler {
 		scheduler.addTask(componentClass);
 	}
 
-	public boolean removeTask(Object task) {
-		return scheduler.removeTask(task);
-	}
+	// public boolean removeTask(Object task) {
+	// return scheduler.removeTask(task);
+	// }
 
 	public SchedulerConfiguration getSchedulerConfiguration() {
 		return scheduler.getSchedulerConfiguration();

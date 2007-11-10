@@ -2,11 +2,15 @@ package org.seasar.chronos.core.task;
 
 import java.util.concurrent.TimeUnit;
 
+import org.seasar.framework.container.ComponentDef;
+
 public interface TaskMethods {
 
 	public void setGetterSignal(Object getterSignal);
 
 	public void prepare();
+
+	public void unprepare();
 
 	public String initialize() throws InterruptedException;
 
@@ -21,4 +25,5 @@ public interface TaskMethods {
 
 	public String destroy() throws InterruptedException;
 
+	public void setComponentDef(ComponentDef componentDef);
 }

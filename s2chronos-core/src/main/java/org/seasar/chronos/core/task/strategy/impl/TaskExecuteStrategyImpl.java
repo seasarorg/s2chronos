@@ -26,9 +26,12 @@ import org.seasar.chronos.core.util.ObjectUtil;
 import org.seasar.framework.beans.BeanDesc;
 import org.seasar.framework.beans.PropertyDesc;
 import org.seasar.framework.beans.factory.BeanDescFactory;
+import org.seasar.framework.container.ComponentDef;
 import org.seasar.framework.container.annotation.tiger.Binding;
 import org.seasar.framework.container.annotation.tiger.BindingType;
+import org.seasar.framework.container.hotdeploy.HotdeployUtil;
 import org.seasar.framework.log.Logger;
+import org.seasar.framework.util.ClassUtil;
 
 public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 
@@ -169,9 +172,6 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 		}
 		this.setExecute(false);
 		this.notifyGetterSignal();
-		// this.taskMethodInvoker = null;
-		// this.lifecycleMethodInvoker = null;
-		// HotdeployUtil.stop();
 		return nextTask;
 	}
 
@@ -364,7 +364,6 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 	}
 
 	public String initialize() throws InterruptedException {
-
 		this.setExecute(true);
 		if (this.lifecycleMethodInvoker.hasMethod(METHOD_NAME_INITIALIZE)) {
 			AsyncResult ar = this.lifecycleMethodInvoker
@@ -375,7 +374,6 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 			this.notifyGetterSignal();
 			return md.getNextTask();
 		}
-
 		return null;
 	}
 
@@ -405,6 +403,14 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 
 	public void prepare() {
 
+		ClassUtil.forName(this.componentDef.getComponentClass().getName());
+		if (HotdeployUtil.isHotdeploy()) {
+			HotdeployUtil.start();
+		}
+
+		this.task = this.componentDef.getComponent();
+		this.taskClass = this.componentDef.getComponentClass();
+
 		this.taskMethodExecuteHandler = this.createTaskMethodExecuteHandler();
 		this.taskGroupMethodExecuteHandler = this
 				.createTaskGroupMethodExecuteHandler();
@@ -420,6 +426,16 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 				this.task, this.beanDesc);
 		this.lifecycleMethodInvoker = new MethodInvoker(
 				lifecycleMethodExecutorService, this.task, this.beanDesc);
+	}
+
+	public void unprepare() {
+
+		this.taskMethodInvoker = null;
+		this.lifecycleMethodInvoker = null;
+
+		if (HotdeployUtil.isHotdeploy()) {
+			HotdeployUtil.stop();
+		}
 	}
 
 	public void save() {
@@ -504,6 +520,12 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 
 	public void waitOne() throws InterruptedException {
 		this.taskMethodInvoker.waitInvokes();
+	}
+
+	private ComponentDef componentDef;
+
+	public void setComponentDef(ComponentDef componentDef) {
+		this.componentDef = componentDef;
 	}
 
 }

@@ -14,6 +14,11 @@ public class TimedTrigger extends AbstractTrigger {
 		super("timedTrigger");
 	}
 
+	@Override
+	public boolean isReSchedule() {
+		return false;
+	}
+
 	public void setStartTime(Date startDate) {
 		this.startTime = startDate;
 	}

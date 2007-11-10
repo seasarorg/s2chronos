@@ -6,6 +6,7 @@ import org.seasar.chronos.core.Scheduler;
 import org.seasar.chronos.core.TaskThreadPool;
 import org.seasar.chronos.core.TaskTrigger;
 import org.seasar.chronos.core.ThreadPoolType;
+import org.seasar.framework.container.ComponentDef;
 import org.seasar.framework.container.annotation.tiger.Binding;
 import org.seasar.framework.container.annotation.tiger.BindingType;
 
@@ -106,10 +107,6 @@ public class TaskExecuteStrategyWrapper implements TaskExecuteStrategy {
 		this.taskExecuteStrategy.load();
 	}
 
-	public void prepare() {
-		this.taskExecuteStrategy.prepare();
-	}
-
 	public void save() {
 		this.taskExecuteStrategy.save();
 	}
@@ -162,6 +159,18 @@ public class TaskExecuteStrategyWrapper implements TaskExecuteStrategy {
 
 	public void waitOne() throws InterruptedException {
 		this.taskExecuteStrategy.waitOne();
+	}
+
+	public void setComponentDef(ComponentDef componentDef) {
+		this.taskExecuteStrategy.setComponentDef(componentDef);
+	}
+
+	public void prepare() {
+		this.taskExecuteStrategy.prepare();
+	}
+
+	public void unprepare() {
+		this.taskExecuteStrategy.unprepare();
 	}
 
 }
