@@ -161,10 +161,13 @@ public class SchedulerImpl extends AbstractScheduler {
 	// return true;
 	// }
 	// return false;
-	//	}
+	// }
 
 	protected TaskScheduleEntry scheduleTask(ComponentDef componentDef) {
 		TaskScheduleEntry taskScheduleEntry = super.scheduleTask(componentDef);
+		if (taskScheduleEntry == null) {
+			return null;
+		}
 		this.taskContenaStateManager.addTaskScheduleEntry(
 				TaskStateType.SCHEDULED, taskScheduleEntry);
 		this.schedulerEventHandler.fireAddTaskScheduleEntry(taskScheduleEntry);

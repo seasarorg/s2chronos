@@ -7,7 +7,7 @@ import org.seasar.framework.container.annotation.tiger.Component;
 import org.seasar.framework.container.annotation.tiger.InstanceType;
 import org.seasar.framework.log.Logger;
 
-@Task
+@Task(autoSchedule = false)
 @Component(instance = InstanceType.SINGLETON)
 public class TestTask {
 
@@ -15,13 +15,13 @@ public class TestTask {
 
 	private TaskTrigger trigger = new CronTrigger("*/1 * * * *");
 
-	public TaskTrigger getTrigger() {
-		return trigger;
-	}
-
-	// public boolean isStartTask() {
-	// return true;
+	// public TaskTrigger getTrigger() {
+	// return trigger;
 	// }
+
+	public boolean isStartTask() {
+		return true;
+	}
 
 	public void initialize() {
 		log.info("SimpleTask::initialize");
