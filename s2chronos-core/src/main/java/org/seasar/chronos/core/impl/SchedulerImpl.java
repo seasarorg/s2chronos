@@ -18,6 +18,7 @@ import org.seasar.chronos.core.exception.ExecutionRuntimeException;
 import org.seasar.chronos.core.exception.InterruptedRuntimeException;
 import org.seasar.chronos.core.handler.ScheduleExecuteHandler;
 import org.seasar.chronos.core.schedule.TaskScheduleEntryManager;
+import org.seasar.chronos.core.schedule.TaskScheduleEntryManager.TaskScheduleEntryHanlder;
 import org.seasar.chronos.core.util.TaskPropertyUtil;
 import org.seasar.framework.container.ComponentDef;
 import org.seasar.framework.container.ComponentNotFoundRuntimeException;
@@ -80,6 +81,23 @@ public class SchedulerImpl extends AbstractScheduler {
 		}
 		if (componentDef != null) {
 			scheduleTask(componentDef);
+			return true;
+		}
+		return false;
+	}
+
+	public boolean removeTask(String taskName) {
+		ComponentDef componentDef = null;
+		try {
+			componentDef = this.s2container.getComponentDef(taskName);
+		} catch (ComponentNotFoundRuntimeException e) {
+			return false;
+		}
+		if (componentDef == null) {
+			componentDef = findTaskComponentDefByTaskName(taskName);
+		}
+		if (componentDef != null) {
+			unscheduleTask(componentDef);
 			return true;
 		}
 		return false;
@@ -164,6 +182,24 @@ public class SchedulerImpl extends AbstractScheduler {
 			return true;
 		}
 		return false;
+	}
+
+	protected TaskScheduleEntry unscheduleTask(final ComponentDef componentDef) {
+		TaskScheduleEntry target = (TaskScheduleEntry) this.taskContenaStateManager
+				.forEach(new TaskScheduleEntryHanlder() {
+					public Object processTaskScheduleEntry(
+							TaskScheduleEntry scheduleEntry) {
+						if (componentDef
+								.equals(scheduleEntry.getComponentDef())) {
+							return scheduleEntry;
+						}
+						return null;
+					}
+				});
+		if (this.taskContenaStateManager.removeTaskScheduleEntry(target)) {
+			return target;
+		}
+		return null;
 	}
 
 	protected TaskScheduleEntry scheduleTask(ComponentDef componentDef) {

@@ -106,6 +106,18 @@ public class TaskScheduleEntryManager {
 		return this.taskScheduleEntryObjectMap.get(key);
 	}
 
+	public boolean removeTaskScheduleEntry(TaskScheduleEntry taskScheduleEntry) {
+		boolean result = allTaskList.remove(taskScheduleEntry);
+		if (result) {
+			for (TaskStateType key : taskScheduleEntryMap.keySet()) {
+				result = result
+						| this.getScheduleEntryList(key).remove(
+								taskScheduleEntry);
+			}
+		}
+		return result;
+	}
+
 	public boolean removeTaskScheduleEntry(TaskStateType key,
 			TaskScheduleEntry taskScheduleEntry) {
 		boolean result = false;
