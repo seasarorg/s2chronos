@@ -2,7 +2,7 @@ package org.seasar.chronos.core.trigger;
 
 public class DelayTrigger extends AbstractTrigger {
 
-	private static final long serialVersionUID = -3996902051005552696L;
+	private static final long serialVersionUID = 1L;
 
 	private long delay = 0;
 

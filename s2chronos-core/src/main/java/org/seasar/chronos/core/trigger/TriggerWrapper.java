@@ -4,6 +4,8 @@ import org.seasar.chronos.core.TaskTrigger;
 
 public class TriggerWrapper extends AbstractTrigger {
 
+	private static final long serialVersionUID = 1L;
+
 	private TaskTrigger taskTrigger;
 
 	public TriggerWrapper(TaskTrigger taskTrigger) {

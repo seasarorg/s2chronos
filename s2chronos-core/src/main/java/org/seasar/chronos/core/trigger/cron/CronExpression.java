@@ -1,5 +1,6 @@
 package org.seasar.chronos.core.trigger.cron;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -8,7 +9,9 @@ import java.util.Vector;
 
 import org.seasar.framework.log.Logger;
 
-public class CronExpression {
+public class CronExpression implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	@Override
 	public boolean equals(Object obj) {
@@ -30,7 +33,8 @@ public class CronExpression {
 	private static final String ASTERISK = "*";
 
 	@SuppressWarnings("unused")
-	private static Logger log = Logger.getLogger(CronExpression.class);
+	private transient static Logger log = Logger
+			.getLogger(CronExpression.class);
 
 	private String cronExpression;
 
