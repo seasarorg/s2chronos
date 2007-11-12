@@ -2,27 +2,27 @@ package org.seasar.chronos.core.task;
 
 import java.io.Serializable;
 
-import org.seasar.chronos.core.TaskTrigger;
 import org.seasar.chronos.core.annotation.task.Task;
 import org.seasar.chronos.core.annotation.task.method.CloneTask;
 import org.seasar.chronos.core.annotation.task.method.JoinTask;
 import org.seasar.chronos.core.annotation.task.method.NextTask;
+import org.seasar.chronos.core.annotation.trigger.Cron;
 import org.seasar.chronos.core.annotation.type.JoinType;
-import org.seasar.chronos.core.trigger.CronTrigger;
 import org.seasar.framework.log.Logger;
 
 @Task
+@Cron(expression = "*/1 * * * *")
 public class SimpleTask implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	private transient static Logger log = Logger.getLogger(SimpleTask.class);
 
-	private TaskTrigger trigger = new CronTrigger("*/1 * * * *");
-
-	public TaskTrigger getTrigger() {
-		return trigger;
-	}
+	// private TaskTrigger trigger = new CronTrigger("*/1 * * * *");
+	//
+	// public TaskTrigger getTrigger() {
+	// return trigger;
+	//	}
 
 	// タスクが実行されるときに最初に呼ばれる
 	@NextTask("taskA")

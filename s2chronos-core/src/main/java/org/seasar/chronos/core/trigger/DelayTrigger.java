@@ -10,6 +10,11 @@ public class DelayTrigger extends AbstractTrigger {
 		super("delayTrigger");
 	}
 
+	public DelayTrigger(long delay) {
+		this();
+		this.delay = delay;
+	}
+
 	@Override
 	public boolean isReSchedule() {
 		return false;

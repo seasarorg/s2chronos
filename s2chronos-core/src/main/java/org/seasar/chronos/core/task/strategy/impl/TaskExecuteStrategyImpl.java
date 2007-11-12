@@ -356,6 +356,7 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 					.getPropertyDesc(PROPERTY_NAME_TRIGGER);
 			result = (TaskTrigger) pd.getValue(this.task);
 		}
+
 		return result;
 	}
 
