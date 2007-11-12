@@ -1,5 +1,7 @@
 package org.seasar.chronos.core;
 
+import java.io.Serializable;
+
 public interface TaskTrigger extends Serializable {
 
 	public String getDescription();
