@@ -23,9 +23,10 @@ public class TaskMethodExecuteHandlerImpl extends AbstractTaskExecuteHandler {
 		String lastTaskName = startTaskName;
 		while (true) {
 
-			if (getTaskExecuteStrategy().getScheduler().addTask(nextTaskName)) {
-				break;
-			}
+			// if
+			// (getTaskExecuteStrategy().getScheduler().addTask(nextTaskName)) {
+			// break;
+			// }
 
 			final String methodName = toMethodName(nextTaskName);
 

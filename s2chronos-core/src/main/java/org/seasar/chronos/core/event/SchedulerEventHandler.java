@@ -31,7 +31,8 @@ public class SchedulerEventHandler {
 		return this.schedulerEventListener.add(listener);
 	}
 
-	public void fireAddTaskScheduleEntry(final TaskScheduleEntry taskScheduleEntry) {
+	public void fireAddTaskScheduleEntry(
+			final TaskScheduleEntry taskScheduleEntry) {
 		for (final SchedulerEventListener listener : schedulerEventListener) {
 			Future<?> future = ExecutorService.submit(new Runnable() {
 				public void run() {
@@ -58,6 +59,17 @@ public class SchedulerEventHandler {
 			Future<?> future = ExecutorService.submit(new Runnable() {
 				public void run() {
 					listener.endScheduler(scheduler);
+				}
+			});
+			waitFuture(future);
+		}
+	}
+
+	public void fireExceptionTask(final Object task, final Exception e) {
+		for (final SchedulerEventListener listener : schedulerEventListener) {
+			Future<?> future = ExecutorService.submit(new Runnable() {
+				public void run() {
+					listener.exceptionTask(scheduler, task, e);
 				}
 			});
 			waitFuture(future);
@@ -108,11 +120,13 @@ public class SchedulerEventHandler {
 		}
 	}
 
-	public void fireRemoveTaskScheduleEntry(final TaskScheduleEntry taskScheduleEntry) {
+	public void fireRemoveTaskScheduleEntry(
+			final TaskScheduleEntry taskScheduleEntry) {
 		for (final SchedulerEventListener listener : schedulerEventListener) {
 			Future<?> future = ExecutorService.submit(new Runnable() {
 				public void run() {
-					listener.removeTaskScheduleEntry(scheduler, taskScheduleEntry);
+					listener.removeTaskScheduleEntry(scheduler,
+							taskScheduleEntry);
 				}
 			});
 			waitFuture(future);

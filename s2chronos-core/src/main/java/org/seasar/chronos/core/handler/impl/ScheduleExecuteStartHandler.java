@@ -15,6 +15,12 @@ public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler 
 
 	private String taskName;
 
+	private void fireExceptionTaskEvent(TaskExecutorService tes, Exception e) {
+		if (schedulerEventHandler != null) {
+			schedulerEventHandler.fireExceptionTask(tes.getTask(), e);
+		}
+	}
+
 	private void fireEndTaskEvent(TaskExecutorService tes) {
 		if (schedulerEventHandler != null) {
 			schedulerEventHandler.fireEndTask(tes.getTask());
@@ -37,11 +43,13 @@ public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler 
 						final TaskExecutorService tes = taskScheduleEntry
 								.getTaskExecutorService();
 
+						// ここでgetComponentされます。
 						tes.prepare();
 
 						Object task = tes.getTask();
 						Class<?> taskClass = tes.getTaskClass();
 
+						// 
 						taskScheduleEntry.setTask(task);
 						taskScheduleEntry.setTaskClass(taskClass);
 
@@ -74,17 +82,18 @@ public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler 
 
 									log.log("DCHRONOS000111",
 											new Object[] { taskName });
-									fireStartTaskEvent(_tes);
-									String nextTaskName = _tes.initialize();
 
-									taskExecute(_tes, nextTaskName);
-
-									nextTaskName = null;
-									nextTaskName = _tes.destroy();
-
-									scheduleTask(_tes, nextTaskName);
-
-									fireEndTaskEvent(_tes);
+									try {
+										fireStartTaskEvent(_tes);
+										String nextTaskName = _tes.initialize();
+										taskExecute(_tes, nextTaskName);
+									} catch (Exception e) {
+										fireExceptionTaskEvent(_tes, e);
+									} finally {
+										String nextTaskName = _tes.destroy();
+										scheduleTask(_tes, nextTaskName);
+										fireEndTaskEvent(_tes);
+									}
 
 									taskContenaStateManager
 											.removeTaskScheduleEntry(
@@ -104,6 +113,10 @@ public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler 
 											new Object[] { taskName });
 
 									tes.unprepare();
+
+									taskScheduleEntry.setTask(null);
+									taskScheduleEntry.setTaskClass(null);
+
 									return tes;
 								}
 
@@ -117,6 +130,10 @@ public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler 
 						} else {
 
 							tes.unprepare();
+
+							taskScheduleEntry.setTask(null);
+							taskScheduleEntry.setTaskClass(null);
+
 						}
 						return null;
 					}

@@ -1,5 +1,8 @@
 package org.seasar.chronos.core.task.strategy.impl;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -32,6 +35,7 @@ import org.seasar.framework.container.annotation.tiger.BindingType;
 import org.seasar.framework.container.hotdeploy.HotdeployUtil;
 import org.seasar.framework.log.Logger;
 import org.seasar.framework.util.ClassUtil;
+import org.seasar.framework.util.SerializeUtil;
 
 public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 
@@ -180,17 +184,14 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 				: TaskType.JOB;
 		String nextTaskName = startTaskName;
 		while (true) {
-			log.debug("while begin");
 			TaskExecuteHandler teh = getTaskExecuteHandler(type);
 			Transition transition = handleRequest(teh, nextTaskName);
 			this.notifyGetterSignal();
 			if (transition.isProcessResult()) {
-				log.debug("while break");
 				break;
 			}
 			type = (type == TaskType.JOB) ? TaskType.JOBGROUP : TaskType.JOB;
 			nextTaskName = transition.getNextTaskName();
-			log.debug("while end");
 		}
 	}
 
@@ -411,6 +412,8 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 		this.task = this.componentDef.getComponent();
 		this.taskClass = this.componentDef.getComponentClass();
 
+		// this.save();
+
 		this.taskMethodExecuteHandler = this.createTaskMethodExecuteHandler();
 		this.taskGroupMethodExecuteHandler = this
 				.createTaskGroupMethodExecuteHandler();
@@ -439,7 +442,29 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 	}
 
 	public void save() {
-
+		try {
+			SerializeUtil.serialize(this.getTask());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		byte[] binary = SerializeUtil.fromObjectToBinary(this.getTask());
+		FileOutputStream fos = null;
+		try {
+			File targetFile = new File("C:\\temp\\", this.getTaskClass()
+					.getCanonicalName());
+			fos = new FileOutputStream(targetFile);
+			fos.write(binary);
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			if (fos != null) {
+				try {
+					fos.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 
 	public void setEndTask(boolean endTask) {

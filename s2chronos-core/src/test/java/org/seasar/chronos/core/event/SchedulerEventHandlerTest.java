@@ -147,4 +147,9 @@ public class SchedulerEventHandlerTest extends TestCase implements
 		}
 	}
 
+	public void exceptionTask(Scheduler scheduler, Object task, Exception e) {
+		// TODO 自動生成されたメソッド・スタブ
+
+	}
+
 }

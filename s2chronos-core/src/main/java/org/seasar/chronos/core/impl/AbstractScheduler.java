@@ -9,7 +9,6 @@ import org.seasar.chronos.core.schedule.TaskScheduleEntryManager;
 import org.seasar.chronos.core.task.TaskExecutorService;
 import org.seasar.chronos.core.util.TaskPropertyUtil;
 import org.seasar.framework.container.ComponentDef;
-import org.seasar.framework.container.MetaDef;
 import org.seasar.framework.container.S2Container;
 import org.seasar.framework.container.util.SmartDeployUtil;
 import org.seasar.framework.container.util.Traversal;
@@ -64,23 +63,30 @@ public abstract class AbstractScheduler implements Scheduler {
 	 *            S2コンテナ
 	 */
 	protected void registChildTaskComponent(S2Container s2Container) {
+		registChildTaskComponent(s2Container, null);
+	}
+
+	protected void registChildTaskComponentByTarget(S2Container s2Container,
+			final Class<?> targetTaskComponentClass) {
+		registChildTaskComponent(s2Container, targetTaskComponentClass);
+	}
+
+	private void registChildTaskComponent(S2Container s2Container,
+			final Class<?> targetTaskComponentClass) {
 		Traversal.forEachComponent(s2Container,
 				new Traversal.ComponentDefHandler() {
 					public Object processComponent(ComponentDef componentDef) {
 						Class<?> clazz = componentDef.getComponentClass();
 						if (clazz != null) {
 							Task task = (Task) clazz.getAnnotation(Task.class);
-							MetaDef taskMetaDef = null;
-							try {
-								if (componentDef.getMetaDefSize() > 0) {
-									taskMetaDef = componentDef
-											.getMetaDef("task");
+							if (task != null) {
+								if (targetTaskComponentClass == null) {
+									scheduleTask(componentDef);
+								} else if (targetTaskComponentClass
+										.equals(componentDef
+												.getComponentClass())) {
+									return scheduleTask(componentDef);
 								}
-							} catch (UnsupportedOperationException e) {
-								;
-							}
-							if (task != null || taskMetaDef != null) {
-								scheduleTask(componentDef);
 							}
 						}
 						return null;
@@ -99,6 +105,19 @@ public abstract class AbstractScheduler implements Scheduler {
 	 */
 	protected void registTaskFromS2ContainerOnSmartDeploy(
 			final S2Container s2Container) {
+		registTaskFromS2ContainerOnSmartDeploy(s2Container, null);
+	}
+
+	protected void registTaskFromS2ContainerOnSmartDeployByTarget(
+			final S2Container s2Container,
+			final Class<?> targetTaskComponentClass) {
+		registTaskFromS2ContainerOnSmartDeploy(s2Container,
+				targetTaskComponentClass);
+	}
+
+	private void registTaskFromS2ContainerOnSmartDeploy(
+			final S2Container s2Container,
+			final Class<?> targetTaskComponentClass) {
 		if (SmartDeployUtil.isSmartdeployMode(s2Container)) {
 			this.taskClassAutoDetector
 					.detect(new ClassTraversal.ClassHandler() {
@@ -108,7 +127,11 @@ public abstract class AbstractScheduler implements Scheduler {
 									shortClassName);
 							Class<?> clazz = ReflectionUtil
 									.forNameNoException(name);
-							scheduleTask(s2Container, clazz);
+							if (targetTaskComponentClass == null) {
+								scheduleTask(s2Container, clazz);
+							} else if (targetTaskComponentClass.equals(clazz)) {
+								scheduleTask(s2Container, clazz);
+							}
 						}
 					});
 		}
@@ -118,37 +141,31 @@ public abstract class AbstractScheduler implements Scheduler {
 		return scheduleTask(componentDef, false);
 	}
 
-	protected TaskScheduleEntry scheduleTask(ComponentDef componentDef,
+	protected TaskScheduleEntry scheduleTask(ComponentDef taskComponentDef,
 			boolean force) {
-		Class<?> clazz = componentDef.getComponentClass();
+		Class<?> clazz = taskComponentDef.getComponentClass();
 		Task task = clazz.getAnnotation(Task.class);
 		if (!task.autoSchedule() && !force) {
 			return null;
 		}
 		TaskScheduleEntry taskScheduleEntry = (TaskScheduleEntry) this.s2container
 				.getComponent(TaskScheduleEntry.class);
-		taskScheduleEntry.setComponentDef(componentDef);
+		taskScheduleEntry.setComponentDef(taskComponentDef);
 
 		final TaskExecutorService tes = (TaskExecutorService) this.s2container
 				.getComponent(TaskExecutorService.class);
 		taskScheduleEntry.setTaskExecutorService(tes);
 
-		// HotdeployUtil.start();
-		// ここでタスクに対してDIが実行されます
-		// tes.setTask(componentDef.getComponent());
-		// tes.setTaskClass(componentDef.getComponentClass());
-		tes.setComponentDef(componentDef);
+		tes.setComponentDef(taskComponentDef);
 		tes.setGetterSignal(this);
 		tes.setScheduler(this);
-		// tes.prepare();
-		taskScheduleEntry.setComponentDef(componentDef);
-		// taskScheduleEntry.setTask(tes.getTask());
+		taskScheduleEntry.setComponentDef(taskComponentDef);
 		return taskScheduleEntry;
 	}
 
 	protected TaskScheduleEntry scheduleTask(final S2Container s2Container,
-			Class<?> componentClass) {
-		ComponentDef componentDef = s2Container.getComponentDef(componentClass);
+			final Class<?> taskClass) {
+		ComponentDef componentDef = s2Container.getComponentDef(taskClass);
 		return scheduleTask(componentDef);
 	}
 

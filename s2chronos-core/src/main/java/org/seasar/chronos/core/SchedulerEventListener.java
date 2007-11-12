@@ -2,7 +2,8 @@ package org.seasar.chronos.core;
 
 public interface SchedulerEventListener {
 
-	public void addTaskScheduleEntry(Scheduler scheduler, TaskScheduleEntry taskScheduleEntry);
+	public void addTaskScheduleEntry(Scheduler scheduler,
+			TaskScheduleEntry taskScheduleEntry);
 
 	public void cancelTask(Scheduler scheduler, Object task);
 
@@ -24,5 +25,7 @@ public interface SchedulerEventListener {
 	public void startScheduler(Scheduler scheduler);
 
 	public void startTask(Scheduler scheduler, Object task);
+
+	public void exceptionTask(Scheduler scheduler, Object task, Exception e);
 
 }

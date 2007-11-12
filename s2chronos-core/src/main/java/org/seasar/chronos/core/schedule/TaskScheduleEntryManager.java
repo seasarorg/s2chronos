@@ -35,9 +35,7 @@ public class TaskScheduleEntryManager {
 
 	private CopyOnWriteArrayList<TaskScheduleEntry> allTaskList = new CopyOnWriteArrayList<TaskScheduleEntry>();
 
-	// private ConcurrentHashMap<Object, TaskScheduleEntry>
-	// taskScheduleEntryObjectMap = new ConcurrentHashMap<Object,
-	// TaskScheduleEntry>();
+	private ConcurrentHashMap<Object, TaskScheduleEntry> taskScheduleEntryObjectMap = new ConcurrentHashMap<Object, TaskScheduleEntry>();
 
 	private TaskScheduleEntryManager() {
 
@@ -49,6 +47,10 @@ public class TaskScheduleEntryManager {
 		boolean result = this.getScheduleEntryList(key).add(taskScheduleEntry);
 		if (key == TaskStateType.SCHEDULED) {
 			result = result & this.allTaskList.addIfAbsent(taskScheduleEntry);
+			result = result
+					& this.taskScheduleEntryObjectMap.putIfAbsent(
+							taskScheduleEntry.getComponentDef()
+									.getComponentClass(), taskScheduleEntry) != null;
 		}
 		return result;
 	}
@@ -61,8 +63,7 @@ public class TaskScheduleEntryManager {
 		if (key instanceof ScheduleEntry) {
 			return this.allTaskList.contains((TaskScheduleEntry) key);
 		}
-		return false;
-		// return this.taskScheduleEntryObjectMap.containsKey(key);
+		return this.taskScheduleEntryObjectMap.containsKey(key);
 	}
 
 	public boolean contains(TaskStateType key, TaskScheduleEntry taskContena) {
@@ -101,9 +102,9 @@ public class TaskScheduleEntryManager {
 		return result;
 	}
 
-	// public TaskScheduleEntry getTaskScheduleEntry(Object key) {
-	// return this.taskScheduleEntryObjectMap.get(key);
-	// }
+	public TaskScheduleEntry getTaskScheduleEntry(Object key) {
+		return this.taskScheduleEntryObjectMap.get(key);
+	}
 
 	public boolean removeTaskScheduleEntry(TaskStateType key,
 			TaskScheduleEntry taskScheduleEntry) {
@@ -111,6 +112,9 @@ public class TaskScheduleEntryManager {
 		result = this.getScheduleEntryList(key).remove(taskScheduleEntry);
 		if (key == TaskStateType.UNSCHEDULED) {
 			result = result & this.allTaskList.remove(taskScheduleEntry);
+			result = result
+					& this.taskScheduleEntryObjectMap.remove(taskScheduleEntry
+							.getComponentDef().getComponentClass()) != null;
 		}
 		taskScheduleEntry = null;
 		return result;

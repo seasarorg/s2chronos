@@ -57,8 +57,11 @@ public class SchedulerImpl extends AbstractScheduler {
 		return schedulerEventHandler.add(listener);
 	}
 
-	public void addTask(Class<?> componentClass) {
-		scheduleTask(this.s2container, componentClass);
+	public void addTask(Class<?> taskComponentClass) {
+		this.registChildTaskComponentByTarget(this.s2container.getRoot(),
+				taskComponentClass);
+		this.registTaskFromS2ContainerOnSmartDeployByTarget(this.s2container
+				.getRoot(), taskComponentClass);
 	}
 
 	/**
@@ -151,17 +154,17 @@ public class SchedulerImpl extends AbstractScheduler {
 		return schedulerEventHandler.remove(listener);
 	}
 
-	// public boolean removeTask(Object task) {
-	// TaskScheduleEntry taskScheduleEntry = this.taskContenaStateManager
-	// .getTaskScheduleEntry(task);
-	// if (this.taskContenaStateManager.removeTaskScheduleEntry(
-	// TaskStateType.UNSCHEDULED, taskScheduleEntry)) {
-	// this.schedulerEventHandler
-	// .fireRemoveTaskScheduleEntry(taskScheduleEntry);
-	// return true;
-	// }
-	// return false;
-	// }
+	public boolean removeTask(Class<?> taskClass) {
+		TaskScheduleEntry taskScheduleEntry = this.taskContenaStateManager
+				.getTaskScheduleEntry(taskClass);
+		if (this.taskContenaStateManager.removeTaskScheduleEntry(
+				TaskStateType.UNSCHEDULED, taskScheduleEntry)) {
+			this.schedulerEventHandler
+					.fireRemoveTaskScheduleEntry(taskScheduleEntry);
+			return true;
+		}
+		return false;
+	}
 
 	protected TaskScheduleEntry scheduleTask(ComponentDef componentDef) {
 		TaskScheduleEntry taskScheduleEntry = super.scheduleTask(componentDef);
