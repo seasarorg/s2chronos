@@ -23,8 +23,8 @@ public class TaskGroupMethodExecuteHandlerImpl extends
 	private TaskExecuteHandler taskMethodExecuteHandler;
 
 	public void setTaskMethodExecuteHandler(
-			TaskExecuteHandler jobMethodExecuteHandler) {
-		this.taskMethodExecuteHandler = jobMethodExecuteHandler;
+			TaskExecuteHandler taskMethodExecuteHandler) {
+		this.taskMethodExecuteHandler = taskMethodExecuteHandler;
 	}
 
 	@Override

@@ -156,8 +156,11 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 		return result;
 	}
 
-	protected TaskExecuteHandler createTaskGroupMethodExecuteHandler() {
-		return new TaskGroupMethodExecuteHandlerImpl();
+	protected TaskExecuteHandler createTaskGroupMethodExecuteHandler(
+			TaskExecuteHandler taskMethdoExecuteHandler) {
+		TaskGroupMethodExecuteHandlerImpl result = new TaskGroupMethodExecuteHandlerImpl();
+		result.setTaskMethodExecuteHandler(taskMethodExecuteHandler);
+		return result;
 	}
 
 	protected TaskExecuteHandler createTaskMethodExecuteHandler() {
@@ -416,7 +419,10 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 
 		this.taskMethodExecuteHandler = this.createTaskMethodExecuteHandler();
 		this.taskGroupMethodExecuteHandler = this
-				.createTaskGroupMethodExecuteHandler();
+				.createTaskGroupMethodExecuteHandler(this.taskMethodExecuteHandler);
+
+		this.taskMethodExecuteHandler.setTaskExecuteStrategy(this);
+		this.taskGroupMethodExecuteHandler.setTaskExecuteStrategy(this);
 
 		this.beanDesc = BeanDescFactory.getBeanDesc(this.taskClass);
 		this.taskMethodManager = new TaskMethodManager(taskClass,

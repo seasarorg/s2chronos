@@ -4,19 +4,17 @@ import org.seasar.chronos.core.S2TestCaseBase;
 import org.seasar.chronos.core.Scheduler;
 import org.seasar.chronos.core.SchedulerEventListener;
 import org.seasar.chronos.core.TaskScheduleEntry;
-import org.seasar.chronos.core.task.TestTask;
+import org.seasar.chronos.core.task.SimpleTask;
 import org.seasar.framework.log.Logger;
 
 public class SchedulerImplTest extends S2TestCaseBase implements
 		SchedulerEventListener {
-	private transient static Logger log = Logger.getLogger(TestTask.class);
+	private transient static Logger log = Logger.getLogger(SimpleTask.class);
 
 	public void testStart() {
 
 		Scheduler scheduler = (Scheduler) this.getComponent("scheduler");
 		scheduler.addListener(this);
-		// scheduler.addTask(TestTask.class);
-
 		scheduler.start();
 		scheduler.join();
 

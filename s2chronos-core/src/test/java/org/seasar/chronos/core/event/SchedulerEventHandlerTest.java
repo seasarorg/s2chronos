@@ -47,6 +47,10 @@ public class SchedulerEventHandlerTest extends TestCase implements
 		System.out.println("resigtTaskBeforeScheduler");
 	}
 
+	public void exceptionTask(Scheduler scheduler, Object task, Exception e) {
+		System.out.println("exceptionTask");
+	}
+
 	@Override
 	protected void setUp() throws Exception {
 		target = new SchedulerEventHandler(new SchedulerImpl());
@@ -147,9 +151,12 @@ public class SchedulerEventHandlerTest extends TestCase implements
 		}
 	}
 
-	public void exceptionTask(Scheduler scheduler, Object task, Exception e) {
-		// TODO 自動生成されたメソッド・スタブ
-
+	public void testFireExceptionTask() {
+		target.fireExceptionTask(this, new Exception());
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+		}
 	}
 
 }
