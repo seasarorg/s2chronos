@@ -15,7 +15,11 @@ public class Main {
 		Scheduler scheduler = (Scheduler) container
 				.getComponent(Scheduler.class);
 		scheduler.start();
-		scheduler.join();
+		try {
+			scheduler.join();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		SingletonS2ContainerFactory.destroy();
 	}
 
