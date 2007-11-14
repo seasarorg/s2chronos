@@ -136,19 +136,26 @@ public final class TaskPropertyUtil {
 		return result;
 	}
 
+	/**
+	 * 
+	 * @param prop
+	 * @return
+	 */
 	public static String getTaskName(TaskProperties prop) {
 		String taskName = prop.getTaskName();
-		if (taskName == null) {
-			Class<?> clazz = prop.getTaskClass();
-			Task task = (Task) clazz.getAnnotation(Task.class);
-			if (task != null && StringUtil.isEmpty(task.name())) {
-				Component component = (Component) clazz
-						.getAnnotation(Component.class);
-				return component != null ? component.name() : taskName;
-			}
-			return task != null ? task.name() : taskName;
+		if (taskName != null) {
+			return taskName;
 		}
-		return taskName;
+		Class<?> clazz = prop.getTaskClass();
+		Task task = (Task) clazz.getAnnotation(Task.class);
+		if (task != null && !StringUtil.isEmpty(task.name())) {
+			return task.name();
+		}
+		Component component = (Component) clazz.getAnnotation(Component.class);
+		if (component != null && !StringUtil.isEmpty(component.name())) {
+			return component.name();
+		}
+		return clazz.getCanonicalName();
 	}
 
 	public static int getThreadPoolSize(TaskProperties prop) {
@@ -196,12 +203,10 @@ public final class TaskPropertyUtil {
 	}
 
 	public static boolean isReSchedule(TaskProperties prop) {
-		boolean reSchedule = false;
+		boolean reSchedule = prop.isReSchedule();
 		TaskTrigger taskTrigger = prop.getTrigger();
-		if (taskTrigger == null) {
-			reSchedule = prop.isReSchedule();
-		} else {
-			reSchedule = taskTrigger.isReSchedule();
+		if (taskTrigger != null) {
+			reSchedule = reSchedule || taskTrigger.isReSchedule();
 		}
 		return reSchedule;
 	}

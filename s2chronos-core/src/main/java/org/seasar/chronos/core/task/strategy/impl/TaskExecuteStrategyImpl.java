@@ -34,8 +34,8 @@ import org.seasar.framework.container.annotation.tiger.Binding;
 import org.seasar.framework.container.annotation.tiger.BindingType;
 import org.seasar.framework.container.hotdeploy.HotdeployUtil;
 import org.seasar.framework.log.Logger;
-import org.seasar.framework.util.ClassUtil;
 import org.seasar.framework.util.SerializeUtil;
+import org.seasar.framework.util.tiger.ReflectionUtil;
 
 public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 
@@ -410,7 +410,8 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 
 	public void prepare() {
 
-		ClassUtil.forName(this.componentDef.getComponentClass().getName());
+		ReflectionUtil.forNameNoException(this.componentDef.getComponentClass()
+				.getName());
 		if (HotdeployUtil.isHotdeploy()) {
 			HotdeployUtil.start();
 		}
