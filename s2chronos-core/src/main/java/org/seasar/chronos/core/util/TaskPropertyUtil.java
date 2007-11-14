@@ -2,6 +2,9 @@ package org.seasar.chronos.core.util;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import org.seasar.chronos.core.TaskThreadPool;
 import org.seasar.chronos.core.TaskTrigger;
@@ -80,7 +83,24 @@ public final class TaskPropertyUtil {
 									.getPropertyDesc(methodName);
 							Object value = ReflectionUtil.invoke(m, annotaion,
 									new Object[] {});
-							pd.setValue(taskTrigger, value);
+							if (m.getReturnType().equals(pd.getPropertyType())) {
+								pd.setValue(taskTrigger, value);
+							} else {
+								// StringからDateに変換する処理
+								if (pd.getPropertyType().equals(Date.class)
+										&& m.getReturnType().equals(
+												String.class)) {
+									SimpleDateFormat sdf = new SimpleDateFormat(
+											"yyy/MM/dd HH:mm:ss");
+									try {
+										Date date = sdf.parse((String) value);
+										pd.setValue(taskTrigger, date);
+									} catch (ParseException e) {
+										;
+									}
+								}
+							}
+
 						}
 					}
 					// 生成されたTaskTriggerをTaskPropertiesに渡す

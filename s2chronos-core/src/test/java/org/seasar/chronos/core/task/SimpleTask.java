@@ -6,12 +6,12 @@ import org.seasar.chronos.core.annotation.task.Task;
 import org.seasar.chronos.core.annotation.task.method.CloneTask;
 import org.seasar.chronos.core.annotation.task.method.JoinTask;
 import org.seasar.chronos.core.annotation.task.method.NextTask;
-import org.seasar.chronos.core.annotation.trigger.CronTrigger;
+import org.seasar.chronos.core.annotation.trigger.NonDelayTrigger;
 import org.seasar.chronos.core.annotation.type.JoinType;
 import org.seasar.framework.log.Logger;
 
 @Task
-@CronTrigger(expression = "*/1 * * * *")
+@NonDelayTrigger
 public class SimpleTask implements Serializable {
 
 	private static final long serialVersionUID = 1L;
