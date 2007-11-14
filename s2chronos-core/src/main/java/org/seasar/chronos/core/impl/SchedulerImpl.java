@@ -133,7 +133,7 @@ public class SchedulerImpl extends AbstractScheduler {
 	}
 
 	public void join() {
-		log.log("DCHRONOSSDRJINSTT", null);
+		log.log("DCHRONOS0016", null);
 		try {
 			this.schedulerTaskFuture.get();
 		} catch (CancellationException e) {
@@ -150,7 +150,7 @@ public class SchedulerImpl extends AbstractScheduler {
 				this.schedulerEventHandler.fireEndScheduler();
 			}
 		}
-		log.log("DCHRONOSSDRJINEND", null);
+		log.log("DCHRONOS0017", null);
 	}
 
 	public synchronized void pause() {
@@ -256,7 +256,7 @@ public class SchedulerImpl extends AbstractScheduler {
 	}
 
 	public void shutdown() {
-		log.log("DCHRONOSSDRSTNING", null);
+		log.log("DCHRONOS0013", null);
 		this.taskContenaStateManager.forEach(TaskStateType.RUNNING,
 				new TaskScheduleEntryManager.TaskScheduleEntryHanlder() {
 					public Object processTaskScheduleEntry(
@@ -269,7 +269,7 @@ public class SchedulerImpl extends AbstractScheduler {
 								String taskName = TaskPropertyUtil
 										.getTaskName(taskScheduleEntry
 												.getTaskExecutorService());
-								log.log("DCHRONOSSSNHRTTCW",
+								log.log("DCHRONOS0014",
 										new Object[] { taskName });
 							}
 						} catch (InterruptedException e) {
@@ -280,11 +280,11 @@ public class SchedulerImpl extends AbstractScheduler {
 				});
 		schedulerTaskFuture.cancel(true);
 		this.schedulerEventHandler.fireShutdownScheduler();
-		log.log("DCHRONOSSDRSTNEND", null);
+		log.log("DCHRONOS0015", null);
 	}
 
 	public void start() {
-		log.log("DCHRONOSSDRSTTING", null);
+		log.log("DCHRONOS0011", null);
 		this.schedulerEventHandler.fireRegistTaskBeforeScheduler();
 		this.registTaskFromS2Container();
 		final ScheduleExecuteHandler[] scheduleExecuteHandlers = this
@@ -306,7 +306,7 @@ public class SchedulerImpl extends AbstractScheduler {
 					}
 				});
 		this.schedulerEventHandler.fireStartScheduler();
-		log.log("DCHRONOSSDRSTTEND", null);
+		log.log("DCHRONOS0012", null);
 	}
 
 }

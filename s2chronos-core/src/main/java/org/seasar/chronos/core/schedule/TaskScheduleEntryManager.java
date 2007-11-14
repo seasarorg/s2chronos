@@ -6,7 +6,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.seasar.chronos.core.TaskScheduleEntry;
 import org.seasar.chronos.core.impl.TaskStateType;
-import org.seasar.chronos.core.logger.Logger;
+import org.seasar.framework.log.Logger;
+
 
 public class TaskScheduleEntryManager {
 

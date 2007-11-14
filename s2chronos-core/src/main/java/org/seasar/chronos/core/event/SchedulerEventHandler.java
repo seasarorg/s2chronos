@@ -9,7 +9,8 @@ import java.util.concurrent.Future;
 import org.seasar.chronos.core.Scheduler;
 import org.seasar.chronos.core.SchedulerEventListener;
 import org.seasar.chronos.core.TaskScheduleEntry;
-import org.seasar.chronos.core.logger.Logger;
+import org.seasar.framework.log.Logger;
+
 
 public class SchedulerEventHandler {
 
