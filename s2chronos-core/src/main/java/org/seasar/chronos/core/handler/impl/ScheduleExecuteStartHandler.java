@@ -10,10 +10,13 @@ import org.seasar.chronos.core.impl.TaskStateType;
 import org.seasar.chronos.core.schedule.TaskScheduleEntryManager.TaskScheduleEntryHanlder;
 import org.seasar.chronos.core.task.TaskExecutorService;
 import org.seasar.chronos.core.util.TaskPropertyUtil;
+import org.seasar.framework.convention.NamingConvention;
 
 public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler {
 
 	private String taskName;
+
+	private NamingConvention namingConvention;
 
 	private void fireExceptionTaskEvent(TaskExecutorService tes, Exception e) {
 		if (schedulerEventHandler != null) {
@@ -52,8 +55,10 @@ public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler 
 						// 
 						taskScheduleEntry.setTask(task);
 						taskScheduleEntry.setTaskClass(taskClass);
+						String[] rootPackageNames = namingConvention
+								.getRootPackageNames();
 
-						if (TaskPropertyUtil.isStartTask(tes)) {
+						if (TaskPropertyUtil.isStartTask(tes, rootPackageNames)) {
 							log.log("DCHRONOSSSTHRTSTT",
 									new Object[] { TaskPropertyUtil
 											.getTaskName(tes) });
@@ -157,6 +162,10 @@ public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler 
 				log.log("ECHRONOS0002", new Object[] { taskName }, ex);
 			}
 		}
+	}
+
+	public void setNamingConvention(NamingConvention namingConvention) {
+		this.namingConvention = namingConvention;
 	}
 
 }

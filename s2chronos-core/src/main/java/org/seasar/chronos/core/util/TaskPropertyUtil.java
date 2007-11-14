@@ -41,11 +41,12 @@ public final class TaskPropertyUtil {
 		return shutdown;
 	}
 
-	public static boolean isStartTask(TaskProperties prop) {
+	public static boolean isStartTask(TaskProperties prop,
+			String[] rootPackageNames) {
 		boolean start = false;
 		TaskTrigger taskTrigger = prop.getTrigger();
 		if (taskTrigger == null) {
-			taskTrigger = getAnnotionTrigger(prop);
+			taskTrigger = getAnnotionTrigger(prop, rootPackageNames);
 		}
 		if (taskTrigger == null) {
 			start = prop.isStartTask();
@@ -55,7 +56,18 @@ public final class TaskPropertyUtil {
 		return start;
 	}
 
-	private static TaskTrigger getAnnotionTrigger(TaskProperties prop) {
+	private static Class<?> findTriggerClass(String packageName,
+			String className) {
+		StringBuilder sb = new StringBuilder(packageName);
+		sb.append(".trigger.C");
+		sb.append(className);
+		Class<?> triggerClass = ReflectionUtil
+				.forNameNoException(sb.toString());
+		return triggerClass;
+	}
+
+	private static TaskTrigger getAnnotionTrigger(TaskProperties prop,
+			String[] rootPackageNames) {
 		TaskTrigger taskTrigger = null;
 		Class<?> clazz = prop.getTaskClass();
 		Annotation[] annotaions = clazz.getAnnotations();
@@ -64,11 +76,18 @@ public final class TaskPropertyUtil {
 			String annotationName = annotaionClass.getSimpleName();
 			// サフィックスがTriggerなアノテーションを検索する
 			if (annotationName.endsWith("Trigger")) {
-				String triggerClassName = "org.seasar.chronos.core.trigger.C"
-						+ annotationName;
-				// 対象のTaskTriggerのクラスを取得する
-				Class<?> triggerClass = ReflectionUtil
-						.forNameNoException(triggerClassName);
+				Class<?> triggerClass = findTriggerClass(
+						"org.seasar.chronos.core", annotationName);
+				// 標準パッケージで見つからないなら、rootPackageから検索してみる
+				if (triggerClass == null) {
+					for (String packageName : rootPackageNames) {
+						triggerClass = findTriggerClass(packageName,
+								annotationName);
+						if (triggerClass != null) {
+							break;
+						}
+					}
+				}
 				if (triggerClass != null) {
 					taskTrigger = (TaskTrigger) ReflectionUtil
 							.newInstance(triggerClass);
