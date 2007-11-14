@@ -1,16 +1,16 @@
 package org.seasar.chronos.core.trigger;
 
-public class DelayTrigger extends AbstractTrigger {
+public class CDelayTrigger extends AbstractTrigger {
 
 	private static final long serialVersionUID = 1L;
 
 	private long delay = 0;
 
-	public DelayTrigger() {
+	public CDelayTrigger() {
 		super("delayTrigger");
 	}
 
-	public DelayTrigger(long delay) {
+	public CDelayTrigger(long delay) {
 		this();
 		this.delay = delay;
 	}

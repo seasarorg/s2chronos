@@ -355,6 +355,8 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 			PropertyDesc pd = this.beanDesc
 					.getPropertyDesc(PROPERTY_NAME_TRIGGER);
 			result = (TaskTrigger) pd.getValue(this.task);
+		} else {
+			return this.taskTrigger;
 		}
 
 		return result;
@@ -541,12 +543,17 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 		}
 	}
 
+	private TaskTrigger taskTrigger;
+
 	@Binding(bindingType = BindingType.NONE)
 	public void setTrigger(TaskTrigger taskTrigger) {
 		if (this.beanDesc.hasPropertyDesc(PROPERTY_NAME_TRIGGER)) {
 			PropertyDesc pd = this.beanDesc
 					.getPropertyDesc(PROPERTY_NAME_TRIGGER);
 			pd.setValue(this.task, taskTrigger);
+		} else {
+			// プロパティを持っていなければセットする。
+			this.taskTrigger = taskTrigger;
 		}
 	}
 

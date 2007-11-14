@@ -1,12 +1,19 @@
 package org.seasar.chronos.core.util;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
+
 import org.seasar.chronos.core.TaskThreadPool;
 import org.seasar.chronos.core.TaskTrigger;
 import org.seasar.chronos.core.ThreadPoolType;
 import org.seasar.chronos.core.annotation.task.Task;
 import org.seasar.chronos.core.task.TaskProperties;
+import org.seasar.framework.beans.BeanDesc;
+import org.seasar.framework.beans.PropertyDesc;
+import org.seasar.framework.beans.factory.BeanDescFactory;
 import org.seasar.framework.container.annotation.tiger.Component;
 import org.seasar.framework.util.StringUtil;
+import org.seasar.framework.util.tiger.ReflectionUtil;
 
 public final class TaskPropertyUtil {
 
@@ -35,11 +42,54 @@ public final class TaskPropertyUtil {
 		boolean start = false;
 		TaskTrigger taskTrigger = prop.getTrigger();
 		if (taskTrigger == null) {
+			taskTrigger = getAnnotionTrigger(prop);
+		}
+		if (taskTrigger == null) {
 			start = prop.isStartTask();
 		} else {
 			start = taskTrigger.isStartTask();
 		}
 		return start;
+	}
+
+	private static TaskTrigger getAnnotionTrigger(TaskProperties prop) {
+		TaskTrigger taskTrigger = null;
+		Class<?> clazz = prop.getTaskClass();
+		Annotation[] annotaions = clazz.getAnnotations();
+		for (Annotation annotaion : annotaions) {
+			Class<?> annotaionClass = annotaion.annotationType();
+			String annotationName = annotaionClass.getSimpleName();
+			// サフィックスがTriggerなアノテーションを検索する
+			if (annotationName.endsWith("Trigger")) {
+				String triggerClassName = "org.seasar.chronos.core.trigger.C"
+						+ annotationName;
+				// 対象のTaskTriggerのクラスを取得する
+				Class<?> triggerClass = ReflectionUtil
+						.forNameNoException(triggerClassName);
+				if (triggerClass != null) {
+					taskTrigger = (TaskTrigger) ReflectionUtil
+							.newInstance(triggerClass);
+					BeanDesc beanDesc = BeanDescFactory
+							.getBeanDesc(triggerClass);
+					// アノテーションにある属性をすべてTaskTriggerの対応するプロパティに渡す
+					Method[] mis = annotaionClass.getMethods();
+					for (Method m : mis) {
+						String methodName = m.getName();
+						if (beanDesc.hasPropertyDesc(methodName)) {
+							PropertyDesc pd = beanDesc
+									.getPropertyDesc(methodName);
+							Object value = ReflectionUtil.invoke(m, annotaion,
+									new Object[] {});
+							pd.setValue(taskTrigger, value);
+						}
+					}
+					// 生成されたTaskTriggerをTaskPropertiesに渡す
+					prop.setTrigger(taskTrigger);
+					break;
+				}
+			}
+		}
+		return taskTrigger;
 	}
 
 	public static long getTaskId(TaskProperties prop) {

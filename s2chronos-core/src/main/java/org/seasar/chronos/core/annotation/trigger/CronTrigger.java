@@ -7,8 +7,8 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-public @interface Trigger {
+public @interface CronTrigger {
 
-	Class<?>[] task();
+	String expression();
 
 }

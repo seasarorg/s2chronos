@@ -5,7 +5,7 @@ import java.util.Date;
 
 import org.seasar.chronos.core.trigger.cron.CronExpression;
 
-public class CronTrigger extends AbstractTrigger {
+public class CCronTrigger extends AbstractTrigger {
 
 	private static final long serialVersionUID = 1L;
 
@@ -13,13 +13,13 @@ public class CronTrigger extends AbstractTrigger {
 
 	private ArrayList<Date> startTimeList;
 
-	public CronTrigger() {
+	public CCronTrigger() {
 		super("cronTrigger");
 	}
 
-	public CronTrigger(String cronExpression) {
+	public CCronTrigger(String cronExpression) {
 		super("cronTrigger");
-		this.setCronExpression(cronExpression);
+		this.setExpression(cronExpression);
 	}
 
 	@Override
@@ -30,7 +30,7 @@ public class CronTrigger extends AbstractTrigger {
 	@Override
 	public boolean equals(Object obj) {
 		boolean result = super.equals(obj);
-		CronTrigger src = (CronTrigger) obj;
+		CCronTrigger src = (CCronTrigger) obj;
 		if (this.expression != null) {
 			result = result & expression.equals(src.expression);
 		}
@@ -70,10 +70,14 @@ public class CronTrigger extends AbstractTrigger {
 		return startTimeCheck;
 	}
 
-	public void setCronExpression(String cronExpression) {
+	public void setExpression(String cronExpression) {
 		this.expression = new CronExpression(cronExpression);
 		this.expression.buildNextTime();
 		this.startTimeList = this.expression.getStartTimes();
+	}
+
+	public String getExpression() {
+		return this.expression.getCronExprssion();
 	}
 
 	public void setEndTask(Boolean endTask) {

@@ -2,7 +2,7 @@ package org.seasar.chronos.core.trigger;
 
 import java.util.Date;
 
-public class TimedTrigger extends AbstractTrigger {
+public class CTimedTrigger extends AbstractTrigger {
 
 	private static final long serialVersionUID = 1L;
 
@@ -10,7 +10,7 @@ public class TimedTrigger extends AbstractTrigger {
 
 	private Date endTime;
 
-	public TimedTrigger() {
+	public CTimedTrigger() {
 		super("timedTrigger");
 	}
 

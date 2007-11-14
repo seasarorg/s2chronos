@@ -10,7 +10,7 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 
 import org.seasar.chronos.core.S2TestCaseBase;
-import org.seasar.chronos.core.trigger.CronTrigger;
+import org.seasar.chronos.core.trigger.CCronTrigger;
 
 public class CronTriggerTest extends S2TestCaseBase {
 
@@ -18,7 +18,7 @@ public class CronTriggerTest extends S2TestCaseBase {
 
 	private static final String CRON_EXPRESSION = "5 0 * * *";
 
-	private CronTrigger cronTrigger;
+	private CCronTrigger cronTrigger;
 
 	public void testSerialize() {
 
@@ -26,7 +26,7 @@ public class CronTriggerTest extends S2TestCaseBase {
 			OutputStream outputStream = new FileOutputStream(
 					SERIALIZABLE_OBJECT_DAT_FILENAME);
 			ObjectOutputStream oos = new ObjectOutputStream(outputStream);
-			cronTrigger.setCronExpression(CRON_EXPRESSION);
+			cronTrigger.setExpression(CRON_EXPRESSION);
 			oos.writeObject(cronTrigger);
 			oos.flush();
 			oos.close();
@@ -45,7 +45,7 @@ public class CronTriggerTest extends S2TestCaseBase {
 			InputStream inputStream = new FileInputStream(
 					SERIALIZABLE_OBJECT_DAT_FILENAME);
 			ObjectInputStream ois = new ObjectInputStream(inputStream);
-			CronTrigger _cronTrigger = (CronTrigger) ois.readObject();
+			CCronTrigger _cronTrigger = (CCronTrigger) ois.readObject();
 			assertEquals(CRON_EXPRESSION, _cronTrigger.getCronExpression());
 			ois.close();
 			inputStream.close();

@@ -1,10 +1,10 @@
 package org.seasar.chronos.core.trigger;
 
-public class NonDelayTrigger extends AbstractTrigger {
+public class CNonDelayTrigger extends AbstractTrigger {
 
 	private static final long serialVersionUID = 1L;
 
-	public NonDelayTrigger() {
+	public CNonDelayTrigger() {
 		super("nonDelayTrigger");
 	}
 

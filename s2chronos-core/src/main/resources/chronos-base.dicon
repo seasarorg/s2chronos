@@ -5,10 +5,10 @@
 	<include path="aop.dicon"/>
 	<include path="scheduler.dicon"/>
 	
-	<component name="timedTrigger" class="org.seasar.chronos.core.trigger.TimedTrigger" instance="prototype"/>
-	<component name="nonDelayTrigger" class="org.seasar.chronos.core.trigger.NonDelayTrigger" instance="prototype"/>
-	<component name="delayTrigger" class="org.seasar.chronos.core.trigger.DelayTrigger" instance="prototype"/>
-	<component name="cronTrigger" class="org.seasar.chronos.core.trigger.CronTrigger" instance="prototype"/>
+	<component name="timedTrigger" class="org.seasar.chronos.core.trigger.CTimedTrigger" instance="prototype"/>
+	<component name="nonDelayTrigger" class="org.seasar.chronos.core.trigger.CNonDelayTrigger" instance="prototype"/>
+	<component name="delayTrigger" class="org.seasar.chronos.core.trigger.CDelayTrigger" instance="prototype"/>
+	<component name="cronTrigger" class="org.seasar.chronos.core.trigger.CCronTrigger" instance="prototype"/>
 	
 
 	
