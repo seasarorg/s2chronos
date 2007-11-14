@@ -19,13 +19,13 @@ public class ScheduleExecuteWaitHandler extends AbstractScheduleExecuteHandler {
 						if (this.paused != null) {
 							if (!this.paused.get() && this.pause.get()) {
 								this.paused.set(true);
+								log.log("DCHRONOS0019", null);
 								this.schedulerEventHandler.firePauseScheduler();
 							}
 						}
 						pauseLock.wait(waitInterval);
 					} while (this.pause.get());
 				} catch (InterruptedException e) {
-					log.log("WCHNS0001", null, e);
 					throw e;
 				} finally {
 					if (this.paused != null) {
