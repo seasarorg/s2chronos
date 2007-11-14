@@ -154,6 +154,7 @@ public class SchedulerImpl extends AbstractScheduler {
 	}
 
 	public synchronized void pause() {
+		log.log("DCHRONOS0018", null);
 		this.pause.set(!this.pause.get());
 		this.notify();
 	}
