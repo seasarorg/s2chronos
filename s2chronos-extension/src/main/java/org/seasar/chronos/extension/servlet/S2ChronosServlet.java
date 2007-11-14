@@ -4,6 +4,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 
 import org.seasar.chronos.core.Scheduler;
+import org.seasar.chronos.core.exception.CancellationRuntimeException;
+import org.seasar.chronos.core.exception.InterruptedRuntimeException;
+import org.seasar.chronos.core.logger.Logger;
 import org.seasar.framework.container.S2Container;
 import org.seasar.framework.container.servlet.S2ContainerServlet;
 
@@ -11,7 +14,7 @@ public class S2ChronosServlet extends HttpServlet {
 
 	private static final long serialVersionUID = -3292027493330778721L;
 
-	// private static Logger log = Logger.getLogger(S2ChronosServlet.class);
+	private static Logger log = Logger.getLogger(S2ChronosServlet.class);
 
 	private Scheduler scheduler;
 
@@ -27,10 +30,16 @@ public class S2ChronosServlet extends HttpServlet {
 	public void destroy() {
 		try {
 			this.scheduler.shutdown();
-		} finally {
 			this.scheduler.join();
+		} catch (InterruptedRuntimeException ex) {
+			;
+		} catch (CancellationRuntimeException ex) {
+			;
+		} catch (Exception ex) {
+			log.error("スケジューラの停止に失敗しました", ex);
+		} finally {
+			super.destroy();
 		}
-		super.destroy();
 	}
 
 }
