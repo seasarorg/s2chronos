@@ -153,6 +153,10 @@ public class SchedulerImpl extends AbstractScheduler {
 		log.log("DCHRONOS0017", null);
 	}
 
+	/**
+	 * スケジューラを一時停止させます．
+	 * 
+	 */
 	public synchronized void pause() {
 		log.log("DCHRONOS0018", null);
 		this.pause.set(!this.pause.get());
@@ -169,6 +173,10 @@ public class SchedulerImpl extends AbstractScheduler {
 		this.registTaskFromS2ContainerOnSmartDeploy(target);
 	}
 
+	/**
+	 * リスナーを削除します．
+	 * 
+	 */
 	public boolean removeListener(SchedulerEventListener listener) {
 		return schedulerEventHandler.remove(listener);
 	}
@@ -234,6 +242,11 @@ public class SchedulerImpl extends AbstractScheduler {
 		this.configuration = schedulerConfiguration;
 	}
 
+	/**
+	 * スケジューラ実行ハンドラーをセットアップします．
+	 * 
+	 * @return スケジューラ実行ハンドラーの配列
+	 */
 	private ScheduleExecuteHandler[] setupHandler() {
 		ScheduleExecuteHandler[] scheduleExecuteHandlers = new ScheduleExecuteHandler[] {
 				scheduleExecuteWaitHandler, scheduleExecuteStartHandler,
