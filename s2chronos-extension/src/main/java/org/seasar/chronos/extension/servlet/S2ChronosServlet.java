@@ -6,9 +6,9 @@ import javax.servlet.http.HttpServlet;
 import org.seasar.chronos.core.Scheduler;
 import org.seasar.chronos.core.exception.CancellationRuntimeException;
 import org.seasar.chronos.core.exception.InterruptedRuntimeException;
-import org.seasar.chronos.core.logger.Logger;
 import org.seasar.framework.container.S2Container;
 import org.seasar.framework.container.servlet.S2ContainerServlet;
+import org.seasar.framework.log.Logger;
 
 public class S2ChronosServlet extends HttpServlet {
 
