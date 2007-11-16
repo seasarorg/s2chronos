@@ -85,7 +85,7 @@ public abstract class AbstractScheduler implements Scheduler {
 								} else if (targetTaskComponentClass
 										.equals(componentDef
 												.getComponentClass())) {
-									return scheduleTask(componentDef);
+									return scheduleTask(componentDef, true);
 								}
 							}
 						}
@@ -130,7 +130,7 @@ public abstract class AbstractScheduler implements Scheduler {
 							if (targetTaskComponentClass == null) {
 								scheduleTask(s2Container, clazz);
 							} else if (targetTaskComponentClass.equals(clazz)) {
-								scheduleTask(s2Container, clazz);
+								scheduleTask(s2Container, clazz, true);
 							}
 						}
 					});
@@ -161,6 +161,12 @@ public abstract class AbstractScheduler implements Scheduler {
 		tes.setScheduler(this);
 		taskScheduleEntry.setComponentDef(taskComponentDef);
 		return taskScheduleEntry;
+	}
+
+	protected TaskScheduleEntry scheduleTask(final S2Container s2Container,
+			final Class<?> taskClass, boolean force) {
+		ComponentDef componentDef = s2Container.getComponentDef(taskClass);
+		return scheduleTask(componentDef, force);
 	}
 
 	protected TaskScheduleEntry scheduleTask(final S2Container s2Container,

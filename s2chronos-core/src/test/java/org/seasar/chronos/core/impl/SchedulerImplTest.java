@@ -9,11 +9,13 @@ import org.seasar.framework.log.Logger;
 
 public class SchedulerImplTest extends S2TestCaseBase implements
 		SchedulerEventListener {
-	private transient static Logger log = Logger.getLogger(SimpleTask.class);
+	private transient static Logger log = Logger
+			.getLogger(SchedulerImplTest.class);
 
 	public void testStart() {
 
 		Scheduler scheduler = (Scheduler) this.getComponent("scheduler");
+		scheduler.addTask(SimpleTask.class);
 		scheduler.addListener(this);
 		scheduler.start();
 		scheduler.join();
