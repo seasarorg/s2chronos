@@ -184,13 +184,8 @@ public class SchedulerImpl extends AbstractScheduler {
 	public boolean removeTask(Class<?> taskClass) {
 		TaskScheduleEntry taskScheduleEntry = this.taskContenaStateManager
 				.getTaskScheduleEntry(taskClass);
-		if (this.taskContenaStateManager.removeTaskScheduleEntry(
-				TaskStateType.UNSCHEDULED, taskScheduleEntry)) {
-			this.schedulerEventHandler
-					.fireRemoveTaskScheduleEntry(taskScheduleEntry);
-			return true;
-		}
-		return false;
+		return this.taskContenaStateManager
+				.removeTaskScheduleEntry(taskScheduleEntry);
 	}
 
 	protected TaskScheduleEntry unscheduleTask(final ComponentDef componentDef) {
@@ -213,6 +208,19 @@ public class SchedulerImpl extends AbstractScheduler {
 
 	protected TaskScheduleEntry scheduleTask(ComponentDef componentDef) {
 		TaskScheduleEntry taskScheduleEntry = super.scheduleTask(componentDef);
+		if (taskScheduleEntry == null) {
+			return null;
+		}
+		this.taskContenaStateManager.addTaskScheduleEntry(
+				TaskStateType.SCHEDULED, taskScheduleEntry);
+		this.schedulerEventHandler.fireAddTaskScheduleEntry(taskScheduleEntry);
+		return taskScheduleEntry;
+	}
+
+	protected TaskScheduleEntry scheduleTask(ComponentDef taskComponentDef,
+			boolean force) {
+		TaskScheduleEntry taskScheduleEntry = super.scheduleTask(
+				taskComponentDef, force);
 		if (taskScheduleEntry == null) {
 			return null;
 		}

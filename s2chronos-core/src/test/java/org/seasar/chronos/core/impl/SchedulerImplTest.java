@@ -16,6 +16,7 @@ public class SchedulerImplTest extends S2TestCaseBase implements
 
 		Scheduler scheduler = (Scheduler) this.getComponent("scheduler");
 		scheduler.addTask(SimpleTask.class);
+		scheduler.removeTask(SimpleTask.class);
 		scheduler.addListener(this);
 		scheduler.start();
 		scheduler.join();

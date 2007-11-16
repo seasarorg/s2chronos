@@ -8,7 +8,6 @@ import org.seasar.chronos.core.TaskScheduleEntry;
 import org.seasar.chronos.core.impl.TaskStateType;
 import org.seasar.framework.log.Logger;
 
-
 public class TaskScheduleEntryManager {
 
 	public interface TaskScheduleEntryHanlder {
@@ -47,11 +46,11 @@ public class TaskScheduleEntryManager {
 		taskScheduleEntry.setTaskStateType(key);
 		boolean result = this.getScheduleEntryList(key).add(taskScheduleEntry);
 		if (key == TaskStateType.SCHEDULED) {
-			result = result & this.allTaskList.addIfAbsent(taskScheduleEntry);
-			result = result
-					& this.taskScheduleEntryObjectMap.putIfAbsent(
-							taskScheduleEntry.getComponentDef()
-									.getComponentClass(), taskScheduleEntry) != null;
+			result = result && this.allTaskList.addIfAbsent(taskScheduleEntry);
+			Class<?> taskComponentClass = taskScheduleEntry.getComponentDef()
+					.getComponentClass();
+			this.taskScheduleEntryObjectMap.put(taskComponentClass,
+					taskScheduleEntry);
 		}
 		return result;
 	}
@@ -112,7 +111,7 @@ public class TaskScheduleEntryManager {
 		if (result) {
 			for (TaskStateType key : taskScheduleEntryMap.keySet()) {
 				result = result
-						| this.getScheduleEntryList(key).remove(
+						|| this.getScheduleEntryList(key).remove(
 								taskScheduleEntry);
 			}
 		}
