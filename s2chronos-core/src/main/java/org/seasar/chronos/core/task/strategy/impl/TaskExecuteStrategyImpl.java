@@ -1,8 +1,11 @@
 package org.seasar.chronos.core.task.strategy.impl;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -33,6 +36,7 @@ import org.seasar.framework.container.ComponentDef;
 import org.seasar.framework.container.annotation.tiger.Binding;
 import org.seasar.framework.container.annotation.tiger.BindingType;
 import org.seasar.framework.container.hotdeploy.HotdeployUtil;
+import org.seasar.framework.exception.IORuntimeException;
 import org.seasar.framework.log.Logger;
 import org.seasar.framework.util.SerializeUtil;
 import org.seasar.framework.util.tiger.ReflectionUtil;
@@ -399,7 +403,36 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 	}
 
 	public void load() {
+		FileInputStream fis = null;
+		try {
+			File targetFile = new File("C:\\temp\\", this.getTaskClass()
+					.getCanonicalName());
+			if (targetFile.exists()) {
+				fis = new FileInputStream(targetFile);
+				int size = fis.read();
+				byte[] objectArray = new byte[size];
+				fis.read(objectArray);
+				this.task = SerializeUtil.fromBinaryToObject(objectArray);
+			}
+		} catch (IOException e) {
+			throw new IORuntimeException(e);
+		} finally {
+			if (fis != null) {
+				try {
+					fis.close();
+				} catch (IOException e) {
+					throw new IORuntimeException(e);
+				}
+			}
+		}
 
+		Map<String, Object> taskProperties = new HashMap<String, Object>();
+		int size = beanDesc.getPropertyDescSize();
+		for (int i = 0; i < size; i++) {
+			PropertyDesc pd = beanDesc.getPropertyDesc(i);
+			Object value = pd.getValue(this.task);
+			taskProperties.put(pd.getPropertyName(), value);
+		}
 	}
 
 	private void notifyGetterSignal() {
@@ -419,8 +452,6 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 		this.task = this.componentDef.getComponent();
 		this.taskClass = this.componentDef.getComponentClass();
 
-		// this.save();
-
 		this.taskMethodExecuteHandler = this.createTaskMethodExecuteHandler();
 		this.taskGroupMethodExecuteHandler = this
 				.createTaskGroupMethodExecuteHandler(this.taskMethodExecuteHandler);
@@ -439,6 +470,9 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 				this.task, this.beanDesc);
 		this.lifecycleMethodInvoker = new MethodInvoker(
 				lifecycleMethodExecutorService, this.task, this.beanDesc);
+
+		this.save();
+		this.load();
 	}
 
 	public void unprepare() {
@@ -452,26 +486,31 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 	}
 
 	public void save() {
-		try {
-			SerializeUtil.serialize(this.getTask());
-		} catch (Exception e) {
-			e.printStackTrace();
+		Map<String, Object> taskProperties = new HashMap<String, Object>();
+		int size = beanDesc.getPropertyDescSize();
+		for (int i = 0; i < size; i++) {
+			PropertyDesc pd = beanDesc.getPropertyDesc(i);
+			Object value = pd.getValue(this.task);
+			taskProperties.put(pd.getPropertyName(), value);
 		}
-		byte[] binary = SerializeUtil.fromObjectToBinary(this.getTask());
-		FileOutputStream fos = null;
-		try {
-			File targetFile = new File("C:\\temp\\", this.getTaskClass()
-					.getCanonicalName());
-			fos = new FileOutputStream(targetFile);
-			fos.write(binary);
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			if (fos != null) {
-				try {
-					fos.close();
-				} catch (IOException e) {
-					e.printStackTrace();
+		if (size > 0) {
+			byte[] binary = SerializeUtil.fromObjectToBinary(taskProperties);
+			FileOutputStream fos = null;
+			try {
+				File targetFile = new File("C:\\temp\\", this.getTaskClass()
+						.getCanonicalName());
+				fos = new FileOutputStream(targetFile);
+				fos.write(binary.length);
+				fos.write(binary);
+			} catch (IOException e) {
+				throw new IORuntimeException(e);
+			} finally {
+				if (fos != null) {
+					try {
+						fos.close();
+					} catch (IOException e) {
+						throw new IORuntimeException(e);
+					}
 				}
 			}
 		}
