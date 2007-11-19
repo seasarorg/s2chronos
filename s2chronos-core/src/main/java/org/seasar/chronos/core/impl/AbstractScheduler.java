@@ -159,7 +159,7 @@ public abstract class AbstractScheduler implements Scheduler {
 		tes.setComponentDef(taskComponentDef);
 		tes.setGetterSignal(this);
 		tes.setScheduler(this);
-		taskScheduleEntry.setComponentDef(taskComponentDef);
+		// taskScheduleEntry.setComponentDef(taskComponentDef);
 		return taskScheduleEntry;
 	}
 

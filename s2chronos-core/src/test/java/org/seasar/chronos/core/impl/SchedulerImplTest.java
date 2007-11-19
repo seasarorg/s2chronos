@@ -4,7 +4,6 @@ import org.seasar.chronos.core.S2TestCaseBase;
 import org.seasar.chronos.core.Scheduler;
 import org.seasar.chronos.core.SchedulerEventListener;
 import org.seasar.chronos.core.TaskScheduleEntry;
-import org.seasar.chronos.core.task.SimpleTask;
 import org.seasar.framework.log.Logger;
 
 public class SchedulerImplTest extends S2TestCaseBase implements
@@ -13,15 +12,29 @@ public class SchedulerImplTest extends S2TestCaseBase implements
 			.getLogger(SchedulerImplTest.class);
 
 	public void testStart() {
-
 		Scheduler scheduler = (Scheduler) this.getComponent("scheduler");
-		scheduler.addTask(SimpleTask.class);
-		scheduler.removeTask(SimpleTask.class);
 		scheduler.addListener(this);
 		scheduler.start();
 		scheduler.join();
 
 	}
+
+	// public void testAddTask() {
+	// Scheduler scheduler = (Scheduler) this.getComponent("scheduler");
+	// scheduler.addTask(NoScheduleTask.class);
+	// scheduler.addListener(this);
+	// scheduler.start();
+	// scheduler.join();
+	// }
+	//
+	// public void testRemoveTask() {
+	// Scheduler scheduler = (Scheduler) this.getComponent("scheduler");
+	// scheduler.addTask(NoScheduleTask.class);
+	// scheduler.removeTask(NoScheduleTask.class);
+	// scheduler.addListener(this);
+	// scheduler.start();
+	// scheduler.join();
+	//	}
 
 	public void addTaskScheduleEntry(Scheduler scheduler,
 			TaskScheduleEntry taskScheduleEntry) {
