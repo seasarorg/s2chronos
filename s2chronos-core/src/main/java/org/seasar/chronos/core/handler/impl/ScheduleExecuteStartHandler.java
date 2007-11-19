@@ -4,7 +4,6 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
 import java.util.concurrent.RejectedExecutionException;
 
-import org.seasar.chronos.core.Scheduler;
 import org.seasar.chronos.core.TaskScheduleEntry;
 import org.seasar.chronos.core.impl.TaskStateType;
 import org.seasar.chronos.core.schedule.TaskScheduleEntryManager.TaskScheduleEntryHanlder;
@@ -72,7 +71,7 @@ public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler 
 				fireExceptionTaskEvent(taskExecutorService, e);
 			} finally {
 				final String nextTaskName = taskExecutorService.destroy();
-				scheduleTask(taskExecutorService, nextTaskName);
+				// scheduleTask(taskExecutorService, nextTaskName);
 				fireEndTaskEvent(taskExecutorService);
 			}
 			taskContenaStateManager.removeTaskScheduleEntry(
@@ -132,12 +131,12 @@ public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler 
 				});
 	}
 
-	private void scheduleTask(TaskExecutorService tes, String nextTaskName) {
-		if (nextTaskName != null) {
-			Scheduler scheduler = tes.getScheduler();
-			scheduler.addTask(nextTaskName);
-		}
-	}
+	// private void scheduleTask(TaskExecutorService tes, String nextTaskName) {
+	// if (nextTaskName != null) {
+	// Scheduler scheduler = tes.getScheduler();
+	// scheduler.addTask(nextTaskName);
+	// }
+	// }
 
 	private void taskExecute(TaskExecutorService tes, String nextTaskName)
 			throws InterruptedException {

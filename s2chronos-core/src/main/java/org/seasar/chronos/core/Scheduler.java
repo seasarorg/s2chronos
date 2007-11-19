@@ -23,13 +23,6 @@ public interface Scheduler {
 
 	public void join();
 
-	public boolean addTask(String taskName);
-
-	/**
-	 * スケジューラにコンポーネントを登録します．
-	 * 
-	 * @param taskComponentClass
-	 */
 	public boolean addTask(Class<?> taskComponentClass);
 
 	public boolean removeTask(Class<?> taskComponentClass);

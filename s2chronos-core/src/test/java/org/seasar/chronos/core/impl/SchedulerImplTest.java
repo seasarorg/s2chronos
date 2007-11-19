@@ -39,13 +39,6 @@ public class SchedulerImplTest extends S2TestCaseBase implements
 		scheduler.join();
 	}
 
-	public void testAddTaskByName() {
-		// Scheduler scheduler = (Scheduler) this.getComponent("scheduler");
-		scheduler.addTask("noScheduleTask");
-		scheduler.start();
-		scheduler.join();
-	}
-
 	public void addTaskScheduleEntry(Scheduler scheduler,
 			TaskScheduleEntry taskScheduleEntry) {
 		// TODO 自動生成されたメソッド・スタブ

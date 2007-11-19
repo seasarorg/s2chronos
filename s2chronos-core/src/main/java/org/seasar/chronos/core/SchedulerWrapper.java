@@ -14,9 +14,9 @@ public abstract class SchedulerWrapper extends AbstractScheduler {
 		return scheduler.addListener(listener);
 	}
 
-	public boolean addTask(String taskName) {
-		return scheduler.addTask(taskName);
-	}
+	// public boolean addTask(String taskName) {
+	// return scheduler.addTask(taskName);
+	// }
 
 	public boolean addTask(Class<?> taskClass) {
 		return scheduler.addTask(taskClass);

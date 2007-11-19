@@ -21,7 +21,6 @@ import org.seasar.chronos.core.schedule.TaskScheduleEntryManager;
 import org.seasar.chronos.core.schedule.TaskScheduleEntryManager.TaskScheduleEntryHanlder;
 import org.seasar.chronos.core.util.TaskPropertyUtil;
 import org.seasar.framework.container.ComponentDef;
-import org.seasar.framework.container.ComponentNotFoundRuntimeException;
 import org.seasar.framework.container.S2Container;
 
 public class SchedulerImpl extends AbstractScheduler {
@@ -70,47 +69,6 @@ public class SchedulerImpl extends AbstractScheduler {
 				|| this.registTaskFromS2ContainerOnSmartDeployByTarget(
 						rootS2Container, taskComponentClass);
 		return result;
-	}
-
-	private ComponentDef getComponentDef(String taskName) {
-		ComponentDef componentDef = null;
-		try {
-			componentDef = this.s2container.getComponentDef(taskName);
-		} catch (ComponentNotFoundRuntimeException e) {
-			;
-		}
-		if (componentDef == null) {
-			componentDef = findTaskComponentDefByTaskName(taskName);
-		}
-		return componentDef;
-	}
-
-	/**
-	 * タスクをタスク名で登録する．<br>
-	 * タスク名とは，S2上のコンポーネント名，もしくはTaskアノテーション名
-	 */
-	public synchronized boolean addTask(String taskName) {
-		ComponentDef componentDef = getComponentDef(taskName);
-		if (componentDef != null) {
-			scheduleTask(componentDef);
-			return true;
-		}
-		return false;
-	}
-
-	/**
-	 * タスクをタスク名で削除します．
-	 * 
-	 * @param taskName
-	 * @return
-	 */
-	public synchronized boolean removeTask(String taskName) {
-		ComponentDef componentDef = getComponentDef(taskName);
-		if (componentDef != null) {
-			unscheduleTask(componentDef);
-			return true;
-		}
-		return false;
 	}
 
 	public SchedulerConfiguration getSchedulerConfiguration() {
