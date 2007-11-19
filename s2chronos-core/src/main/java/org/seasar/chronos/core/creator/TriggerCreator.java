@@ -12,7 +12,7 @@ public class TriggerCreator extends ComponentCreatorImpl {
 	public TriggerCreator(NamingConvention namingConvention) {
 		super(namingConvention);
 		this.setNameSuffix(NAME_SUFFIX_TRIGGER);
-		this.setInstanceDef(InstanceDefFactory.PROTOTYPE);
+		this.setInstanceDef(InstanceDefFactory.SINGLETON);
 		this.setExternalBinding(false);
 		this.setEnableAbstract(false);
 		this.setEnableInterface(false);
