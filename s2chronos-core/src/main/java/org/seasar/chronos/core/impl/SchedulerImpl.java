@@ -58,15 +58,19 @@ public class SchedulerImpl extends AbstractScheduler {
 		return schedulerEventHandler.add(listener);
 	}
 
+	/**
+	 * タスクを追加します．
+	 */
 	public void addTask(Class<?> taskComponentClass) {
-		this.registChildTaskComponentByTarget(this.s2container.getRoot(),
+		S2Container rootS2Container = this.s2container.getRoot();
+		this.registChildTaskComponentByTarget(rootS2Container,
 				taskComponentClass);
-		this.registTaskFromS2ContainerOnSmartDeployByTarget(this.s2container
-				.getRoot(), taskComponentClass);
+		this.registTaskFromS2ContainerOnSmartDeployByTarget(rootS2Container,
+				taskComponentClass);
 	}
 
 	/**
-	 * タスク名でスケジューラに登録する．<br>
+	 * タスクをタスク名で登録する．<br>
 	 * タスク名とは，S2上のコンポーネント名，もしくはTaskアノテーション名
 	 */
 	public boolean addTask(String taskName) {
@@ -86,6 +90,12 @@ public class SchedulerImpl extends AbstractScheduler {
 		return false;
 	}
 
+	/**
+	 * タスクをタスク名で削除します．
+	 * 
+	 * @param taskName
+	 * @return
+	 */
 	public boolean removeTask(String taskName) {
 		ComponentDef componentDef = null;
 		try {
@@ -209,15 +219,8 @@ public class SchedulerImpl extends AbstractScheduler {
 		return null;
 	}
 
-	protected TaskScheduleEntry scheduleTask(ComponentDef componentDef) {
-		TaskScheduleEntry taskScheduleEntry = super.scheduleTask(componentDef);
-		if (taskScheduleEntry == null) {
-			return null;
-		}
-		this.taskScheduleEntryManager.addTaskScheduleEntry(
-				TaskStateType.SCHEDULED, taskScheduleEntry);
-		this.schedulerEventHandler.fireAddTaskScheduleEntry(taskScheduleEntry);
-		return taskScheduleEntry;
+	protected TaskScheduleEntry scheduleTask(ComponentDef taskComponentDef) {
+		return scheduleTask(taskComponentDef, false);
 	}
 
 	protected TaskScheduleEntry scheduleTask(ComponentDef taskComponentDef,
