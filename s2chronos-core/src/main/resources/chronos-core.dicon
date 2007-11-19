@@ -26,5 +26,4 @@
 	<component name="taskExecutorService" class="org.seasar.chronos.core.task.impl.TaskExecutorServiceImpl" instance="prototype" autoBinding="none">
 		<arg>taskExecuteContext</arg>
 	</component>
-	
 </components>

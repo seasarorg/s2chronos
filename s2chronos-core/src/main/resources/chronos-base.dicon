@@ -10,9 +10,9 @@
 		condition="@org.seasar.chronos.core.util.DiconConditionUtil@hasCustomizeDicon()" />
 	
 	<component name="taskClassAutoDetector" class="org.seasar.chronos.core.autodetector.TaskClassAutoDetector"/>
+	
 	<component name="timedTrigger" class="org.seasar.chronos.core.trigger.CTimedTrigger" instance="prototype"/>
 	<component name="nonDelayTrigger" class="org.seasar.chronos.core.trigger.CNonDelayTrigger" instance="prototype"/>
 	<component name="delayTrigger" class="org.seasar.chronos.core.trigger.CDelayTrigger" instance="prototype"/>
 	<component name="cronTrigger" class="org.seasar.chronos.core.trigger.CCronTrigger" instance="prototype"/>
-	
 </components>
