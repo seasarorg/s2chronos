@@ -69,20 +69,25 @@ public class SchedulerImpl extends AbstractScheduler {
 				taskComponentClass);
 	}
 
+	private ComponentDef getComponentDef(String taskName) {
+		ComponentDef componentDef = null;
+		try {
+			componentDef = this.s2container.getComponentDef(taskName);
+		} catch (ComponentNotFoundRuntimeException e) {
+			return null;
+		}
+		if (componentDef == null) {
+			componentDef = findTaskComponentDefByTaskName(taskName);
+		}
+		return componentDef;
+	}
+
 	/**
 	 * タスクをタスク名で登録する．<br>
 	 * タスク名とは，S2上のコンポーネント名，もしくはTaskアノテーション名
 	 */
 	public boolean addTask(String taskName) {
-		ComponentDef componentDef = null;
-		try {
-			componentDef = this.s2container.getComponentDef(taskName);
-		} catch (ComponentNotFoundRuntimeException e) {
-			return false;
-		}
-		if (componentDef == null) {
-			componentDef = findTaskComponentDefByTaskName(taskName);
-		}
+		ComponentDef componentDef = getComponentDef(taskName);
 		if (componentDef != null) {
 			scheduleTask(componentDef);
 			return true;
@@ -97,15 +102,7 @@ public class SchedulerImpl extends AbstractScheduler {
 	 * @return
 	 */
 	public boolean removeTask(String taskName) {
-		ComponentDef componentDef = null;
-		try {
-			componentDef = this.s2container.getComponentDef(taskName);
-		} catch (ComponentNotFoundRuntimeException e) {
-			return false;
-		}
-		if (componentDef == null) {
-			componentDef = findTaskComponentDefByTaskName(taskName);
-		}
+		ComponentDef componentDef = getComponentDef(taskName);
 		if (componentDef != null) {
 			unscheduleTask(componentDef);
 			return true;
