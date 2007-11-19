@@ -41,7 +41,7 @@ public class SchedulerImpl extends AbstractScheduler {
 
 	private Future<Void> schedulerTaskFuture;
 
-	private TaskScheduleEntryManager taskContenaStateManager = TaskScheduleEntryManager
+	private TaskScheduleEntryManager taskScheduleEntryManager = TaskScheduleEntryManager
 			.getInstance();
 
 	private SchedulerConfiguration configuration = defaultConfiguration;
@@ -109,7 +109,7 @@ public class SchedulerImpl extends AbstractScheduler {
 
 	private boolean getSchedulerFinish() {
 		if (finishStartTime != 0
-				&& taskContenaStateManager.size(TaskStateType.SCHEDULED) > 0) {
+				&& taskScheduleEntryManager.size(TaskStateType.SCHEDULED) > 0) {
 			finishStartTime = 0;
 			return false;
 		}
@@ -120,8 +120,8 @@ public class SchedulerImpl extends AbstractScheduler {
 			return true;
 		}
 		if (this.schedulerTaskFuture != null
-				&& taskContenaStateManager.size(TaskStateType.SCHEDULED) == 0
-				&& taskContenaStateManager.size(TaskStateType.RUNNING) == 0
+				&& taskScheduleEntryManager.size(TaskStateType.SCHEDULED) == 0
+				&& taskScheduleEntryManager.size(TaskStateType.RUNNING) == 0
 				&& configuration.isAutoFinish() && finishStartTime == 0) {
 			finishStartTime = System.currentTimeMillis();
 		}
@@ -181,15 +181,18 @@ public class SchedulerImpl extends AbstractScheduler {
 		return schedulerEventHandler.remove(listener);
 	}
 
+	/**
+	 * タスクを削除します．
+	 */
 	public boolean removeTask(Class<?> taskClass) {
-		TaskScheduleEntry taskScheduleEntry = this.taskContenaStateManager
+		TaskScheduleEntry taskScheduleEntry = this.taskScheduleEntryManager
 				.getTaskScheduleEntry(taskClass);
-		return this.taskContenaStateManager
+		return this.taskScheduleEntryManager
 				.removeTaskScheduleEntry(taskScheduleEntry);
 	}
 
 	protected TaskScheduleEntry unscheduleTask(final ComponentDef componentDef) {
-		TaskScheduleEntry target = (TaskScheduleEntry) this.taskContenaStateManager
+		TaskScheduleEntry target = (TaskScheduleEntry) this.taskScheduleEntryManager
 				.forEach(new TaskScheduleEntryHanlder() {
 					public Object processTaskScheduleEntry(
 							TaskScheduleEntry scheduleEntry) {
@@ -200,7 +203,7 @@ public class SchedulerImpl extends AbstractScheduler {
 						return null;
 					}
 				});
-		if (this.taskContenaStateManager.removeTaskScheduleEntry(target)) {
+		if (this.taskScheduleEntryManager.removeTaskScheduleEntry(target)) {
 			return target;
 		}
 		return null;
@@ -211,7 +214,7 @@ public class SchedulerImpl extends AbstractScheduler {
 		if (taskScheduleEntry == null) {
 			return null;
 		}
-		this.taskContenaStateManager.addTaskScheduleEntry(
+		this.taskScheduleEntryManager.addTaskScheduleEntry(
 				TaskStateType.SCHEDULED, taskScheduleEntry);
 		this.schedulerEventHandler.fireAddTaskScheduleEntry(taskScheduleEntry);
 		return taskScheduleEntry;
@@ -224,7 +227,7 @@ public class SchedulerImpl extends AbstractScheduler {
 		if (taskScheduleEntry == null) {
 			return null;
 		}
-		this.taskContenaStateManager.addTaskScheduleEntry(
+		this.taskScheduleEntryManager.addTaskScheduleEntry(
 				TaskStateType.SCHEDULED, taskScheduleEntry);
 		this.schedulerEventHandler.fireAddTaskScheduleEntry(taskScheduleEntry);
 		return taskScheduleEntry;
@@ -279,7 +282,7 @@ public class SchedulerImpl extends AbstractScheduler {
 
 	public void shutdown() {
 		log.log("DCHRONOS0013", null);
-		this.taskContenaStateManager.forEach(TaskStateType.RUNNING,
+		this.taskScheduleEntryManager.forEach(TaskStateType.RUNNING,
 				new TaskScheduleEntryManager.TaskScheduleEntryHanlder() {
 					public Object processTaskScheduleEntry(
 							TaskScheduleEntry taskScheduleEntry) {

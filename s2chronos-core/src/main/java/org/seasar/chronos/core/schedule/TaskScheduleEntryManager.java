@@ -35,7 +35,7 @@ public class TaskScheduleEntryManager {
 
 	private CopyOnWriteArrayList<TaskScheduleEntry> allTaskList = new CopyOnWriteArrayList<TaskScheduleEntry>();
 
-	private ConcurrentHashMap<Object, TaskScheduleEntry> taskScheduleEntryObjectMap = new ConcurrentHashMap<Object, TaskScheduleEntry>();
+	private ConcurrentHashMap<Class<?>, TaskScheduleEntry> taskScheduleEntryObjectMap = new ConcurrentHashMap<Class<?>, TaskScheduleEntry>();
 
 	private TaskScheduleEntryManager() {
 
@@ -110,10 +110,11 @@ public class TaskScheduleEntryManager {
 		boolean result = allTaskList.remove(taskScheduleEntry);
 		if (result) {
 			for (TaskStateType key : taskScheduleEntryMap.keySet()) {
-				result = result
-						|| this.getScheduleEntryList(key).remove(
-								taskScheduleEntry);
+				result = taskScheduleEntryMap.get(key)
+						.remove(taskScheduleEntry);
 			}
+			Class<?> taskComponentClass = taskScheduleEntry.getTaskClass();
+			taskScheduleEntryObjectMap.remove(taskComponentClass);
 		}
 		return result;
 	}

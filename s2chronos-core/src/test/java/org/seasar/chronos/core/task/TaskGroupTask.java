@@ -5,7 +5,7 @@ import org.seasar.chronos.core.annotation.task.method.NextTask;
 import org.seasar.chronos.core.annotation.task.method.TaskGroup;
 import org.seasar.framework.log.Logger;
 
-@Task
+@Task(autoSchedule = false)
 public class TaskGroupTask {
 
 	private Logger log = Logger.getLogger(TaskGroupTask.class);
