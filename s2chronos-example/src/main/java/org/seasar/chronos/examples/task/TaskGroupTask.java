@@ -10,7 +10,7 @@ import org.seasar.framework.log.Logger;
  * 
  * 
  */
-@Task(autoSchedule = true)
+@Task
 @NonDelayTrigger
 public class TaskGroupTask {
 
