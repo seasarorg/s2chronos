@@ -61,7 +61,7 @@ public class SchedulerImpl extends AbstractScheduler {
 	/**
 	 * タスクを追加します．
 	 */
-	public boolean addTask(Class<?> taskComponentClass) {
+	public synchronized boolean addTask(Class<?> taskComponentClass) {
 		S2Container rootS2Container = this.s2container.getRoot();
 		boolean result = false;
 		result = this.registChildTaskComponentByTarget(rootS2Container,
@@ -89,7 +89,7 @@ public class SchedulerImpl extends AbstractScheduler {
 	 * タスクをタスク名で登録する．<br>
 	 * タスク名とは，S2上のコンポーネント名，もしくはTaskアノテーション名
 	 */
-	public boolean addTask(String taskName) {
+	public synchronized boolean addTask(String taskName) {
 		ComponentDef componentDef = getComponentDef(taskName);
 		if (componentDef != null) {
 			scheduleTask(componentDef);
@@ -104,7 +104,7 @@ public class SchedulerImpl extends AbstractScheduler {
 	 * @param taskName
 	 * @return
 	 */
-	public boolean removeTask(String taskName) {
+	public synchronized boolean removeTask(String taskName) {
 		ComponentDef componentDef = getComponentDef(taskName);
 		if (componentDef != null) {
 			unscheduleTask(componentDef);
@@ -194,7 +194,7 @@ public class SchedulerImpl extends AbstractScheduler {
 	/**
 	 * タスクを削除します．
 	 */
-	public boolean removeTask(Class<?> taskClass) {
+	public synchronized boolean removeTask(Class<?> taskClass) {
 		TaskScheduleEntry taskScheduleEntry = this.taskScheduleEntryManager
 				.getTaskScheduleEntry(taskClass);
 		return this.taskScheduleEntryManager
