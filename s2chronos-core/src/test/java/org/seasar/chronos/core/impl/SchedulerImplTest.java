@@ -4,6 +4,7 @@ import org.seasar.chronos.core.S2TestCaseBase;
 import org.seasar.chronos.core.Scheduler;
 import org.seasar.chronos.core.SchedulerEventListener;
 import org.seasar.chronos.core.TaskScheduleEntry;
+import org.seasar.chronos.core.task.NoScheduleTask;
 import org.seasar.framework.log.Logger;
 
 public class SchedulerImplTest extends S2TestCaseBase implements
@@ -11,30 +12,39 @@ public class SchedulerImplTest extends S2TestCaseBase implements
 	private transient static Logger log = Logger
 			.getLogger(SchedulerImplTest.class);
 
+	private Scheduler scheduler;
+
 	public void testStart() {
-		Scheduler scheduler = (Scheduler) this.getComponent("scheduler");
+		// Scheduler scheduler = (Scheduler) this.getComponent("scheduler");
 		scheduler.addListener(this);
 		scheduler.start();
 		scheduler.join();
 
 	}
 
-	// public void testAddTask() {
-	// Scheduler scheduler = (Scheduler) this.getComponent("scheduler");
-	// scheduler.addTask(NoScheduleTask.class);
-	// scheduler.addListener(this);
-	// scheduler.start();
-	// scheduler.join();
-	// }
-	//
-	// public void testRemoveTask() {
-	// Scheduler scheduler = (Scheduler) this.getComponent("scheduler");
-	// scheduler.addTask(NoScheduleTask.class);
-	// scheduler.removeTask(NoScheduleTask.class);
-	// scheduler.addListener(this);
-	// scheduler.start();
-	// scheduler.join();
-	//	}
+	public void testAddTask() {
+		// Scheduler scheduler = (Scheduler) this.getComponent("scheduler");
+		scheduler.addTask(NoScheduleTask.class);
+		scheduler.addListener(this);
+		scheduler.start();
+		scheduler.join();
+	}
+
+	public void testRemoveTask() {
+		// Scheduler scheduler = (Scheduler) this.getComponent("scheduler");
+		scheduler.addTask(NoScheduleTask.class);
+		scheduler.removeTask(NoScheduleTask.class);
+		scheduler.addListener(this);
+		scheduler.start();
+		scheduler.join();
+	}
+
+	public void testAddTaskByName() {
+		// Scheduler scheduler = (Scheduler) this.getComponent("scheduler");
+		scheduler.addTask("noScheduleTask");
+		scheduler.start();
+		scheduler.join();
+	}
 
 	public void addTaskScheduleEntry(Scheduler scheduler,
 			TaskScheduleEntry taskScheduleEntry) {

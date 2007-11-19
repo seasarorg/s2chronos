@@ -307,10 +307,12 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 
 	public String getTaskName() {
 		String result = null;
-		if (this.beanDesc.hasPropertyDesc(PROPERTY_NAME_TASKNAME)) {
-			PropertyDesc pd = this.beanDesc
-					.getPropertyDesc(PROPERTY_NAME_TASKNAME);
-			result = (String) pd.getValue(this.task);
+		if (this.beanDesc != null) {
+			if (this.beanDesc.hasPropertyDesc(PROPERTY_NAME_TASKNAME)) {
+				PropertyDesc pd = this.beanDesc
+						.getPropertyDesc(PROPERTY_NAME_TASKNAME);
+				result = (String) pd.getValue(this.task);
+			}
 		}
 		return result;
 	}

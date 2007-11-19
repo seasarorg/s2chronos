@@ -142,20 +142,27 @@ public final class TaskPropertyUtil {
 	 * @return
 	 */
 	public static String getTaskName(TaskProperties prop) {
-		String taskName = prop.getTaskName();
-		if (taskName != null) {
-			return taskName;
+		String result = null;
+		try {
+			String taskName = prop.getTaskName();
+			if (taskName != null) {
+				return taskName;
+			}
+			Class<?> clazz = prop.getTaskClass();
+			Task task = (Task) clazz.getAnnotation(Task.class);
+			if (task != null && !StringUtil.isEmpty(task.name())) {
+				return task.name();
+			}
+			Component component = (Component) clazz
+					.getAnnotation(Component.class);
+			if (component != null && !StringUtil.isEmpty(component.name())) {
+				return component.name();
+			}
+			result = clazz.getCanonicalName();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		Class<?> clazz = prop.getTaskClass();
-		Task task = (Task) clazz.getAnnotation(Task.class);
-		if (task != null && !StringUtil.isEmpty(task.name())) {
-			return task.name();
-		}
-		Component component = (Component) clazz.getAnnotation(Component.class);
-		if (component != null && !StringUtil.isEmpty(component.name())) {
-			return component.name();
-		}
-		return clazz.getCanonicalName();
+		return result;
 	}
 
 	public static int getThreadPoolSize(TaskProperties prop) {

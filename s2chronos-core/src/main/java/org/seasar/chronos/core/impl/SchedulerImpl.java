@@ -61,12 +61,15 @@ public class SchedulerImpl extends AbstractScheduler {
 	/**
 	 * タスクを追加します．
 	 */
-	public void addTask(Class<?> taskComponentClass) {
+	public boolean addTask(Class<?> taskComponentClass) {
 		S2Container rootS2Container = this.s2container.getRoot();
-		this.registChildTaskComponentByTarget(rootS2Container,
+		boolean result = false;
+		result = this.registChildTaskComponentByTarget(rootS2Container,
 				taskComponentClass);
-		this.registTaskFromS2ContainerOnSmartDeployByTarget(rootS2Container,
-				taskComponentClass);
+		result = result
+				|| this.registTaskFromS2ContainerOnSmartDeployByTarget(
+						rootS2Container, taskComponentClass);
+		return result;
 	}
 
 	private ComponentDef getComponentDef(String taskName) {
@@ -74,7 +77,7 @@ public class SchedulerImpl extends AbstractScheduler {
 		try {
 			componentDef = this.s2container.getComponentDef(taskName);
 		} catch (ComponentNotFoundRuntimeException e) {
-			return null;
+			;
 		}
 		if (componentDef == null) {
 			componentDef = findTaskComponentDefByTaskName(taskName);

@@ -62,18 +62,18 @@ public abstract class AbstractScheduler implements Scheduler {
 	 * @param s2Container
 	 *            S2コンテナ
 	 */
-	protected void registChildTaskComponent(S2Container s2Container) {
-		registChildTaskComponent(s2Container, null);
+	protected boolean registChildTaskComponent(S2Container s2Container) {
+		return registChildTaskComponent(s2Container, null);
 	}
 
-	protected void registChildTaskComponentByTarget(S2Container s2Container,
+	protected boolean registChildTaskComponentByTarget(S2Container s2Container,
 			final Class<?> targetTaskComponentClass) {
-		registChildTaskComponent(s2Container, targetTaskComponentClass);
+		return registChildTaskComponent(s2Container, targetTaskComponentClass);
 	}
 
-	private void registChildTaskComponent(S2Container s2Container,
+	private boolean registChildTaskComponent(S2Container s2Container,
 			final Class<?> targetTaskComponentClass) {
-		Traversal.forEachComponent(s2Container,
+		Object result = (Object) Traversal.forEachComponent(s2Container,
 				new Traversal.ComponentDefHandler() {
 					public Object processComponent(ComponentDef componentDef) {
 						Class<?> clazz = componentDef.getComponentClass();
@@ -93,6 +93,7 @@ public abstract class AbstractScheduler implements Scheduler {
 					}
 
 				});
+		return result != null;
 	}
 
 	protected abstract void registTaskFromS2Container();
@@ -103,21 +104,24 @@ public abstract class AbstractScheduler implements Scheduler {
 	 * @param s2Container
 	 *            S2コンテナ
 	 */
-	protected void registTaskFromS2ContainerOnSmartDeploy(
+	protected boolean registTaskFromS2ContainerOnSmartDeploy(
 			final S2Container s2Container) {
-		registTaskFromS2ContainerOnSmartDeploy(s2Container, null);
+		return registTaskFromS2ContainerOnSmartDeploy(s2Container, null);
 	}
 
-	protected void registTaskFromS2ContainerOnSmartDeployByTarget(
+	protected boolean registTaskFromS2ContainerOnSmartDeployByTarget(
 			final S2Container s2Container,
 			final Class<?> targetTaskComponentClass) {
-		registTaskFromS2ContainerOnSmartDeploy(s2Container,
+		return registTaskFromS2ContainerOnSmartDeploy(s2Container,
 				targetTaskComponentClass);
 	}
 
-	private void registTaskFromS2ContainerOnSmartDeploy(
+	private boolean detectResult = false;
+
+	private boolean registTaskFromS2ContainerOnSmartDeploy(
 			final S2Container s2Container,
 			final Class<?> targetTaskComponentClass) {
+		detectResult = false;
 		if (SmartDeployUtil.isSmartdeployMode(s2Container)) {
 			this.taskClassAutoDetector
 					.detect(new ClassTraversal.ClassHandler() {
@@ -128,13 +132,19 @@ public abstract class AbstractScheduler implements Scheduler {
 							Class<?> clazz = ReflectionUtil
 									.forNameNoException(name);
 							if (targetTaskComponentClass == null) {
-								scheduleTask(s2Container, clazz);
+								if (null != scheduleTask(s2Container, clazz)) {
+									detectResult = true;
+								}
 							} else if (targetTaskComponentClass.equals(clazz)) {
-								scheduleTask(s2Container, clazz, true);
+								if (null != scheduleTask(s2Container, clazz,
+										true)) {
+									detectResult = true;
+								}
 							}
 						}
 					});
 		}
+		return detectResult;
 	}
 
 	protected TaskScheduleEntry scheduleTask(ComponentDef componentDef) {

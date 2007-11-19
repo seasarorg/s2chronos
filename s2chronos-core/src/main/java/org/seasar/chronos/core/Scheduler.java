@@ -30,7 +30,7 @@ public interface Scheduler {
 	 * 
 	 * @param taskComponentClass
 	 */
-	public void addTask(Class<?> taskComponentClass);
+	public boolean addTask(Class<?> taskComponentClass);
 
 	public boolean removeTask(Class<?> taskComponentClass);
 

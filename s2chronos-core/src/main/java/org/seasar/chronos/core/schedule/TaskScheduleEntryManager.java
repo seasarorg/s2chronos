@@ -117,7 +117,9 @@ public class TaskScheduleEntryManager {
 						.remove(taskScheduleEntry);
 			}
 			Class<?> taskComponentClass = taskScheduleEntry.getTaskClass();
-			taskScheduleEntryClassMap.remove(taskComponentClass);
+			if (taskComponentClass != null) {
+				taskScheduleEntryClassMap.remove(taskComponentClass);
+			}
 		}
 		return result;
 	}
