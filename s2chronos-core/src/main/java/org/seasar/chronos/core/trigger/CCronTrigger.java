@@ -4,8 +4,11 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import org.seasar.chronos.core.trigger.cron.CronExpression;
+import org.seasar.framework.log.Logger;
 
 public class CCronTrigger extends AbstractTrigger {
+
+	private static Logger log = Logger.getLogger(CCronTrigger.class);
 
 	private static final long serialVersionUID = 1L;
 
@@ -56,6 +59,7 @@ public class CCronTrigger extends AbstractTrigger {
 			int size = startTimeList.size();
 			for (int i = 0; i < size; i++) {
 				Date startTime = startTimeList.get(i);
+				log.debug("startTime = " + startTime);
 				startTimeCheck = (nowTime >= startTime.getTime());
 				if (startTimeCheck) {
 					startTimeList.remove(i);
