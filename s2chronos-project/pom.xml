@@ -51,7 +51,6 @@
 	<modules>
 		<module>../s2chronos-core</module>
 		<module>../s2chronos-extension</module>
-		<module>../s2chronos-example</module>
 	</modules>
 	<repositories>
 		<repository>
