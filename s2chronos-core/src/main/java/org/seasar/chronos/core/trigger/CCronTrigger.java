@@ -59,9 +59,9 @@ public class CCronTrigger extends AbstractTrigger {
 			int size = startTimeList.size();
 			for (int i = 0; i < size; i++) {
 				Date startTime = startTimeList.get(i);
-				log.debug("startTime = " + startTime);
 				startTimeCheck = (nowTime >= startTime.getTime());
 				if (startTimeCheck) {
+					log.debug("startTime = " + startTime);
 					startTimeList.remove(i);
 					break;
 				}
