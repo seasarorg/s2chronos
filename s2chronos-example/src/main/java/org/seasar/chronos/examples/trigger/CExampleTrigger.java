@@ -9,7 +9,6 @@ public class CExampleTrigger extends AbstractTrigger {
 	private int div;
 
 	public boolean isEndTask() {
-		// TODO 自動生成されたメソッド・スタブ
 		return false;
 	}
 
@@ -18,12 +17,10 @@ public class CExampleTrigger extends AbstractTrigger {
 	}
 
 	public void setEndTask(Boolean endTask) {
-		// TODO 自動生成されたメソッド・スタブ
 
 	}
 
 	public void setStartTask(Boolean startTask) {
-		// TODO 自動生成されたメソッド・スタブ
 
 	}
 
