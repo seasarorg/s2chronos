@@ -6,11 +6,9 @@
 		<initMethod name="addInterceptorName">
 			<arg>"aop.traceInterceptor"</arg>
 		</initMethod>
-<!--
 		<initMethod name="addInterceptorName">
 			<arg>"j2ee.requiredTx"</arg>
 		</initMethod>
--->
 		<property name="pointcut">"do.*, initialize, destroy"</property>
 	</component>
 	<component name="taskCustomizer" class="org.seasar.framework.container.customizer.CustomizerChain">
@@ -22,11 +20,6 @@
 		<initMethod name="addInterceptorName">
 			<arg>"aop.traceInterceptor"</arg>
 		</initMethod>
-<!--
-		<initMethod name="addInterceptorName">
-			<arg>"j2ee.requiredTx"</arg>
-		</initMethod>
--->
 		<property name="pointcut">".*"</property>
 	</component>
 	<component name="triggerCustomizer" class="org.seasar.framework.container.customizer.CustomizerChain">

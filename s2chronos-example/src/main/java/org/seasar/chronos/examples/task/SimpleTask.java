@@ -8,7 +8,7 @@ import org.seasar.chronos.core.annotation.trigger.NonDelayTrigger;
 import org.seasar.chronos.core.annotation.type.JoinType;
 import org.seasar.framework.log.Logger;
 
-@Task(name = "example")
+@Task
 @NonDelayTrigger
 public class SimpleTask {
 
