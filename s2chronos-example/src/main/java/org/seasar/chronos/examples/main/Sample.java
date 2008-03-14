@@ -5,7 +5,7 @@ import org.seasar.framework.container.S2Container;
 import org.seasar.framework.container.factory.SingletonS2ContainerFactory;
 
 /**
- * スケジューラを起動するためのサンプルクラス
+ * スケジューラを起動するためのサンプルクラスです．
  * 
  * @author junichi
  * 
@@ -13,6 +13,11 @@ import org.seasar.framework.container.factory.SingletonS2ContainerFactory;
 public class Sample {
 
 	/**
+	 * メインメソッドです．
+	 * <p>
+	 * スケジューラのインスタンスを取得し，スケジューラを開始します．
+	 * </p>
+	 * 
 	 * @param args
 	 */
 	public static void main(String[] args) {

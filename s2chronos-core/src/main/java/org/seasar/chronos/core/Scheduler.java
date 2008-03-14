@@ -8,11 +8,25 @@ package org.seasar.chronos.core;
  */
 public interface Scheduler {
 
+	/**
+	 * スケジューラ設定を返します．
+	 * 
+	 * @return スケジューラ設定
+	 */
 	public SchedulerConfiguration getSchedulerConfiguration();
 
+	/**
+	 * スケジューラ設定を設定します．
+	 * 
+	 * @param schedulerConfiguration
+	 *            スケジューラ設定
+	 */
 	public void setSchedulerConfiguration(
 			SchedulerConfiguration schedulerConfiguration);
 
+	/**
+	 * スケジューラを開始します．
+	 */
 	public void start();
 
 	public void pause();
