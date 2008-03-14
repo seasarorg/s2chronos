@@ -1,9 +1,7 @@
 <projectDescription>
   <name>s2chronos-example</name>
-  <comment></comment>
-  <projects>
-    <project>s2chronos-core</project>
-  </projects>
+  <comment/>
+  <projects/>
   <buildSpec>
     <buildCommand>
       <name>org.eclipse.jdt.core.javabuilder</name>

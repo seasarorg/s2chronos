@@ -4,5 +4,5 @@
 <components>
 	<include path="convention.dicon"/>
 	<include path="aop.dicon"/>
-	<include path="chronos-core.dicon" />
+	<include path="chronos-core.dicon"/>
 </components>
