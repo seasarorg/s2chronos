@@ -4,7 +4,13 @@ import org.seasar.chronos.core.Scheduler;
 import org.seasar.framework.container.S2Container;
 import org.seasar.framework.container.factory.SingletonS2ContainerFactory;
 
-public class Main {
+/**
+ * スケジューラを起動するためのサンプルクラス
+ * 
+ * @author junichi
+ * 
+ */
+public class Sample {
 
 	/**
 	 * @param args
