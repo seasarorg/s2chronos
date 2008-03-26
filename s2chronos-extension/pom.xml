@@ -53,17 +53,17 @@
 	<dependency>
 		<groupId>org.seasar.chronos</groupId>
 		<artifactId>s2chronos-core</artifactId>
-		<version>0.1.2-SNAPSHOT</version>
+		<version>0.1.2-RC1</version>
 	</dependency>
 	<dependency>
 		<groupId>org.seasar.dao</groupId>
 		<artifactId>s2-dao</artifactId>
-		<version>1.0.39</version>
+		<version>1.0.47</version>
 	</dependency>
 	<dependency>
 		<groupId>org.seasar.dao</groupId>
 		<artifactId>s2-dao-tiger</artifactId>
-		<version>1.0.35</version>
+		<version>1.0.47</version>
 	</dependency>
 	<dependency>
 		<groupId>com.h2database</groupId>
