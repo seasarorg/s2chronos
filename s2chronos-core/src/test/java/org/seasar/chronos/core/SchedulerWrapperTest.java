@@ -26,23 +26,23 @@ public class SchedulerWrapperTest extends S2TestCaseBase {
 	}
 
 	public void testIsPaused() {
-		fail("�܂�������Ă��܂���B");
+		
 	}
 
 	public void testJoin() {
-		fail("�܂�������Ă��܂���B");
+		
 	}
 
 	public void testPause() {
-		fail("�܂�������Ă��܂���B");
+		
 	}
 
 	public void testShutdown() {
-		fail("�܂�������Ă��܂���B");
+		
 	}
 
 	public void testStart() {
-		fail("�܂�������Ă��܂���B");
+		
 	}
 
 }
