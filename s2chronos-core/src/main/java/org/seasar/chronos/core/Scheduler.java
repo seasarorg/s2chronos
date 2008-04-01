@@ -29,8 +29,16 @@ public interface Scheduler {
 	 */
 	public void start();
 
+	/**
+	 * スケジューラを一時停止します．
+	 */
 	public void pause();
 
+	/**
+	 * スケジューラが一時停止中かどうかを返します．
+	 * 
+	 * @return　一時停止中ならtrue, それ以外ならfalse
+	 */
 	public boolean isPaused();
 
 	public void shutdown();

@@ -122,11 +122,15 @@ public class SchedulerImpl extends AbstractScheduler {
 	}
 
 	/**
-	 * スケジューラを一時停止させます．
+	 * スケジューラを一時停止/再開させます．
 	 * 
 	 */
 	public synchronized void pause() {
-		log.log("DCHRONOS0018", null);
+		if ( !this.pause.get() ){
+			log.log("DCHRONOS0018", null);
+		}else{
+			log.log("DCHRONOS0021", null);
+		}
 		this.pause.set(!this.pause.get());
 		this.notify();
 	}

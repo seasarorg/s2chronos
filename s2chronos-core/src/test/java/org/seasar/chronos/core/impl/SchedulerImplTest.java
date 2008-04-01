@@ -9,6 +9,7 @@ import org.seasar.framework.log.Logger;
 
 public class SchedulerImplTest extends S2TestCaseBase implements
 		SchedulerEventListener {
+	
 	private transient static Logger log = Logger
 			.getLogger(SchedulerImplTest.class);
 
@@ -38,6 +39,22 @@ public class SchedulerImplTest extends S2TestCaseBase implements
 		scheduler.start();
 		scheduler.join();
 	}
+	
+	public void testPause(){
+		scheduler.addTask(NoScheduleTask.class);
+		scheduler.removeTask(NoScheduleTask.class);
+		scheduler.addListener(this);
+		scheduler.start();
+		scheduler.pause();
+		try {
+			Thread.sleep(2200);
+		} catch (InterruptedException e) {
+		}
+		scheduler.pause();
+		scheduler.join();
+		
+	}
+	
 
 	public void addTaskScheduleEntry(Scheduler scheduler,
 			TaskScheduleEntry taskScheduleEntry) {
