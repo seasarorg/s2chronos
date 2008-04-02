@@ -1,5 +1,11 @@
 package org.seasar.chronos.core;
 
+/**
+ * スケジューラ設定クラスです．
+ * 
+ * @author junichi
+ * 
+ */
 public final class SchedulerConfiguration {
 
 	private boolean autoFinish;

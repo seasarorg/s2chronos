@@ -1,5 +1,11 @@
 package org.seasar.chronos.core;
 
+/**
+ * スケジューライベントリスナークラスです．
+ * 
+ * @author junichi
+ * 
+ */
 public interface SchedulerEventListener {
 
 	public void addTaskScheduleEntry(Scheduler scheduler,
