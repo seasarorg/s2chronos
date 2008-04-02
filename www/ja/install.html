@@ -77,8 +77,70 @@ urchinTracker();
 <p>以下の手順に従ってインストールを行ってください．</p>
 </div><!-- section -->
 <div class="section">
+<h3>前提条件</h3>
+<p>
+	<ul>
+    	<li>Java5を前提とします．Java6は現在のところサポートしていません．</li>
+        <li>Seasar2.4を前提とします．</li>
+    </ul>
+</p>
+</div><!-- section -->
+<div class="section">
 <h3>インストール手順</h3>
-<p></p>
+<p>
+<ul>
+	<li>S2Choronosのjarファイルをビルドパスに加える．</li>
+    <li>chronosCustomize.diconを適宜編集しビルドパスに加える．
+<pre>
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;!DOCTYPE components PUBLIC &quot;-//SEASAR//DTD S2Container 2.4//EN&quot;
+	&quot;http://www.seasar.org/dtd/components24.dtd&quot;&gt;
+&lt;components&gt;
+	&lt;component name=&quot;schedulerConfiguration&quot; class=&quot;org.seasar.chronos.core.SchedulerConfiguration&quot;&gt;
+		&lt;property name=&quot;autoFinish&quot;&gt;false&lt;/property&gt;  // &lt;- 実行するタスクがない場合自動的にスケジューラを終了させるかどうかのフラグ．trueの場合自動的に終了します．
+		&lt;property name=&quot;autoFinishTimeLimit&quot;&gt;5000L&lt;/property&gt;	// &lt;- 実行するタスクがなくなってからどれぐらいでスケジューラを終了させるかの時間(msec)．
+		&lt;property name=&quot;taskScanIntervalTime&quot;&gt;2000L&lt;/property&gt; // &lt;- タスクを関するする時間間隔(msec).
+	&lt;/component&gt;
+&lt;/components&gt; 
+</pre>
+    </li>
+	<li>
+    creator.diconに以下を追加する．
+        <pre>
+	&lt;component class=&quot;org.seasar.chronos.core.creator.TaskCreator&quot;/&gt;
+	&lt;component class=&quot;org.seasar.chronos.core.creator.TriggerCreator&quot;/&gt;
+</pre>
+    </li>
+    <li>
+    customizer.diconに以下を追加する．
+    <pre>
+	&lt;component name=&quot;taskSupportAspectCustomizer&quot; class=&quot;org.seasar.framework.container.customizer.AspectCustomizer&quot;&gt;
+		&lt;initMethod name=&quot;addInterceptorName&quot;&gt;
+			&lt;arg&gt;&quot;aop.traceInterceptor&quot;&lt;/arg&gt;
+		&lt;/initMethod&gt;
+		&lt;property name=&quot;pointcut&quot;&gt;&quot;do.*, initialize, destroy&quot;&lt;/property&gt;
+	&lt;/component&gt;
+	&lt;component name=&quot;taskCustomizer&quot; class=&quot;org.seasar.framework.container.customizer.CustomizerChain&quot;&gt;
+		&lt;initMethod name=&quot;addCustomizer&quot;&gt;
+			&lt;arg&gt;taskSupportAspectCustomizer&lt;/arg&gt;
+		&lt;/initMethod&gt;
+	&lt;/component&gt;
+	&lt;component name=&quot;triggerSupportAspectCustomizer&quot; class=&quot;org.seasar.framework.container.customizer.AspectCustomizer&quot;&gt;
+		&lt;initMethod name=&quot;addInterceptorName&quot;&gt;
+			&lt;arg&gt;&quot;aop.traceInterceptor&quot;&lt;/arg&gt;
+		&lt;/initMethod&gt;
+		&lt;property name=&quot;pointcut&quot;&gt;&quot;.*&quot;&lt;/property&gt;
+	&lt;/component&gt;
+	&lt;component name=&quot;triggerCustomizer&quot; class=&quot;org.seasar.framework.container.customizer.CustomizerChain&quot;&gt;
+		&lt;initMethod name=&quot;addCustomizer&quot;&gt;
+			&lt;arg&gt;triggerSupportAspectCustomizer&lt;/arg&gt;
+		&lt;/initMethod&gt;
+	&lt;/component&gt;
+</pre>
+
+    </li>
+</ul>
+</p>
 </div><!-- section -->
 
 </div>
