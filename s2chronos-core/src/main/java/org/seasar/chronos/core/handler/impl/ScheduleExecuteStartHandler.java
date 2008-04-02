@@ -35,6 +35,12 @@ public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler 
 		}
 	}
 
+	/**
+	 * タスク実行サービス用のCallableです．
+	 * 
+	 * @author junichi
+	 * 
+	 */
 	private class TaskExecutorServiceCallable implements
 			Callable<TaskExecutorService> {
 
@@ -55,7 +61,7 @@ public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler 
 		public TaskExecutorService call() throws Exception {
 			final String taskName = TaskPropertyUtil
 					.getTaskName(taskExecutorService);
-			log.log("DCHRONOSSSTHRTTCS", new Object[] { taskName });
+			log.log("DCHRONOS0121", new Object[] { taskName });
 			taskContenaStateManager.addTaskScheduleEntry(TaskStateType.RUNNING,
 					taskScheduleEntry);
 			// 定期スケジュール以外ならスケジュールドリストから削除する
