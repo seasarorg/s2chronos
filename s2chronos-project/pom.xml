@@ -117,7 +117,7 @@
 			<name>
 				The Seasar Foundation Maven2 Repository
 			</name>
-			<url>dav:https://maven.seasar.org/maven2</url>
+			<url>dav:https://www.seasar.org/maven/maven2</url>
 		</repository>
 		<snapshotRepository>
 			<uniqueVersion>true</uniqueVersion>
@@ -125,7 +125,7 @@
 			<name>
 				The Seasar Foundation Maven2 Snapshot Repository
 			</name>
-			<url>dav:https://maven.seasar.org/maven2-snapshot</url>
+			<url>dav:https://www.seasar.org/maven/maven2-snapshot</url>
 		</snapshotRepository>
 	</distributionManagement>
 </project>
