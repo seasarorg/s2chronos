@@ -34,6 +34,10 @@ public class SchedulerEventHandlerTest extends TestCase implements
 		System.out.println("pauseScheduler");
 	}
 
+	public void resumeScheduler(Scheduler scheduler) {
+		System.out.println("resumeScheduler");
+	}
+
 	public void removeTaskScheduleEntry(Scheduler scheduler,
 			TaskScheduleEntry taskScheduleEntry) {
 		System.out.println("removeTaskScheduleEntry");

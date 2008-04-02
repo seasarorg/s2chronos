@@ -9,14 +9,13 @@ import org.seasar.framework.log.Logger;
 
 public class SchedulerImplTest extends S2TestCaseBase implements
 		SchedulerEventListener {
-	
+
 	private transient static Logger log = Logger
 			.getLogger(SchedulerImplTest.class);
 
 	private Scheduler scheduler;
 
 	public void testStart() {
-		// Scheduler scheduler = (Scheduler) this.getComponent("scheduler");
 		scheduler.addListener(this);
 		scheduler.start();
 		scheduler.join();
@@ -24,7 +23,6 @@ public class SchedulerImplTest extends S2TestCaseBase implements
 	}
 
 	public void testAddTask() {
-		// Scheduler scheduler = (Scheduler) this.getComponent("scheduler");
 		scheduler.addTask(NoScheduleTask.class);
 		scheduler.addListener(this);
 		scheduler.start();
@@ -32,15 +30,14 @@ public class SchedulerImplTest extends S2TestCaseBase implements
 	}
 
 	public void testRemoveTask() {
-		// Scheduler scheduler = (Scheduler) this.getComponent("scheduler");
 		scheduler.addTask(NoScheduleTask.class);
 		scheduler.removeTask(NoScheduleTask.class);
 		scheduler.addListener(this);
 		scheduler.start();
 		scheduler.join();
 	}
-	
-	public void testPause(){
+
+	public void testPause() {
 		scheduler.addTask(NoScheduleTask.class);
 		scheduler.removeTask(NoScheduleTask.class);
 		scheduler.addListener(this);
@@ -52,28 +49,22 @@ public class SchedulerImplTest extends S2TestCaseBase implements
 		}
 		scheduler.pause();
 		scheduler.join();
-		
 	}
-	
 
 	public void addTaskScheduleEntry(Scheduler scheduler,
 			TaskScheduleEntry taskScheduleEntry) {
-		// TODO 自動生成されたメソッド・スタブ
 
 	}
 
 	public void cancelTask(Scheduler scheduler, Object task) {
-		// TODO 自動生成されたメソッド・スタブ
 
 	}
 
 	public void endScheduler(Scheduler scheduler) {
-		// TODO 自動生成されたメソッド・スタブ
 
 	}
 
 	public void endTask(Scheduler scheduler, Object task) {
-		// TODO 自動生成されたメソッド・スタブ
 
 	}
 
@@ -82,38 +73,35 @@ public class SchedulerImplTest extends S2TestCaseBase implements
 	}
 
 	public void pauseScheduler(Scheduler scheduler) {
-		// TODO 自動生成されたメソッド・スタブ
+
+	}
+
+	public void resumeScheduler(Scheduler scheduler) {
 
 	}
 
 	public void removeTaskScheduleEntry(Scheduler scheduler,
 			TaskScheduleEntry taskScheduleEntry) {
-		// TODO 自動生成されたメソッド・スタブ
 
 	}
 
 	public void resigtTaskAfterScheduler(Scheduler scheduler) {
-		// TODO 自動生成されたメソッド・スタブ
 
 	}
 
 	public void resigtTaskBeforeScheduler(Scheduler scheduler) {
-		// TODO 自動生成されたメソッド・スタブ
 
 	}
 
 	public void shutdownScheduler(Scheduler scheduler) {
-		// TODO 自動生成されたメソッド・スタブ
 
 	}
 
 	public void startScheduler(Scheduler scheduler) {
-		// TODO 自動生成されたメソッド・スタブ
 
 	}
 
 	public void startTask(Scheduler scheduler, Object task) {
-		// TODO 自動生成されたメソッド・スタブ
 
 	}
 

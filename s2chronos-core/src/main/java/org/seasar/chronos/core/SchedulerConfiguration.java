@@ -4,7 +4,7 @@ public final class SchedulerConfiguration {
 
 	private boolean autoFinish;
 
-	private long zeroScheduleTime;
+	private long autoFinishTimeLimit;
 
 	private long taskScanIntervalTime;
 
@@ -16,12 +16,12 @@ public final class SchedulerConfiguration {
 		this.autoFinish = autoFinish;
 	}
 
-	public long getZeroScheduleTime() {
-		return zeroScheduleTime;
+	public long getAutoFinishTimeLimit() {
+		return autoFinishTimeLimit;
 	}
 
-	public void setZeroScheduleTime(long zeroScheduleTime) {
-		this.zeroScheduleTime = zeroScheduleTime;
+	public void setAutoFinishTimeLimit(long zeroScheduleTime) {
+		this.autoFinishTimeLimit = zeroScheduleTime;
 	}
 
 	public long getTaskScanIntervalTime() {

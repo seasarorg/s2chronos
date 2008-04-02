@@ -83,7 +83,7 @@ public class SchedulerImpl extends AbstractScheduler {
 		}
 		if (finishStartTime != 0
 				&& (System.currentTimeMillis() - finishStartTime) >= configuration
-						.getZeroScheduleTime()) {
+						.getAutoFinishTimeLimit()) {
 			finishStartTime = 0;
 			return true;
 		}
@@ -126,9 +126,9 @@ public class SchedulerImpl extends AbstractScheduler {
 	 * 
 	 */
 	public synchronized void pause() {
-		if ( !this.pause.get() ){
+		if (!this.pause.get()) {
 			log.log("DCHRONOS0018", null);
-		}else{
+		} else {
 			log.log("DCHRONOS0021", null);
 		}
 		this.pause.set(!this.pause.get());
@@ -273,6 +273,11 @@ public class SchedulerImpl extends AbstractScheduler {
 		log.log("DCHRONOS0015", null);
 	}
 
+	/*
+	 * (非 Javadoc)
+	 * 
+	 * @see org.seasar.chronos.core.Scheduler#start()
+	 */
 	public void start() {
 		log.log("DCHRONOS0011", null);
 		this.schedulerEventHandler.fireRegistTaskBeforeScheduler();
@@ -287,10 +292,9 @@ public class SchedulerImpl extends AbstractScheduler {
 						do {
 							for (ScheduleExecuteHandler seh : scheduleExecuteHandlers) {
 								seh.handleRequest();
-								Thread.sleep(configuration
-										.getTaskScanIntervalTime());
-
 							}
+							Thread.sleep(configuration
+									.getTaskScanIntervalTime());
 						} while (!getSchedulerFinish());
 						return null;
 					}

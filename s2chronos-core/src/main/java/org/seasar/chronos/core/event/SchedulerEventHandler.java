@@ -11,7 +11,6 @@ import org.seasar.chronos.core.SchedulerEventListener;
 import org.seasar.chronos.core.TaskScheduleEntry;
 import org.seasar.framework.log.Logger;
 
-
 public class SchedulerEventHandler {
 
 	private Logger log = Logger.getLogger(SchedulerEventHandler.class);
@@ -93,6 +92,17 @@ public class SchedulerEventHandler {
 			Future<?> future = ExecutorService.submit(new Runnable() {
 				public void run() {
 					listener.pauseScheduler(scheduler);
+				}
+			});
+			waitFuture(future);
+		}
+	}
+
+	public void fireResumeScheduler() {
+		for (final SchedulerEventListener listener : schedulerEventListener) {
+			Future<?> future = ExecutorService.submit(new Runnable() {
+				public void run() {
+					listener.resumeScheduler(scheduler);
 				}
 			});
 			waitFuture(future);
@@ -189,4 +199,5 @@ public class SchedulerEventHandler {
 			}
 		}
 	}
+
 }

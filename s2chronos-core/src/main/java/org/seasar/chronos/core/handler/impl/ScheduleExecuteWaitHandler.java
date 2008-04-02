@@ -10,6 +10,7 @@ public class ScheduleExecuteWaitHandler extends AbstractScheduleExecuteHandler {
 
 	@Override
 	public void handleRequest() throws InterruptedException {
+		// 一時停止命令があるか，スケジュールおよび実行中のタスクがなければ
 		if (this.pause.get()
 				|| taskContenaStateManager.size(TaskStateType.SCHEDULED) == 0
 				&& taskContenaStateManager.size(TaskStateType.RUNNING) == 0) {
@@ -17,7 +18,9 @@ public class ScheduleExecuteWaitHandler extends AbstractScheduleExecuteHandler {
 				try {
 					do {
 						if (this.paused != null) {
+							// 一時停止命令があり一時停止中でなければ
 							if (!this.paused.get() && this.pause.get()) {
+								// 状態フラグを一時停止中にする
 								this.paused.set(true);
 								log.log("DCHRONOS0019", null);
 								this.schedulerEventHandler.firePauseScheduler();
@@ -25,14 +28,14 @@ public class ScheduleExecuteWaitHandler extends AbstractScheduleExecuteHandler {
 						}
 						pauseLock.wait(waitInterval);
 					} while (this.pause.get());
-					log.log("DCHRONOS0021", null);
 				} catch (InterruptedException e) {
 					throw e;
 				} finally {
 					if (this.paused != null) {
 						if (this.paused.get()) {
 							this.paused.set(false);
-							
+							log.log("DCHRONOS0021", null);
+							this.schedulerEventHandler.fireResumeScheduler();
 						}
 					}
 				}

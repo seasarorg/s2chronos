@@ -13,6 +13,8 @@ public interface SchedulerEventListener {
 
 	public void pauseScheduler(Scheduler scheduler);
 
+	public void resumeScheduler(Scheduler scheduler);
+
 	public void removeTaskScheduleEntry(Scheduler scheduler,
 			TaskScheduleEntry taskScheduleEntry);
 
