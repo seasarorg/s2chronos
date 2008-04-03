@@ -4,7 +4,7 @@
 <components>
 	<component name="schedulerConfiguration" class="org.seasar.chronos.core.SchedulerConfiguration">
 		<property name="autoFinish">true</property>
-		<property name="zeroScheduleTime">5000L</property>
+		<property name="autoFinishTimeLimit">5000L</property>
 		<property name="taskScanIntervalTime">2000L</property>
 	</component>
 </components>
