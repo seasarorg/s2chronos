@@ -53,12 +53,18 @@ public class SchedulerImpl extends AbstractScheduler {
 
 	private long finishStartTime = 0;
 
+	/**
+	 * リスナーを追加します．
+	 * 
+	 * @param listener リスナー
+	 */
 	public boolean addListener(SchedulerEventListener listener) {
 		return schedulerEventHandler.add(listener);
 	}
 
 	/**
 	 * タスクを追加します．
+	 * @param taskComponentClass タスクコンポーネント
 	 */
 	public synchronized boolean addTask(Class<?> taskComponentClass) {
 		S2Container rootS2Container = this.s2container.getRoot();
@@ -71,10 +77,18 @@ public class SchedulerImpl extends AbstractScheduler {
 		return result;
 	}
 
+	/**
+	 * {@link SchedulerConfiguration}を返します．
+	 * @return {@link SchedulerConfiguration}
+	 */
 	public SchedulerConfiguration getSchedulerConfiguration() {
 		return configuration;
 	}
 
+	/**
+	 * スケジューラの終了条件を返します．
+	 * @return　trueなら終了，falseなら終了しない
+	 */
 	private boolean getSchedulerFinish() {
 		if (finishStartTime != 0
 				&& taskScheduleEntryManager.size(TaskStateType.SCHEDULED) > 0) {
@@ -96,10 +110,18 @@ public class SchedulerImpl extends AbstractScheduler {
 		return false;
 	}
 
+	/**
+	 * 一時停止状態かどうかを返します．
+	 * 
+	 * @return 一時停止中ならtrue,それ以外ならfalse
+	 */
 	public boolean isPaused() {
 		return pause.get();
 	}
 
+	/**
+	 * スケジューラの終了を待機します．
+	 */
 	public void join() {
 		log.log("DCHRONOS0016", null);
 		try {
@@ -137,7 +159,6 @@ public class SchedulerImpl extends AbstractScheduler {
 
 	/**
 	 * S2コンテナ上のコンポーネントを検索し，スケジューラに登録します．
-	 * 
 	 */
 	protected void registTaskFromS2Container() {
 		final S2Container target = this.s2container.getRoot();
@@ -148,6 +169,7 @@ public class SchedulerImpl extends AbstractScheduler {
 	/**
 	 * リスナーを削除します．
 	 * 
+	 * @param listener リスナー
 	 */
 	public boolean removeListener(SchedulerEventListener listener) {
 		return schedulerEventHandler.remove(listener);
@@ -155,6 +177,8 @@ public class SchedulerImpl extends AbstractScheduler {
 
 	/**
 	 * タスクを削除します．
+	 * 
+	 * @param taskClass　タスククラス
 	 */
 	public synchronized boolean removeTask(Class<?> taskClass) {
 		TaskScheduleEntry taskScheduleEntry = this.taskScheduleEntryManager
