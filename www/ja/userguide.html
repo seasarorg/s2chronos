@@ -75,7 +75,42 @@ urchinTracker();
         <!-- section -->
         <div class="section">
           <h4>タスククラスの実装</h4>
-          <p>TBD</p>
+          <p><ul>
+            <li>タスククラスの実装方法<br />
+              最も簡単なタスククラスは以下です．<br/>
+              このクラスはS2のCreatorによってS2にSMART deploy対象として扱われます．ですので他のS2のコンポーネントと同様にDIやAOPの適用が可能になります．また，タスククラスはPOJOとして実装が可能です．<br />
+              <br/>
+              まず，クラス名はTaskというサフィックスをつけて，Taskアノテーションも付けます．<br/>
+              次にこのタスククラスを実行する条件をトリガーアノテーションで指定します．(ここではスケジューラに登録されると即時実行するNonDelayTriggerを指定します)<br/>
+              
+              実際にタスクの処理として，初期化処理，タスク処理，終了処理に対応するメソッドを定義していきます．<br/>
+              まず，初期化処理としてinitializeメソッドを定義して初期化処理を実装してください．NextTaskアノテーションを使って，次に呼び出されるタスク処理(以下，タスクメソッド)の名前を指定します．(タスクメソッド名からdoを除いた名前をキャメル式で指定します)
+              タスクメソッドを実装します．
+              最後にdestoryメソッドを実装します．(destoryメソッドは任意で定義可能)
+<pre>
+@Task
+@NonDelayTrigger
+public class BasicTask {
+
+	private static Logger log = Logger.getLogger(BasicTask.class);
+    
+	// 初期化処理
+	@NextTask("taskA")
+	public void initialize() {
+		log.info(this.getClass().getSimpleName() + ":initialize");
+	}
+	
+	// タスク処理
+	public void doTaskA() {
+		log.info(this.getClass().getSimpleName() + ":doTaskA");
+	}
+
+    // 終了処理
+	public void destroy() {
+		log.info(this.getClass().getSimpleName() + ":destroy");
+	}
+
+}</pre></li></ul></p>
         </div>
         <!-- section -->
       </div>
