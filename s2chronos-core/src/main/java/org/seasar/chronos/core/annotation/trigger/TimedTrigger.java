@@ -11,6 +11,6 @@ public @interface TimedTrigger {
 
 	String startTime();
 
-	String endTime();
+	String endTime() default "";
 
 }
