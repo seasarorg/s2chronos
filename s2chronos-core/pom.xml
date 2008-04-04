@@ -48,4 +48,6 @@
 				<artifactId>wagon-webdav</artifactId>
 			</extension>
 		</extensions>
-	</build></project>
+	</build>
+	
+	</project>

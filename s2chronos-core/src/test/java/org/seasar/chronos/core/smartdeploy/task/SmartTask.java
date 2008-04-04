@@ -8,7 +8,7 @@ import org.seasar.chronos.core.annotation.task.method.NextTask;
 import org.seasar.chronos.core.annotation.type.JoinType;
 import org.seasar.framework.log.Logger;
 
-@Task(name = "smart")
+@Task(autoSchedule = false, name = "smart")
 public class SmartTask {
 
 	@Override
