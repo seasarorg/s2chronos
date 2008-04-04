@@ -76,12 +76,12 @@ urchinTracker();
         <div class="section">
           <h4>タスククラスの実装</h4>
           <p><ul>
-            <li>タスククラスの実装方法<br />
+            <li>基本的なタスククラスの実装方法<br />
               最も簡単なタスククラスは以下です．<br/>
               このクラスはS2のCreatorによってS2にSMART deploy対象として扱われます．ですので他のS2のコンポーネントと同様にDIやAOPの適用が可能になります．また，タスククラスはPOJOとして実装が可能です．<br />
               <br/>
               まず，クラス名はTaskというサフィックスをつけて，Taskアノテーションも付けます．<br/>
-              次にこのタスククラスを実行する条件をトリガーアノテーションで指定します．(ここではスケジューラに登録されると即時実行するNonDelayTriggerを指定します)<br/>
+              次にこのタスククラスを実行する条件をトリガーアノテーションで指定します．(ここではスケジューラに登録されると即時実行するNonDelayTriggerを指定します．時間指定する場合はCronTriggerなどを利用してください．)<br/>
               
               実際にタスクの処理として，初期化処理，タスク処理，終了処理に対応するメソッドを定義していきます．<br/>
               まず，初期化処理としてinitializeメソッドを定義して初期化処理を実装してください．NextTaskアノテーションを使って，次に呼び出されるタスク処理(以下，タスクメソッド)の名前を指定します．(タスクメソッド名からdoを除いた名前をキャメル式で指定します)
@@ -110,7 +110,109 @@ public class BasicTask {
 		log.info(this.getClass().getSimpleName() + ":destroy");
 	}
 
-}</pre></li></ul></p>
+}</pre></li>
+<li>タスクの起動条件である
+トリガーを設定する
+  <br />
+  トリガーには標準以下の種類をサポートします．
+  <ul>
+    <li>NonDelayTrigger<br />
+      即時実行型．スケジューラに登録直後に即時実行されます．
+<pre>
+@Task
+@NonDelayTrigger  // 即時実行
+public class BasicTask {  
+</pre> 
+      </li>
+    <li>DelayTrigger<br />
+      遅延実行型．指定した時間分経過した後に実行されます．
+<pre>
+@Task
+@DelayTrigger(delay = 1000)  // 一秒後に実行
+public class BasicTask {  
+</pre>
+</li>
+    <li>CronTrigger<br />
+      クーロン型．CROND形式で指定した時間に実行されます．
+<pre>
+@Task
+@CronTrigger(expression = "*/1 * * * *")  // 1分ごとに実行
+public class BasicTask {  
+</pre>
+</li>
+    <li>TimedTrigger<br />
+      日時指定型．指定した日時に実行します．
+<pre>
+@Task
+@TimedTrigger(startTime = "2008/05/05 12:00:00")  // 指定日時に実行
+public class BasicTask {  
+</pre>
+</li>
+</ul>
+
+</li>
+<li>トリガーのカスタマイズ<br/>
+トリガーはカスタマイズすることが可能です．以下のようにルートパッケージ＋triggerにCで始まってTriggerで終わるトリガークラスを実装してください．トリガークラスはTaskTriggerインターフェイスを実装している必要があります．実際にはAbstractTriggerクラスを継承すると便利です．
+
+<pre>  
+public class CExampleTrigger extends AbstractTrigger {
+
+	private static final long serialVersionUID = 1L;
+
+	private int div;
+
+	public boolean isEndTask() {　// タスクの終了条件．trueを返した場合はタスクを終了させます．ただし，即時終了ではなくタスクメソッド単位での終了制御となります．
+ど		return false;
+	}
+
+	public boolean isStartTask() { // trueを返したらタスクが実行されます．
+		return System.currentTimeMillis() % div == 0;
+	}
+
+	public void setEndTask(Boolean endTask) {
+
+	}
+
+	public void setStartTask(Boolean startTask) {
+
+	}
+
+	@Override
+	public boolean isReSchedule() { // trueを返しすとタスク終了後に再度スケジューリングされます．
+		return true;
+	}
+
+	public int getDiv() {
+		return div;
+	}
+
+	public void setDiv(int div) {
+		this.div = div;
+	}
+
+}
+</pre>
+トリガークラスに対応するアノテーションは以下のように同名のプロパティを持たせます．
+<pre>
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
+public @interface ExampleTrigger {
+
+	int div() default 2;
+
+}
+</pre>
+タスクへの適用は以下のようになります．
+アノテーションで指定された属性はトリガークラスの同名のプロパティにDIされます．
+<pre>
+@Task
+@ExampleTrigger(div = 3)
+public class ExampleTriggerTask extends AbstractCommonTask {
+snip...
+</pre>
+</li>
+</ul>
+</p>
         </div>
         <!-- section -->
       </div>
