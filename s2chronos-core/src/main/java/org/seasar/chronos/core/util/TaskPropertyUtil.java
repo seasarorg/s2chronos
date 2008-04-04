@@ -110,7 +110,7 @@ public final class TaskPropertyUtil {
 										&& m.getReturnType().equals(
 												String.class)) {
 									SimpleDateFormat sdf = new SimpleDateFormat(
-											"yyy/MM/dd HH:mm:ss");
+											"yyyy/MM/dd HH:mm:ss");
 									try {
 										Date date = sdf.parse((String) value);
 										pd.setValue(taskTrigger, date);
