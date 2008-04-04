@@ -15,10 +15,13 @@ import org.seasar.framework.beans.BeanDesc;
 import org.seasar.framework.beans.PropertyDesc;
 import org.seasar.framework.beans.factory.BeanDescFactory;
 import org.seasar.framework.container.annotation.tiger.Component;
+import org.seasar.framework.log.Logger;
 import org.seasar.framework.util.StringUtil;
 import org.seasar.framework.util.tiger.ReflectionUtil;
 
 public final class TaskPropertyUtil {
+
+	private static Logger log = Logger.getLogger(TaskPropertyUtil.class);
 
 	public static String getDescription(TaskProperties prop) {
 		String result = prop.getDescription();
@@ -102,20 +105,25 @@ public final class TaskPropertyUtil {
 									.getPropertyDesc(methodName);
 							Object value = ReflectionUtil.invoke(m, annotaion,
 									new Object[] {});
+							// TODO 将来的にはコンバージョンユーティリティによる変換処理にしたほうがよいかも
 							if (m.getReturnType().equals(pd.getPropertyType())) {
 								pd.setValue(taskTrigger, value);
 							} else {
 								// StringからDateに変換する処理
 								if (pd.getPropertyType().equals(Date.class)
 										&& m.getReturnType().equals(
-												String.class)) {
+												String.class)
+										&& !StringUtil.isEmpty((String) value)) {
 									SimpleDateFormat sdf = new SimpleDateFormat(
 											"yyyy/MM/dd HH:mm:ss");
 									try {
 										Date date = sdf.parse((String) value);
 										pd.setValue(taskTrigger, date);
 									} catch (ParseException e) {
-										;
+										log.log("WCHRONOS0200", new Object[] {
+												clazz.getName(),
+												pd.getPropertyName(),
+												(String) value });
 									}
 								}
 							}
