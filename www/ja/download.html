@@ -2,11 +2,11 @@
 	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 <meta http-equiv="Content-Language" content="ja" />
 <meta http-equiv="Content-Style-Type" content="text/css" />
-<meta name="keywords" content="s2chronos, Seasar, The Seasar Project, The Seasar Foundation, OSS, Open Source Software, Java, Framework" />
-<meta name="description" content="s2chronos" />
+<meta name="Keywords" content="s2chronos, Seasar, The Seasar Project, The Seasar Foundation, OSS, Open Source Software, Java, Framework" />
+<meta name="Description" content="s2chronos" />
 <title>s2chronos</title>
 <link rel="stylesheet" type="text/css" href="http://www.seasar.org/theme/main.css" media="screen,projection" />
 <link rel="stylesheet" type="text/css" href="http://www.seasar.org/theme/print.css" media="print" />
@@ -30,7 +30,7 @@ urchinTracker();
 
 <h2><a href="http://search.seasar.org/">Site Search</a></h2>
 
-<form id="search" name="search" action="http://search.seasar.org/">
+<form id="search" action="http://search.seasar.org/">
 <div>
 	<input id="search_phrase" type="text" name="phrase" size="20" />
 	<input type="hidden" name="perpage" value="30" />
@@ -82,10 +82,21 @@ urchinTracker();
 <a href="https://www.seasar.org/maven/maven2/org/seasar/chronos/s2chronos-core/0.0.1-RC1/s2chronos-core-0.0.1-RC1.jar">s2chronos-core-0.0.1-RC1.jar</a><br/>
 S2Chronosのコアであるスケジューラ本体を含むライブラリ.<br/>
 <a href="https://www.seasar.org/maven/maven2/org/seasar/chronos/s2chronos-extension/0.0.1-RC1/s2chronos-extension-0.0.1-RC1.jar">s2chronos-extension-0.0.1-RC1.jar</a><br/>
-S2Chronosのエクステンション．現在はS2Chronosのスケジューラを扱うサーブレットしかありません．<br/>
-<a href="../release/s2chronos-example-0.0.1-RC1.zip">s2chronos-example-0.0.1-RC1.zip</a><br/>
-S2Chronosのサンプル
+S2Chronosのエクステンション．現在はS2Chronosのスケジューラを扱うサーブレットしかありません．<br />
+<a href="../release/s2chronos-example-0.0.1-RC1.zip">2chronos-example-0.0.1-RC1.zip</a><br/>
+  S2Chronosのサンプル
+  <div class="section"> 
+<h4>※サンプルの依存jarについて</h4>
+<p>
+maven-eclipse-plugin前提のプロジェクト構成になっておりますので，依存するjarは含まれておりません．Maven2で取得することを前提にしております．<br />
+M2_REPOというビルドパス変数のディレクトリ配下にあることを前提にしております．EclipseにM2_REPOのビルドパス変数が設定されていない場合は，以下のコマンドで設定してください．
+<pre>mvn -Declipse.workspace=Eclipseのワークスペースへのパス eclipse:add-maven-repo</pre>
+  またこの段階では依存jarはダウンロードされていませんので，以下のコマンドでjarファイルをダウンロードしてください．ビルドエラーはなくなるはずです．
+  <pre>mvn clean compile</pre>  
 </p>
+</div>
+</p>
+  
 </div><!-- section -->
 
 </div>
