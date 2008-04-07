@@ -71,7 +71,11 @@
 		</repository>
 	</repositories>
 	<dependencies>
-
+		<dependency>
+			<groupId>org.apache.geronimo.specs</groupId>
+			<artifactId>geronimo-servlet_2.4_spec</artifactId>
+			<version>1.0</version>
+		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
