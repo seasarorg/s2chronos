@@ -28,7 +28,7 @@
   <classpathentry kind="var" path="M2_REPO/org/seasar/container/s2-extension/2.4.22/s2-extension-2.4.22.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/seasar/container/s2-framework/2.4.22/s2-framework-2.4.22.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/seasar/container/s2-tiger/2.4.22/s2-tiger-2.4.22.jar"/>
-  <classpathentry kind="src" path="/s2chronos-core"/>
+  <classpathentry kind="var" path="M2_REPO/org/seasar/chronos/s2chronos-core/0.0.1-RC1/s2chronos-core-0.0.1-RC1.jar"/>
   <classpathentry kind="var" path="M2_REPO/xerces/xercesImpl/2.6.2/xercesImpl-2.6.2.jar"/>
   <classpathentry kind="var" path="M2_REPO/xerces/xmlParserAPIs/2.6.2/xmlParserAPIs-2.6.2.jar"/>
 </classpath>
