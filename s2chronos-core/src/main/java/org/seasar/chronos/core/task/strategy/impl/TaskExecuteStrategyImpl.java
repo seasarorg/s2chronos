@@ -2,7 +2,6 @@ package org.seasar.chronos.core.task.strategy.impl;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -126,7 +125,7 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 					public Object processTaskScheduleEntry(
 							TaskScheduleEntry taskScheduleEntry) {
 						Class<?> clazz = taskScheduleEntry.getTaskClass();
-						Task task = (Task) clazz.getAnnotation(Task.class);
+						Task task = clazz.getAnnotation(Task.class);
 						if (task == null) {
 							return null;
 						}
@@ -145,16 +144,16 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 
 	private ExecutorService createJobMethodExecutorService(Object target) {
 		ExecutorService result = null;
-		ThreadPoolType type = getThreadPoolType(target);
+		ThreadPoolType type = this.getThreadPoolType(target);
 		if (type == ThreadPoolType.FIXED) {
-			int threadSize = getThreadPoolSize(target);
+			int threadSize = this.getThreadPoolSize(target);
 			result = Executors.newFixedThreadPool(threadSize);
 		} else if (type == ThreadPoolType.CACHED) {
 			result = Executors.newCachedThreadPool();
 		} else if (type == ThreadPoolType.SINGLE) {
 			result = Executors.newSingleThreadExecutor();
 		} else if (type == ThreadPoolType.SCHEDULED) {
-			int threadSize = getThreadPoolSize(target);
+			int threadSize = this.getThreadPoolSize(target);
 			result = Executors.newScheduledThreadPool(threadSize);
 		}
 		return result;
@@ -163,7 +162,7 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 	protected TaskExecuteHandler createTaskGroupMethodExecuteHandler(
 			TaskExecuteHandler taskMethdoExecuteHandler) {
 		TaskGroupMethodExecuteHandlerImpl result = new TaskGroupMethodExecuteHandlerImpl();
-		result.setTaskMethodExecuteHandler(taskMethodExecuteHandler);
+		result.setTaskMethodExecuteHandler(this.taskMethodExecuteHandler);
 		return result;
 	}
 
@@ -187,17 +186,17 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 	}
 
 	public void execute(String startTaskName) throws InterruptedException {
-		TaskType type = isGroupMethod(startTaskName) ? TaskType.JOBGROUP
+		TaskType type = this.isGroupMethod(startTaskName) ? TaskType.JOBGROUP
 				: TaskType.JOB;
 		String nextTaskName = startTaskName;
 		while (true) {
-			TaskExecuteHandler teh = getTaskExecuteHandler(type);
-			Transition transition = handleRequest(teh, nextTaskName);
+			TaskExecuteHandler teh = this.getTaskExecuteHandler(type);
+			Transition transition = this.handleRequest(teh, nextTaskName);
 			this.notifyGetterSignal();
 			if (transition.isProcessResult()) {
 				break;
 			}
-			type = (type == TaskType.JOB) ? TaskType.JOBGROUP : TaskType.JOB;
+			type = type == TaskType.JOB ? TaskType.JOBGROUP : TaskType.JOB;
 			nextTaskName = transition.getNextTaskName();
 		}
 	}
@@ -207,7 +206,8 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 		ExecutorService executorService = threadPoolExecutorServiceMap
 				.get(taskThreadPool);
 		if (executorService == null) {
-			executorService = createJobMethodExecutorService(taskThreadPool);
+			executorService = this
+					.createJobMethodExecutorService(taskThreadPool);
 			threadPoolExecutorServiceMap.put(taskThreadPool, executorService);
 		}
 		return executorService;
@@ -247,9 +247,11 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 		TaskThreadPool taskThreadPool = this.getThreadPool();
 		ExecutorService jobMethodExecutorService = null;
 		if (taskThreadPool == null) {
-			jobMethodExecutorService = createJobMethodExecutorService(this.task);
+			jobMethodExecutorService = this
+					.createJobMethodExecutorService(this.task);
 		} else {
-			jobMethodExecutorService = getCacheExecutorsService(taskThreadPool);
+			jobMethodExecutorService = this
+					.getCacheExecutorsService(taskThreadPool);
 		}
 		return jobMethodExecutorService;
 	}
@@ -328,7 +330,7 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 	}
 
 	public int getThreadPoolSize() {
-		return getThreadPoolSize(this.task);
+		return this.getThreadPoolSize(this.task);
 	}
 
 	private int getThreadPoolSize(Object target) {
@@ -342,7 +344,7 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 	}
 
 	public ThreadPoolType getThreadPoolType() {
-		return getThreadPoolType(this.task);
+		return this.getThreadPoolType(this.task);
 	}
 
 	private ThreadPoolType getThreadPoolType(Object target) {
@@ -429,9 +431,9 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 		}
 
 		Map<String, Object> taskProperties = new HashMap<String, Object>();
-		int size = beanDesc.getPropertyDescSize();
+		int size = this.beanDesc.getPropertyDescSize();
 		for (int i = 0; i < size; i++) {
-			PropertyDesc pd = beanDesc.getPropertyDesc(i);
+			PropertyDesc pd = this.beanDesc.getPropertyDesc(i);
 			Object value = pd.getValue(this.task);
 			taskProperties.put(pd.getPropertyName(), value);
 		}
@@ -462,12 +464,12 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 		this.taskGroupMethodExecuteHandler.setTaskExecuteStrategy(this);
 
 		this.beanDesc = BeanDescFactory.getBeanDesc(this.taskClass);
-		this.taskMethodManager = new TaskMethodManager(taskClass,
+		this.taskMethodManager = new TaskMethodManager(this.taskClass,
 				METHOD_PREFIX_NAME_DO);
 
 		ExecutorService lifecycleMethodExecutorService = Executors
 				.newSingleThreadExecutor();
-		ExecutorService jobMethodExecutorService = getExecutorService();
+		ExecutorService jobMethodExecutorService = this.getExecutorService();
 		this.taskMethodInvoker = new MethodInvoker(jobMethodExecutorService,
 				this.task, this.beanDesc);
 		this.lifecycleMethodInvoker = new MethodInvoker(
@@ -488,34 +490,34 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 	}
 
 	public void save() {
-		Map<String, Object> taskProperties = new HashMap<String, Object>();
-		int size = beanDesc.getPropertyDescSize();
-		for (int i = 0; i < size; i++) {
-			PropertyDesc pd = beanDesc.getPropertyDesc(i);
-			Object value = pd.getValue(this.task);
-			taskProperties.put(pd.getPropertyName(), value);
-		}
-		if (size > 0) {
-			byte[] binary = SerializeUtil.fromObjectToBinary(taskProperties);
-			FileOutputStream fos = null;
-			try {
-				File targetFile = new File("C:\\temp\\", this.getTaskClass()
-						.getCanonicalName());
-				fos = new FileOutputStream(targetFile);
-				fos.write(binary.length);
-				fos.write(binary);
-			} catch (IOException e) {
-				throw new IORuntimeException(e);
-			} finally {
-				if (fos != null) {
-					try {
-						fos.close();
-					} catch (IOException e) {
-						throw new IORuntimeException(e);
-					}
-				}
-			}
-		}
+		// Map<String, Object> taskProperties = new HashMap<String, Object>();
+		// int size = beanDesc.getPropertyDescSize();
+		// for (int i = 0; i < size; i++) {
+		// PropertyDesc pd = beanDesc.getPropertyDesc(i);
+		// Object value = pd.getValue(this.task);
+		// taskProperties.put(pd.getPropertyName(), value);
+		// }
+		// if (size > 0) {
+		// byte[] binary = SerializeUtil.fromObjectToBinary(taskProperties);
+		// FileOutputStream fos = null;
+		// try {
+		// File targetFile = new File("C:\\temp\\", this.getTaskClass()
+		// .getCanonicalName());
+		// fos = new FileOutputStream(targetFile);
+		// fos.write(binary.length);
+		// fos.write(binary);
+		// } catch (IOException e) {
+		// throw new IORuntimeException(e);
+		// } finally {
+		// if (fos != null) {
+		// try {
+		// fos.close();
+		// } catch (IOException e) {
+		// throw new IORuntimeException(e);
+		// }
+		// }
+		// }
+		// }
 	}
 
 	public void setEndTask(boolean endTask) {

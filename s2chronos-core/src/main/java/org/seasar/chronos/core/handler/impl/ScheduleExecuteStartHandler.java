@@ -83,6 +83,7 @@ public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler 
 			taskContenaStateManager.removeTaskScheduleEntry(
 					TaskStateType.RUNNING, taskScheduleEntry);
 			// 定期スケジュール以外ならアンスケジュールドリストに登録する
+			// TODO アンスケジュールドに入った時刻をtseに持たせて，別のハンドラーで一定時間経過後にアンスケジュールドリストから削除する．
 			if (!TaskPropertyUtil.isReSchedule(taskExecutorService)) {
 				taskContenaStateManager.addTaskScheduleEntry(
 						TaskStateType.UNSCHEDULED, taskScheduleEntry);

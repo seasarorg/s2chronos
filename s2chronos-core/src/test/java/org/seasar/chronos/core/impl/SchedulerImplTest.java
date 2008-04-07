@@ -16,39 +16,38 @@ public class SchedulerImplTest extends S2TestCaseBase implements
 	private Scheduler scheduler;
 
 	public void testStart() {
-		scheduler.addListener(this);
-		scheduler.start();
-		scheduler.join();
-
+		this.scheduler.addListener(this);
+		this.scheduler.start();
+		this.scheduler.join();
 	}
 
 	public void testAddTask() {
-		scheduler.addTask(NoScheduleTask.class);
-		scheduler.addListener(this);
-		scheduler.start();
-		scheduler.join();
+		this.scheduler.addTask(NoScheduleTask.class);
+		this.scheduler.addListener(this);
+		this.scheduler.start();
+		this.scheduler.join();
 	}
 
 	public void testRemoveTask() {
-		scheduler.addTask(NoScheduleTask.class);
-		scheduler.removeTask(NoScheduleTask.class);
-		scheduler.addListener(this);
-		scheduler.start();
-		scheduler.join();
+		this.scheduler.addTask(NoScheduleTask.class);
+		this.scheduler.removeTask(NoScheduleTask.class);
+		this.scheduler.addListener(this);
+		this.scheduler.start();
+		this.scheduler.join();
 	}
 
 	public void testPause() {
-		scheduler.addTask(NoScheduleTask.class);
-		scheduler.removeTask(NoScheduleTask.class);
-		scheduler.addListener(this);
-		scheduler.start();
-		scheduler.pause();
+		this.scheduler.addTask(NoScheduleTask.class);
+		this.scheduler.removeTask(NoScheduleTask.class);
+		this.scheduler.addListener(this);
+		this.scheduler.start();
+		this.scheduler.pause();
 		try {
 			Thread.sleep(2200);
 		} catch (InterruptedException e) {
 		}
-		scheduler.pause();
-		scheduler.join();
+		this.scheduler.pause();
+		this.scheduler.join();
 	}
 
 	public void addTaskScheduleEntry(Scheduler scheduler,

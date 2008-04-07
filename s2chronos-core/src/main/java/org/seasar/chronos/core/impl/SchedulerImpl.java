@@ -31,16 +31,17 @@ public class SchedulerImpl extends AbstractScheduler {
 
 	private static final SchedulerConfiguration defaultConfiguration = new SchedulerConfiguration();
 
-	private SchedulerEventHandler schedulerEventHandler = new SchedulerEventHandler(
+	private final SchedulerEventHandler schedulerEventHandler = new SchedulerEventHandler(
 			this);
 
-	private AtomicBoolean pause = new AtomicBoolean();
+	private final AtomicBoolean pause = new AtomicBoolean();
 
-	private ExecutorService executorService = Executors.newCachedThreadPool();
+	private final ExecutorService executorService = Executors
+			.newCachedThreadPool();
 
 	private Future<Void> schedulerTaskFuture;
 
-	private TaskScheduleEntryManager taskScheduleEntryManager = TaskScheduleEntryManager
+	private final TaskScheduleEntryManager taskScheduleEntryManager = TaskScheduleEntryManager
 			.getInstance();
 
 	private SchedulerConfiguration configuration = defaultConfiguration;
@@ -51,20 +52,25 @@ public class SchedulerImpl extends AbstractScheduler {
 
 	private ScheduleExecuteHandler scheduleExecuteShutdownHandler;
 
+	private ScheduleExecuteHandler scheduleTaskStateCleanHandler;
+
 	private long finishStartTime = 0;
 
 	/**
 	 * リスナーを追加します．
 	 * 
-	 * @param listener リスナー
+	 * @param listener
+	 *            リスナー
 	 */
 	public boolean addListener(SchedulerEventListener listener) {
-		return schedulerEventHandler.add(listener);
+		return this.schedulerEventHandler.add(listener);
 	}
 
 	/**
 	 * タスクを追加します．
-	 * @param taskComponentClass タスクコンポーネント
+	 * 
+	 * @param taskComponentClass
+	 *            タスクコンポーネント
 	 */
 	public synchronized boolean addTask(Class<?> taskComponentClass) {
 		S2Container rootS2Container = this.s2container.getRoot();
@@ -79,33 +85,36 @@ public class SchedulerImpl extends AbstractScheduler {
 
 	/**
 	 * {@link SchedulerConfiguration}を返します．
+	 * 
 	 * @return {@link SchedulerConfiguration}
 	 */
 	public SchedulerConfiguration getSchedulerConfiguration() {
-		return configuration;
+		return this.configuration;
 	}
 
 	/**
 	 * スケジューラの終了条件を返します．
-	 * @return　trueなら終了，falseなら終了しない
+	 * 
+	 * @return trueなら終了，falseなら終了しない
 	 */
 	private boolean getSchedulerFinish() {
-		if (finishStartTime != 0
-				&& taskScheduleEntryManager.size(TaskStateType.SCHEDULED) > 0) {
-			finishStartTime = 0;
+		if (this.finishStartTime != 0
+				&& this.taskScheduleEntryManager.size(TaskStateType.SCHEDULED) > 0) {
+			this.finishStartTime = 0;
 			return false;
 		}
-		if (finishStartTime != 0
-				&& (System.currentTimeMillis() - finishStartTime) >= configuration
+		if (this.finishStartTime != 0
+				&& System.currentTimeMillis() - this.finishStartTime >= this.configuration
 						.getAutoFinishTimeLimit()) {
-			finishStartTime = 0;
+			this.finishStartTime = 0;
 			return true;
 		}
 		if (this.schedulerTaskFuture != null
-				&& taskScheduleEntryManager.size(TaskStateType.SCHEDULED) == 0
-				&& taskScheduleEntryManager.size(TaskStateType.RUNNING) == 0
-				&& configuration.isAutoFinish() && finishStartTime == 0) {
-			finishStartTime = System.currentTimeMillis();
+				&& this.taskScheduleEntryManager.size(TaskStateType.SCHEDULED) == 0
+				&& this.taskScheduleEntryManager.size(TaskStateType.RUNNING) == 0
+				&& this.configuration.isAutoFinish()
+				&& this.finishStartTime == 0) {
+			this.finishStartTime = System.currentTimeMillis();
 		}
 		return false;
 	}
@@ -116,7 +125,7 @@ public class SchedulerImpl extends AbstractScheduler {
 	 * @return 一時停止中ならtrue,それ以外ならfalse
 	 */
 	public boolean isPaused() {
-		return pause.get();
+		return this.pause.get();
 	}
 
 	/**
@@ -160,6 +169,7 @@ public class SchedulerImpl extends AbstractScheduler {
 	/**
 	 * S2コンテナ上のコンポーネントを検索し，スケジューラに登録します．
 	 */
+	@Override
 	protected void registTaskFromS2Container() {
 		final S2Container target = this.s2container.getRoot();
 		this.registChildTaskComponent(target);
@@ -169,16 +179,18 @@ public class SchedulerImpl extends AbstractScheduler {
 	/**
 	 * リスナーを削除します．
 	 * 
-	 * @param listener リスナー
+	 * @param listener
+	 *            リスナー
 	 */
 	public boolean removeListener(SchedulerEventListener listener) {
-		return schedulerEventHandler.remove(listener);
+		return this.schedulerEventHandler.remove(listener);
 	}
 
 	/**
 	 * タスクを削除します．
 	 * 
-	 * @param taskClass　タスククラス
+	 * @param taskClass
+	 *            タスククラス
 	 */
 	public synchronized boolean removeTask(Class<?> taskClass) {
 		TaskScheduleEntry taskScheduleEntry = this.taskScheduleEntryManager
@@ -205,10 +217,12 @@ public class SchedulerImpl extends AbstractScheduler {
 		return null;
 	}
 
+	@Override
 	protected TaskScheduleEntry scheduleTask(ComponentDef taskComponentDef) {
-		return scheduleTask(taskComponentDef, false);
+		return this.scheduleTask(taskComponentDef, false);
 	}
 
+	@Override
 	protected TaskScheduleEntry scheduleTask(ComponentDef taskComponentDef,
 			boolean force) {
 		TaskScheduleEntry taskScheduleEntry = super.scheduleTask(
@@ -249,8 +263,10 @@ public class SchedulerImpl extends AbstractScheduler {
 	 */
 	private ScheduleExecuteHandler[] setupHandler() {
 		ScheduleExecuteHandler[] scheduleExecuteHandlers = new ScheduleExecuteHandler[] {
-				scheduleExecuteWaitHandler, scheduleExecuteStartHandler,
-				scheduleExecuteShutdownHandler };
+				this.scheduleExecuteWaitHandler,
+				this.scheduleExecuteStartHandler,
+				this.scheduleExecuteShutdownHandler,
+				this.scheduleTaskStateCleanHandler };
 
 		this.scheduleExecuteWaitHandler
 				.setExecutorService(this.executorService);
@@ -264,6 +280,11 @@ public class SchedulerImpl extends AbstractScheduler {
 		this.scheduleExecuteShutdownHandler
 				.setExecutorService(this.executorService);
 		this.scheduleExecuteShutdownHandler
+				.setSchedulerEventHandler(this.schedulerEventHandler);
+
+		this.scheduleTaskStateCleanHandler
+				.setExecutorService(this.executorService);
+		this.scheduleTaskStateCleanHandler
 				.setSchedulerEventHandler(this.schedulerEventHandler);
 
 		return scheduleExecuteHandlers;
@@ -292,7 +313,7 @@ public class SchedulerImpl extends AbstractScheduler {
 						return null;
 					}
 				});
-		schedulerTaskFuture.cancel(true);
+		this.schedulerTaskFuture.cancel(true);
 		this.schedulerEventHandler.fireShutdownScheduler();
 		log.log("DCHRONOS0015", null);
 	}
@@ -317,14 +338,19 @@ public class SchedulerImpl extends AbstractScheduler {
 							for (ScheduleExecuteHandler seh : scheduleExecuteHandlers) {
 								seh.handleRequest();
 							}
-							Thread.sleep(configuration
+							Thread.sleep(SchedulerImpl.this.configuration
 									.getTaskScanIntervalTime());
-						} while (!getSchedulerFinish());
+						} while (!SchedulerImpl.this.getSchedulerFinish());
 						return null;
 					}
 				});
 		this.schedulerEventHandler.fireStartScheduler();
 		log.log("DCHRONOS0012", null);
+	}
+
+	public void setScheduleTaskStateCleanHandler(
+			ScheduleExecuteHandler scheduleTaskStateCleanHandler) {
+		this.scheduleTaskStateCleanHandler = scheduleTaskStateCleanHandler;
 	}
 
 }

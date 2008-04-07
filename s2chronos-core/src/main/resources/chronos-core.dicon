@@ -10,6 +10,7 @@
 		<property name="pauseLock">scheduler</property>
 		<property name="pauseLockWaitInterval">schedulerConfiguration.taskScanIntervalTime</property>
 	</component>
+	<component name="scheduleTaskStateCleanHandler" class="org.seasar.chronos.core.handler.impl.ScheduleTaskStateCleanHandler" />
 
 	<component name="scheduleEntry" class="org.seasar.chronos.core.schedule.ScheduleEntry" instance="prototype" autoBinding="none">
 	</component>
@@ -19,6 +20,7 @@
 		<property name="scheduleExecuteShutdownHandler">scheduleExecuteShutdownHandler</property>
 		<property name="scheduleExecuteStartHandler">scheduleExecuteStartHandler</property>
 		<property name="scheduleExecuteWaitHandler">scheduleExecuteWaitHandler</property>
+		<property name="scheduleTaskStateCleanHandler">scheduleTaskStateCleanHandler</property>
 	</component>
 	
 	<component name="taskExecuteStrategy" class="org.seasar.chronos.core.task.strategy.impl.TaskExecuteStrategyImpl" instance="prototype" autoBinding="none"/>

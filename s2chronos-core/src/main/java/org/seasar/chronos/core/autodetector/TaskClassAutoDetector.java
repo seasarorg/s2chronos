@@ -5,7 +5,7 @@ import java.net.URL;
 import java.util.Iterator;
 import java.util.List;
 
-import org.seasar.chronos.core.annotation.task.Task;
+import org.seasar.chronos.core.util.TaskClassUtil;
 import org.seasar.framework.autodetector.impl.AbstractClassAutoDetector;
 import org.seasar.framework.container.annotation.tiger.Binding;
 import org.seasar.framework.container.annotation.tiger.BindingType;
@@ -31,7 +31,7 @@ public class TaskClassAutoDetector extends AbstractClassAutoDetector {
 	protected ClassLoader classLoader;
 
 	public TaskClassAutoDetector() {
-		annotations.add(Task.class);
+		// this.annotations.add(Task.class);
 	}
 
 	@Binding(bindingType = BindingType.MAY)
@@ -46,40 +46,41 @@ public class TaskClassAutoDetector extends AbstractClassAutoDetector {
 
 	@InitMethod
 	public void init() {
-		if (namingConvention != null) {
+		if (this.namingConvention != null) {
 			final String taskPackageName = PACKAGE_NAME_TASK;
-			for (final String rootPackageName : namingConvention
+			for (final String rootPackageName : this.namingConvention
 					.getRootPackageNames()) {
 				final String packageName = ClassUtil.concatName(
 						rootPackageName, taskPackageName);
-				addTargetPackageName(packageName);
+				this.addTargetPackageName(packageName);
 			}
 		}
 	}
 
 	public void addAnnotation(final Class<? extends Annotation> annotation) {
-		annotations.add(annotation);
+		// this.annotations.add(annotation);
 	}
 
 	@SuppressWarnings("unchecked")
 	public void detect(final ClassHandler handler) {
-		for (int i = 0; i < getTargetPackageNameSize(); i++) {
-			final String packageName = getTargetPackageName(i);
+		for (int i = 0; i < this.getTargetPackageNameSize(); i++) {
+			final String packageName = this.getTargetPackageName(i);
 			for (final Iterator<URL> it = ClassLoaderUtil
 					.getResources(packageName.replace('.', '/')); it.hasNext();) {
-				detect(handler, packageName, it.next());
+				this.detect(handler, packageName, it.next());
 			}
 		}
 	}
 
 	protected void detect(final ClassHandler handler,
 			final String taskPackageName, final URL url) {
-		final Strategy strategy = getStrategy(url.getProtocol());
+		final Strategy strategy = this.getStrategy(url.getProtocol());
 		strategy.detect(taskPackageName, url, new ClassHandler() {
 			public void processClass(final String packageName,
 					final String shortClassName) {
 				if (packageName.startsWith(taskPackageName)
-						&& isTask(packageName, shortClassName)) {
+						&& TaskClassAutoDetector.this.isTask(packageName,
+								shortClassName)) {
 					handler.processClass(packageName, shortClassName);
 				}
 			}
@@ -89,18 +90,13 @@ public class TaskClassAutoDetector extends AbstractClassAutoDetector {
 	protected boolean isTask(final String packageName,
 			final String shortClassName) {
 		final String name = ClassUtil.concatName(packageName, shortClassName);
-		final Class<?> clazz = getClass(name);
-		for (final Annotation ann : clazz.getAnnotations()) {
-			if (annotations.contains(ann.annotationType())) {
-				return true;
-			}
-		}
-		return false;
+		final Class<?> clazz = this.getClass(name);
+		return TaskClassUtil.isTask(clazz);
 	}
 
 	protected Class<?> getClass(final String className) {
-		if (classLoader != null) {
-			return ReflectionUtil.forName(className, classLoader);
+		if (this.classLoader != null) {
+			return ReflectionUtil.forName(className, this.classLoader);
 		}
 		return ReflectionUtil.forNameNoException(className);
 	}
