@@ -5,6 +5,6 @@ import org.seasar.chronos.core.annotation.trigger.NonDelayTrigger;
 
 @Task
 @NonDelayTrigger
-public class NormalTask {
+public class NormalATask {
 
 }
