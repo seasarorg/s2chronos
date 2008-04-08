@@ -91,24 +91,24 @@ urchinTracker();
 @Task
 @NonDelayTrigger
 public class BasicTask {
-
-	private static Logger log = Logger.getLogger(BasicTask.class);
     
-	// 初期化処理
-	@NextTask("taskA")
-	public void initialize() {
-		log.info(this.getClass().getSimpleName() + ":initialize");
-	}
-	
-	// タスク処理
-	public void doTaskA() {
-		log.info(this.getClass().getSimpleName() + ":doTaskA");
-	}
-
+    private static Logger log = Logger.getLogger(BasicTask.class);
+    
+    // 初期化処理
+    @NextTask("taskA")
+    public void initialize() {
+        log.info(this.getClass().getSimpleName() + ":initialize");
+    }
+    
+    // タスク処理
+    public void doTaskA() {
+        log.info(this.getClass().getSimpleName() + ":doTaskA");
+    }
+    
     // 終了処理
-	public void destroy() {
-		log.info(this.getClass().getSimpleName() + ":destroy");
-	}
+    public void destroy() {
+        log.info(this.getClass().getSimpleName() + ":destroy");
+    }
 
 }</pre></li>
 <li>タスクの起動条件である
@@ -152,43 +152,51 @@ public class BasicTask {
 
 </li>
 <li>トリガーのカスタマイズ<br/>
-トリガーはカスタマイズすることが可能です．以下のようにルートパッケージ＋triggerにCで始まってTriggerで終わるトリガークラスを実装してください．トリガークラスはTaskTriggerインターフェイスを実装している必要があります．実際にはAbstractTriggerクラスを継承すると便利です．
+トリガーはカスタマイズすることが可能です．以下のようにルートパッケージ＋triggerに"C"で始まって"Trigger"で終わるトリガークラスを実装してください．トリガークラスはTaskTriggerインターフェイスを実装している必要があります．実際にはAbstractTriggerクラスを継承すると便利です．
 
 <pre>  
 public class CExampleTrigger extends AbstractTrigger {
 
-	private static final long serialVersionUID = 1L;
-
-	private int div;
-
-	public boolean isEndTask() {　// タスクの終了条件．trueを返した場合はタスクを終了させます．ただし，即時終了ではなくタスクメソッド単位での終了制御となります．
-ど		return false;
-	}
-
-	public boolean isStartTask() { // trueを返したらタスクが実行されます．
-		return System.currentTimeMillis() % div == 0;
-	}
-
-	public void setEndTask(Boolean endTask) {
-
-	}
-
-	public void setStartTask(Boolean startTask) {
-
-	}
-
-	@Override
-	public boolean isReSchedule() { // trueを返しすとタスク終了後に再度スケジューリングされます．
-		return true;
-	}
-
-	public int getDiv() {
-		return div;
-	}
-
-	public void setDiv(int div) {
-		this.div = div;
-	}
+    private static final long serialVersionUID = 1L;
+    
+    private int div;
+    
+    <strong>public boolean isShutdownTask(){	// タスクのシャットダウン条件．trueを返すとタスクは即座にシャットダウンされます．
+        return false;
+    }</strong>
+    
+    <strong>public boolean isEndTask() {　// タスクの終了条件．trueを返した場合はタスクを終了させます．ただし，即時終了ではなくタスクメソッド単位での終了制御となります．
+    ど		return false;
+    }</strong>
+    
+    <strong>public boolean isStartTask() { // trueを返したらタスクが実行されます．
+        return System.currentTimeMillis() % div == 0;
+    }</strong>
+    
+    public void setShutdownTask(boolean shutdownTask){
+    
+    }
+    
+    public void setEndTask(boolean endTask) {
+    
+    }
+    
+    public void setStartTask(boolean startTask) {
+    
+    }
+    
+    @Override
+    public boolean isReSchedule() { // trueを返しすとタスク終了後に再度スケジューリングされます．標準トリガーはトリガーによってはこの値の規定値が異なります．
+        return true;
+    }
+    
+    public int getDiv() {
+        return div;
+    }
+    
+    public void setDiv(int div) {
+        this.div = div;
+    }
 
 }
 </pre>
@@ -206,9 +214,24 @@ public @interface ExampleTrigger {
 アノテーションで指定された属性はトリガークラスの同名のプロパティにDIされます．
 <pre>
 @Task
-@ExampleTrigger(div = 3)
+<strong>@ExampleTrigger(div = 3)</strong>
 public class ExampleTriggerTask extends AbstractCommonTask {
 snip...
+</pre>
+</li>
+<li>ダイナミックトリガーの実装について<br/>
+以下のようにタスククラスにトリガーアノテーションを記述しないで，triggerプロパティを持たせることで動的なトリガーを定義することが可能です．もちろん，独自に作成したトリガーにも対応しています．
+<pre>
+@Task
+public class ExampleTriggerTask extends AbstractCommonTask {
+	
+    private CronTrigger trigger = new CronTrigger("*/1 * * * *");
+    
+    <strong>public TaskTrigger getTrigger(){
+    	return trigger;
+    }</strong>
+
+}
 </pre>
 </li>
 </ul>
