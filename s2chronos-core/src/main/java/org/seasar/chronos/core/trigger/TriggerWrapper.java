@@ -20,11 +20,11 @@ public class TriggerWrapper extends AbstractTrigger {
 		return taskTrigger.isStartTask();
 	}
 
-	public void setEndTask(Boolean endTask) {
+	public void setEndTask(boolean endTask) {
 		taskTrigger.setEndTask(endTask);
 	}
 
-	public void setStartTask(Boolean startTask) {
+	public void setStartTask(boolean startTask) {
 		taskTrigger.setStartTask(startTask);
 	}
 

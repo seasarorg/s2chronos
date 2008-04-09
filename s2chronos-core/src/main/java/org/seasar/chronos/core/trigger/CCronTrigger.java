@@ -84,16 +84,16 @@ public class CCronTrigger extends AbstractTrigger {
 		return this.expression.getCronExprssion();
 	}
 
-	public void setEndTask(Boolean endTask) {
+	public void setEndTask(boolean endTask) {
 
 	}
 
 	@Override
-	public void setExecute(Boolean executed) {
+	public void setExecute(boolean executed) {
 		// this.expression.buildNextTime();
 	}
 
-	public void setStartTask(Boolean startTask) {
+	public void setStartTask(boolean startTask) {
 
 	}
 

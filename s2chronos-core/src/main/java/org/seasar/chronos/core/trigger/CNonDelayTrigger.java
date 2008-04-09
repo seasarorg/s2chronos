@@ -21,11 +21,11 @@ public class CNonDelayTrigger extends AbstractTrigger {
 		return false;
 	}
 
-	public void setStartTask(Boolean startTask) {
+	public void setStartTask(boolean startTask) {
 
 	}
 
-	public void setEndTask(Boolean endTask) {
+	public void setEndTask(boolean endTask) {
 
 	}
 

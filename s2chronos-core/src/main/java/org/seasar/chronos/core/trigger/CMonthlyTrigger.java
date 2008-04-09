@@ -22,11 +22,11 @@ public class CMonthlyTrigger extends AbstractTrigger {
 		return false;
 	}
 
-	public void setEndTask(Boolean endTask) {
+	public void setEndTask(boolean endTask) {
 
 	}
 
-	public void setStartTask(Boolean startTask) {
+	public void setStartTask(boolean startTask) {
 
 	}
 

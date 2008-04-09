@@ -84,7 +84,7 @@ public abstract class AbstractTrigger implements TaskTrigger {
 		this.description = description;
 	}
 
-	public void setExecute(Boolean executed) {
+	public void setExecute(boolean executed) {
 		this.execute = executed;
 	}
 
@@ -104,7 +104,7 @@ public abstract class AbstractTrigger implements TaskTrigger {
 		return reSchedule;
 	}
 
-	public void setReSchedule(Boolean reSchedule) {
+	public void setReSchedule(boolean reSchedule) {
 		this.reSchedule = reSchedule;
 	}
 

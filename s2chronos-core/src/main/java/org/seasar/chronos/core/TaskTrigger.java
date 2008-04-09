@@ -20,15 +20,15 @@ public interface TaskTrigger extends Serializable {
 
 	public void setDescription(String description);
 
-	public void setEndTask(Boolean endTask);
+	public void setEndTask(boolean endTask);
 
-	public void setExecute(Boolean execute);
+	public void setExecute(boolean execute);
 
 	public void setTriggerId(Long id);
 
 	public void setName(String name);
 
-	public void setStartTask(Boolean startTask);
+	public void setStartTask(boolean startTask);
 
 	public void setTask(Object task);
 

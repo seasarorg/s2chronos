@@ -26,8 +26,12 @@
 		</license>
 	</licenses>
 	<scm>
-		<connection>scm:svn:https://www.seasar.org/svn/sandbox/s2chronos/trunk/s2chronos/</connection>
-		<developerConnection>scm:svn:https://www.seasar.org/svn/sandbox/s2chronos/trunk/s2chronos/</developerConnection>
+		<connection>
+			scm:svn:https://www.seasar.org/svn/sandbox/s2chronos/trunk/s2chronos/
+		</connection>
+		<developerConnection>
+			scm:svn:https://www.seasar.org/svn/sandbox/s2chronos/trunk/s2chronos/
+		</developerConnection>
 		<url>http://svn.seasar.org/browse/?root=sandbox.s2chronos</url>
 	</scm>
 	<organization>
@@ -53,6 +57,14 @@
 				<artifactId>wagon-webdav</artifactId>
 			</extension>
 		</extensions>
+		<plugins>
+			<plugin>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<skip>true</skip>
+				</configuration>
+			</plugin>
+		</plugins>
 	</build>
 	<modules>
 		<module>../s2chronos-core</module>
@@ -118,9 +130,7 @@
 		<repository>
 			<uniqueVersion>false</uniqueVersion>
 			<id>maven.seasar.org</id>
-			<name>
-				The Seasar Foundation Maven2 Repository
-			</name>
+			<name>The Seasar Foundation Maven2 Repository</name>
 			<url>dav:https://www.seasar.org/maven/maven2</url>
 		</repository>
 		<snapshotRepository>

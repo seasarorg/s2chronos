@@ -38,13 +38,15 @@
 			</plugins>
 		</pluginManagement>
 		<plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-assembly-plugin</artifactId>
-        <configuration>
-          <descriptor>src/main/assembly/executable.xml</descriptor>
-        </configuration>
-      </plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<configuration>
+					<descriptor>
+						src/main/assembly/executable.xml
+					</descriptor>
+				</configuration>
+			</plugin>
 
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -105,18 +107,16 @@
 	</repositories>
 	<dependencies>
 		<dependency>
-			<groupId>org.seasar.chronos</groupId>
+			<groupId>${project.groupId}</groupId>
 			<artifactId>s2chronos-core</artifactId>
-			<version>0.0.1-RC1</version>
+			<version>${project.version}</version>
 		</dependency>
 	</dependencies>
-		<distributionManagement>
+	<distributionManagement>
 		<repository>
 			<uniqueVersion>false</uniqueVersion>
 			<id>maven.seasar.org</id>
-			<name>
-				The Seasar Foundation Maven2 Repository
-			</name>
+			<name>The Seasar Foundation Maven2 Repository</name>
 			<url>dav:https://www.seasar.org/maven/maven2</url>
 		</repository>
 		<snapshotRepository>

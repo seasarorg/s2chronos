@@ -16,11 +16,11 @@ public class CExampleTrigger extends AbstractTrigger {
 		return System.currentTimeMillis() % div == 0;
 	}
 
-	public void setEndTask(Boolean endTask) {
+	public void setEndTask(boolean endTask) {
 
 	}
 
-	public void setStartTask(Boolean startTask) {
+	public void setStartTask(boolean startTask) {
 
 	}
 
