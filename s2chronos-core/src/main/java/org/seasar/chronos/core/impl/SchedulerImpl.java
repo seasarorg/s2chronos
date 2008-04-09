@@ -36,6 +36,7 @@ public class SchedulerImpl extends AbstractScheduler {
 
 	private final AtomicBoolean pause = new AtomicBoolean();
 
+	// TODO スレッドプールをカスタマイズ可能にすること
 	private final ExecutorService executorService = Executors
 			.newCachedThreadPool();
 
