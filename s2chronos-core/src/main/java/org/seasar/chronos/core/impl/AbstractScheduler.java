@@ -119,6 +119,11 @@ public abstract class AbstractScheduler implements Scheduler {
 				targetTaskComponentClass);
 	}
 
+	protected boolean registJavascriptTaskComponent() {
+		// TODO JavascriptのTaskクラスを
+		return false;
+	}
+
 	private boolean detectResult = false;
 
 	private boolean registTaskFromS2ContainerOnSmartDeploy(

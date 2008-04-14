@@ -5,6 +5,8 @@ import org.seasar.chronos.core.ThreadPoolType;
 
 public interface TaskPropertyReader {
 
+	public void loadTask(Object task, Class<?> taskClass);
+
 	public boolean hasTaskId();
 
 	public boolean hasTaskName();

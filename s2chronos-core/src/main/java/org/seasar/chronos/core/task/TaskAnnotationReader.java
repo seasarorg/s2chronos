@@ -4,12 +4,14 @@ import org.seasar.chronos.core.annotation.task.Task;
 
 public interface TaskAnnotationReader {
 
-	public boolean hasTask();
+	public void loadTask(Class<?> taskClass);
 
-	public boolean hasTrigger();
+	public boolean hasTaskAnnotation();
 
-	public Task getTask();
+	public boolean hasTriggerAnnotation();
 
-	public Class<?> getTrigger();
+	public Task getTaskAnnotation();
+
+	public Class<?> getTriggerAnnotationClass();
 
 }

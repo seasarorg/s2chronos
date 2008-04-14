@@ -7,66 +7,67 @@ import org.seasar.chronos.core.task.TaskAnnotationReader;
 import org.seasar.framework.convention.NamingConvention;
 import org.seasar.framework.util.tiger.ReflectionUtil;
 
-public class TaskAnnotaionReaderImpl implements TaskAnnotationReader {
+public class TaskAnnotationReaderImpl implements TaskAnnotationReader {
 
-	private final Class<?> taskClass;
-	private static final String ORG_SEASAR_CHRONOS_CORE = "org.seasar.chronos.core";
-	private static final String TRIGGER_ANNOTATION_SUFFIX = "Trigger";
-	private static final String TRIGGER_C = ".trigger.C";
+	private static final String NAME_SPACE_ORG_SEASAR_CHRONOS_CORE = "org.seasar.chronos.core";
+	private static final String NAME_SPACE_TRIGGER_C = ".trigger.C";
+	private static final String NAME_SPACE_TRIGGER_ANNOTATION_SUFFIX = "Trigger";
+	private Class<?> taskClass;
 	private NamingConvention namingConvention;
 
-	public TaskAnnotaionReaderImpl(Class<?> taskClass) {
-		this.taskClass = taskClass;
+	public void loadTask(Class<?> taskClass) {
+
 	}
 
-	public boolean hasTask() {
-		Task task = this.taskClass.getAnnotation(Task.class);
+	public boolean hasTaskAnnotation() {
+		Task task = taskClass.getAnnotation(Task.class);
 		if (task != null) {
 			return true;
 		}
 		return false;
 	}
 
-	public boolean hasTrigger() {
-		Annotation[] annotaions = this.taskClass.getAnnotations();
+	public boolean hasTriggerAnnotation() {
+		Annotation[] annotaions = taskClass.getAnnotations();
 		for (Annotation annotaion : annotaions) {
 			Class<?> annotaionClass = annotaion.annotationType();
 			String annotationName = annotaionClass.getSimpleName();
 			// サフィックスがTriggerなアノテーションを検索する
-			if (annotationName.endsWith(TRIGGER_ANNOTATION_SUFFIX)) {
+			if (annotationName.endsWith(NAME_SPACE_TRIGGER_ANNOTATION_SUFFIX)) {
 				return true;
 			}
 		}
 		return false;
 	}
 
-	public Task getTask() {
-		Task task = this.taskClass.getAnnotation(Task.class);
+	public Task getTaskAnnotation() {
+		Task task = taskClass.getAnnotation(Task.class);
 		return task;
 	}
 
-	private static Class<?> getTriggerClass(String packageName, String className) {
+	private Class<?> getTriggerAnnotationClass(String packageName,
+			String className) {
 		StringBuilder sb = new StringBuilder(packageName);
-		sb.append(TRIGGER_C);
+		sb.append(NAME_SPACE_TRIGGER_C);
 		sb.append(className);
 		Class<?> triggerClass = ReflectionUtil
 				.forNameNoException(sb.toString());
 		return triggerClass;
 	}
 
-	public Class<?> getTrigger() {
-		Annotation[] annotaions = this.taskClass.getAnnotations();
+	public Class<?> getTriggerAnnotationClass() {
+		Annotation[] annotaions = taskClass.getAnnotations();
 		for (Annotation annotaion : annotaions) {
 			Class<?> annotaionClass = annotaion.annotationType();
 			String annotationName = annotaionClass.getSimpleName();
 			// サフィックスがTriggerなアノテーションを検索する
-			if (annotationName.endsWith(TRIGGER_ANNOTATION_SUFFIX)) {
-				Class<?> triggerClass = getTriggerClass(
-						ORG_SEASAR_CHRONOS_CORE, annotationName);
+			if (annotationName.endsWith(NAME_SPACE_TRIGGER_ANNOTATION_SUFFIX)) {
+				Class<?> triggerClass = getTriggerAnnotationClass(
+						NAME_SPACE_ORG_SEASAR_CHRONOS_CORE, annotationName);
 				// 標準パッケージで見つからないなら、rootPackageから検索してみる
 				if (triggerClass == null) {
 					triggerClass = this
-							.findTriggerForRootPackages(annotationName);
+							.findTriggerAnnotationClassForRootPackages(annotationName);
 				}
 				return triggerClass;
 			}
@@ -74,10 +75,11 @@ public class TaskAnnotaionReaderImpl implements TaskAnnotationReader {
 		return null;
 	}
 
-	public Class<?> findTriggerForRootPackages(String annotationName) {
+	public Class<?> findTriggerAnnotationClassForRootPackages(
+			String annotationName) {
 		Class<?> result = null;
 		for (String packageName : this.namingConvention.getRootPackageNames()) {
-			result = getTriggerClass(packageName, annotationName);
+			result = getTriggerAnnotationClass(packageName, annotationName);
 			if (result != null) {
 				return result;
 			}

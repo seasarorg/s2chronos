@@ -49,4 +49,6 @@ public interface TaskPropertyWriter {
 
 	public void setThreadPoolType(ThreadPoolType value);
 
+	public abstract void loadTask(Object task, Class<?> taskClass);
+
 }

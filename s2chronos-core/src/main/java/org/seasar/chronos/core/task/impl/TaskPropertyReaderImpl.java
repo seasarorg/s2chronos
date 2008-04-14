@@ -10,10 +10,10 @@ import org.seasar.framework.beans.factory.BeanDescFactory;
 
 public class TaskPropertyReaderImpl implements TaskPropertyReader {
 
-	private final BeanDesc beanDesc;
-	private final Object task;
+	private BeanDesc beanDesc;
+	private Object task;
 
-	public TaskPropertyReaderImpl(Object task, Class<?> taskClass) {
+	public void loadTask(Object task, Class<?> taskClass) {
 		this.task = task;
 		this.beanDesc = BeanDescFactory.getBeanDesc(taskClass);
 	}

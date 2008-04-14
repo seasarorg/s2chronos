@@ -175,6 +175,7 @@ public class SchedulerImpl extends AbstractScheduler {
 		final S2Container target = this.s2container.getRoot();
 		this.registChildTaskComponent(target);
 		this.registTaskFromS2ContainerOnSmartDeploy(target);
+		this.registJavascriptTaskComponent();
 	}
 
 	/**

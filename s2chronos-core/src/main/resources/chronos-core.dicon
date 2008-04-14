@@ -4,6 +4,11 @@
 <components>
 	<include path="chronos-base.dicon"/>
 	
+	<component class="org.seasar.chronos.core.task.impl.TaskAnnotationReaderImpl"/>
+	<component class="org.seasar.chronos.core.task.impl.TaskPropertyReaderImpl"/>
+	<component class="org.seasar.chronos.core.task.impl.TaskPropertyWriterImpl"/>
+	<component class="org.seasar.chronos.core.task.impl.TaskValidatorImpl"/>
+	
 	<component name="scheduleExecuteShutdownHandler" class="org.seasar.chronos.core.handler.impl.ScheduleExecuteShutdownHandler" />
 	<component name="scheduleExecuteStartHandler" class="org.seasar.chronos.core.handler.impl.ScheduleExecuteStartHandler" />
 	<component name="scheduleExecuteWaitHandler" class="org.seasar.chronos.core.handler.impl.ScheduleExecuteWaitHandler">
