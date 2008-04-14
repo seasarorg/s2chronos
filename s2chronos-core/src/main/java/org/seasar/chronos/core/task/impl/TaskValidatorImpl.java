@@ -11,15 +11,24 @@ public class TaskValidatorImpl implements TaskValidator {
 	private TaskPropertyReader taskPropertyReader;
 
 	public boolean isValid(Object task, Class<?> taskClass) {
-		taskPropertyReader.loadTask(task, taskClass);
-		taskAnnotationReader.loadTask(taskClass);
-		if ((taskAnnotationReader.hasTaskAnnotation() && taskAnnotationReader
-				.hasTriggerAnnotation())
-				|| (taskAnnotationReader.hasTaskAnnotation() && taskPropertyReader
-						.hasTrigger())) {
+		this.taskPropertyReader.loadTask(task, taskClass);
+		this.taskAnnotationReader.loadTask(taskClass);
+		if (this.taskAnnotationReader.hasTaskAnnotation()
+				&& this.taskAnnotationReader.hasTriggerAnnotation()
+				|| this.taskAnnotationReader.hasTaskAnnotation()
+				&& this.taskPropertyReader.hasTrigger()) {
 			return true;
 		}
 		return false;
+	}
+
+	public void setTaskAnnotationReader(
+			TaskAnnotationReader taskAnnotationReader) {
+		this.taskAnnotationReader = taskAnnotationReader;
+	}
+
+	public void setTaskPropertyReader(TaskPropertyReader taskPropertyReader) {
+		this.taskPropertyReader = taskPropertyReader;
 	}
 
 }

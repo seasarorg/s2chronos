@@ -16,11 +16,11 @@ public class TaskAnnotationReaderImpl implements TaskAnnotationReader {
 	private NamingConvention namingConvention;
 
 	public void loadTask(Class<?> taskClass) {
-
+		this.taskClass = taskClass;
 	}
 
 	public boolean hasTaskAnnotation() {
-		Task task = taskClass.getAnnotation(Task.class);
+		Task task = this.taskClass.getAnnotation(Task.class);
 		if (task != null) {
 			return true;
 		}
@@ -28,7 +28,7 @@ public class TaskAnnotationReaderImpl implements TaskAnnotationReader {
 	}
 
 	public boolean hasTriggerAnnotation() {
-		Annotation[] annotaions = taskClass.getAnnotations();
+		Annotation[] annotaions = this.taskClass.getAnnotations();
 		for (Annotation annotaion : annotaions) {
 			Class<?> annotaionClass = annotaion.annotationType();
 			String annotationName = annotaionClass.getSimpleName();
@@ -41,7 +41,7 @@ public class TaskAnnotationReaderImpl implements TaskAnnotationReader {
 	}
 
 	public Task getTaskAnnotation() {
-		Task task = taskClass.getAnnotation(Task.class);
+		Task task = this.taskClass.getAnnotation(Task.class);
 		return task;
 	}
 
@@ -56,13 +56,13 @@ public class TaskAnnotationReaderImpl implements TaskAnnotationReader {
 	}
 
 	public Class<?> getTriggerAnnotationClass() {
-		Annotation[] annotaions = taskClass.getAnnotations();
+		Annotation[] annotaions = this.taskClass.getAnnotations();
 		for (Annotation annotaion : annotaions) {
 			Class<?> annotaionClass = annotaion.annotationType();
 			String annotationName = annotaionClass.getSimpleName();
 			// サフィックスがTriggerなアノテーションを検索する
 			if (annotationName.endsWith(NAME_SPACE_TRIGGER_ANNOTATION_SUFFIX)) {
-				Class<?> triggerClass = getTriggerAnnotationClass(
+				Class<?> triggerClass = this.getTriggerAnnotationClass(
 						NAME_SPACE_ORG_SEASAR_CHRONOS_CORE, annotationName);
 				// 標準パッケージで見つからないなら、rootPackageから検索してみる
 				if (triggerClass == null) {
@@ -79,7 +79,8 @@ public class TaskAnnotationReaderImpl implements TaskAnnotationReader {
 			String annotationName) {
 		Class<?> result = null;
 		for (String packageName : this.namingConvention.getRootPackageNames()) {
-			result = getTriggerAnnotationClass(packageName, annotationName);
+			result = this
+					.getTriggerAnnotationClass(packageName, annotationName);
 			if (result != null) {
 				return result;
 			}
