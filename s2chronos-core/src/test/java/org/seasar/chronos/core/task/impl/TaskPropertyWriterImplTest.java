@@ -1,6 +1,7 @@
 package org.seasar.chronos.core.task.impl;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,28 +15,40 @@ public class TaskPropertyWriterImplTest {
 
 	private TaskPropertyWriter taskPropertyWriter;
 
-	private final TestTask testTask = new TestTask();
+	private TestTask testTask = new TestTask();
 
 	@Test
 	public void testSetThreadPoolType() {
-		this.taskPropertyWriter.loadTask(this.testTask, TestTask.class);
-		this.taskPropertyWriter.setThreadPoolType(ThreadPoolType.CACHED);
-		// assertEquals(this.testTask.getThreadPoolType(),
-		// ThreadPoolType.CACHED);
+		try {
+			this.taskPropertyWriter.loadTask(this.testTask, TestTask.class);
+			this.taskPropertyWriter.setThreadPoolType(ThreadPoolType.CACHED);
+			assertEquals(this.testTask.getThreadPoolType(),
+					ThreadPoolType.CACHED);
+		} catch (Exception ex) {
+			fail();
+		}
 	}
 
 	@Test
 	public void testSetDescription() {
-		this.taskPropertyWriter.loadTask(this.testTask, TestTask.class);
-		this.taskPropertyWriter.setDescription("description");
-		assertEquals(this.testTask.getDescription(), "description");
+		try {
+			this.taskPropertyWriter.loadTask(this.testTask, TestTask.class);
+			this.taskPropertyWriter.setDescription("description");
+			assertEquals(this.testTask.getDescription(), "description");
+		} catch (Exception ex) {
+			fail();
+		}
 	}
 
 	@Test
 	public void testSetEndTask() {
-		this.taskPropertyWriter.loadTask(this.testTask, TestTask.class);
-		this.taskPropertyWriter.setEndTask(false);
-		assertEquals(this.testTask.isEndTask(), false);
+		try {
+			this.taskPropertyWriter.loadTask(this.testTask, TestTask.class);
+			this.taskPropertyWriter.setEndTask(false);
+			assertEquals(this.testTask.isEndTask(), false);
+		} catch (Exception ex) {
+			fail();
+		}
 	}
 
 	@Test

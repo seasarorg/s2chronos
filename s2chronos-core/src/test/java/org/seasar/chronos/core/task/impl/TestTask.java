@@ -7,7 +7,7 @@ import org.seasar.chronos.core.annotation.trigger.NonDelayTrigger;
 
 @Task
 @NonDelayTrigger
-class TestTask {
+public class TestTask {
 
 	private Long taskId;
 	private String taskName;
