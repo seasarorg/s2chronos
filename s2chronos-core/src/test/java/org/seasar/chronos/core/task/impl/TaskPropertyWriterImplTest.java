@@ -15,7 +15,7 @@ public class TaskPropertyWriterImplTest {
 
 	private TaskPropertyWriter taskPropertyWriter;
 
-	private TestTask testTask = new TestTask();
+	private final TestTask testTask = new TestTask();
 
 	@Test
 	public void testSetThreadPoolType() {
@@ -53,125 +53,201 @@ public class TaskPropertyWriterImplTest {
 
 	@Test
 	public void testSetExecuted() {
-		this.taskPropertyWriter.loadTask(this.testTask, TestTask.class);
-		this.taskPropertyWriter.setExecuted(false);
-		assertEquals(this.testTask.isExecuted(), false);
+		try {
+			this.taskPropertyWriter.loadTask(this.testTask, TestTask.class);
+			this.taskPropertyWriter.setExecuted(false);
+			assertEquals(this.testTask.isExecuted(), false);
+		} catch (Exception ex) {
+			fail();
+		}
 	}
 
 	@Test
 	public void testSetReSchedule() {
-		this.taskPropertyWriter.loadTask(this.testTask, TestTask.class);
-		this.taskPropertyWriter.setReSchedule(false);
-		assertEquals(this.testTask.isReSchedule(), false);
+		try {
+			this.taskPropertyWriter.loadTask(this.testTask, TestTask.class);
+			this.taskPropertyWriter.setReSchedule(false);
+			assertEquals(this.testTask.isReSchedule(), false);
+		} catch (Exception ex) {
+			fail();
+		}
 	}
 
 	@Test
 	public void testSetShutdownTask() {
-		this.taskPropertyWriter.loadTask(this.testTask, TestTask.class);
-		this.taskPropertyWriter.setShutdownTask(false);
-		assertEquals(this.testTask.isShutdownTask(), false);
+		try {
+			this.taskPropertyWriter.loadTask(this.testTask, TestTask.class);
+			this.taskPropertyWriter.setShutdownTask(false);
+			assertEquals(this.testTask.isShutdownTask(), false);
+		} catch (Exception ex) {
+			fail();
+		}
 	}
 
 	@Test
 	public void testSetStartTask() {
-		this.taskPropertyWriter.loadTask(this.testTask, TestTask.class);
-		this.taskPropertyWriter.setStartTask(false);
-		assertEquals(this.testTask.isStartTask(), false);
+		try {
+			this.taskPropertyWriter.loadTask(this.testTask, TestTask.class);
+			this.taskPropertyWriter.setStartTask(false);
+			assertEquals(this.testTask.isStartTask(), false);
+		} catch (Exception ex) {
+			fail();
+		}
 	}
 
 	@Test
 	public void testSetTaskId() {
-		this.taskPropertyWriter.loadTask(this.testTask, TestTask.class);
-		this.taskPropertyWriter.setTaskId(1L);
-		assertEquals(this.testTask.getTaskId(), 1L);
+		try {
+			this.taskPropertyWriter.loadTask(this.testTask, TestTask.class);
+			this.taskPropertyWriter.setTaskId(1L);
+			assertEquals(this.testTask.getTaskId(), 1L);
+		} catch (Exception ex) {
+			fail();
+		}
 	}
 
 	@Test
 	public void testSetTaskName() {
-		this.taskPropertyWriter.loadTask(this.testTask, TestTask.class);
-		this.taskPropertyWriter.setTaskName("taskName");
-		assertEquals(this.testTask.getTaskName(), "taskName");
+		try {
+			this.taskPropertyWriter.loadTask(this.testTask, TestTask.class);
+			this.taskPropertyWriter.setTaskName("taskName");
+			assertEquals(this.testTask.getTaskName(), "taskName");
+		} catch (Exception ex) {
+			fail();
+		}
 	}
 
 	@Test
 	public void testSetThreadPoolSize() {
-		this.taskPropertyWriter.loadTask(this.testTask, TestTask.class);
-		this.taskPropertyWriter.setThreadPoolSize(1);
-		assertEquals(this.testTask.getThreadPoolSize(), 1);
+		try {
+			this.taskPropertyWriter.loadTask(this.testTask, TestTask.class);
+			this.taskPropertyWriter.setThreadPoolSize(1);
+			assertEquals(this.testTask.getThreadPoolSize(), 1);
+		} catch (Exception ex) {
+			fail();
+		}
 	}
 
 	@Test
 	public void testSetTrigger() {
-		this.taskPropertyWriter.loadTask(this.testTask, TestTask.class);
-		CNonDelayTrigger trigger = new CNonDelayTrigger();
-		this.taskPropertyWriter.setTrigger(trigger);
-		assertEquals(this.testTask.getTrigger(), trigger);
+		try {
+			CNonDelayTrigger trigger = new CNonDelayTrigger();
+			this.taskPropertyWriter.loadTask(this.testTask, TestTask.class);
+			this.taskPropertyWriter.setTrigger(trigger);
+			assertEquals(this.testTask.getTrigger(), trigger);
+		} catch (Exception ex) {
+			fail();
+		}
 	}
 
 	@Test
 	public void testHasDescription() {
-		this.taskPropertyWriter.loadTask(this.testTask, TestTask.class);
-		this.taskPropertyWriter.hasDescription();
+		try {
+			this.taskPropertyWriter.loadTask(this.testTask, TestTask.class);
+			this.taskPropertyWriter.hasDescription();
+		} catch (Exception ex) {
+			fail();
+		}
 	}
 
 	@Test
 	public void testHasEndTask() {
-		this.taskPropertyWriter.loadTask(this.testTask, TestTask.class);
-		this.taskPropertyWriter.hasEndTask();
+		try {
+			this.taskPropertyWriter.loadTask(this.testTask, TestTask.class);
+			this.taskPropertyWriter.hasEndTask();
+		} catch (Exception ex) {
+			fail();
+		}
 	}
 
 	@Test
 	public void testHasExecuted() {
-		this.taskPropertyWriter.loadTask(this.testTask, TestTask.class);
-		this.taskPropertyWriter.hasExecuted();
+		try {
+			this.taskPropertyWriter.loadTask(this.testTask, TestTask.class);
+			this.taskPropertyWriter.hasExecuted();
+		} catch (Exception ex) {
+			fail();
+		}
 	}
 
 	@Test
 	public void testHasReSchedule() {
-		this.taskPropertyWriter.loadTask(this.testTask, TestTask.class);
-		this.taskPropertyWriter.hasReSchedule();
+		try {
+			this.taskPropertyWriter.loadTask(this.testTask, TestTask.class);
+			this.taskPropertyWriter.hasReSchedule();
+		} catch (Exception ex) {
+			fail();
+		}
 	}
 
 	@Test
 	public void testHasShutdownTask() {
-		this.taskPropertyWriter.loadTask(this.testTask, TestTask.class);
-		this.taskPropertyWriter.hasShutdownTask();
+		try {
+			this.taskPropertyWriter.loadTask(this.testTask, TestTask.class);
+			this.taskPropertyWriter.hasShutdownTask();
+		} catch (Exception ex) {
+			fail();
+		}
 	}
 
 	@Test
 	public void testHasStartTask() {
-		this.taskPropertyWriter.loadTask(this.testTask, TestTask.class);
-		this.taskPropertyWriter.hasStartTask();
+		try {
+			this.taskPropertyWriter.loadTask(this.testTask, TestTask.class);
+			this.taskPropertyWriter.hasStartTask();
+		} catch (Exception ex) {
+			fail();
+		}
 	}
 
 	@Test
 	public void testHasTaskId() {
-		this.taskPropertyWriter.loadTask(this.testTask, TestTask.class);
-		this.taskPropertyWriter.hasTaskId();
+		try {
+			this.taskPropertyWriter.loadTask(this.testTask, TestTask.class);
+			this.taskPropertyWriter.hasTaskId();
+		} catch (Exception ex) {
+			fail();
+		}
 	}
 
 	@Test
 	public void testHasTaskName() {
-		this.taskPropertyWriter.loadTask(this.testTask, TestTask.class);
-		this.taskPropertyWriter.hasTaskName();
+		try {
+			this.taskPropertyWriter.loadTask(this.testTask, TestTask.class);
+			this.taskPropertyWriter.hasTaskName();
+		} catch (Exception ex) {
+			fail();
+		}
 	}
 
 	@Test
 	public void testHasThreadPoolSize() {
-		this.taskPropertyWriter.loadTask(this.testTask, TestTask.class);
-		this.taskPropertyWriter.hasThreadPoolSize();
+		try {
+			this.taskPropertyWriter.loadTask(this.testTask, TestTask.class);
+			this.taskPropertyWriter.hasThreadPoolSize();
+		} catch (Exception ex) {
+			fail();
+		}
 	}
 
 	@Test
 	public void testHasThreadPoolType() {
-		this.taskPropertyWriter.loadTask(this.testTask, TestTask.class);
-		this.taskPropertyWriter.hasThreadPoolType();
+		try {
+			this.taskPropertyWriter.loadTask(this.testTask, TestTask.class);
+			this.taskPropertyWriter.hasThreadPoolType();
+		} catch (Exception ex) {
+			fail();
+		}
 	}
 
 	@Test
 	public void testHasTrigger() {
-		this.taskPropertyWriter.loadTask(this.testTask, TestTask.class);
-		this.taskPropertyWriter.hasTrigger();
+		try {
+			this.taskPropertyWriter.loadTask(this.testTask, TestTask.class);
+			this.taskPropertyWriter.hasTrigger();
+		} catch (Exception ex) {
+			fail();
+		}
 	}
 
 }

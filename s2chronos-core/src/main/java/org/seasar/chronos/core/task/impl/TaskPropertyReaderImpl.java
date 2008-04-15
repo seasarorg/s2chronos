@@ -24,7 +24,7 @@ public class TaskPropertyReaderImpl implements TaskPropertyReader {
 					.getPropertyDesc(TaskPropertyConstant.PROPERTY_NAME_DESCRIPTION);
 			return (String) pd.getValue(this.task);
 		}
-		return null;
+		return defaultValue;
 	}
 
 	public Long getTaskId(Long defaultValue) {
