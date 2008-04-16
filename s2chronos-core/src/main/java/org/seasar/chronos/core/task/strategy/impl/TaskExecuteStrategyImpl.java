@@ -498,4 +498,12 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 		this.componentDef = componentDef;
 	}
 
+	public void setTaskPropertyReader(TaskPropertyReader taskPropertyReader) {
+		this.taskPropertyReader = taskPropertyReader;
+	}
+
+	public void setTaskPropertyWriter(TaskPropertyWriter taskPropertyWriter) {
+		this.taskPropertyWriter = taskPropertyWriter;
+	}
+
 }

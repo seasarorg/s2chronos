@@ -10,7 +10,7 @@ public interface TaskAnnotationReader {
 
 	public boolean hasTriggerAnnotation();
 
-	public boolean hasTriggerField();
+	public boolean hasTriggerProperty();
 
 	public Task getTaskAnnotation();
 

@@ -23,10 +23,10 @@ public final class TaskPropertyUtil {
 
 	private static Logger log = Logger.getLogger(TaskPropertyUtil.class);
 
-	public static String getDescription(TaskProperties prop) {
-		String result = prop.getDescription();
-		return result;
-	}
+	// public static String getDescription(TaskProperties prop) {
+	// String result = prop.getDescription();
+	// return result;
+	// }
 
 	public static boolean isEndTask(TaskProperties prop) {
 		boolean end = false;
@@ -157,12 +157,11 @@ public final class TaskPropertyUtil {
 				return taskName;
 			}
 			Class<?> clazz = prop.getTaskClass();
-			Task task = (Task) clazz.getAnnotation(Task.class);
+			Task task = clazz.getAnnotation(Task.class);
 			if (task != null && !StringUtil.isEmpty(task.name())) {
 				return task.name();
 			}
-			Component component = (Component) clazz
-					.getAnnotation(Component.class);
+			Component component = clazz.getAnnotation(Component.class);
 			if (component != null && !StringUtil.isEmpty(component.name())) {
 				return component.name();
 			}

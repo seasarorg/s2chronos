@@ -1,14 +1,17 @@
 package org.seasar.chronos.core.task.impl;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
 
 import org.seasar.chronos.core.annotation.task.Task;
 import org.seasar.chronos.core.task.TaskAnnotationReader;
 import org.seasar.framework.convention.NamingConvention;
+import org.seasar.framework.exception.NoSuchMethodRuntimeException;
 import org.seasar.framework.util.tiger.ReflectionUtil;
 
 public class TaskAnnotationReaderImpl implements TaskAnnotationReader {
 
+	private static final String METHOD_NAME_GET_TRIGGER = "getTrigger";
 	private static final String NAME_SPACE_ORG_SEASAR_CHRONOS_CORE = "org.seasar.chronos.core";
 	private static final String NAME_SPACE_TRIGGER_C = ".trigger.C";
 	private static final String NAME_SPACE_TRIGGER_ANNOTATION_SUFFIX = "Trigger";
@@ -40,7 +43,14 @@ public class TaskAnnotationReaderImpl implements TaskAnnotationReader {
 		return false;
 	}
 
-	public boolean hasTriggerField() {
+	public boolean hasTriggerProperty() {
+		try {
+			Method method = ReflectionUtil.getMethod(this.taskClass,
+					METHOD_NAME_GET_TRIGGER, new Class[0]);
+			return method != null;
+		} catch (NoSuchMethodRuntimeException ex) {
+			;
+		}
 		return false;
 	}
 

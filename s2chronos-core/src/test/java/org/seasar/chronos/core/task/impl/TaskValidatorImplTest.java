@@ -17,30 +17,29 @@ import org.seasar.framework.unit.Seasar2;
 public class TaskValidatorImplTest {
 
 	private TaskValidator taskValidator;
-	private final NormalATask task = new NormalATask();
 
 	@Test
 	public void testIsTask_NormalATask() {
-		assertTrue(this.taskValidator.isValid(this.task, NormalATask.class));
+		assertTrue(this.taskValidator.isValid(NormalATask.class));
 	}
 
 	@Test
 	public void testIsTask_NormalBTask() {
-		assertTrue(this.taskValidator.isValid(this.task, NormalBTask.class));
+		assertTrue(this.taskValidator.isValid(NormalBTask.class));
 	}
 
 	@Test
 	public void testIsTask_IsNotATask() {
-		assertFalse(this.taskValidator.isValid(this.task, IsNotATask.class));
+		assertFalse(this.taskValidator.isValid(IsNotATask.class));
 	}
 
 	@Test
 	public void testIsTask_IsNotBTask() {
-		assertFalse(this.taskValidator.isValid(this.task, IsNotBTask.class));
+		assertFalse(this.taskValidator.isValid(IsNotBTask.class));
 	}
 
 	@Test
 	public void testIsTask_IsNotCTask() {
-		assertFalse(this.taskValidator.isValid(this.task, IsNotCTask.class));
+		assertFalse(this.taskValidator.isValid(IsNotCTask.class));
 	}
 }

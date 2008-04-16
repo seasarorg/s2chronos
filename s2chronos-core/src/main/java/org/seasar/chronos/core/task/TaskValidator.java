@@ -16,13 +16,4 @@ public interface TaskValidator {
 	 */
 	public boolean isValid(Class<?> taskClass);
 
-	/**
-	 * タスククラスであるかどうかを判定します．
-	 * 
-	 * @param task
-	 * @param taskClass
-	 * @return
-	 */
-	public boolean isValid(Object task, Class<?> taskClass);
-
 }

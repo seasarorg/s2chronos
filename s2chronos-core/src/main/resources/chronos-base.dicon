@@ -8,6 +8,11 @@
 		condition="@org.seasar.chronos.core.util.DiconConditionUtil@hasConvention()" />
 	<include path="chronosCustomize.dicon"
 		condition="@org.seasar.chronos.core.util.DiconConditionUtil@hasCustomizeDicon()" />
+
+	<component class="org.seasar.chronos.core.task.impl.TaskAnnotationReaderImpl"/>
+	<component class="org.seasar.chronos.core.task.impl.TaskPropertyReaderImpl"/>
+	<component class="org.seasar.chronos.core.task.impl.TaskPropertyWriterImpl"/>
+	<component class="org.seasar.chronos.core.task.impl.TaskValidatorImpl"/>
 	
 	<component name="taskClassAutoDetector" class="org.seasar.chronos.core.autodetector.TaskClassAutoDetector"/>
 	
