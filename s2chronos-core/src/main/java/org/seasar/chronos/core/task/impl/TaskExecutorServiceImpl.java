@@ -7,6 +7,8 @@ import org.seasar.chronos.core.TaskThreadPool;
 import org.seasar.chronos.core.TaskTrigger;
 import org.seasar.chronos.core.ThreadPoolType;
 import org.seasar.chronos.core.task.TaskExecutorService;
+import org.seasar.chronos.core.task.TaskPropertyReader;
+import org.seasar.chronos.core.task.TaskPropertyWriter;
 import org.seasar.chronos.core.task.state.TaskExecuteContext;
 import org.seasar.framework.container.ComponentDef;
 import org.seasar.framework.container.annotation.tiger.Binding;
@@ -16,7 +18,7 @@ public class TaskExecutorServiceImpl implements TaskExecutorService {
 
 	private static final long serialVersionUID = 59104659363668777L;
 
-	private TaskExecuteContext taskExecuteContext;
+	private final TaskExecuteContext taskExecuteContext;
 
 	public TaskExecutorServiceImpl(TaskExecuteContext taskExecuteContext) {
 		this.taskExecuteContext = taskExecuteContext;
@@ -183,5 +185,15 @@ public class TaskExecutorServiceImpl implements TaskExecutorService {
 
 	public void unprepare() {
 		this.taskExecuteContext.getTaskExecuteStrategy().unprepare();
+	}
+
+	public TaskPropertyReader getTaskPropertyReader() {
+		return this.taskExecuteContext.getTaskExecuteStrategy()
+				.getTaskPropertyReader();
+	}
+
+	public TaskPropertyWriter getTaskPropertyWriter() {
+		return this.taskExecuteContext.getTaskExecuteStrategy()
+				.getTaskPropertyWriter();
 	}
 }

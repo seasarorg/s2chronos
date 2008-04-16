@@ -10,7 +10,11 @@
 		condition="@org.seasar.chronos.core.util.DiconConditionUtil@hasCustomizeDicon()" />
 
 	<component class="org.seasar.chronos.core.task.impl.TaskAnnotationReaderImpl"/>
-	<component class="org.seasar.chronos.core.task.impl.TaskPropertyReaderImpl"/>
+	<component class="org.seasar.chronos.core.task.impl.TaskPropertyReaderImpl">
+	    <aspect pointcut="isEndTask,isStartTask">
+     		<component class="org.seasar.chronos.core.interceptor.TriggerPropertyReadInterceptor"/>
+	    </aspect>
+	</component>
 	<component class="org.seasar.chronos.core.task.impl.TaskPropertyWriterImpl"/>
 	<component class="org.seasar.chronos.core.task.impl.TaskValidatorImpl"/>
 	

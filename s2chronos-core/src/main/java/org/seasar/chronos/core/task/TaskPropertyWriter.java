@@ -7,6 +7,12 @@ import org.seasar.framework.beans.BeanDesc;
 
 public interface TaskPropertyWriter {
 
+	public Object getTask();
+
+	public Class<?> getTaskClass();
+
+	public BeanDesc getBeanDesc();
+
 	public boolean hasTaskId();
 
 	public boolean hasTaskName();

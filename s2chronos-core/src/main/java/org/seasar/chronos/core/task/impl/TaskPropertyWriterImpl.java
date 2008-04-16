@@ -13,6 +13,18 @@ import org.seasar.framework.container.annotation.tiger.BindingType;
 
 public class TaskPropertyWriterImpl implements TaskPropertyWriter {
 
+	public Object getTask() {
+		return this.task;
+	}
+
+	public Class<?> getTaskClass() {
+		return this.beanDesc.getBeanClass();
+	}
+
+	public BeanDesc getBeanDesc() {
+		return this.beanDesc;
+	}
+
 	private BeanDesc beanDesc;
 	private Object task;
 

@@ -506,4 +506,12 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 		this.taskPropertyWriter = taskPropertyWriter;
 	}
 
+	public TaskPropertyReader getTaskPropertyReader() {
+		return taskPropertyReader;
+	}
+
+	public TaskPropertyWriter getTaskPropertyWriter() {
+		return taskPropertyWriter;
+	}
+
 }

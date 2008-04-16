@@ -65,7 +65,8 @@ public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler 
 			taskContenaStateManager.addTaskScheduleEntry(TaskStateType.RUNNING,
 					taskScheduleEntry);
 			// 定期スケジュール以外ならスケジュールドリストから削除する
-			if (!TaskPropertyUtil.isReSchedule(taskExecutorService)) {
+			if (!taskExecutorService.getTaskPropertyReader()
+					.isReSchedule(false)) {
 				taskContenaStateManager.removeTaskScheduleEntry(
 						TaskStateType.SCHEDULED, taskScheduleEntry);
 			}
@@ -84,7 +85,8 @@ public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler 
 					TaskStateType.RUNNING, taskScheduleEntry);
 			// 定期スケジュール以外ならアンスケジュールドリストに登録する
 			// TODO アンスケジュールドに入った時刻をtseに持たせて，別のハンドラーで一定時間経過後にアンスケジュールドリストから削除する．
-			if (!TaskPropertyUtil.isReSchedule(taskExecutorService)) {
+			if (!taskExecutorService.getTaskPropertyReader()
+					.isReSchedule(false)) {
 				taskContenaStateManager.addTaskScheduleEntry(
 						TaskStateType.UNSCHEDULED, taskScheduleEntry);
 			}
@@ -113,11 +115,11 @@ public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler 
 						// 
 						taskScheduleEntry.setTask(task);
 						taskScheduleEntry.setTaskClass(taskClass);
-						String[] rootPackageNames = namingConvention
-								.getRootPackageNames();
+						// String[] rootPackageNames = namingConvention
+						// .getRootPackageNames();
 						if (!tes.isExecute()
-								&& TaskPropertyUtil.isStartTask(tes,
-										rootPackageNames)) {
+								&& tes.getTaskPropertyReader().isStartTask(
+										false)) {
 							log.log("DCHRONOSSSTHRTSTT",
 									new Object[] { TaskPropertyUtil
 											.getTaskName(tes) });

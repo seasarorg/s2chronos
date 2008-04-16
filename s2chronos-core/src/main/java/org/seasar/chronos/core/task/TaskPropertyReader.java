@@ -7,6 +7,12 @@ import org.seasar.framework.beans.BeanDesc;
 
 public interface TaskPropertyReader {
 
+	public Object getTask();
+
+	public Class<?> getTaskClass();
+
+	public BeanDesc getBeanDesc();
+
 	public void loadTask(Object task, Class<?> taskClass);
 
 	public void loadTask(Object task, BeanDesc beanDesc);

@@ -3,6 +3,7 @@ package org.seasar.chronos.core.task.impl;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
+import org.seasar.chronos.core.TaskTrigger;
 import org.seasar.chronos.core.annotation.task.Task;
 import org.seasar.chronos.core.task.TaskAnnotationReader;
 import org.seasar.framework.convention.NamingConvention;
@@ -69,21 +70,28 @@ public class TaskAnnotationReaderImpl implements TaskAnnotationReader {
 		return triggerClass;
 	}
 
-	public Class<?> getTriggerAnnotationClass() {
+	public TaskTrigger getTriggerAnnotationClass(
+			TriggerAnnotationHandler triggerAnnotationHandler) {
 		Annotation[] annotaions = this.taskClass.getAnnotations();
 		for (Annotation annotaion : annotaions) {
 			Class<?> annotaionClass = annotaion.annotationType();
 			String annotationName = annotaionClass.getSimpleName();
 			// サフィックスがTriggerなアノテーションを検索する
 			if (annotationName.endsWith(NAME_SPACE_TRIGGER_ANNOTATION_SUFFIX)) {
-				Class<?> triggerClass = this.getTriggerAnnotationClass(
-						NAME_SPACE_ORG_SEASAR_CHRONOS_CORE, annotationName);
+				Class<?> triggerAnnotationClass = this
+						.getTriggerAnnotationClass(
+								NAME_SPACE_ORG_SEASAR_CHRONOS_CORE,
+								annotationName);
 				// 標準パッケージで見つからないなら、rootPackageから検索してみる
-				if (triggerClass == null) {
-					triggerClass = this
+				if (triggerAnnotationClass == null) {
+					triggerAnnotationClass = this
 							.findTriggerAnnotationClassForRootPackages(annotationName);
 				}
-				return triggerClass;
+				TaskTrigger taskTrigger = triggerAnnotationHandler.process(
+						annotaion, triggerAnnotationClass);
+				if (taskTrigger != null) {
+					return taskTrigger;
+				}
 			}
 		}
 		return null;

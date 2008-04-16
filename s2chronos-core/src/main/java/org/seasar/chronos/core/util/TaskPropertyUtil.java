@@ -6,9 +6,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.seasar.chronos.core.TaskThreadPool;
 import org.seasar.chronos.core.TaskTrigger;
-import org.seasar.chronos.core.ThreadPoolType;
 import org.seasar.chronos.core.annotation.task.Task;
 import org.seasar.chronos.core.task.TaskProperties;
 import org.seasar.framework.beans.BeanDesc;
@@ -23,41 +21,20 @@ public final class TaskPropertyUtil {
 
 	private static Logger log = Logger.getLogger(TaskPropertyUtil.class);
 
-	// public static String getDescription(TaskProperties prop) {
-	// String result = prop.getDescription();
-	// return result;
+	// public static boolean isStartTask(TaskProperties prop,
+	// String[] rootPackageNames) {
+	// boolean start = false;
+	// TaskTrigger taskTrigger = prop.getTrigger();
+	// if (taskTrigger == null) {
+	// taskTrigger = getAnnotionTrigger(prop, rootPackageNames);
 	// }
-
-	public static boolean isEndTask(TaskProperties prop) {
-		boolean end = false;
-		TaskTrigger taskTrigger = prop.getTrigger();
-		if (taskTrigger == null) {
-			end = prop.isEndTask();
-		} else {
-			end = taskTrigger.isEndTask();
-		}
-		return end;
-	}
-
-	public static boolean isShutdownTask(TaskProperties prop) {
-		boolean shutdown = prop.isShutdownTask();
-		return shutdown;
-	}
-
-	public static boolean isStartTask(TaskProperties prop,
-			String[] rootPackageNames) {
-		boolean start = false;
-		TaskTrigger taskTrigger = prop.getTrigger();
-		if (taskTrigger == null) {
-			taskTrigger = getAnnotionTrigger(prop, rootPackageNames);
-		}
-		if (taskTrigger == null) {
-			start = prop.isStartTask();
-		} else {
-			start = taskTrigger.isStartTask();
-		}
-		return start;
-	}
+	// if (taskTrigger == null) {
+	// start = prop.isStartTask();
+	// } else {
+	// start = taskTrigger.isStartTask();
+	// }
+	// return start;
+	// }
 
 	private static Class<?> findTriggerClass(String packageName,
 			String className) {
@@ -139,10 +116,10 @@ public final class TaskPropertyUtil {
 		return taskTrigger;
 	}
 
-	public static long getTaskId(TaskProperties prop) {
-		long result = prop.getTaskId();
-		return result;
-	}
+	// public static long getTaskId(TaskProperties prop) {
+	// long result = prop.getTaskId();
+	// return result;
+	// }
 
 	/**
 	 * 
@@ -172,28 +149,6 @@ public final class TaskPropertyUtil {
 		return result;
 	}
 
-	public static int getThreadPoolSize(TaskProperties prop) {
-		int threadPoolSize = 1;
-		TaskThreadPool taskThreadPool = prop.getThreadPool();
-		if (taskThreadPool == null) {
-			return prop.getThreadPoolSize();
-		} else {
-			taskThreadPool.getThreadPoolSize();
-		}
-		return threadPoolSize;
-	}
-
-	public static ThreadPoolType getThreadPoolType(TaskProperties prop) {
-		ThreadPoolType threadPoolType = null;
-		TaskThreadPool taskThreadPool = prop.getThreadPool();
-		if (taskThreadPool == null) {
-			return prop.getThreadPoolType();
-		} else {
-			taskThreadPool.getThreadPoolType();
-		}
-		return threadPoolType;
-	}
-
 	public static void setEndTask(TaskProperties prop, boolean endTask) {
 		TaskTrigger taskTrigger = prop.getTrigger();
 		if (taskTrigger == null) {
@@ -216,12 +171,4 @@ public final class TaskPropertyUtil {
 		}
 	}
 
-	public static boolean isReSchedule(TaskProperties prop) {
-		boolean reSchedule = prop.isReSchedule();
-		TaskTrigger taskTrigger = prop.getTrigger();
-		if (taskTrigger != null) {
-			reSchedule = reSchedule || taskTrigger.isReSchedule();
-		}
-		return reSchedule;
-	}
 }

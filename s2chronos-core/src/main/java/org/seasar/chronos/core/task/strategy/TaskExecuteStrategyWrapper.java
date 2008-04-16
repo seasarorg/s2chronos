@@ -6,6 +6,8 @@ import org.seasar.chronos.core.Scheduler;
 import org.seasar.chronos.core.TaskThreadPool;
 import org.seasar.chronos.core.TaskTrigger;
 import org.seasar.chronos.core.ThreadPoolType;
+import org.seasar.chronos.core.task.TaskPropertyReader;
+import org.seasar.chronos.core.task.TaskPropertyWriter;
 import org.seasar.framework.container.ComponentDef;
 import org.seasar.framework.container.annotation.tiger.Binding;
 import org.seasar.framework.container.annotation.tiger.BindingType;
@@ -171,6 +173,14 @@ public class TaskExecuteStrategyWrapper implements TaskExecuteStrategy {
 
 	public void unprepare() {
 		this.taskExecuteStrategy.unprepare();
+	}
+
+	public TaskPropertyReader getTaskPropertyReader() {
+		return this.taskExecuteStrategy.getTaskPropertyReader();
+	}
+
+	public TaskPropertyWriter getTaskPropertyWriter() {
+		return this.taskExecuteStrategy.getTaskPropertyWriter();
 	}
 
 }

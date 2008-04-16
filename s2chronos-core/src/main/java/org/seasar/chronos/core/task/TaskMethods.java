@@ -26,4 +26,8 @@ public interface TaskMethods {
 	public String destroy() throws InterruptedException;
 
 	public void setComponentDef(ComponentDef componentDef);
+
+	public TaskPropertyReader getTaskPropertyReader();
+
+	public TaskPropertyWriter getTaskPropertyWriter();
 }
