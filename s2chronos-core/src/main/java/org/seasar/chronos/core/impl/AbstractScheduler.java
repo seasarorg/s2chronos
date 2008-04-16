@@ -6,7 +6,7 @@ import org.seasar.chronos.core.annotation.task.Task;
 import org.seasar.chronos.core.autodetector.TaskClassAutoDetector;
 import org.seasar.chronos.core.schedule.TaskScheduleEntryManager;
 import org.seasar.chronos.core.task.TaskExecutorService;
-import org.seasar.chronos.core.util.TaskClassUtil;
+import org.seasar.chronos.core.task.TaskValidator;
 import org.seasar.chronos.core.util.TaskPropertyUtil;
 import org.seasar.framework.container.ComponentDef;
 import org.seasar.framework.container.S2Container;
@@ -24,6 +24,8 @@ public abstract class AbstractScheduler implements Scheduler {
 	protected S2Container s2container;
 
 	protected TaskClassAutoDetector taskClassAutoDetector;
+
+	private TaskValidator taskValidator;
 
 	public AbstractScheduler() {
 		super();
@@ -80,7 +82,7 @@ public abstract class AbstractScheduler implements Scheduler {
 					public Object processComponent(ComponentDef componentDef) {
 						Class<?> clazz = componentDef.getComponentClass();
 						if (clazz != null) {
-							if (TaskClassUtil.isTask(clazz)) {
+							if (taskValidator.isValid(clazz)) {
 								if (targetTaskComponentClass == null) {
 									AbstractScheduler.this
 											.scheduleTask(componentDef);
@@ -201,5 +203,9 @@ public abstract class AbstractScheduler implements Scheduler {
 	public void setTaskClassAutoDetector(
 			TaskClassAutoDetector taskClassAutoDetector) {
 		this.taskClassAutoDetector = taskClassAutoDetector;
+	}
+
+	public void setTaskValidator(TaskValidator taskValidator) {
+		this.taskValidator = taskValidator;
 	}
 }

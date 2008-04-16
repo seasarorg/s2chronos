@@ -10,6 +10,7 @@ public final class TaskPropertyConstant {
 	public static final String PROPERTY_NAME_SHUTDOWN_TASK = "shutdownTask";
 	public static final String PROPERTY_NAME_RESCHEDULE = "reSchedule";
 	public static final String PROPERTY_NAME_EXECUTED = "executed";
+	public static final String PROPERTY_NAME_THREADPOOL = "threadPool";
 	public static final String PROPERTY_NAME_THREAD_POOL_TYPE = "threadPoolType";
 	public static final String PROPERTY_NAME_THREAD_POOL_SIZE = "threadPoolSize";
 }

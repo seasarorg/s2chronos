@@ -1,5 +1,6 @@
 package org.seasar.chronos.core.task.impl;
 
+import org.seasar.chronos.core.TaskThreadPool;
 import org.seasar.chronos.core.TaskTrigger;
 import org.seasar.chronos.core.ThreadPoolType;
 import org.seasar.chronos.core.task.TaskPropertyConstant;
@@ -18,6 +19,11 @@ public class TaskPropertyWriterImpl implements TaskPropertyWriter {
 	public void loadTask(Object task, Class<?> taskClass) {
 		this.task = task;
 		this.beanDesc = BeanDescFactory.getBeanDesc(taskClass);
+	}
+
+	public void loadTask(Object task, BeanDesc beanDesc) {
+		this.task = task;
+		this.beanDesc = beanDesc;
 	}
 
 	public void setThreadPoolType(ThreadPoolType value) {
@@ -88,6 +94,14 @@ public class TaskPropertyWriterImpl implements TaskPropertyWriter {
 		if (this.hasTaskName()) {
 			PropertyDesc pd = this.beanDesc
 					.getPropertyDesc(TaskPropertyConstant.PROPERTY_NAME_TASKNAME);
+			pd.setValue(this.task, value);
+		}
+	}
+
+	public void setThreadPool(TaskThreadPool value) {
+		if (this.hasThreadPool()) {
+			PropertyDesc pd = this.beanDesc
+					.getPropertyDesc(TaskPropertyConstant.PROPERTY_NAME_THREADPOOL);
 			pd.setValue(this.task, value);
 		}
 	}
@@ -200,6 +214,18 @@ public class TaskPropertyWriterImpl implements TaskPropertyWriter {
 		if (result) {
 			PropertyDesc pd = this.beanDesc
 					.getPropertyDesc(TaskPropertyConstant.PROPERTY_NAME_TASKNAME);
+			result = pd.hasWriteMethod();
+			return result;
+		}
+		return result;
+	}
+
+	public boolean hasThreadPool() {
+		boolean result = this.beanDesc
+				.hasPropertyDesc(TaskPropertyConstant.PROPERTY_NAME_THREADPOOL);
+		if (result) {
+			PropertyDesc pd = this.beanDesc
+					.getPropertyDesc(TaskPropertyConstant.PROPERTY_NAME_THREADPOOL);
 			result = pd.hasWriteMethod();
 			return result;
 		}

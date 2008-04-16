@@ -40,6 +40,10 @@ public class TaskAnnotationReaderImpl implements TaskAnnotationReader {
 		return false;
 	}
 
+	public boolean hasTriggerField() {
+		return false;
+	}
+
 	public Task getTaskAnnotation() {
 		Task task = this.taskClass.getAnnotation(Task.class);
 		return task;

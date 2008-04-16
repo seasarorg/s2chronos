@@ -19,6 +19,8 @@ import org.seasar.chronos.core.annotation.task.Task;
 import org.seasar.chronos.core.delegate.AsyncResult;
 import org.seasar.chronos.core.delegate.MethodInvoker;
 import org.seasar.chronos.core.schedule.TaskScheduleEntryManager;
+import org.seasar.chronos.core.task.TaskPropertyReader;
+import org.seasar.chronos.core.task.TaskPropertyWriter;
 import org.seasar.chronos.core.task.TaskType;
 import org.seasar.chronos.core.task.Transition;
 import org.seasar.chronos.core.task.handler.TaskExecuteHandler;
@@ -46,22 +48,6 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 
 	private static Logger log = Logger.getLogger(TaskExecuteStrategyImpl.class);
 
-	private static final String PROPERTY_NAME_RESCHEDULE = "reSchedule";
-
-	private static final String PROPERTY_NAME_THREAD_POOL_SIZE = "threadPoolSize";
-
-	private static final String PROPERTY_NAME_EXECUTED = "executed";
-
-	private static final String PROPERTY_NAME_THREAD_POOL_TYPE = "threadPoolType";
-
-	private static final String PROPERTY_NAME_START_TASK = "startTask";
-
-	private static final String PROPERTY_NAME_END_TASK = "endTask";
-
-	private static final String PROPERTY_NAME_SHUTDOWN_TASK = "shutdownTask";
-
-	private static final String PROPERTY_NAME_TRIGGER = "trigger";
-
 	private static final String METHOD_PREFIX_NAME_DO = "do";
 
 	private static final String METHOD_NAME_INITIALIZE = "initialize";
@@ -71,14 +57,6 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 	private static final ThreadPoolType DEFAULT_THREADPOOL_TYPE = ThreadPoolType.CACHED;
 
 	private static final int DEFAULT_THREAD_POOLSIZE = 1;
-
-	private static final String PROPERTY_NAME_THREADPOOL = "threadPool";
-
-	private static final String PROPERTY_NAME_TASKNAME = "taskName";
-
-	private static final String PROPERTY_NAME_TASKID = "taskId";
-
-	private static final String PROPERTY_NAME_DESCRIPTION = "description";
 
 	private static ConcurrentHashMap<TaskThreadPool, ExecutorService> threadPoolExecutorServiceMap = new ConcurrentHashMap<TaskThreadPool, ExecutorService>();
 
@@ -97,6 +75,10 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 	private TaskExecuteHandler taskMethodExecuteHandler;
 
 	private TaskExecuteHandler taskGroupMethodExecuteHandler;
+
+	private TaskPropertyReader taskPropertyReader;
+
+	private TaskPropertyWriter taskPropertyWriter;
 
 	private Object getterSignal;
 
@@ -214,33 +196,15 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 	}
 
 	public boolean isReSchedule() {
-		Boolean result = false;
-		if (this.beanDesc.hasPropertyDesc(PROPERTY_NAME_RESCHEDULE)) {
-			PropertyDesc pd = this.beanDesc
-					.getPropertyDesc(PROPERTY_NAME_RESCHEDULE);
-			result = (Boolean) pd.getValue(this.task);
-		}
-		return result;
+		return this.taskPropertyReader.isReSchedule(false);
 	}
 
 	public String getDescription() {
-		String result = null;
-		if (this.beanDesc.hasPropertyDesc(PROPERTY_NAME_DESCRIPTION)) {
-			PropertyDesc pd = this.beanDesc
-					.getPropertyDesc(PROPERTY_NAME_DESCRIPTION);
-			result = (String) pd.getValue(this.task);
-		}
-		return result;
+		return this.taskPropertyReader.getDescription(null);
 	}
 
 	public boolean isEndTask() {
-		Boolean result = false;
-		if (this.beanDesc.hasPropertyDesc(PROPERTY_NAME_END_TASK)) {
-			PropertyDesc pd = this.beanDesc
-					.getPropertyDesc(PROPERTY_NAME_END_TASK);
-			result = (Boolean) pd.getValue(this.task);
-		}
-		return result;
+		return this.taskPropertyReader.isEndTask(false);
 	}
 
 	private ExecutorService getExecutorService() {
@@ -261,23 +225,11 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 	}
 
 	public boolean isShutdownTask() {
-		Boolean result = false;
-		if (this.beanDesc.hasPropertyDesc(PROPERTY_NAME_SHUTDOWN_TASK)) {
-			PropertyDesc pd = this.beanDesc
-					.getPropertyDesc(PROPERTY_NAME_SHUTDOWN_TASK);
-			result = (Boolean) pd.getValue(this.task);
-		}
-		return result;
+		return this.taskPropertyReader.isShutdownTask(false);
 	}
 
 	public boolean isStartTask() {
-		Boolean result = false;
-		if (this.beanDesc.hasPropertyDesc(PROPERTY_NAME_START_TASK)) {
-			PropertyDesc pd = this.beanDesc
-					.getPropertyDesc(PROPERTY_NAME_START_TASK);
-			result = (Boolean) pd.getValue(this.task);
-		}
-		return result;
+		return this.taskPropertyReader.isStartTask(false);
 	}
 
 	public Object getTask() {
@@ -294,13 +246,7 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 	}
 
 	public long getTaskId() {
-		if (this.beanDesc.hasPropertyDesc(PROPERTY_NAME_TASKID)) {
-			Long result = 0L;
-			PropertyDesc pd = this.beanDesc
-					.getPropertyDesc(PROPERTY_NAME_TASKID);
-			result = (Long) pd.getValue(this.task);
-			return result;
-		}
+		this.taskId = this.taskPropertyReader.getTaskId(0L);
 		if (this.taskId == 0) {
 			this.taskId = ObjectUtil.generateObjectId();
 		}
@@ -308,25 +254,11 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 	}
 
 	public String getTaskName() {
-		String result = null;
-		if (this.beanDesc != null) {
-			if (this.beanDesc.hasPropertyDesc(PROPERTY_NAME_TASKNAME)) {
-				PropertyDesc pd = this.beanDesc
-						.getPropertyDesc(PROPERTY_NAME_TASKNAME);
-				result = (String) pd.getValue(this.task);
-			}
-		}
-		return result;
+		return this.taskPropertyReader.getTaskName(null);
 	}
 
 	public TaskThreadPool getThreadPool() {
-		TaskThreadPool result = null;
-		if (this.beanDesc.hasPropertyDesc(PROPERTY_NAME_THREADPOOL)) {
-			PropertyDesc pd = this.beanDesc
-					.getPropertyDesc(PROPERTY_NAME_THREADPOOL);
-			result = (TaskThreadPool) pd.getValue(this.task);
-		}
-		return result;
+		return this.taskPropertyReader.getThreadPool(null);
 	}
 
 	public int getThreadPoolSize() {
@@ -334,13 +266,8 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 	}
 
 	private int getThreadPoolSize(Object target) {
-		Integer result = DEFAULT_THREAD_POOLSIZE;
-		if (this.beanDesc.hasPropertyDesc(PROPERTY_NAME_THREAD_POOL_SIZE)) {
-			PropertyDesc pd = this.beanDesc
-					.getPropertyDesc(PROPERTY_NAME_THREAD_POOL_SIZE);
-			result = (Integer) pd.getValue(target);
-		}
-		return result;
+		return this.taskPropertyReader
+				.getThreadPoolSize(DEFAULT_THREAD_POOLSIZE);
 	}
 
 	public ThreadPoolType getThreadPoolType() {
@@ -348,26 +275,12 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 	}
 
 	private ThreadPoolType getThreadPoolType(Object target) {
-		ThreadPoolType type = DEFAULT_THREADPOOL_TYPE;
-		if (this.beanDesc.hasPropertyDesc(PROPERTY_NAME_THREAD_POOL_TYPE)) {
-			PropertyDesc pd = this.beanDesc
-					.getPropertyDesc(PROPERTY_NAME_THREAD_POOL_TYPE);
-			type = (ThreadPoolType) pd.getValue(target);
-		}
-		return type;
+		return this.taskPropertyReader
+				.getThreadPoolType(DEFAULT_THREADPOOL_TYPE);
 	}
 
 	public TaskTrigger getTrigger() {
-		TaskTrigger result = null;
-		if (this.beanDesc.hasPropertyDesc(PROPERTY_NAME_TRIGGER)) {
-			PropertyDesc pd = this.beanDesc
-					.getPropertyDesc(PROPERTY_NAME_TRIGGER);
-			result = (TaskTrigger) pd.getValue(this.task);
-		} else {
-			return this.taskTrigger;
-		}
-
-		return result;
+		return this.taskPropertyReader.getTrigger(this.taskTrigger);
 	}
 
 	private Transition handleRequest(TaskExecuteHandler taskExecuteHandler,
@@ -393,13 +306,7 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 	}
 
 	public boolean isExecute() {
-		Boolean result = false;
-		if (this.beanDesc.hasPropertyDesc(PROPERTY_NAME_EXECUTED)) {
-			PropertyDesc pd = this.beanDesc
-					.getPropertyDesc(PROPERTY_NAME_EXECUTED);
-			result = (Boolean) pd.getValue(this.task);
-		}
-		return result;
+		return this.taskPropertyReader.isExecuted(false);
 	}
 
 	private boolean isGroupMethod(String groupName) {
@@ -464,6 +371,10 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 		this.taskGroupMethodExecuteHandler.setTaskExecuteStrategy(this);
 
 		this.beanDesc = BeanDescFactory.getBeanDesc(this.taskClass);
+
+		this.taskPropertyReader.loadTask(task, beanDesc);
+		this.taskPropertyWriter.loadTask(task, beanDesc);
+
 		this.taskMethodManager = new TaskMethodManager(this.taskClass,
 				METHOD_PREFIX_NAME_DO);
 
@@ -521,19 +432,11 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 	}
 
 	public void setEndTask(boolean endTask) {
-		if (this.beanDesc.hasPropertyDesc(PROPERTY_NAME_END_TASK)) {
-			PropertyDesc pd = this.beanDesc
-					.getPropertyDesc(PROPERTY_NAME_END_TASK);
-			pd.setValue(this.task, endTask);
-		}
+		this.taskPropertyWriter.setEndTask(endTask);
 	}
 
 	public void setExecute(boolean executed) {
-		if (this.beanDesc.hasPropertyDesc(PROPERTY_NAME_EXECUTED)) {
-			PropertyDesc pd = this.beanDesc
-					.getPropertyDesc(PROPERTY_NAME_EXECUTED);
-			pd.setValue(this.task, executed);
-		}
+		this.taskPropertyWriter.setExecuted(executed);
 	}
 
 	public void setGetterSignal(Object getterSignal) {
@@ -545,19 +448,11 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 	}
 
 	public void setShutdownTask(boolean shutdownTask) {
-		if (this.beanDesc.hasPropertyDesc(PROPERTY_NAME_SHUTDOWN_TASK)) {
-			PropertyDesc pd = this.beanDesc
-					.getPropertyDesc(PROPERTY_NAME_SHUTDOWN_TASK);
-			pd.setValue(this.task, shutdownTask);
-		}
+		this.taskPropertyWriter.setShutdownTask(shutdownTask);
 	}
 
 	public void setStartTask(boolean startTask) {
-		if (this.beanDesc.hasPropertyDesc(PROPERTY_NAME_START_TASK)) {
-			PropertyDesc pd = this.beanDesc
-					.getPropertyDesc(PROPERTY_NAME_START_TASK);
-			pd.setValue(this.task, startTask);
-		}
+		this.taskPropertyWriter.setStartTask(startTask);
 	}
 
 	public void setTask(Object task) {
@@ -569,10 +464,8 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 	}
 
 	public void setTaskId(long taskId) {
-		if (this.beanDesc.hasPropertyDesc(PROPERTY_NAME_TASKID)) {
-			PropertyDesc pd = this.beanDesc
-					.getPropertyDesc(PROPERTY_NAME_TASKID);
-			pd.setValue(this.task, taskId);
+		if (this.taskPropertyWriter.hasTaskId()) {
+			this.taskPropertyWriter.setTaskId(taskId);
 			return;
 		}
 		this.taskId = taskId;
@@ -580,21 +473,15 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 
 	@Binding(bindingType = BindingType.NONE)
 	public void setThreadPool(TaskThreadPool taskThreadPool) {
-		if (this.beanDesc.hasPropertyDesc(PROPERTY_NAME_THREADPOOL)) {
-			PropertyDesc pd = this.beanDesc
-					.getPropertyDesc(PROPERTY_NAME_THREADPOOL);
-			pd.setValue(this.task, taskThreadPool);
-		}
+		this.taskPropertyWriter.setThreadPool(taskThreadPool);
 	}
 
 	private TaskTrigger taskTrigger;
 
 	@Binding(bindingType = BindingType.NONE)
 	public void setTrigger(TaskTrigger taskTrigger) {
-		if (this.beanDesc.hasPropertyDesc(PROPERTY_NAME_TRIGGER)) {
-			PropertyDesc pd = this.beanDesc
-					.getPropertyDesc(PROPERTY_NAME_TRIGGER);
-			pd.setValue(this.task, taskTrigger);
+		if (this.taskPropertyWriter.hasTrigger()) {
+			this.taskPropertyWriter.setTrigger(taskTrigger);
 		} else {
 			// プロパティを持っていなければセットする。
 			this.taskTrigger = taskTrigger;

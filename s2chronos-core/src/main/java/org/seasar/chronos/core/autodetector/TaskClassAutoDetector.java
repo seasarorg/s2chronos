@@ -5,7 +5,7 @@ import java.net.URL;
 import java.util.Iterator;
 import java.util.List;
 
-import org.seasar.chronos.core.util.TaskClassUtil;
+import org.seasar.chronos.core.task.TaskValidator;
 import org.seasar.framework.autodetector.impl.AbstractClassAutoDetector;
 import org.seasar.framework.container.annotation.tiger.Binding;
 import org.seasar.framework.container.annotation.tiger.BindingType;
@@ -29,6 +29,8 @@ public class TaskClassAutoDetector extends AbstractClassAutoDetector {
 	protected NamingConvention namingConvention;
 
 	protected ClassLoader classLoader;
+
+	private TaskValidator taskValidator;
 
 	public TaskClassAutoDetector() {
 		// this.annotations.add(Task.class);
@@ -91,7 +93,7 @@ public class TaskClassAutoDetector extends AbstractClassAutoDetector {
 			final String shortClassName) {
 		final String name = ClassUtil.concatName(packageName, shortClassName);
 		final Class<?> clazz = this.getClass(name);
-		return TaskClassUtil.isTask(clazz);
+		return taskValidator.isValid(clazz);
 	}
 
 	protected Class<?> getClass(final String className) {
@@ -99,5 +101,9 @@ public class TaskClassAutoDetector extends AbstractClassAutoDetector {
 			return ReflectionUtil.forName(className, this.classLoader);
 		}
 		return ReflectionUtil.forNameNoException(className);
+	}
+
+	public void setTaskValidator(TaskValidator taskValidator) {
+		this.taskValidator = taskValidator;
 	}
 }

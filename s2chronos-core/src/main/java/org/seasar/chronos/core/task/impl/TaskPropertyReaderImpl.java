@@ -1,5 +1,6 @@
 package org.seasar.chronos.core.task.impl;
 
+import org.seasar.chronos.core.TaskThreadPool;
 import org.seasar.chronos.core.TaskTrigger;
 import org.seasar.chronos.core.ThreadPoolType;
 import org.seasar.chronos.core.task.TaskPropertyConstant;
@@ -16,6 +17,11 @@ public class TaskPropertyReaderImpl implements TaskPropertyReader {
 	public void loadTask(Object task, Class<?> taskClass) {
 		this.task = task;
 		this.beanDesc = BeanDescFactory.getBeanDesc(taskClass);
+	}
+
+	public void loadTask(Object task, BeanDesc beanDesc) {
+		this.task = task;
+		this.beanDesc = beanDesc;
 	}
 
 	public String getDescription(String defaultValue) {
@@ -41,6 +47,18 @@ public class TaskPropertyReaderImpl implements TaskPropertyReader {
 			PropertyDesc pd = this.beanDesc
 					.getPropertyDesc(TaskPropertyConstant.PROPERTY_NAME_TASKNAME);
 			return (String) pd.getValue(this.task);
+		}
+		return defaultValue;
+	}
+
+	public TaskThreadPool getThreadPool(TaskThreadPool defaultValue) {
+		if (this.hasThreadPool()) {
+			PropertyDesc pd = this.beanDesc
+					.getPropertyDesc(TaskPropertyConstant.PROPERTY_NAME_THREADPOOL);
+			TaskThreadPool result = (TaskThreadPool) pd.getValue(this.task);
+			if (result != null) {
+				return result;
+			}
 		}
 		return defaultValue;
 	}
@@ -157,6 +175,18 @@ public class TaskPropertyReaderImpl implements TaskPropertyReader {
 		if (result) {
 			PropertyDesc pd = this.beanDesc
 					.getPropertyDesc(TaskPropertyConstant.PROPERTY_NAME_TASKNAME);
+			result = pd.hasReadMethod();
+			return result;
+		}
+		return result;
+	}
+
+	public boolean hasThreadPool() {
+		boolean result = this.beanDesc
+				.hasPropertyDesc(TaskPropertyConstant.PROPERTY_NAME_THREADPOOL);
+		if (result) {
+			PropertyDesc pd = this.beanDesc
+					.getPropertyDesc(TaskPropertyConstant.PROPERTY_NAME_THREADPOOL);
 			result = pd.hasReadMethod();
 			return result;
 		}

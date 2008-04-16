@@ -1,11 +1,15 @@
 package org.seasar.chronos.core.task;
 
+import org.seasar.chronos.core.TaskThreadPool;
 import org.seasar.chronos.core.TaskTrigger;
 import org.seasar.chronos.core.ThreadPoolType;
+import org.seasar.framework.beans.BeanDesc;
 
 public interface TaskPropertyReader {
 
 	public void loadTask(Object task, Class<?> taskClass);
+
+	public void loadTask(Object task, BeanDesc beanDesc);
 
 	public boolean hasTaskId();
 
@@ -24,6 +28,8 @@ public interface TaskPropertyReader {
 	public boolean hasReSchedule();
 
 	public boolean hasTrigger();
+
+	public boolean hasThreadPool();
 
 	public boolean hasThreadPoolSize();
 
@@ -46,6 +52,8 @@ public interface TaskPropertyReader {
 	public boolean isReSchedule(boolean defaultValue);
 
 	public TaskTrigger getTrigger(TaskTrigger defaultValue);
+
+	public TaskThreadPool getThreadPool(TaskThreadPool defaultValue);
 
 	public int getThreadPoolSize(int defaultValue);
 
