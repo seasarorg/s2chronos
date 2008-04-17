@@ -8,8 +8,9 @@
 		condition="@org.seasar.chronos.core.util.DiconConditionUtil@hasConvention()" />
 	<include path="chronosCustomize.dicon"
 		condition="@org.seasar.chronos.core.util.DiconConditionUtil@hasCustomizeDicon()" />
-
-	<component class="org.seasar.chronos.core.task.impl.TaskAnnotationReaderImpl"/>
+		<component class="org.seasar.chronos.core.task.impl.TaskAnnotationReaderImpl"/>
+	<component class="org.seasar.chronos.core.task.impl.TaskPropertyReadCommandFactoryImpl"/>
+	<component class="org.seasar.chronos.core.task.impl.TaskPropertyWriteCommandFactoryImpl"/>
 	<component class="org.seasar.chronos.core.task.impl.TaskPropertyReaderImpl">
 	    <aspect pointcut="isEndTask,isStartTask">
      		<component class="org.seasar.chronos.core.interceptor.TriggerPropertyReadInterceptor"/>
