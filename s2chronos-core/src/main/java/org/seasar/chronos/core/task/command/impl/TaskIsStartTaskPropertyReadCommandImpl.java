@@ -17,7 +17,7 @@ import org.seasar.framework.beans.factory.BeanDescFactory;
 import org.seasar.framework.util.StringUtil;
 import org.seasar.framework.util.tiger.ReflectionUtil;
 
-public class TaskIsStartTaskPropertyReadCommand extends
+public class TaskIsStartTaskPropertyReadCommandImpl extends
 		AbstractTaskPropertyCommand {
 
 	private TaskAnnotationReader taskAnnotationReader;

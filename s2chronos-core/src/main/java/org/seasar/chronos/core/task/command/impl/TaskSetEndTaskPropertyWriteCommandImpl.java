@@ -3,7 +3,7 @@ package org.seasar.chronos.core.task.command.impl;
 import org.aopalliance.intercept.MethodInvocation;
 import org.seasar.chronos.core.TaskTrigger;
 
-public class TaskSetEndTaskPropertyWriteCommand extends
+public class TaskSetEndTaskPropertyWriteCommandImpl extends
 		AbstractTaskPropertyCommand {
 
 	public Object execute(MethodInvocation methodInvocation) throws Throwable {

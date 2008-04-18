@@ -3,7 +3,7 @@ package org.seasar.chronos.core.task.command.impl;
 import org.aopalliance.intercept.MethodInvocation;
 import org.seasar.chronos.core.TaskThreadPool;
 
-public class TaskGetThreadPoolSizePropertyReadCommand extends
+public class TaskGetThreadPoolSizePropertyReadCommandImpl extends
 		AbstractTaskPropertyCommand {
 
 	public Object execute(MethodInvocation methodInvocation) throws Throwable {

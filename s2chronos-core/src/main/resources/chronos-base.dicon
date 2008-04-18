@@ -9,16 +9,37 @@
 	<include path="chronosCustomize.dicon"
 		condition="@org.seasar.chronos.core.util.DiconConditionUtil@hasCustomizeDicon()" />
 		<component class="org.seasar.chronos.core.task.impl.TaskAnnotationReaderImpl"/>
+	
+	<!-- タスクのプロパティを読み込むためのコマンド群 -->
+	<component name="taskGetThreadPoolSizePropertyReadCommand" class="org.seasar.chronos.core.task.command.impl.TaskGetThreadPoolSizePropertyReadCommandImpl"/>
+	<component name="taskGetThreadPoolTypePropertyReadCommand" class="org.seasar.chronos.core.task.command.impl.TaskGetThreadPoolTypePropertyReadCommandImpl"/>
+	<component name="taskIsStartTaskPropertyReadCommand" class="org.seasar.chronos.core.task.command.impl.TaskIsStartTaskPropertyReadCommandImpl"/>
+	<component name="taskIsEndTaskPropertyReadCommand" class="org.seasar.chronos.core.task.command.impl.TaskIsEndTaskPropertyReadCommandImpl"/>
+	<component name="taskIsReSchedulePropertyReadCommand" class="org.seasar.chronos.core.task.command.impl.TaskIsReSchedulePropertyReadCommandImpl"/>
+	
+	<!-- タスクのプロパティに書き込むためのコマンド群 -->
+	<component name="taskSetThreadPoolSizePropertyWriteCommand" class="org.seasar.chronos.core.task.command.impl.TaskSetThreadPoolSizePropertyWriteCommandImpl"/>
+	<component name="taskSetThreadPoolTypePropertyWriteCommand" class="org.seasar.chronos.core.task.command.impl.TaskSetThreadPoolTypePropertyWriteCommandImpl"/>
+	<component name="taskSetStartTaskPropertyWriteCommand" class="org.seasar.chronos.core.task.command.impl.TaskSetStartTaskPropertyWriteCommandImpl"/>
+	<component name="taskSetEndTaskPropertyWriteCommand" class="org.seasar.chronos.core.task.command.impl.TaskSetEndTaskPropertyWriteCommandImpl"/>
+	<component name="taskSetReSchedulePropertyWriteCommand" class="org.seasar.chronos.core.task.command.impl.TaskSetReSchedulePropertyWriteCommandImpl"/>
+	
+	<!-- タスクのプロパティを読み込むコマンドのファクトリ -->
 	<component class="org.seasar.chronos.core.task.impl.TaskPropertyReadCommandFactoryImpl"/>
 	<component class="org.seasar.chronos.core.task.impl.TaskPropertyWriteCommandFactoryImpl"/>
+	
+	<!-- タスクのプロパティリーダー -->
 	<component class="org.seasar.chronos.core.task.impl.TaskPropertyReaderImpl">
 	    <aspect pointcut="isEndTask,isStartTask">
      		<component class="org.seasar.chronos.core.interceptor.TriggerPropertyReadInterceptor"/>
 	    </aspect>
 	</component>
+	<!-- タスクのプロパティリーダー -->
 	<component class="org.seasar.chronos.core.task.impl.TaskPropertyWriterImpl"/>
+	<!-- タスクバリデータ -->
 	<component class="org.seasar.chronos.core.task.impl.TaskValidatorImpl"/>
 	
+	<!-- SMART deploy時にTaskコンポーネントを自動認識するDetector -->
 	<component name="taskClassAutoDetector" class="org.seasar.chronos.core.autodetector.TaskClassAutoDetector"/>
 	
 	<component name="timedTrigger" class="org.seasar.chronos.core.trigger.CTimedTrigger" instance="prototype"/>

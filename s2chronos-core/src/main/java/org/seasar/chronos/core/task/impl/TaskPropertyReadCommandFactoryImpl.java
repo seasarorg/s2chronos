@@ -4,28 +4,35 @@ import java.lang.reflect.Method;
 
 import org.seasar.chronos.core.task.TaskPropertyReadCommandFactory;
 import org.seasar.chronos.core.task.command.TaskPropertCommand;
-import org.seasar.chronos.core.task.command.impl.TaskGetThreadPoolSizePropertyReadCommand;
-import org.seasar.chronos.core.task.command.impl.TaskGetThreadPoolTypePropertyReadCommand;
-import org.seasar.chronos.core.task.command.impl.TaskIsEndTaskPropertyReadCommand;
-import org.seasar.chronos.core.task.command.impl.TaskIsReSchedulePropertyReadCommand;
-import org.seasar.chronos.core.task.command.impl.TaskIsStartTaskPropertyReadCommand;
+import org.seasar.framework.container.S2Container;
 
 public class TaskPropertyReadCommandFactoryImpl implements
 		TaskPropertyReadCommandFactory {
 
+	private S2Container s2Container;
+
 	public TaskPropertCommand create(Method method) {
 		TaskPropertCommand result = null;
 		if (method.getName().equals("isEndTask")) {
-			result = new TaskIsEndTaskPropertyReadCommand();
+			result = (TaskPropertCommand) s2Container
+					.getComponent("taskIsEndTaskPropertyReadCommand");
 		} else if (method.getName().equals("isStartTask")) {
-			result = new TaskIsStartTaskPropertyReadCommand();
+			result = (TaskPropertCommand) s2Container
+					.getComponent("taskIsStartTaskPropertyReadCommand");
 		} else if (method.getName().equals("getThreadPoolSize")) {
-			result = new TaskGetThreadPoolSizePropertyReadCommand();
+			result = (TaskPropertCommand) s2Container
+					.getComponent("taskGetThreadPoolSizePropertyReadCommand");
 		} else if (method.getName().equals("getThreadPoolType")) {
-			result = new TaskGetThreadPoolTypePropertyReadCommand();
+			result = (TaskPropertCommand) s2Container
+					.getComponent("taskGetThreadPoolTypePropertyReadCommand");
 		} else if (method.getName().equals("isReSchedule")) {
-			result = new TaskIsReSchedulePropertyReadCommand();
+			result = (TaskPropertCommand) s2Container
+					.getComponent("taskIsReSchedulePropertyReadCommand");
 		}
 		return result;
+	}
+
+	public void setS2Container(S2Container container) {
+		s2Container = container;
 	}
 }
