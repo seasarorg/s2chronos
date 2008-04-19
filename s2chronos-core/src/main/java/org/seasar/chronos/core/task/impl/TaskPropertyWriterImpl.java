@@ -3,7 +3,7 @@ package org.seasar.chronos.core.task.impl;
 import org.seasar.chronos.core.TaskThreadPool;
 import org.seasar.chronos.core.TaskTrigger;
 import org.seasar.chronos.core.ThreadPoolType;
-import org.seasar.chronos.core.task.TaskPropertyConstant;
+import org.seasar.chronos.core.task.TaskConstant;
 import org.seasar.chronos.core.task.TaskPropertyWriter;
 import org.seasar.framework.beans.BeanDesc;
 import org.seasar.framework.beans.PropertyDesc;
@@ -41,7 +41,7 @@ public class TaskPropertyWriterImpl implements TaskPropertyWriter {
 	public void setThreadPoolType(ThreadPoolType value) {
 		if (this.hasThreadPoolType()) {
 			PropertyDesc pd = this.beanDesc
-					.getPropertyDesc(TaskPropertyConstant.PROPERTY_NAME_THREAD_POOL_TYPE);
+					.getPropertyDesc(TaskConstant.PROPERTY_NAME_THREAD_POOL_TYPE);
 			pd.setValue(this.task, value);
 		}
 	}
@@ -49,7 +49,7 @@ public class TaskPropertyWriterImpl implements TaskPropertyWriter {
 	public void setDescription(String value) {
 		if (this.hasDescription()) {
 			PropertyDesc pd = this.beanDesc
-					.getPropertyDesc(TaskPropertyConstant.PROPERTY_NAME_DESCRIPTION);
+					.getPropertyDesc(TaskConstant.PROPERTY_NAME_DESCRIPTION);
 			pd.setValue(this.task, value);
 		}
 	}
@@ -57,7 +57,7 @@ public class TaskPropertyWriterImpl implements TaskPropertyWriter {
 	public void setEndTask(boolean value) {
 		if (this.hasEndTask()) {
 			PropertyDesc pd = this.beanDesc
-					.getPropertyDesc(TaskPropertyConstant.PROPERTY_NAME_END_TASK);
+					.getPropertyDesc(TaskConstant.PROPERTY_NAME_END_TASK);
 			pd.setValue(this.task, value);
 		}
 	}
@@ -65,7 +65,7 @@ public class TaskPropertyWriterImpl implements TaskPropertyWriter {
 	public void setExecuted(boolean value) {
 		if (this.hasExecuted()) {
 			PropertyDesc pd = this.beanDesc
-					.getPropertyDesc(TaskPropertyConstant.PROPERTY_NAME_EXECUTED);
+					.getPropertyDesc(TaskConstant.PROPERTY_NAME_EXECUTED);
 			pd.setValue(this.task, value);
 		}
 	}
@@ -73,7 +73,7 @@ public class TaskPropertyWriterImpl implements TaskPropertyWriter {
 	public void setReSchedule(boolean value) {
 		if (this.hasReSchedule()) {
 			PropertyDesc pd = this.beanDesc
-					.getPropertyDesc(TaskPropertyConstant.PROPERTY_NAME_RESCHEDULE);
+					.getPropertyDesc(TaskConstant.PROPERTY_NAME_RESCHEDULE);
 			pd.setValue(this.task, value);
 		}
 	}
@@ -81,7 +81,7 @@ public class TaskPropertyWriterImpl implements TaskPropertyWriter {
 	public void setShutdownTask(boolean value) {
 		if (this.hasShutdownTask()) {
 			PropertyDesc pd = this.beanDesc
-					.getPropertyDesc(TaskPropertyConstant.PROPERTY_NAME_SHUTDOWN_TASK);
+					.getPropertyDesc(TaskConstant.PROPERTY_NAME_SHUTDOWN_TASK);
 			pd.setValue(this.task, value);
 		}
 	}
@@ -89,7 +89,7 @@ public class TaskPropertyWriterImpl implements TaskPropertyWriter {
 	public void setStartTask(boolean value) {
 		if (this.hasStartTask()) {
 			PropertyDesc pd = this.beanDesc
-					.getPropertyDesc(TaskPropertyConstant.PROPERTY_NAME_START_TASK);
+					.getPropertyDesc(TaskConstant.PROPERTY_NAME_START_TASK);
 			pd.setValue(this.task, value);
 		}
 	}
@@ -97,7 +97,7 @@ public class TaskPropertyWriterImpl implements TaskPropertyWriter {
 	public void setTaskId(Long value) {
 		if (this.hasTaskId()) {
 			PropertyDesc pd = this.beanDesc
-					.getPropertyDesc(TaskPropertyConstant.PROPERTY_NAME_TASKID);
+					.getPropertyDesc(TaskConstant.PROPERTY_NAME_TASKID);
 			pd.setValue(this.task, value);
 		}
 	}
@@ -105,7 +105,7 @@ public class TaskPropertyWriterImpl implements TaskPropertyWriter {
 	public void setTaskName(String value) {
 		if (this.hasTaskName()) {
 			PropertyDesc pd = this.beanDesc
-					.getPropertyDesc(TaskPropertyConstant.PROPERTY_NAME_TASKNAME);
+					.getPropertyDesc(TaskConstant.PROPERTY_NAME_TASKNAME);
 			pd.setValue(this.task, value);
 		}
 	}
@@ -113,7 +113,7 @@ public class TaskPropertyWriterImpl implements TaskPropertyWriter {
 	public void setThreadPool(TaskThreadPool value) {
 		if (this.hasThreadPool()) {
 			PropertyDesc pd = this.beanDesc
-					.getPropertyDesc(TaskPropertyConstant.PROPERTY_NAME_THREADPOOL);
+					.getPropertyDesc(TaskConstant.PROPERTY_NAME_THREADPOOL);
 			pd.setValue(this.task, value);
 		}
 	}
@@ -121,7 +121,7 @@ public class TaskPropertyWriterImpl implements TaskPropertyWriter {
 	public void setThreadPoolSize(int value) {
 		if (this.hasThreadPoolSize()) {
 			PropertyDesc pd = this.beanDesc
-					.getPropertyDesc(TaskPropertyConstant.PROPERTY_NAME_THREAD_POOL_SIZE);
+					.getPropertyDesc(TaskConstant.PROPERTY_NAME_THREAD_POOL_SIZE);
 			pd.setValue(this.task, value);
 		}
 	}
@@ -129,19 +129,19 @@ public class TaskPropertyWriterImpl implements TaskPropertyWriter {
 	@Binding(bindingType = BindingType.NONE)
 	public void setTrigger(TaskTrigger value) {
 		if (this.beanDesc
-				.hasPropertyDesc(TaskPropertyConstant.PROPERTY_NAME_TRIGGER)) {
+				.hasPropertyDesc(TaskConstant.PROPERTY_NAME_TRIGGER)) {
 			PropertyDesc pd = this.beanDesc
-					.getPropertyDesc(TaskPropertyConstant.PROPERTY_NAME_TRIGGER);
+					.getPropertyDesc(TaskConstant.PROPERTY_NAME_TRIGGER);
 			pd.setValue(this.task, value);
 		}
 	}
 
 	public boolean hasDescription() {
 		boolean result = this.beanDesc
-				.hasPropertyDesc(TaskPropertyConstant.PROPERTY_NAME_DESCRIPTION);
+				.hasPropertyDesc(TaskConstant.PROPERTY_NAME_DESCRIPTION);
 		if (result) {
 			PropertyDesc pd = this.beanDesc
-					.getPropertyDesc(TaskPropertyConstant.PROPERTY_NAME_DESCRIPTION);
+					.getPropertyDesc(TaskConstant.PROPERTY_NAME_DESCRIPTION);
 			result = pd.hasWriteMethod();
 			return result;
 		}
@@ -150,10 +150,10 @@ public class TaskPropertyWriterImpl implements TaskPropertyWriter {
 
 	public boolean hasEndTask() {
 		boolean result = this.beanDesc
-				.hasPropertyDesc(TaskPropertyConstant.PROPERTY_NAME_END_TASK);
+				.hasPropertyDesc(TaskConstant.PROPERTY_NAME_END_TASK);
 		if (result) {
 			PropertyDesc pd = this.beanDesc
-					.getPropertyDesc(TaskPropertyConstant.PROPERTY_NAME_END_TASK);
+					.getPropertyDesc(TaskConstant.PROPERTY_NAME_END_TASK);
 			result = pd.hasWriteMethod();
 			return result;
 		}
@@ -162,10 +162,10 @@ public class TaskPropertyWriterImpl implements TaskPropertyWriter {
 
 	public boolean hasExecuted() {
 		boolean result = this.beanDesc
-				.hasPropertyDesc(TaskPropertyConstant.PROPERTY_NAME_EXECUTED);
+				.hasPropertyDesc(TaskConstant.PROPERTY_NAME_EXECUTED);
 		if (result) {
 			PropertyDesc pd = this.beanDesc
-					.getPropertyDesc(TaskPropertyConstant.PROPERTY_NAME_EXECUTED);
+					.getPropertyDesc(TaskConstant.PROPERTY_NAME_EXECUTED);
 			result = pd.hasWriteMethod();
 			return result;
 		}
@@ -174,10 +174,10 @@ public class TaskPropertyWriterImpl implements TaskPropertyWriter {
 
 	public boolean hasReSchedule() {
 		boolean result = this.beanDesc
-				.hasPropertyDesc(TaskPropertyConstant.PROPERTY_NAME_RESCHEDULE);
+				.hasPropertyDesc(TaskConstant.PROPERTY_NAME_RESCHEDULE);
 		if (result) {
 			PropertyDesc pd = this.beanDesc
-					.getPropertyDesc(TaskPropertyConstant.PROPERTY_NAME_RESCHEDULE);
+					.getPropertyDesc(TaskConstant.PROPERTY_NAME_RESCHEDULE);
 			result = pd.hasWriteMethod();
 			return result;
 		}
@@ -186,10 +186,10 @@ public class TaskPropertyWriterImpl implements TaskPropertyWriter {
 
 	public boolean hasShutdownTask() {
 		boolean result = this.beanDesc
-				.hasPropertyDesc(TaskPropertyConstant.PROPERTY_NAME_SHUTDOWN_TASK);
+				.hasPropertyDesc(TaskConstant.PROPERTY_NAME_SHUTDOWN_TASK);
 		if (result) {
 			PropertyDesc pd = this.beanDesc
-					.getPropertyDesc(TaskPropertyConstant.PROPERTY_NAME_SHUTDOWN_TASK);
+					.getPropertyDesc(TaskConstant.PROPERTY_NAME_SHUTDOWN_TASK);
 			result = pd.hasWriteMethod();
 			return result;
 		}
@@ -198,10 +198,10 @@ public class TaskPropertyWriterImpl implements TaskPropertyWriter {
 
 	public boolean hasStartTask() {
 		boolean result = this.beanDesc
-				.hasPropertyDesc(TaskPropertyConstant.PROPERTY_NAME_START_TASK);
+				.hasPropertyDesc(TaskConstant.PROPERTY_NAME_START_TASK);
 		if (result) {
 			PropertyDesc pd = this.beanDesc
-					.getPropertyDesc(TaskPropertyConstant.PROPERTY_NAME_START_TASK);
+					.getPropertyDesc(TaskConstant.PROPERTY_NAME_START_TASK);
 			result = pd.hasWriteMethod();
 			return result;
 		}
@@ -210,10 +210,10 @@ public class TaskPropertyWriterImpl implements TaskPropertyWriter {
 
 	public boolean hasTaskId() {
 		boolean result = this.beanDesc
-				.hasPropertyDesc(TaskPropertyConstant.PROPERTY_NAME_TASKID);
+				.hasPropertyDesc(TaskConstant.PROPERTY_NAME_TASKID);
 		if (result) {
 			PropertyDesc pd = this.beanDesc
-					.getPropertyDesc(TaskPropertyConstant.PROPERTY_NAME_TASKID);
+					.getPropertyDesc(TaskConstant.PROPERTY_NAME_TASKID);
 			result = pd.hasWriteMethod();
 			return result;
 		}
@@ -222,10 +222,10 @@ public class TaskPropertyWriterImpl implements TaskPropertyWriter {
 
 	public boolean hasTaskName() {
 		boolean result = this.beanDesc
-				.hasPropertyDesc(TaskPropertyConstant.PROPERTY_NAME_TASKNAME);
+				.hasPropertyDesc(TaskConstant.PROPERTY_NAME_TASKNAME);
 		if (result) {
 			PropertyDesc pd = this.beanDesc
-					.getPropertyDesc(TaskPropertyConstant.PROPERTY_NAME_TASKNAME);
+					.getPropertyDesc(TaskConstant.PROPERTY_NAME_TASKNAME);
 			result = pd.hasWriteMethod();
 			return result;
 		}
@@ -234,10 +234,10 @@ public class TaskPropertyWriterImpl implements TaskPropertyWriter {
 
 	public boolean hasThreadPool() {
 		boolean result = this.beanDesc
-				.hasPropertyDesc(TaskPropertyConstant.PROPERTY_NAME_THREADPOOL);
+				.hasPropertyDesc(TaskConstant.PROPERTY_NAME_THREADPOOL);
 		if (result) {
 			PropertyDesc pd = this.beanDesc
-					.getPropertyDesc(TaskPropertyConstant.PROPERTY_NAME_THREADPOOL);
+					.getPropertyDesc(TaskConstant.PROPERTY_NAME_THREADPOOL);
 			result = pd.hasWriteMethod();
 			return result;
 		}
@@ -246,10 +246,10 @@ public class TaskPropertyWriterImpl implements TaskPropertyWriter {
 
 	public boolean hasThreadPoolSize() {
 		boolean result = this.beanDesc
-				.hasPropertyDesc(TaskPropertyConstant.PROPERTY_NAME_THREAD_POOL_SIZE);
+				.hasPropertyDesc(TaskConstant.PROPERTY_NAME_THREAD_POOL_SIZE);
 		if (result) {
 			PropertyDesc pd = this.beanDesc
-					.getPropertyDesc(TaskPropertyConstant.PROPERTY_NAME_THREAD_POOL_SIZE);
+					.getPropertyDesc(TaskConstant.PROPERTY_NAME_THREAD_POOL_SIZE);
 			result = pd.hasWriteMethod();
 			return result;
 		}
@@ -258,10 +258,10 @@ public class TaskPropertyWriterImpl implements TaskPropertyWriter {
 
 	public boolean hasThreadPoolType() {
 		boolean result = this.beanDesc
-				.hasPropertyDesc(TaskPropertyConstant.PROPERTY_NAME_THREAD_POOL_TYPE);
+				.hasPropertyDesc(TaskConstant.PROPERTY_NAME_THREAD_POOL_TYPE);
 		if (result) {
 			PropertyDesc pd = this.beanDesc
-					.getPropertyDesc(TaskPropertyConstant.PROPERTY_NAME_THREAD_POOL_TYPE);
+					.getPropertyDesc(TaskConstant.PROPERTY_NAME_THREAD_POOL_TYPE);
 			result = pd.hasWriteMethod();
 			return result;
 		}
@@ -270,10 +270,10 @@ public class TaskPropertyWriterImpl implements TaskPropertyWriter {
 
 	public boolean hasTrigger() {
 		boolean result = this.beanDesc
-				.hasPropertyDesc(TaskPropertyConstant.PROPERTY_NAME_TRIGGER);
+				.hasPropertyDesc(TaskConstant.PROPERTY_NAME_TRIGGER);
 		if (result) {
 			PropertyDesc pd = this.beanDesc
-					.getPropertyDesc(TaskPropertyConstant.PROPERTY_NAME_TRIGGER);
+					.getPropertyDesc(TaskConstant.PROPERTY_NAME_TRIGGER);
 			result = pd.hasWriteMethod();
 			return result;
 		}

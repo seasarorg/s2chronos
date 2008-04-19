@@ -7,7 +7,8 @@ public class TaskGetThreadPoolSizePropertyReadCommandImpl extends
 		AbstractTaskPropertyCommand {
 
 	public Object execute(MethodInvocation methodInvocation) throws Throwable {
-		int threadPoolSize = 1;
+		Object[] param = methodInvocation.getArguments();
+		int threadPoolSize = (Integer) param[0];
 		TaskThreadPool taskThreadPool = this.getTaskPropertyReader(
 				methodInvocation).getThreadPool(null);
 		if (taskThreadPool == null) {
@@ -17,5 +18,4 @@ public class TaskGetThreadPoolSizePropertyReadCommandImpl extends
 		}
 		return threadPoolSize;
 	}
-
 }

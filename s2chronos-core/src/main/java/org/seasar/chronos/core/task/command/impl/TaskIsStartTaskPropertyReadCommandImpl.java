@@ -20,6 +20,7 @@ import org.seasar.framework.util.tiger.ReflectionUtil;
 public class TaskIsStartTaskPropertyReadCommandImpl extends
 		AbstractTaskPropertyCommand {
 
+	private static final String YYYY_MM_DD_HH_MM_SS = "yyyy/MM/dd HH:mm:ss";
 	private TaskAnnotationReader taskAnnotationReader;
 	private TaskPropertyWriter taskPropertyWriter;
 
@@ -58,33 +59,38 @@ public class TaskIsStartTaskPropertyReadCommandImpl extends
 											.getPropertyDesc(methodName);
 									Object value = ReflectionUtil.invoke(m,
 											annotaion, new Object[] {});
-									if (m.getReturnType().equals(
-											pd.getPropertyType())) {
-										pd.setValue(taskTrigger, value);
-									} else {
-										// StringからDateに変換する処理
-										if (pd.getPropertyType().equals(
-												Date.class)
-												&& m.getReturnType().equals(
-														String.class)
-												&& !StringUtil
-														.isEmpty((String) value)) {
-											SimpleDateFormat sdf = new SimpleDateFormat(
-													"yyyy/MM/dd HH:mm:ss");
-
-											Date date = null;
-											try {
-												date = sdf
-														.parse((String) value);
-											} catch (ParseException e) {
-												;
-											}
-											pd.setValue(taskTrigger, date);
-										}
-									}
+									convertProperty(taskTrigger, m, pd, value);
 								}
 							}
 
+						}
+
+						private void convertProperty(TaskTrigger taskTrigger,
+								Method m, PropertyDesc pd, Object value) {
+							if (m.getReturnType().equals(
+									pd.getPropertyType())) {
+								pd.setValue(taskTrigger, value);
+							} else {
+								// StringからDateに変換する処理
+								if (pd.getPropertyType().equals(
+										Date.class)
+										&& m.getReturnType().equals(
+												String.class)
+										&& !StringUtil
+												.isEmpty((String) value)) {
+									SimpleDateFormat sdf = new SimpleDateFormat(
+											YYYY_MM_DD_HH_MM_SS);
+
+									Date date = null;
+									try {
+										date = sdf
+												.parse((String) value);
+									} catch (ParseException e) {
+										;
+									}
+									pd.setValue(taskTrigger, date);
+								}
+							}
 						}
 					});
 			taskPropertyWriter.loadTask(this.getTaskPropertyReader(
