@@ -30,12 +30,18 @@
 	
 	<!-- タスクのプロパティリーダー -->
 	<component class="org.seasar.chronos.core.task.impl.TaskPropertyReaderImpl">
-	    <aspect pointcut="getTaskName,isEndTask,isStartTask">
+	    <aspect pointcut="getTaskName,isEndTask,isStartTask,isReSchedule,getThreadPoolType,getThreadPoolSize">
      		<component class="org.seasar.chronos.core.interceptor.TriggerPropertyReadInterceptor"/>
 	    </aspect>
 	</component>
-	<!-- タスクのプロパティリーダー -->
-	<component class="org.seasar.chronos.core.task.impl.TaskPropertyWriterImpl"/>
+	<!-- タスクのプロパティライター -->
+	<component class="org.seasar.chronos.core.task.impl.TaskPropertyWriterImpl">
+<!--
+	    <aspect pointcut="setTaskName,setEndTask,setStartTask,setReSchedule,setThreadPoolType,setThreadPoolSize">
+     		<component class="org.seasar.chronos.core.interceptor.TriggerPropertyWriteInterceptor"/>
+	    </aspect>
+-->
+	</component>
 	<!-- タスクバリデータ -->
 	<component class="org.seasar.chronos.core.task.impl.TaskValidatorImpl"/>
 	
