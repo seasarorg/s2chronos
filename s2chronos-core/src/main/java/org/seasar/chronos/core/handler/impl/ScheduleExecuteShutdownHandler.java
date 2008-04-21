@@ -8,7 +8,6 @@ import org.seasar.chronos.core.impl.SchedulerImpl;
 import org.seasar.chronos.core.impl.TaskStateType;
 import org.seasar.chronos.core.schedule.TaskScheduleEntryManager.TaskScheduleEntryHanlder;
 import org.seasar.chronos.core.task.TaskExecutorService;
-import org.seasar.chronos.core.util.TaskPropertyUtil;
 
 public class ScheduleExecuteShutdownHandler extends
 		AbstractScheduleExecuteHandler {
@@ -23,14 +22,15 @@ public class ScheduleExecuteShutdownHandler extends
 								.getTaskExecutorService();
 						if (tes.getTaskPropertyReader().isShutdownTask(false)) {
 							log.log("DCHRONOS0011",
-									new Object[] { TaskPropertyUtil
-											.getTaskName(tes) });
+									new Object[] { tes.getTaskPropertyReader()
+											.getTaskName(null) });
 							final Future<TaskExecutorService> future = executorService
 									.submit(new Callable<TaskExecutorService>() {
 										public TaskExecutorService call()
 												throws Exception {
-											Object[] logArgs = new Object[] { TaskPropertyUtil
-													.getTaskName(tes) };
+											Object[] logArgs = new Object[] { tes
+													.getTaskPropertyReader()
+													.getTaskName(null) };
 											log.log("DCHRONOS0002", logArgs);
 											log.log("DCHRONOS0012", logArgs);
 											if (tes.cancel()) {
@@ -60,8 +60,10 @@ public class ScheduleExecuteShutdownHandler extends
 											log
 													.log(
 															"DCHRONOS0003",
-															new Object[] { TaskPropertyUtil
-																	.getTaskName(tes) });
+															new Object[] { tes
+																	.getTaskPropertyReader()
+																	.getTaskName(
+																			null) });
 											return tes;
 										}
 									});

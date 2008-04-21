@@ -8,7 +8,6 @@ import org.seasar.chronos.core.TaskScheduleEntry;
 import org.seasar.chronos.core.impl.TaskStateType;
 import org.seasar.chronos.core.schedule.TaskScheduleEntryManager.TaskScheduleEntryHanlder;
 import org.seasar.chronos.core.task.TaskExecutorService;
-import org.seasar.chronos.core.util.TaskPropertyUtil;
 import org.seasar.framework.convention.NamingConvention;
 
 public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler {
@@ -59,8 +58,8 @@ public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler 
 		}
 
 		public TaskExecutorService call() throws Exception {
-			final String taskName = TaskPropertyUtil
-					.getTaskName(taskExecutorService);
+			final String taskName = taskExecutorService.getTaskPropertyReader()
+					.getTaskName(null);
 			log.log("DCHRONOS0121", new Object[] { taskName });
 			taskContenaStateManager.addTaskScheduleEntry(TaskStateType.RUNNING,
 					taskScheduleEntry);
@@ -121,8 +120,8 @@ public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler 
 								&& tes.getTaskPropertyReader().isStartTask(
 										false)) {
 							log.log("DCHRONOSSSTHRTSTT",
-									new Object[] { TaskPropertyUtil
-											.getTaskName(tes) });
+									new Object[] { tes.getTaskPropertyReader()
+											.getTaskName(null) });
 							TaskExecutorServiceCallable tesc = new TaskExecutorServiceCallable();
 							tesc.setTaskExecutorService(tes);
 							tesc.setTaskScheduleEntry(taskScheduleEntry);

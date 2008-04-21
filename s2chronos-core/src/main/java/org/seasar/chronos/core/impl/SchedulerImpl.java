@@ -19,7 +19,6 @@ import org.seasar.chronos.core.exception.InterruptedRuntimeException;
 import org.seasar.chronos.core.handler.ScheduleExecuteHandler;
 import org.seasar.chronos.core.schedule.TaskScheduleEntryManager;
 import org.seasar.chronos.core.schedule.TaskScheduleEntryManager.TaskScheduleEntryHanlder;
-import org.seasar.chronos.core.util.TaskPropertyUtil;
 import org.seasar.framework.container.ComponentDef;
 import org.seasar.framework.container.S2Container;
 
@@ -303,9 +302,10 @@ public class SchedulerImpl extends AbstractScheduler {
 							while (!taskScheduleEntry.getTaskExecutorService()
 									.await(SHUTDOWN_AWAIT_TIME,
 											SHUTDOWN_AWAIT_TIMEUNIT)) {
-								String taskName = TaskPropertyUtil
-										.getTaskName(taskScheduleEntry
-												.getTaskExecutorService());
+								String taskName = taskScheduleEntry
+										.getTaskExecutorService()
+										.getTaskPropertyReader().getTaskName(
+												null);
 								log.log("DCHRONOS0014",
 										new Object[] { taskName });
 							}

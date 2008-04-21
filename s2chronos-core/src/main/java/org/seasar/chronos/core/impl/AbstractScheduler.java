@@ -7,7 +7,6 @@ import org.seasar.chronos.core.autodetector.TaskClassAutoDetector;
 import org.seasar.chronos.core.schedule.TaskScheduleEntryManager;
 import org.seasar.chronos.core.task.TaskExecutorService;
 import org.seasar.chronos.core.task.TaskValidator;
-import org.seasar.chronos.core.util.TaskPropertyUtil;
 import org.seasar.framework.container.ComponentDef;
 import org.seasar.framework.container.S2Container;
 import org.seasar.framework.container.util.SmartDeployUtil;
@@ -46,7 +45,8 @@ public abstract class AbstractScheduler implements Scheduler {
 							TaskScheduleEntry taskScheduleEntry) {
 						TaskExecutorService tes = taskScheduleEntry
 								.getTaskExecutorService();
-						String _taskName = TaskPropertyUtil.getTaskName(tes);
+						String _taskName = tes.getTaskPropertyReader()
+								.getTaskName(null);
 						if (taskName.equals(_taskName)) {
 							return taskScheduleEntry.getComponentDef();
 						}
