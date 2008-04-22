@@ -6,5 +6,6 @@
 		<property name="autoFinish">true</property>
 		<property name="autoFinishTimeLimit">5000L</property>
 		<property name="taskScanIntervalTime">2000L</property>
+		<property name="threadPoolType">@org.seasar.chronos.core.ThreadPoolType@CACHED</property>
 	</component>
 </components>

@@ -116,7 +116,7 @@ public class SchedulerEventHandlerTest extends TestCase implements
 	}
 
 	public void testFireRegistTaskAfterScheduler() {
-		target.fireRegistTaskAfterScheduler();
+		target.fireRegisterTaskAfterScheduler();
 		try {
 			Thread.sleep(2000);
 		} catch (InterruptedException e) {
@@ -124,7 +124,7 @@ public class SchedulerEventHandlerTest extends TestCase implements
 	}
 
 	public void testFireRegistTaskBeforeScheduler() {
-		target.fireRegistTaskBeforeScheduler();
+		target.fireRegisterTaskBeforeScheduler();
 		try {
 			Thread.sleep(2000);
 		} catch (InterruptedException e) {

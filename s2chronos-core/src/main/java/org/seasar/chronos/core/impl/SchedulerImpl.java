@@ -4,7 +4,6 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -16,6 +15,7 @@ import org.seasar.chronos.core.event.SchedulerEventHandler;
 import org.seasar.chronos.core.exception.CancellationRuntimeException;
 import org.seasar.chronos.core.exception.ExecutionRuntimeException;
 import org.seasar.chronos.core.exception.InterruptedRuntimeException;
+import org.seasar.chronos.core.executor.ExecutorServiceFactory;
 import org.seasar.chronos.core.handler.ScheduleExecuteHandler;
 import org.seasar.chronos.core.schedule.TaskScheduleEntryManager;
 import org.seasar.chronos.core.schedule.TaskScheduleEntryManager.TaskScheduleEntryHanlder;
@@ -36,8 +36,7 @@ public class SchedulerImpl extends AbstractScheduler {
 	private final AtomicBoolean pause = new AtomicBoolean();
 
 	// TODO スレッドプールをカスタマイズ可能にすること
-	private final ExecutorService executorService = Executors
-			.newCachedThreadPool();
+	private ExecutorService executorService;
 
 	private Future<Void> schedulerTaskFuture;
 
@@ -54,7 +53,16 @@ public class SchedulerImpl extends AbstractScheduler {
 
 	private ScheduleExecuteHandler scheduleTaskStateCleanHandler;
 
+	private ExecutorServiceFactory executorServiceFactory;
+
 	private long finishStartTime = 0;
+
+	private boolean initialized;
+
+	private void initialize() {
+		executorService = executorServiceFactory.create(this.configuration
+				.getThreadPoolType(), this.configuration.getThreadPoolSize());
+	}
 
 	/**
 	 * リスナーを追加します．
@@ -326,12 +334,18 @@ public class SchedulerImpl extends AbstractScheduler {
 	 * @see org.seasar.chronos.core.Scheduler#start()
 	 */
 	public void start() {
+
+		if (!this.initialized) {
+			initialize();
+			this.initialized = true;
+		}
+
 		log.log("DCHRONOS0011", null);
-		this.schedulerEventHandler.fireRegistTaskBeforeScheduler();
+		this.schedulerEventHandler.fireRegisterTaskBeforeScheduler();
 		this.registTaskFromS2Container();
 		final ScheduleExecuteHandler[] scheduleExecuteHandlers = this
 				.setupHandler();
-		this.schedulerEventHandler.fireRegistTaskAfterScheduler();
+		this.schedulerEventHandler.fireRegisterTaskAfterScheduler();
 
 		this.schedulerTaskFuture = this.executorService
 				.submit(new Callable<Void>() {
@@ -353,6 +367,11 @@ public class SchedulerImpl extends AbstractScheduler {
 	public void setScheduleTaskStateCleanHandler(
 			ScheduleExecuteHandler scheduleTaskStateCleanHandler) {
 		this.scheduleTaskStateCleanHandler = scheduleTaskStateCleanHandler;
+	}
+
+	public void setExecutorServiceFactory(
+			ExecutorServiceFactory executorServiceFactory) {
+		this.executorServiceFactory = executorServiceFactory;
 	}
 
 }

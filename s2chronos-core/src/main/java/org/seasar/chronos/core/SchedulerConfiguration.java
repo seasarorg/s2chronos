@@ -14,6 +14,10 @@ public final class SchedulerConfiguration {
 
 	private long taskScanIntervalTime;
 
+	private int threadPoolSize;
+
+	private ThreadPoolType threadPoolType;
+
 	public boolean isAutoFinish() {
 		return autoFinish;
 	}
@@ -38,4 +42,19 @@ public final class SchedulerConfiguration {
 		this.taskScanIntervalTime = taskScanIntervalTime;
 	}
 
+	public int getThreadPoolSize() {
+		return threadPoolSize;
+	}
+
+	public ThreadPoolType getThreadPoolType() {
+		return this.threadPoolType;
+	}
+
+	public void setThreadPoolSize(int threadPoolSize) {
+		this.threadPoolSize = threadPoolSize;
+	}
+
+	public void setThreadPoolType(ThreadPoolType threadPoolType) {
+		this.threadPoolType = threadPoolType;
+	}
 }
