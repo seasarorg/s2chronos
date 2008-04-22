@@ -23,14 +23,31 @@ public class SchedulerEventHandler {
 
 	private final Scheduler scheduler;
 
+	/**
+	 * コンストラクタ
+	 * 
+	 * @param scheduler
+	 *            スケジューラ
+	 */
 	public SchedulerEventHandler(Scheduler scheduler) {
 		this.scheduler = scheduler;
 	}
 
+	/**
+	 * リスナーを追加する．
+	 * 
+	 * @param listener
+	 *            リスナー
+	 * @return この呼び出しの結果，このコレクションが変更された場合はtrue，それ以外はfalse
+	 */
 	public boolean add(SchedulerEventListener listener) {
 		return this.schedulerEventListener.add(listener);
 	}
 
+	/**
+	 * 
+	 * @param taskScheduleEntry
+	 */
 	public void fireAddTaskScheduleEntry(
 			final TaskScheduleEntry taskScheduleEntry) {
 		for (final SchedulerEventListener listener : schedulerEventListener) {
@@ -43,6 +60,12 @@ public class SchedulerEventHandler {
 		}
 	}
 
+	/**
+	 * タスクのキャンセルイベントを発火します．
+	 * 
+	 * @param task
+	 *            タスク
+	 */
 	public void fireCancelTask(final Object task) {
 		for (final SchedulerEventListener listener : schedulerEventListener) {
 			Future<?> future = ExecutorService.submit(new Runnable() {
@@ -54,6 +77,9 @@ public class SchedulerEventHandler {
 		}
 	}
 
+	/**
+	 * スケジューラ終了イベントを発火します．
+	 */
 	public void fireEndScheduler() {
 		for (final SchedulerEventListener listener : schedulerEventListener) {
 			Future<?> future = ExecutorService.submit(new Runnable() {
@@ -65,6 +91,14 @@ public class SchedulerEventHandler {
 		}
 	}
 
+	/**
+	 * タスクの例外イベントを発火します．
+	 * 
+	 * @param task
+	 *            タスク
+	 * @param e
+	 *            例外
+	 */
 	public void fireExceptionTask(final Object task, final Exception e) {
 		for (final SchedulerEventListener listener : schedulerEventListener) {
 			Future<?> future = ExecutorService.submit(new Runnable() {
@@ -76,6 +110,12 @@ public class SchedulerEventHandler {
 		}
 	}
 
+	/**
+	 * タスクの終了イベントを発火します．
+	 * 
+	 * @param task
+	 *            タスク
+	 */
 	public void fireEndTask(final Object task) {
 		for (final SchedulerEventListener listener : schedulerEventListener) {
 			Future<?> future = ExecutorService.submit(new Runnable() {
@@ -87,6 +127,9 @@ public class SchedulerEventHandler {
 		}
 	}
 
+	/**
+	 * スケジューラの一時停止イベントを発火します．
+	 */
 	public void firePauseScheduler() {
 		for (final SchedulerEventListener listener : schedulerEventListener) {
 			Future<?> future = ExecutorService.submit(new Runnable() {
@@ -98,6 +141,9 @@ public class SchedulerEventHandler {
 		}
 	}
 
+	/**
+	 * スケジューラの再開イベントを発火します．
+	 */
 	public void fireResumeScheduler() {
 		for (final SchedulerEventListener listener : schedulerEventListener) {
 			Future<?> future = ExecutorService.submit(new Runnable() {
@@ -109,7 +155,10 @@ public class SchedulerEventHandler {
 		}
 	}
 
-	public void fireRegistTaskAfterScheduler() {
+	/**
+	 * タスク登録後イベントを発火します．
+	 */
+	public void fireRegisterTaskAfterScheduler() {
 		for (final SchedulerEventListener listener : schedulerEventListener) {
 			Future<?> future = ExecutorService.submit(new Runnable() {
 				public void run() {
@@ -120,7 +169,10 @@ public class SchedulerEventHandler {
 		}
 	}
 
-	public void fireRegistTaskBeforeScheduler() {
+	/**
+	 * タスク登録前イベントを発火します．
+	 */
+	public void fireRegisterTaskBeforeScheduler() {
 		for (final SchedulerEventListener listener : schedulerEventListener) {
 			Future<?> future = ExecutorService.submit(new Runnable() {
 				public void run() {
@@ -131,6 +183,10 @@ public class SchedulerEventHandler {
 		}
 	}
 
+	/**
+	 * 
+	 * @param taskScheduleEntry
+	 */
 	public void fireRemoveTaskScheduleEntry(
 			final TaskScheduleEntry taskScheduleEntry) {
 		for (final SchedulerEventListener listener : schedulerEventListener) {
@@ -144,6 +200,9 @@ public class SchedulerEventHandler {
 		}
 	}
 
+	/**
+	 * スケジューラのシャットダウンイベントを発火します．
+	 */
 	public void fireShutdownScheduler() {
 		for (final SchedulerEventListener listener : schedulerEventListener) {
 			Future<?> future = ExecutorService.submit(new Runnable() {
@@ -155,6 +214,9 @@ public class SchedulerEventHandler {
 		}
 	}
 
+	/**
+	 * スケジューラの開始イベントを発火します．
+	 */
 	public void fireStartScheduler() {
 		for (final SchedulerEventListener listener : schedulerEventListener) {
 			Future<?> future = ExecutorService.submit(new Runnable() {
@@ -166,6 +228,12 @@ public class SchedulerEventHandler {
 		}
 	}
 
+	/**
+	 * タスクの開始イベントを発火します．
+	 * 
+	 * @param task
+	 *            タスク
+	 */
 	public void fireStartTask(final Object task) {
 		for (final SchedulerEventListener listener : schedulerEventListener) {
 			Future<?> future = ExecutorService.submit(new Runnable() {
@@ -177,18 +245,43 @@ public class SchedulerEventHandler {
 		}
 	}
 
+	/**
+	 * 非同期フラグを返します．
+	 * 
+	 * @return 非同期フラグ．非同期はtrue, 同期はfalse
+	 */
 	public boolean isAsync() {
 		return async;
 	}
 
+	/**
+	 * リスナーを削除します．
+	 * 
+	 * @param listener
+	 *            リスナー
+	 * @return リストが指定された要素を保持している場合はtrue，以外はfalse
+	 * 
+	 */
 	public boolean remove(SchedulerEventListener listener) {
 		return this.schedulerEventListener.remove(listener);
 	}
 
+	/**
+	 * 非同期フラグを設定します．
+	 * 
+	 * @param async
+	 *            非同期フラグ．非同期はtrue, 同期はfalse
+	 */
 	public void setAsync(boolean async) {
 		this.async = async;
 	}
 
+	/**
+	 * Futureオブジェクトを待機します．
+	 * 
+	 * @param future
+	 *            Future
+	 */
 	private void waitFuture(Future<?> future) {
 		if (!async) {
 			try {
