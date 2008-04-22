@@ -18,6 +18,7 @@ import org.seasar.chronos.core.ThreadPoolType;
 import org.seasar.chronos.core.annotation.task.Task;
 import org.seasar.chronos.core.delegate.AsyncResult;
 import org.seasar.chronos.core.delegate.MethodInvoker;
+import org.seasar.chronos.core.executor.ExecutorServiceFactory;
 import org.seasar.chronos.core.schedule.TaskScheduleEntryManager;
 import org.seasar.chronos.core.task.TaskPropertyReader;
 import org.seasar.chronos.core.task.TaskPropertyWriter;
@@ -124,20 +125,11 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 		return false;
 	}
 
+	private ExecutorServiceFactory executorServiceFactory;
+
 	private ExecutorService createJobMethodExecutorService(Object target) {
-		ExecutorService result = null;
-		ThreadPoolType type = this.getThreadPoolType(target);
-		if (type == ThreadPoolType.FIXED) {
-			int threadSize = this.getThreadPoolSize(target);
-			result = Executors.newFixedThreadPool(threadSize);
-		} else if (type == ThreadPoolType.CACHED) {
-			result = Executors.newCachedThreadPool();
-		} else if (type == ThreadPoolType.SINGLE) {
-			result = Executors.newSingleThreadExecutor();
-		} else if (type == ThreadPoolType.SCHEDULED) {
-			int threadSize = this.getThreadPoolSize(target);
-			result = Executors.newScheduledThreadPool(threadSize);
-		}
+		ExecutorService result = executorServiceFactory.create(this
+				.getThreadPoolType(target), this.getThreadPoolSize(target));
 		return result;
 	}
 
@@ -512,6 +504,11 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 
 	public TaskPropertyWriter getTaskPropertyWriter() {
 		return taskPropertyWriter;
+	}
+
+	public void setExecutorServiceFactory(
+			ExecutorServiceFactory executorServiceFactory) {
+		this.executorServiceFactory = executorServiceFactory;
 	}
 
 }
