@@ -11,6 +11,7 @@
 		<component class="org.seasar.chronos.core.task.impl.TaskAnnotationReaderImpl"/>
 	
 	<!-- タスクのプロパティを読み込むためのコマンド群 -->
+	<component name="taskGetTaskNamePropertyReadCommand" class="org.seasar.chronos.core.task.command.impl.TaskGetTaskNamePropertyReadCommandImpl" instance="prototype"/>
 	<component name="taskGetThreadPoolSizePropertyReadCommand" class="org.seasar.chronos.core.task.command.impl.TaskGetThreadPoolSizePropertyReadCommandImpl" instance="prototype"/>
 	<component name="taskGetThreadPoolTypePropertyReadCommand" class="org.seasar.chronos.core.task.command.impl.TaskGetThreadPoolTypePropertyReadCommandImpl" instance="prototype"/>
 	<component name="taskIsStartTaskPropertyReadCommand" class="org.seasar.chronos.core.task.command.impl.TaskIsStartTaskPropertyReadCommandImpl" instance="prototype"/>
@@ -18,6 +19,7 @@
 	<component name="taskIsReSchedulePropertyReadCommand" class="org.seasar.chronos.core.task.command.impl.TaskIsReSchedulePropertyReadCommandImpl" instance="prototype"/>
 	
 	<!-- タスクのプロパティに書き込むためのコマンド群 -->
+	<component name="taskSetTaskNamePropertyWriteCommand" class="org.seasar.chronos.core.task.command.impl.TaskSetTaskNamePropertyWriteCommandImpl" instance="prototype"/>
 	<component name="taskSetThreadPoolSizePropertyWriteCommand" class="org.seasar.chronos.core.task.command.impl.TaskSetThreadPoolSizePropertyWriteCommandImpl" instance="prototype"/>
 	<component name="taskSetThreadPoolTypePropertyWriteCommand" class="org.seasar.chronos.core.task.command.impl.TaskSetThreadPoolTypePropertyWriteCommandImpl" instance="prototype"/>
 	<component name="taskSetStartTaskPropertyWriteCommand" class="org.seasar.chronos.core.task.command.impl.TaskSetStartTaskPropertyWriteCommandImpl" instance="prototype"/>
