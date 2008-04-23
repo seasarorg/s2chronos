@@ -12,7 +12,7 @@ public class TaskGetTaskNamePropertyReadCommandImpl extends
 	public Object execute(MethodInvocation methodInvocation) throws Throwable {
 		String result = null;
 		TaskPropertyReader tpr = this.getTaskPropertyReader(methodInvocation);
-		String taskName = tpr.getTaskName(null);
+		String taskName = (String) methodInvocation.proceed();
 		if (taskName != null) {
 			return taskName;
 		}

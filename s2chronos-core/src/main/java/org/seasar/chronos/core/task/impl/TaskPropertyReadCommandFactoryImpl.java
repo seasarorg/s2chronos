@@ -20,6 +20,9 @@ public class TaskPropertyReadCommandFactoryImpl implements
 	private S2Container s2Container;
 
 	public TaskPropertyCommand create(Method method) {
+		if (method == null) {
+			return null;
+		}
 		TaskPropertyCommand result = null;
 		if (method.getName().equals(TaskConstant.METHOD_NAME_IS_END_TASK)) {
 			result = (TaskPropertyCommand) s2Container
