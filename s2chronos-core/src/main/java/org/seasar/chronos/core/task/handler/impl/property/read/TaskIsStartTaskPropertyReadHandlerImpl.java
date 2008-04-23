@@ -1,4 +1,4 @@
-package org.seasar.chronos.core.task.handler.impl;
+package org.seasar.chronos.core.task.handler.impl.property.read;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -11,6 +11,7 @@ import org.seasar.chronos.core.TaskTrigger;
 import org.seasar.chronos.core.task.TaskAnnotationReader;
 import org.seasar.chronos.core.task.TaskPropertyWriter;
 import org.seasar.chronos.core.task.TaskAnnotationReader.TriggerAnnotationHandler;
+import org.seasar.chronos.core.task.handler.impl.AbstractTaskPropertyHandler;
 import org.seasar.framework.beans.BeanDesc;
 import org.seasar.framework.beans.PropertyDesc;
 import org.seasar.framework.beans.factory.BeanDescFactory;

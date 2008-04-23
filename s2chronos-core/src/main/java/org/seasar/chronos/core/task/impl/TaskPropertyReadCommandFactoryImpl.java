@@ -3,12 +3,12 @@ package org.seasar.chronos.core.task.impl;
 import java.lang.reflect.Method;
 
 import org.seasar.chronos.core.task.TaskConstant;
-import org.seasar.chronos.core.task.TaskPropertyReadCommandFactory;
 import org.seasar.chronos.core.task.handler.TaskPropertyHandler;
+import org.seasar.chronos.core.task.handler.factory.TaskPropertyReadHandlerFactory;
 import org.seasar.framework.container.S2Container;
 
 public class TaskPropertyReadCommandFactoryImpl implements
-		TaskPropertyReadCommandFactory {
+		TaskPropertyReadHandlerFactory {
 
 	private static final String TASK_GET_TASK_NAME_PROPERTY_READ_COMMAND = "taskGetTaskNamePropertyReadCommand";
 	private static final String TASK_GET_THREAD_POOL_TYPE_PROPERTY_READ_COMMAND = "taskGetThreadPoolTypePropertyReadCommand";

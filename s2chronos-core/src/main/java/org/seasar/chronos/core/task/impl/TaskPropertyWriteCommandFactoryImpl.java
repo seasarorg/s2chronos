@@ -3,8 +3,8 @@ package org.seasar.chronos.core.task.impl;
 import java.lang.reflect.Method;
 
 import org.seasar.chronos.core.task.TaskConstant;
-import org.seasar.chronos.core.task.TaskPropertyWriteCommandFactory;
 import org.seasar.chronos.core.task.handler.TaskPropertyHandler;
+import org.seasar.chronos.core.task.handler.factory.TaskPropertyWriteCommandFactory;
 import org.seasar.framework.container.S2Container;
 
 public class TaskPropertyWriteCommandFactoryImpl implements

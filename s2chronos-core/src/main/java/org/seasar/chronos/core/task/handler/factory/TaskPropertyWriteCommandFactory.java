@@ -1,4 +1,4 @@
-package org.seasar.chronos.core.task;
+package org.seasar.chronos.core.task.handler.factory;
 
 import java.lang.reflect.Method;
 

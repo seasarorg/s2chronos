@@ -1,9 +1,10 @@
-package org.seasar.chronos.core.task.handler.impl;
+package org.seasar.chronos.core.task.handler.impl.property.write;
 
 import org.aopalliance.intercept.MethodInvocation;
 import org.seasar.chronos.core.TaskTrigger;
+import org.seasar.chronos.core.task.handler.impl.AbstractTaskPropertyHandler;
 
-public class TaskSetEndTaskPropertyWriteHandlerImpl extends
+public class TaskSetStartTaskPropertyWriteHandlerImpl extends
 		AbstractTaskPropertyHandler {
 
 	public Object execute(MethodInvocation methodInvocation) throws Throwable {
@@ -13,8 +14,9 @@ public class TaskSetEndTaskPropertyWriteHandlerImpl extends
 			methodInvocation.proceed();
 		} else {
 			taskTrigger
-					.setEndTask((Boolean) methodInvocation.getArguments()[0]);
+					.setStartTask((Boolean) methodInvocation.getArguments()[0]);
 		}
 		return null;
 	}
+
 }

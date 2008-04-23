@@ -1,8 +1,9 @@
-package org.seasar.chronos.core.task.handler.impl;
+package org.seasar.chronos.core.task.handler.impl.property.write;
 
 import org.aopalliance.intercept.MethodInvocation;
+import org.seasar.chronos.core.task.handler.impl.AbstractTaskPropertyHandler;
 
-public class TaskSetTaskNamePropertyWriteHandlerImpl extends
+public class TaskSetThreadPoolSizePropertyWriteHandlerImpl extends
 		AbstractTaskPropertyHandler {
 
 	public Object execute(MethodInvocation methodInvocation) throws Throwable {

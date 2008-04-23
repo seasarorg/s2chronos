@@ -1,8 +1,9 @@
-package org.seasar.chronos.core.task.handler.impl;
+package org.seasar.chronos.core.task.handler.impl.property.read;
 
 import org.aopalliance.intercept.MethodInvocation;
 import org.seasar.chronos.core.annotation.task.Task;
 import org.seasar.chronos.core.task.TaskPropertyReader;
+import org.seasar.chronos.core.task.handler.impl.AbstractTaskPropertyHandler;
 import org.seasar.framework.container.annotation.tiger.Component;
 import org.seasar.framework.util.StringUtil;
 

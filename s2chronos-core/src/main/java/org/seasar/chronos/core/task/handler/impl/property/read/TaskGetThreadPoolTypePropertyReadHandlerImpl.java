@@ -1,21 +1,23 @@
-package org.seasar.chronos.core.task.handler.impl;
+package org.seasar.chronos.core.task.handler.impl.property.read;
 
 import org.aopalliance.intercept.MethodInvocation;
 import org.seasar.chronos.core.TaskThreadPool;
+import org.seasar.chronos.core.ThreadPoolType;
+import org.seasar.chronos.core.task.handler.impl.AbstractTaskPropertyHandler;
 
-public class TaskGetThreadPoolSizePropertyReadHandlerImpl extends
+public class TaskGetThreadPoolTypePropertyReadHandlerImpl extends
 		AbstractTaskPropertyHandler {
 
 	public Object execute(MethodInvocation methodInvocation) throws Throwable {
-		Object[] param = methodInvocation.getArguments();
-		int threadPoolSize = (Integer) param[0];
+		ThreadPoolType threadPoolType = null;
 		TaskThreadPool taskThreadPool = this.getTaskPropertyReader(
 				methodInvocation).getThreadPool(null);
 		if (taskThreadPool == null) {
 			return methodInvocation.proceed();
 		} else {
-			threadPoolSize = taskThreadPool.getThreadPoolSize();
+			threadPoolType = taskThreadPool.getThreadPoolType();
 		}
-		return threadPoolSize;
+		return threadPoolType;
 	}
+
 }
