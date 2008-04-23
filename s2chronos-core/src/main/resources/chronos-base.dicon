@@ -11,24 +11,24 @@
 		<component class="org.seasar.chronos.core.task.impl.TaskAnnotationReaderImpl"/>
 	
 	<!-- タスクのプロパティを読み込むためのコマンド群 -->
-	<component name="taskGetTaskNamePropertyReadCommand" class="org.seasar.chronos.core.task.command.impl.TaskGetTaskNamePropertyReadCommandImpl" instance="prototype"/>
-	<component name="taskGetThreadPoolSizePropertyReadCommand" class="org.seasar.chronos.core.task.command.impl.TaskGetThreadPoolSizePropertyReadCommandImpl" instance="prototype"/>
-	<component name="taskGetThreadPoolTypePropertyReadCommand" class="org.seasar.chronos.core.task.command.impl.TaskGetThreadPoolTypePropertyReadCommandImpl" instance="prototype"/>
-	<component name="taskIsStartTaskPropertyReadCommand" class="org.seasar.chronos.core.task.command.impl.TaskIsStartTaskPropertyReadCommandImpl" instance="prototype"/>
-	<component name="taskIsEndTaskPropertyReadCommand" class="org.seasar.chronos.core.task.command.impl.TaskIsEndTaskPropertyReadCommandImpl" instance="prototype"/>
-	<component name="taskIsReSchedulePropertyReadCommand" class="org.seasar.chronos.core.task.command.impl.TaskIsReSchedulePropertyReadCommandImpl" instance="prototype"/>
+	<component name="taskGetTaskNamePropertyReadCommand" class="org.seasar.chronos.core.task.handler.impl.property.read.TaskGetTaskNamePropertyReadHandlerImpl" instance="prototype"/>
+	<component name="taskGetThreadPoolSizePropertyReadCommand" class="org.seasar.chronos.core.task.handler.impl.property.read.TaskGetThreadPoolSizePropertyReadHandlerImpl" instance="prototype"/>
+	<component name="taskGetThreadPoolTypePropertyReadCommand" class="org.seasar.chronos.core.task.handler.impl.property.read.TaskGetThreadPoolTypePropertyReadHandlerImpl" instance="prototype"/>
+	<component name="taskIsStartTaskPropertyReadCommand" class="org.seasar.chronos.core.task.handler.impl.property.read.TaskIsStartTaskPropertyReadHandlerImpl" instance="prototype"/>
+	<component name="taskIsEndTaskPropertyReadCommand" class="org.seasar.chronos.core.task.handler.impl.property.read.TaskIsEndTaskPropertyReadHandlerImpl" instance="prototype"/>
+	<component name="taskIsReSchedulePropertyReadCommand" class="org.seasar.chronos.core.task.handler.impl.property.read.TaskIsReSchedulePropertyReadHandlerImpl" instance="prototype"/>
 	
 	<!-- タスクのプロパティに書き込むためのコマンド群 -->
-	<component name="taskSetTaskNamePropertyWriteCommand" class="org.seasar.chronos.core.task.command.impl.TaskSetTaskNamePropertyWriteCommandImpl" instance="prototype"/>
-	<component name="taskSetThreadPoolSizePropertyWriteCommand" class="org.seasar.chronos.core.task.command.impl.TaskSetThreadPoolSizePropertyWriteCommandImpl" instance="prototype"/>
-	<component name="taskSetThreadPoolTypePropertyWriteCommand" class="org.seasar.chronos.core.task.command.impl.TaskSetThreadPoolTypePropertyWriteCommandImpl" instance="prototype"/>
-	<component name="taskSetStartTaskPropertyWriteCommand" class="org.seasar.chronos.core.task.command.impl.TaskSetStartTaskPropertyWriteCommandImpl" instance="prototype"/>
-	<component name="taskSetEndTaskPropertyWriteCommand" class="org.seasar.chronos.core.task.command.impl.TaskSetEndTaskPropertyWriteCommandImpl" instance="prototype"/>
-	<component name="taskSetReSchedulePropertyWriteCommand" class="org.seasar.chronos.core.task.command.impl.TaskSetReSchedulePropertyWriteCommandImpl" instance="prototype"/>
+	<component name="taskSetTaskNamePropertyWriteCommand" class="org.seasar.chronos.core.task.handler.impl.property.write.TaskSetTaskNamePropertyWriteHandlerImpl" instance="prototype"/>
+	<component name="taskSetThreadPoolSizePropertyWriteCommand" class="org.seasar.chronos.core.task.handler.impl.property.write.TaskSetThreadPoolSizePropertyWriteHandlerImpl" instance="prototype"/>
+	<component name="taskSetThreadPoolTypePropertyWriteCommand" class="org.seasar.chronos.core.task.handler.impl.property.write.TaskSetThreadPoolTypePropertyWriteHandlerImpl" instance="prototype"/>
+	<component name="taskSetStartTaskPropertyWriteCommand" class="org.seasar.chronos.core.task.handler.impl.property.write.TaskSetStartTaskPropertyWriteHandlerImpl" instance="prototype"/>
+	<component name="taskSetEndTaskPropertyWriteCommand" class="org.seasar.chronos.core.task.handler.impl.property.write.TaskSetEndTaskPropertyWriteHandlerImpl" instance="prototype"/>
+	<component name="taskSetReSchedulePropertyWriteCommand" class="org.seasar.chronos.core.task.handler.impl.property.write.TaskSetReSchedulePropertyWriteHandlerImpl" instance="prototype"/>
 	
 	<!-- タスクのプロパティを読み込むコマンドのファクトリ -->
-	<component class="org.seasar.chronos.core.task.impl.TaskPropertyReadCommandFactoryImpl"/>
-	<component class="org.seasar.chronos.core.task.impl.TaskPropertyWriteCommandFactoryImpl"/>
+	<component class="org.seasar.chronos.core.task.handler.impl.factory.TaskPropertyReadHandlerFactoryImpl"/>
+	<component class="org.seasar.chronos.core.task.handler.impl.factory.TaskPropertyWriteHandlerFactoryImpl"/>
 	
 	<!-- タスクのプロパティリーダー -->
 	<component class="org.seasar.chronos.core.task.impl.TaskPropertyReaderImpl">

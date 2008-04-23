@@ -4,11 +4,11 @@ import java.lang.reflect.Method;
 
 import org.seasar.chronos.core.task.TaskConstant;
 import org.seasar.chronos.core.task.handler.TaskPropertyHandler;
-import org.seasar.chronos.core.task.handler.factory.TaskPropertyWriteCommandFactory;
+import org.seasar.chronos.core.task.handler.factory.TaskPropertyWriteHandlerFactory;
 import org.seasar.framework.container.S2Container;
 
-public class TaskPropertyWriteCommandFactoryImpl implements
-		TaskPropertyWriteCommandFactory {
+public class TaskPropertyWriteHandlerFactoryImpl implements
+		TaskPropertyWriteHandlerFactory {
 
 	private static final String TASK_SET_RE_SCHEDULE_PROPERTY_WRITE_COMMAND = "taskSetReSchedulePropertyWriteCommand";
 	private static final String TASK_SET_THREAD_POOL_TYPE_PROPERTY_WRITE_COMMAND = "taskSetThreadPoolTypePropertyWriteCommand";

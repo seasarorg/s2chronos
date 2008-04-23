@@ -4,7 +4,7 @@ import java.lang.reflect.Method;
 
 import org.seasar.chronos.core.task.handler.TaskPropertyHandler;
 
-public interface TaskPropertyReadCommandFactory {
+public interface TaskPropertyReadHandlerFactory {
 
 	public TaskPropertyHandler create(Method method);
 

@@ -3,11 +3,11 @@ package org.seasar.chronos.core.interceptor;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.seasar.chronos.core.task.handler.TaskPropertyHandler;
-import org.seasar.chronos.core.task.handler.factory.TaskPropertyWriteCommandFactory;
+import org.seasar.chronos.core.task.handler.factory.TaskPropertyWriteHandlerFactory;
 
 public class TriggerPropertyWriteInterceptor implements MethodInterceptor {
 
-	private TaskPropertyWriteCommandFactory taskPropertyWriteCommandFactory;
+	private TaskPropertyWriteHandlerFactory taskPropertyWriteCommandFactory;
 
 	public Object invoke(MethodInvocation methodInvocation) throws Throwable {
 		TaskPropertyHandler cmd = taskPropertyWriteCommandFactory
@@ -19,7 +19,7 @@ public class TriggerPropertyWriteInterceptor implements MethodInterceptor {
 	}
 
 	public void setTaskPropertyWriteCommandFactory(
-			TaskPropertyWriteCommandFactory taskPropertyWriteCommandFactory) {
+			TaskPropertyWriteHandlerFactory taskPropertyWriteCommandFactory) {
 		this.taskPropertyWriteCommandFactory = taskPropertyWriteCommandFactory;
 	}
 

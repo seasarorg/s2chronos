@@ -7,7 +7,7 @@ import org.seasar.chronos.core.task.handler.TaskPropertyHandler;
 import org.seasar.chronos.core.task.handler.factory.TaskPropertyReadHandlerFactory;
 import org.seasar.framework.container.S2Container;
 
-public class TaskPropertyReadCommandFactoryImpl implements
+public class TaskPropertyReadHandlerFactoryImpl implements
 		TaskPropertyReadHandlerFactory {
 
 	private static final String TASK_GET_TASK_NAME_PROPERTY_READ_COMMAND = "taskGetTaskNamePropertyReadCommand";
