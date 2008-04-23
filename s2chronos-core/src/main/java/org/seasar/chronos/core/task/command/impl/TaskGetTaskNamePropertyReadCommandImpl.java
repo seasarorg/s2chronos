@@ -16,16 +16,18 @@ public class TaskGetTaskNamePropertyReadCommandImpl extends
 		if (taskName != null) {
 			return taskName;
 		}
-		Class<?> clazz = tpr.getTaskClass();
-		Task task = clazz.getAnnotation(Task.class);
-		if (task != null && !StringUtil.isEmpty(task.name())) {
-			return task.name();
+		Class<?> taskClass = tpr.getTaskClass();
+		Task taskAnnotation = taskClass.getAnnotation(Task.class);
+		if (taskAnnotation != null
+				&& !StringUtil.isEmpty(taskAnnotation.name())) {
+			return taskAnnotation.name();
 		}
-		Component component = clazz.getAnnotation(Component.class);
-		if (component != null && !StringUtil.isEmpty(component.name())) {
-			return component.name();
+		Component componentAnnotation = taskClass.getAnnotation(Component.class);
+		if (componentAnnotation != null
+				&& !StringUtil.isEmpty(componentAnnotation.name())) {
+			return componentAnnotation.name();
 		}
-		result = clazz.getCanonicalName();
+		result = taskClass.getCanonicalName();
 		return result;
 	}
 }
