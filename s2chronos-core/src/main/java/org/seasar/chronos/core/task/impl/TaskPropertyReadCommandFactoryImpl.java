@@ -4,7 +4,7 @@ import java.lang.reflect.Method;
 
 import org.seasar.chronos.core.task.TaskConstant;
 import org.seasar.chronos.core.task.TaskPropertyReadCommandFactory;
-import org.seasar.chronos.core.task.command.TaskPropertyCommand;
+import org.seasar.chronos.core.task.handler.TaskPropertyHandler;
 import org.seasar.framework.container.S2Container;
 
 public class TaskPropertyReadCommandFactoryImpl implements
@@ -19,33 +19,33 @@ public class TaskPropertyReadCommandFactoryImpl implements
 
 	private S2Container s2Container;
 
-	public TaskPropertyCommand create(Method method) {
+	public TaskPropertyHandler create(Method method) {
 		if (method == null) {
 			return null;
 		}
-		TaskPropertyCommand result = null;
+		TaskPropertyHandler result = null;
 		if (method.getName().equals(TaskConstant.METHOD_NAME_IS_END_TASK)) {
-			result = (TaskPropertyCommand) s2Container
+			result = (TaskPropertyHandler) s2Container
 					.getComponent(TASK_IS_END_TASK_PROPERTY_READ_COMMAND);
 		} else if (method.getName().equals(
 				TaskConstant.METHOD_NAME_IS_START_TASK)) {
-			result = (TaskPropertyCommand) s2Container
+			result = (TaskPropertyHandler) s2Container
 					.getComponent(TASK_IS_START_TASK_PROPERTY_READ_COMMAND);
 		} else if (method.getName().equals(
 				TaskConstant.METHOD_NAME_GET_THREAD_POOL_SIZE)) {
-			result = (TaskPropertyCommand) s2Container
+			result = (TaskPropertyHandler) s2Container
 					.getComponent(TASK_GET_THREAD_POOL_SIZE_PROPERTY_READ_COMMAND);
 		} else if (method.getName().equals(
 				TaskConstant.METHOD_NAME_GET_THREAD_POOL_TYPE)) {
-			result = (TaskPropertyCommand) s2Container
+			result = (TaskPropertyHandler) s2Container
 					.getComponent(TASK_GET_THREAD_POOL_TYPE_PROPERTY_READ_COMMAND);
 		} else if (method.getName().equals(
 				TaskConstant.METHOD_NAME_IS_RE_SCHEDULE)) {
-			result = (TaskPropertyCommand) s2Container
+			result = (TaskPropertyHandler) s2Container
 					.getComponent(TASK_IS_RE_SCHEDULE_PROPERTY_READ_COMMAND);
 		} else if (method.getName().equals(
 				TaskConstant.METHOD_NAME_GET_TASK_NAME)) {
-			result = (TaskPropertyCommand) s2Container
+			result = (TaskPropertyHandler) s2Container
 					.getComponent(TASK_GET_TASK_NAME_PROPERTY_READ_COMMAND);
 		}
 		return result;

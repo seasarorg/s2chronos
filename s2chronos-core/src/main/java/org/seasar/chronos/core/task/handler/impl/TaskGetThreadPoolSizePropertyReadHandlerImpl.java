@@ -3,8 +3,8 @@ package org.seasar.chronos.core.task.handler.impl;
 import org.aopalliance.intercept.MethodInvocation;
 import org.seasar.chronos.core.TaskThreadPool;
 
-public class TaskGetThreadPoolSizePropertyReadCommandImpl extends
-		AbstractTaskPropertyCommand {
+public class TaskGetThreadPoolSizePropertyReadHandlerImpl extends
+		AbstractTaskPropertyHandler {
 
 	public Object execute(MethodInvocation methodInvocation) throws Throwable {
 		Object[] param = methodInvocation.getArguments();

@@ -2,10 +2,10 @@ package org.seasar.chronos.core.task;
 
 import java.lang.reflect.Method;
 
-import org.seasar.chronos.core.task.command.TaskPropertyCommand;
+import org.seasar.chronos.core.task.handler.TaskPropertyHandler;
 
 public interface TaskPropertyReadCommandFactory {
 
-	public TaskPropertyCommand create(Method method);
+	public TaskPropertyHandler create(Method method);
 
 }

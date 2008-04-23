@@ -4,7 +4,7 @@ import org.aopalliance.intercept.MethodInvocation;
 import org.seasar.chronos.core.task.TaskPropertyReader;
 import org.seasar.chronos.core.task.handler.TaskPropertyHandler;
 
-public abstract class AbstractTaskPropertyCommand implements
+public abstract class AbstractTaskPropertyHandler implements
 		TaskPropertyHandler {
 
 	protected TaskPropertyReader getTaskPropertyReader(

@@ -4,7 +4,7 @@ import java.lang.reflect.Method;
 
 import org.seasar.chronos.core.task.TaskConstant;
 import org.seasar.chronos.core.task.TaskPropertyWriteCommandFactory;
-import org.seasar.chronos.core.task.command.TaskPropertyCommand;
+import org.seasar.chronos.core.task.handler.TaskPropertyHandler;
 import org.seasar.framework.container.S2Container;
 
 public class TaskPropertyWriteCommandFactoryImpl implements
@@ -18,26 +18,26 @@ public class TaskPropertyWriteCommandFactoryImpl implements
 
 	private S2Container s2Container;
 
-	public TaskPropertyCommand create(Method method) {
-		TaskPropertyCommand result = null;
+	public TaskPropertyHandler create(Method method) {
+		TaskPropertyHandler result = null;
 		if (method.getName().equals(TaskConstant.METHOD_NAME_SET_END_TASK)) {
-			result = (TaskPropertyCommand) s2Container
+			result = (TaskPropertyHandler) s2Container
 					.getComponent(TASK_SET_END_TASK_PROPERTY_WRITE_COMMAND);
 		} else if (method.getName().equals(
 				TaskConstant.METHOD_NAME_SET_START_TASK)) {
-			result = (TaskPropertyCommand) s2Container
+			result = (TaskPropertyHandler) s2Container
 					.getComponent(TASK_SET_START_TASK_PROPERTY_WRITE_COMMAND);
 		} else if (method.getName().equals(
 				TaskConstant.METHOD_NAME_SET_THREAD_POOL_SIZE)) {
-			result = (TaskPropertyCommand) s2Container
+			result = (TaskPropertyHandler) s2Container
 					.getComponent(TASK_SET_THREAD_POOL_SIZE_PROPERTY_WRITE_COMMAND);
 		} else if (method.getName().equals(
 				TaskConstant.METHOD_NAME_SET_THREAD_POOL_TYPE)) {
-			result = (TaskPropertyCommand) s2Container
+			result = (TaskPropertyHandler) s2Container
 					.getComponent(TASK_SET_THREAD_POOL_TYPE_PROPERTY_WRITE_COMMAND);
 		} else if (method.getName().equals(
 				TaskConstant.METHOD_NAME_SET_RE_SCHEDULE)) {
-			result = (TaskPropertyCommand) s2Container
+			result = (TaskPropertyHandler) s2Container
 					.getComponent(TASK_SET_RE_SCHEDULE_PROPERTY_WRITE_COMMAND);
 		}
 		return result;

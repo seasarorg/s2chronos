@@ -6,8 +6,8 @@ import org.seasar.chronos.core.task.TaskPropertyReader;
 import org.seasar.framework.container.annotation.tiger.Component;
 import org.seasar.framework.util.StringUtil;
 
-public class TaskGetTaskNamePropertyReadCommandImpl extends
-		AbstractTaskPropertyCommand {
+public class TaskGetTaskNamePropertyReadHandlerImpl extends
+		AbstractTaskPropertyHandler {
 
 	public Object execute(MethodInvocation methodInvocation) throws Throwable {
 		String result = null;

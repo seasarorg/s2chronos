@@ -4,8 +4,8 @@ import org.aopalliance.intercept.MethodInvocation;
 import org.seasar.chronos.core.TaskTrigger;
 import org.seasar.chronos.core.task.TaskPropertyReader;
 
-public class TaskIsEndTaskPropertyReadCommandImpl extends
-		AbstractTaskPropertyCommand {
+public class TaskIsEndTaskPropertyReadHandlerImpl extends
+		AbstractTaskPropertyHandler {
 
 	public Object execute(MethodInvocation methodInvocation) throws Throwable {
 		Boolean end = false;

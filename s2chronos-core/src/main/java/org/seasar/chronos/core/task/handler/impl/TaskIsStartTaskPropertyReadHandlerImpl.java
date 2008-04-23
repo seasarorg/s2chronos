@@ -17,8 +17,8 @@ import org.seasar.framework.beans.factory.BeanDescFactory;
 import org.seasar.framework.util.StringUtil;
 import org.seasar.framework.util.tiger.ReflectionUtil;
 
-public class TaskIsStartTaskPropertyReadCommandImpl extends
-		AbstractTaskPropertyCommand {
+public class TaskIsStartTaskPropertyReadHandlerImpl extends
+		AbstractTaskPropertyHandler {
 
 	private static final String YYYY_MM_DD_HH_MM_SS = "yyyy/MM/dd HH:mm:ss";
 	private TaskAnnotationReader taskAnnotationReader;

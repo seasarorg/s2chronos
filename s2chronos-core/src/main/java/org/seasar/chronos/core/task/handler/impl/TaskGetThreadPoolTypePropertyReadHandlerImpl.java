@@ -4,8 +4,8 @@ import org.aopalliance.intercept.MethodInvocation;
 import org.seasar.chronos.core.TaskThreadPool;
 import org.seasar.chronos.core.ThreadPoolType;
 
-public class TaskGetThreadPoolTypePropertyReadCommandImpl extends
-		AbstractTaskPropertyCommand {
+public class TaskGetThreadPoolTypePropertyReadHandlerImpl extends
+		AbstractTaskPropertyHandler {
 
 	public Object execute(MethodInvocation methodInvocation) throws Throwable {
 		ThreadPoolType threadPoolType = null;

@@ -6,13 +6,13 @@ import java.lang.reflect.Method;
 import org.aopalliance.intercept.MethodInvocation;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.seasar.chronos.core.task.command.TaskPropertyCommand;
+import org.seasar.chronos.core.task.handler.TaskPropertyHandler;
 import org.seasar.framework.unit.Seasar2;
 
 @RunWith(Seasar2.class)
 public class TaskGetThreadPoolSizePropertyReadCommandImplTest {
 
-	private TaskPropertyCommand taskGetThreadPoolSizePropertyReadCommand;
+	private TaskPropertyHandler taskGetThreadPoolSizePropertyReadCommand;
 
 	@Test
 	public void testExecute() {
