@@ -16,20 +16,21 @@ public final class ScriptFileTraversal {
 	private ScriptResourceFolder scriptResourceFolder;
 
 	public void forEach(final ScriptFileHandler handler) {
-		File file = null;
+		File targetFile = null;
 		if (scriptResourceFolder.getFolderClass() != null) {
-			file = ResourceUtil
+			targetFile = ResourceUtil
 					.getResourceAsFileNoException(scriptResourceFolder
 							.getFolderClass());
+			targetFile = targetFile.getParentFile();
 		} else {
-			file = ResourceUtil
+			targetFile = ResourceUtil
 					.getResourceAsFileNoException(scriptResourceFolder
 							.getPath());
 		}
-		if (file == null) {
+		if (targetFile == null) {
 			return;
 		}
-		ResourceTraversal.forEach(file.getParentFile(), new ResourceHandler() {
+		ResourceTraversal.forEach(targetFile, new ResourceHandler() {
 			public void processResource(String path, InputStream is) {
 				if (path.endsWith(".js")) {
 					handler.process(path, is);
