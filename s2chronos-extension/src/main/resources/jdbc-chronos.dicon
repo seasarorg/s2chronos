@@ -27,7 +27,12 @@
 			"org.h2.Driver"
 		</property>
 		<property name="URL">
-			"jdbc:h2:tcp://localhost:9094/chronos"
+			<!--
+			"jdbc:hsqldb:hsql://localhost:9001/data/chronos"
+			-->
+			"jdbc:hsqldb:file:"
+				+ @org.seasar.framework.util.ResourceUtil@getBuildDir(@org.seasar.framework.unit.Seasar2Test@class).getCanonicalPath()
+				+ "/data/chronos"
 		</property>
 		<property name="user">"sa"</property>
 		<property name="password">""</property>
