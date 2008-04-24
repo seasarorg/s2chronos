@@ -2,6 +2,6 @@
 <!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.4//EN"
 	"http://www.seasar.org/dtd/components24.dtd">
 <components>
-	<include path="chronos-base.dicon"/>
-
+	<include path="chronos-core.dicon"/>
+	<include path="s2jdbc-chronos.dicon"/>
 </components>
