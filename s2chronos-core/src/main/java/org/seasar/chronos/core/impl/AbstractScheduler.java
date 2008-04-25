@@ -122,7 +122,7 @@ public abstract class AbstractScheduler implements Scheduler {
 	}
 
 	protected boolean registJavascriptTaskComponent() {
-		// TODO JavascriptのTaskクラスを
+		// ReflectionUtil.forNameNoException(className);
 		return false;
 	}
 
