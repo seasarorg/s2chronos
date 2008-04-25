@@ -4,8 +4,11 @@ import java.io.InputStream;
 
 import org.junit.Test;
 import org.seasar.chronos.extension.rhino.ScriptFileTraversal.ScriptFileHandler;
+import org.seasar.framework.log.Logger;
 
 public class ScriptFileTraversalTest {
+
+	private Logger log = Logger.getLogger(ScriptFileTraversalTest.class);
 
 	private ScriptFileTraversal scriptFileTraversal;
 
@@ -16,9 +19,9 @@ public class ScriptFileTraversalTest {
 		scriptFileTraversal.setScriptResourceFolder(scriptResourceFolder);
 		scriptFileTraversal.forEach(new ScriptFileHandler() {
 			public void process(String path, InputStream is) {
-
+				String message = String.format("path = %s, is = %s", path, is);
+				log.debug(message);
 			}
 		});
 	}
-
 }

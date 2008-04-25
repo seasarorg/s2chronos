@@ -13,9 +13,11 @@ public final class ScriptFileTraversal {
 		void process(String path, InputStream is);
 	}
 
+	private boolean scanResult;
+
 	private ScriptResourceFolder scriptResourceFolder;
 
-	public void forEach(final ScriptFileHandler handler) {
+	public boolean forEach(final ScriptFileHandler handler) {
 		File targetFile = null;
 		if (scriptResourceFolder.getFolderClass() != null) {
 			targetFile = ResourceUtil
@@ -28,15 +30,17 @@ public final class ScriptFileTraversal {
 							.getPath());
 		}
 		if (targetFile == null) {
-			return;
+			return false;
 		}
 		ResourceTraversal.forEach(targetFile, new ResourceHandler() {
 			public void processResource(String path, InputStream is) {
 				if (path.endsWith(".js")) {
+					scanResult = true;
 					handler.process(path, is);
 				}
 			}
 		});
+		return scanResult;
 	}
 
 	public ScriptResourceFolder getScriptResourceFolder() {
