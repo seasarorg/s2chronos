@@ -13,21 +13,21 @@ public final class ScriptFileTraversal {
 		void process(String path, InputStream is);
 	}
 
-	private boolean scanResult;
+	private static boolean scanResult;
 
-	private ScriptResourceFolder scriptResourceFolder;
+	private static ScriptResourceFolder scriptResourceFolder_;
 
-	public boolean forEach(final ScriptFileHandler handler) {
+	public static boolean forEach(final ScriptFileHandler handler) {
 		scanResult = false;
 		File targetFile = null;
-		if (scriptResourceFolder.getFolderClass() != null) {
+		if (scriptResourceFolder_.getFolderClass() != null) {
 			targetFile = ResourceUtil
-					.getResourceAsFileNoException(scriptResourceFolder
+					.getResourceAsFileNoException(scriptResourceFolder_
 							.getFolderClass());
 			targetFile = targetFile.getParentFile();
 		} else {
 			targetFile = ResourceUtil
-					.getResourceAsFileNoException(scriptResourceFolder
+					.getResourceAsFileNoException(scriptResourceFolder_
 							.getPath());
 		}
 		if (targetFile == null) {
@@ -44,13 +44,13 @@ public final class ScriptFileTraversal {
 		return scanResult;
 	}
 
-	public ScriptResourceFolder getScriptResourceFolder() {
-		return scriptResourceFolder;
+	public static ScriptResourceFolder getScriptResourceFolder() {
+		return scriptResourceFolder_;
 	}
 
-	public void setScriptResourceFolder(
+	public static void setScriptResourceFolder(
 			ScriptResourceFolder scriptResourceFolder) {
-		this.scriptResourceFolder = scriptResourceFolder;
+		scriptResourceFolder_ = scriptResourceFolder;
 	}
 
 }
