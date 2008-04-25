@@ -4,4 +4,5 @@
 <components>
 	<include path="chronos-core.dicon"/>
 	<include path="s2jdbc-chronos.dicon"/>
+	
 </components>

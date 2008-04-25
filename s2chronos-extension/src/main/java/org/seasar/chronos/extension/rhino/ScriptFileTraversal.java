@@ -18,6 +18,7 @@ public final class ScriptFileTraversal {
 	private ScriptResourceFolder scriptResourceFolder;
 
 	public boolean forEach(final ScriptFileHandler handler) {
+		scanResult = false;
 		File targetFile = null;
 		if (scriptResourceFolder.getFolderClass() != null) {
 			targetFile = ResourceUtil

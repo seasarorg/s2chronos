@@ -10,7 +10,7 @@ public class ScriptFileTraversalTest {
 
 	private Logger log = Logger.getLogger(ScriptFileTraversalTest.class);
 
-	private ScriptFileTraversal scriptFileTraversal;
+	private ScriptFileTraversal scriptFileTraversal = new ScriptFileTraversal();
 
 	@Test
 	public void testForEach() {
@@ -19,7 +19,7 @@ public class ScriptFileTraversalTest {
 		scriptFileTraversal.setScriptResourceFolder(scriptResourceFolder);
 		scriptFileTraversal.forEach(new ScriptFileHandler() {
 			public void process(String path, InputStream is) {
-				String message = String.format("path = %s, is = %s", path, is);
+				String message = String.format("path = %s", path);
 				log.debug(message);
 			}
 		});
