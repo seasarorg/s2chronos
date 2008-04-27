@@ -65,17 +65,17 @@ public abstract class AbstractScheduler implements Scheduler {
 	 * @param s2Container
 	 *            S2コンテナ
 	 */
-	protected boolean registChildTaskComponent(S2Container s2Container) {
-		return this.registChildTaskComponent(s2Container, null);
+	protected boolean registerChildTaskComponent(S2Container s2Container) {
+		return this.registerChildTaskComponent(s2Container, null);
 	}
 
-	protected boolean registChildTaskComponentByTarget(S2Container s2Container,
+	protected boolean registerChildTaskComponentByTarget(S2Container s2Container,
 			final Class<?> targetTaskComponentClass) {
-		return this.registChildTaskComponent(s2Container,
+		return this.registerChildTaskComponent(s2Container,
 				targetTaskComponentClass);
 	}
 
-	private boolean registChildTaskComponent(S2Container s2Container,
+	private boolean registerChildTaskComponent(S2Container s2Container,
 			final Class<?> targetTaskComponentClass) {
 		Object result = Traversal.forEachComponent(s2Container,
 				new Traversal.ComponentDefHandler() {
@@ -101,7 +101,7 @@ public abstract class AbstractScheduler implements Scheduler {
 		return result != null;
 	}
 
-	protected abstract void registTaskFromS2Container();
+	protected abstract void registerTaskFromS2Container();
 
 	/**
 	 * SMART Deploy上のコンポーネントを検索し，スケジューラに登録します．
@@ -109,26 +109,26 @@ public abstract class AbstractScheduler implements Scheduler {
 	 * @param s2Container
 	 *            S2コンテナ
 	 */
-	protected boolean registTaskFromS2ContainerOnSmartDeploy(
+	protected boolean registerTaskFromS2ContainerOnSmartDeploy(
 			final S2Container s2Container) {
-		return this.registTaskFromS2ContainerOnSmartDeploy(s2Container, null);
+		return this.registerTaskFromS2ContainerOnSmartDeploy(s2Container, null);
 	}
 
-	protected boolean registTaskFromS2ContainerOnSmartDeployByTarget(
+	protected boolean registerTaskFromS2ContainerOnSmartDeployByTarget(
 			final S2Container s2Container,
 			final Class<?> targetTaskComponentClass) {
-		return this.registTaskFromS2ContainerOnSmartDeploy(s2Container,
+		return this.registerTaskFromS2ContainerOnSmartDeploy(s2Container,
 				targetTaskComponentClass);
 	}
 
-	protected boolean registJavascriptTaskComponent() {
+	protected boolean registerJavascriptTaskComponent() {
 		// ReflectionUtil.forNameNoException(className);
 		return false;
 	}
 
 	private boolean detectResult = false;
 
-	private boolean registTaskFromS2ContainerOnSmartDeploy(
+	private boolean registerTaskFromS2ContainerOnSmartDeploy(
 			final S2Container s2Container,
 			final Class<?> targetTaskComponentClass) {
 		this.detectResult = false;

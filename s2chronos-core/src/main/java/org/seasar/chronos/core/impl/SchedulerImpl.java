@@ -83,10 +83,10 @@ public class SchedulerImpl extends AbstractScheduler {
 	public synchronized boolean addTask(Class<?> taskComponentClass) {
 		S2Container rootS2Container = this.s2container.getRoot();
 		boolean result = false;
-		result = this.registChildTaskComponentByTarget(rootS2Container,
+		result = this.registerChildTaskComponentByTarget(rootS2Container,
 				taskComponentClass);
 		result = result
-				|| this.registTaskFromS2ContainerOnSmartDeployByTarget(
+				|| this.registerTaskFromS2ContainerOnSmartDeployByTarget(
 						rootS2Container, taskComponentClass);
 		return result;
 	}
@@ -178,11 +178,11 @@ public class SchedulerImpl extends AbstractScheduler {
 	 * S2コンテナ上のコンポーネントを検索し，スケジューラに登録します．
 	 */
 	@Override
-	protected void registTaskFromS2Container() {
+	protected void registerTaskFromS2Container() {
 		final S2Container target = this.s2container.getRoot();
-		this.registChildTaskComponent(target);
-		this.registTaskFromS2ContainerOnSmartDeploy(target);
-		this.registJavascriptTaskComponent();
+		this.registerChildTaskComponent(target);
+		this.registerTaskFromS2ContainerOnSmartDeploy(target);
+		this.registerJavascriptTaskComponent();
 	}
 
 	/**
@@ -342,7 +342,7 @@ public class SchedulerImpl extends AbstractScheduler {
 
 		log.log("DCHRONOS0011", null);
 		this.schedulerEventHandler.fireRegisterTaskBeforeScheduler();
-		this.registTaskFromS2Container();
+		this.registerTaskFromS2Container();
 		final ScheduleExecuteHandler[] scheduleExecuteHandlers = this
 				.setupHandler();
 		this.schedulerEventHandler.fireRegisterTaskAfterScheduler();
