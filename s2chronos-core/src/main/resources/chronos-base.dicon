@@ -38,11 +38,9 @@
 	</component>
 	<!-- タスクのプロパティライター -->
 	<component class="org.seasar.chronos.core.task.impl.TaskPropertyWriterImpl">
-<!--
 	    <aspect pointcut="setTaskName,setEndTask,setStartTask,setReSchedule,setThreadPoolType,setThreadPoolSize">
      		<component class="org.seasar.chronos.core.interceptor.TriggerPropertyWriteInterceptor"/>
 	    </aspect>
--->
 	</component>
 	<!-- タスクバリデータ -->
 	<component class="org.seasar.chronos.core.task.impl.TaskValidatorImpl"/>

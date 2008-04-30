@@ -9,7 +9,7 @@ public class SchedulerWrapperTest extends S2TestCaseBase {
 		schedulerWrapper = new SchedulerWrapper(new SchedulerImpl()) {
 
 			@Override
-			protected void registTaskFromS2Container() {
+			protected void registerTaskFromS2Container() {
 
 			}
 
