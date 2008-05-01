@@ -8,7 +8,9 @@
 		condition="@org.seasar.chronos.core.util.DiconConditionUtil@hasConvention()" />
 	<include path="chronosCustomize.dicon"
 		condition="@org.seasar.chronos.core.util.DiconConditionUtil@hasCustomizeDicon()" />
-		<component class="org.seasar.chronos.core.task.impl.TaskAnnotationReaderImpl"/>
+	
+	<!-- タスクアノテーションリーダ -->
+	<component class="org.seasar.chronos.core.task.impl.TaskAnnotationReaderImpl"/>
 	
 	<!-- タスクのプロパティを読み込むためのコマンド群 -->
 	<component name="taskGetTaskNamePropertyReadCommand" class="org.seasar.chronos.core.task.handler.impl.property.read.TaskGetTaskNamePropertyReadHandlerImpl" instance="prototype"/>
@@ -27,21 +29,89 @@
 	<component name="taskSetReSchedulePropertyWriteCommand" class="org.seasar.chronos.core.task.handler.impl.property.write.TaskSetReSchedulePropertyWriteHandlerImpl" instance="prototype"/>
 	
 	<!-- タスクのプロパティを読み込むコマンドのファクトリ -->
-	<component class="org.seasar.chronos.core.task.handler.impl.factory.TaskPropertyReadHandlerFactoryImpl"/>
-	<component class="org.seasar.chronos.core.task.handler.impl.factory.TaskPropertyWriteHandlerFactoryImpl"/>
+	<component name="taskPropertyReadHandlerFactory" class="org.seasar.chronos.core.task.handler.impl.factory.TaskPropertyReadHandlerFactoryImpl">
+		<initMethod name="putTaskPropertyHandler">
+			<arg>@org.seasar.chronos.core.task.TaskConstant@METHOD_NAME_IS_START_TASK</arg>
+			<arg>taskIsStartTaskPropertyReadCommand</arg>
+		</initMethod>
+		<initMethod name="putTaskPropertyHandler">
+			<arg>@org.seasar.chronos.core.task.TaskConstant@METHOD_NAME_IS_END_TASK</arg>
+			<arg>taskIsEndTaskPropertyReadCommand</arg>
+		</initMethod>
+		<initMethod name="putTaskPropertyHandler">
+			<arg>@org.seasar.chronos.core.task.TaskConstant@METHOD_NAME_GET_THREAD_POOL_SIZE</arg>
+			<arg>taskGetThreadPoolSizePropertyReadCommand</arg>
+		</initMethod>		
+		<initMethod name="putTaskPropertyHandler">
+			<arg>@org.seasar.chronos.core.task.TaskConstant@METHOD_NAME_GET_THREAD_POOL_TYPE</arg>
+			<arg>taskGetThreadPoolTypePropertyReadCommand</arg>
+		</initMethod>
+		<initMethod name="putTaskPropertyHandler">
+			<arg>@org.seasar.chronos.core.task.TaskConstant@METHOD_NAME_GET_THREAD_POOL_TYPE</arg>
+			<arg>taskGetThreadPoolTypePropertyReadCommand</arg>
+		</initMethod>
+		<initMethod name="putTaskPropertyHandler">
+			<arg>@org.seasar.chronos.core.task.TaskConstant@METHOD_NAME_IS_RE_SCHEDULE</arg>
+			<arg>taskIsReSchedulePropertyReadCommand</arg>
+		</initMethod>
+		<initMethod name="putTaskPropertyHandler">
+			<arg>@org.seasar.chronos.core.task.TaskConstant@METHOD_NAME_GET_TASK_NAME</arg>
+			<arg>taskGetTaskNamePropertyReadCommand</arg>
+		</initMethod>
+	</component>
+	<component name="taskPropertyWriteHandlerFactory" class="org.seasar.chronos.core.task.handler.impl.factory.TaskPropertyWriteHandlerFactoryImpl">
+		<initMethod name="putTaskPropertyHandler">
+			<arg>@org.seasar.chronos.core.task.TaskConstant@METHOD_NAME_SET_START_TASK</arg>
+			<arg>taskSetStartTaskPropertyWriteCommand</arg>
+		</initMethod>
+		<initMethod name="putTaskPropertyHandler">
+			<arg>@org.seasar.chronos.core.task.TaskConstant@METHOD_NAME_SET_END_TASK</arg>
+			<arg>taskSetEndTaskPropertyWriteCommand</arg>
+		</initMethod>
+		<initMethod name="putTaskPropertyHandler">
+			<arg>@org.seasar.chronos.core.task.TaskConstant@METHOD_NAME_SET_THREAD_POOL_SIZE</arg>
+			<arg>taskSetThreadPoolSizePropertyWriteCommand</arg>
+		</initMethod>		
+		<initMethod name="putTaskPropertyHandler">
+			<arg>@org.seasar.chronos.core.task.TaskConstant@METHOD_NAME_SET_THREAD_POOL_TYPE</arg>
+			<arg>taskSetThreadPoolTypePropertyWriteCommand</arg>
+		</initMethod>
+		<initMethod name="putTaskPropertyHandler">
+			<arg>@org.seasar.chronos.core.task.TaskConstant@METHOD_NAME_SET_THREAD_POOL_TYPE</arg>
+			<arg>taskSetThreadPoolTypePropertyWriteCommand</arg>
+		</initMethod>
+		<initMethod name="putTaskPropertyHandler">
+			<arg>@org.seasar.chronos.core.task.TaskConstant@METHOD_NAME_SET_RE_SCHEDULE</arg>
+			<arg>taskSetReSchedulePropertyWriteCommand</arg>
+		</initMethod>
+		<initMethod name="putTaskPropertyHandler">
+			<arg>@org.seasar.chronos.core.task.TaskConstant@METHOD_NAME_SET_TASK_NAME</arg>
+			<arg>taskSetTaskNamePropertyWriteCommand</arg>
+		</initMethod>
+	</component>
 	
+	<!-- タスクのプロパティリードインターセプタ -->
+ 	<component name="triggerPropertyReadInterceptor" class="org.seasar.chronos.core.interceptor.TriggerPropertyReadInterceptor" autoBinding="none">
+ 		<property name="taskPropertyHandlerFactory">taskPropertyReadHandlerFactory</property>
+ 	</component>
+ 	<!-- タスクのプロパティライトインターセプタ -->
+	<component name="triggerPropertyWriteInterceptor" class="org.seasar.chronos.core.interceptor.TriggerPropertyWriteInterceptor" autoBinding="none">
+ 		<property name="taskPropertyHandlerFactory">taskPropertyWriteHandlerFactory</property>
+ 	</component>
+ 	
 	<!-- タスクのプロパティリーダー -->
 	<component class="org.seasar.chronos.core.task.impl.TaskPropertyReaderImpl">
 	    <aspect pointcut="getTaskName,isEndTask,isStartTask,isReSchedule,getThreadPoolType,getThreadPoolSize">
-     		<component class="org.seasar.chronos.core.interceptor.TriggerPropertyReadInterceptor"/>
+			triggerPropertyReadInterceptor
 	    </aspect>
 	</component>
 	<!-- タスクのプロパティライター -->
 	<component class="org.seasar.chronos.core.task.impl.TaskPropertyWriterImpl">
 	    <aspect pointcut="setTaskName,setEndTask,setStartTask,setReSchedule,setThreadPoolType,setThreadPoolSize">
-     		<component class="org.seasar.chronos.core.interceptor.TriggerPropertyWriteInterceptor"/>
+			triggerPropertyWriteInterceptor
 	    </aspect>
 	</component>
+	
 	<!-- タスクバリデータ -->
 	<component class="org.seasar.chronos.core.task.impl.TaskValidatorImpl"/>
 	

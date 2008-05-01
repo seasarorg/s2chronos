@@ -3,7 +3,9 @@
 	"http://www.seasar.org/dtd/components24.dtd">
 <components>
 	<include path="chronos-base.dicon"/>
+	
 	<component class="org.seasar.chronos.core.executor.impl.ExecutorServiceFactoryImpl"/>
+	
 	<component name="scheduleExecuteShutdownHandler" class="org.seasar.chronos.core.handler.impl.ScheduleExecuteShutdownHandler" />
 	<component name="scheduleExecuteStartHandler" class="org.seasar.chronos.core.handler.impl.ScheduleExecuteStartHandler" />
 	<component name="scheduleExecuteWaitHandler" class="org.seasar.chronos.core.handler.impl.ScheduleExecuteWaitHandler">
@@ -12,15 +14,22 @@
 	</component>
 	<component name="scheduleTaskStateCleanHandler" class="org.seasar.chronos.core.handler.impl.ScheduleTaskStateCleanHandler" />
 
-	<component name="scheduleEntry" class="org.seasar.chronos.core.schedule.ScheduleEntry" instance="prototype" autoBinding="none">
-	</component>
+	<component name="scheduleEntry" class="org.seasar.chronos.core.schedule.ScheduleEntry" instance="prototype" autoBinding="none"/>
 
 	<component name="scheduler" class="org.seasar.chronos.core.impl.SchedulerImpl">
 		<aspect>aop.traceInterceptor</aspect>
-		<property name="scheduleExecuteShutdownHandler">scheduleExecuteShutdownHandler</property>
-		<property name="scheduleExecuteStartHandler">scheduleExecuteStartHandler</property>
-		<property name="scheduleExecuteWaitHandler">scheduleExecuteWaitHandler</property>
-		<property name="scheduleTaskStateCleanHandler">scheduleTaskStateCleanHandler</property>
+		<initMethod name="addScheduleExecuteHandler">
+			<arg>scheduleExecuteShutdownHandler</arg>
+		</initMethod>
+		<initMethod name="addScheduleExecuteHandler">
+			<arg>scheduleExecuteStartHandler</arg>
+		</initMethod>
+		<initMethod name="addScheduleExecuteHandler">
+			<arg>scheduleExecuteWaitHandler</arg>
+		</initMethod>
+		<initMethod name="addScheduleExecuteHandler">
+			<arg>scheduleTaskStateCleanHandler</arg>
+		</initMethod>
 	</component>
 	
 	<component name="taskExecuteStrategy" class="org.seasar.chronos.core.task.strategy.impl.TaskExecuteStrategyImpl" instance="prototype" />

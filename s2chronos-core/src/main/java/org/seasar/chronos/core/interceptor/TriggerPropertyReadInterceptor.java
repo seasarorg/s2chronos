@@ -3,14 +3,14 @@ package org.seasar.chronos.core.interceptor;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.seasar.chronos.core.task.handler.TaskPropertyHandler;
-import org.seasar.chronos.core.task.handler.factory.TaskPropertyReadHandlerFactory;
+import org.seasar.chronos.core.task.handler.factory.TaskPropertyHandlerFactory;
 
 public class TriggerPropertyReadInterceptor implements MethodInterceptor {
 
-	private TaskPropertyReadHandlerFactory taskPropertyReadCommandFactory;
+	private TaskPropertyHandlerFactory taskPropertyHandlerFactory;
 
 	public Object invoke(MethodInvocation methodInvocation) throws Throwable {
-		TaskPropertyHandler cmd = taskPropertyReadCommandFactory
+		TaskPropertyHandler cmd = taskPropertyHandlerFactory
 				.create(methodInvocation.getMethod());
 		if (cmd != null) {
 			return cmd.execute(methodInvocation);
@@ -18,9 +18,13 @@ public class TriggerPropertyReadInterceptor implements MethodInterceptor {
 		return methodInvocation.proceed();
 	}
 
-	public void setTaskPropertyReadCommandFactory(
-			TaskPropertyReadHandlerFactory taskPropertyReadCommandFactory) {
-		this.taskPropertyReadCommandFactory = taskPropertyReadCommandFactory;
+	public void setTaskPropertyHandlerFactory(
+			TaskPropertyHandlerFactory taskPropertyHandlerFactory) {
+		this.taskPropertyHandlerFactory = taskPropertyHandlerFactory;
+	}
+
+	public TaskPropertyHandlerFactory getTaskPropertyHandlerFactory() {
+		return taskPropertyHandlerFactory;
 	}
 
 }

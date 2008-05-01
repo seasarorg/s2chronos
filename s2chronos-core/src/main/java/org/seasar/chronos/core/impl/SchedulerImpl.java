@@ -1,5 +1,7 @@
 package org.seasar.chronos.core.impl;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
@@ -44,19 +46,18 @@ public class SchedulerImpl extends AbstractScheduler {
 
 	private SchedulerConfiguration configuration = defaultConfiguration;
 
-	private ScheduleExecuteHandler scheduleExecuteWaitHandler;
-
-	private ScheduleExecuteHandler scheduleExecuteStartHandler;
-
-	private ScheduleExecuteHandler scheduleExecuteShutdownHandler;
-
-	private ScheduleExecuteHandler scheduleTaskStateCleanHandler;
+	private List<ScheduleExecuteHandler> scheduleExecuteHandlerList = new ArrayList<ScheduleExecuteHandler>();
 
 	private ExecutorServiceFactory executorServiceFactory;
 
 	private long finishStartTime = 0;
 
 	private boolean initialized;
+
+	public void addScheduleExecuteHandler(
+			ScheduleExecuteHandler scheduleExecuteHandler) {
+		this.scheduleExecuteHandlerList.add(scheduleExecuteHandler);
+	}
 
 	private void initialize() {
 		executorService = executorServiceFactory.create(this.configuration
@@ -244,21 +245,6 @@ public class SchedulerImpl extends AbstractScheduler {
 		return taskScheduleEntry;
 	}
 
-	public void setScheduleExecuteShutdownHandler(
-			ScheduleExecuteHandler sheduleExecuteShutdownHandler) {
-		this.scheduleExecuteShutdownHandler = sheduleExecuteShutdownHandler;
-	}
-
-	public void setScheduleExecuteStartHandler(
-			ScheduleExecuteHandler sheduleExecuteStartHandler) {
-		this.scheduleExecuteStartHandler = sheduleExecuteStartHandler;
-	}
-
-	public void setScheduleExecuteWaitHandler(
-			ScheduleExecuteHandler sheduleExecuteWaitHandler) {
-		this.scheduleExecuteWaitHandler = sheduleExecuteWaitHandler;
-	}
-
 	public void setSchedulerConfiguration(
 			SchedulerConfiguration schedulerConfiguration) {
 		this.configuration = schedulerConfiguration;
@@ -269,33 +255,12 @@ public class SchedulerImpl extends AbstractScheduler {
 	 * 
 	 * @return スケジューラ実行ハンドラーの配列
 	 */
-	private ScheduleExecuteHandler[] setupHandler() {
-		ScheduleExecuteHandler[] scheduleExecuteHandlers = new ScheduleExecuteHandler[] {
-				this.scheduleExecuteWaitHandler,
-				this.scheduleExecuteStartHandler,
-				this.scheduleExecuteShutdownHandler,
-				this.scheduleTaskStateCleanHandler };
-
-		this.scheduleExecuteWaitHandler
-				.setExecutorService(this.executorService);
-		this.scheduleExecuteWaitHandler.setPause(this.pause);
-
-		this.scheduleExecuteStartHandler
-				.setExecutorService(this.executorService);
-		this.scheduleExecuteStartHandler
-				.setSchedulerEventHandler(this.schedulerEventHandler);
-
-		this.scheduleExecuteShutdownHandler
-				.setExecutorService(this.executorService);
-		this.scheduleExecuteShutdownHandler
-				.setSchedulerEventHandler(this.schedulerEventHandler);
-
-		this.scheduleTaskStateCleanHandler
-				.setExecutorService(this.executorService);
-		this.scheduleTaskStateCleanHandler
-				.setSchedulerEventHandler(this.schedulerEventHandler);
-
-		return scheduleExecuteHandlers;
+	private void setupHandler() {
+		for (ScheduleExecuteHandler seh : this.scheduleExecuteHandlerList) {
+			seh.setExecutorService(executorService);
+			seh.setPause(pause);
+			seh.setSchedulerEventHandler(schedulerEventHandler);
+		}
 	}
 
 	public void shutdown() {
@@ -342,15 +307,14 @@ public class SchedulerImpl extends AbstractScheduler {
 		log.log("DCHRONOS0011", null);
 		this.schedulerEventHandler.fireRegisterTaskBeforeScheduler();
 		this.registerTaskFromS2Container();
-		final ScheduleExecuteHandler[] scheduleExecuteHandlers = this
-				.setupHandler();
+		this.setupHandler();
 		this.schedulerEventHandler.fireRegisterTaskAfterScheduler();
 
 		this.schedulerTaskFuture = this.executorService
 				.submit(new Callable<Void>() {
 					public Void call() throws InterruptedException {
 						do {
-							for (ScheduleExecuteHandler seh : scheduleExecuteHandlers) {
+							for (ScheduleExecuteHandler seh : scheduleExecuteHandlerList) {
 								seh.handleRequest();
 							}
 							Thread.sleep(SchedulerImpl.this.configuration
@@ -361,11 +325,6 @@ public class SchedulerImpl extends AbstractScheduler {
 				});
 		this.schedulerEventHandler.fireStartScheduler();
 		log.log("DCHRONOS0012", null);
-	}
-
-	public void setScheduleTaskStateCleanHandler(
-			ScheduleExecuteHandler scheduleTaskStateCleanHandler) {
-		this.scheduleTaskStateCleanHandler = scheduleTaskStateCleanHandler;
 	}
 
 	public void setExecutorServiceFactory(
