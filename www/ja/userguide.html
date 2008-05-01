@@ -75,19 +75,19 @@ urchinTracker();
         <!-- section -->
         <div class="section">
           <h4>タスククラスの実装</h4>
-          <p><ul>
+          <p>
+          <ul>
             <li>基本的なタスククラスの実装方法<br />
               最も簡単なタスククラスは以下です．<br/>
               このクラスはS2のCreatorによってS2にSMART deploy対象として扱われます．ですので他のS2のコンポーネントと同様にDIやAOPの適用が可能になります．また，タスククラスはPOJOとして実装が可能です．<br />
               <br/>
               まず，クラス名はTaskというサフィックスをつけて，Taskアノテーションも付けます．<br/>
               次にこのタスククラスを実行する条件をトリガーアノテーションで指定します．(ここではスケジューラに登録されると即時実行するNonDelayTriggerを指定します．時間指定する場合はCronTriggerなどを利用してください．)<br/>
-              
               実際にタスクの処理として，初期化処理，タスク処理，終了処理に対応するメソッドを定義していきます．<br/>
               まず，初期化処理としてinitializeメソッドを定義して初期化処理を実装してください．NextTaskアノテーションを使って，次に呼び出されるタスク処理(以下，タスクメソッド)の名前を指定します．(タスクメソッド名からdoを除いた名前をキャメル式で指定します)
               タスクメソッドを実装します．
               最後にdestoryメソッドを実装します．(destoryメソッドは任意で定義可能)
-<pre>
+              <pre>
 @Task
 @NonDelayTrigger
 public class BasicTask {
@@ -110,51 +110,49 @@ public class BasicTask {
         log.info(this.getClass().getSimpleName() + ":destroy");
     }
 
-}</pre></li>
-<li>タスクの起動条件である
-トリガーを設定する
-  <br />
-  トリガーには標準以下の種類をサポートします．
-  <ul>
-    <li>NonDelayTrigger<br />
-      即時実行型．スケジューラに登録直後に即時実行されます．
-<pre>
+}</pre>
+            </li>
+            <li>タスクの起動条件である
+              トリガーを設定する <br />
+              トリガーには標準以下の種類をサポートします．
+              <ul>
+                <li>NonDelayTrigger<br />
+                  即時実行型．スケジューラに登録直後に即時実行されます．
+                  <pre>
 @Task
 @NonDelayTrigger  // 即時実行
 public class BasicTask {  
-</pre> 
-      </li>
-    <li>DelayTrigger<br />
-      遅延実行型．指定した時間分経過した後に実行されます．
-<pre>
+</pre>
+                </li>
+                <li>DelayTrigger<br />
+                  遅延実行型．指定した時間分経過した後に実行されます．
+                  <pre>
 @Task
 @DelayTrigger(delay = 1000)  // 一秒後に実行
 public class BasicTask {  
 </pre>
-</li>
-    <li>CronTrigger<br />
-      クーロン型．CROND形式で指定した時間に実行されます．
-<pre>
+                </li>
+                <li>CronTrigger<br />
+                  クーロン型．CROND形式で指定した時間に実行されます．
+                  <pre>
 @Task
 @CronTrigger(expression = "*/1 * * * *")  // 1分ごとに実行
 public class BasicTask {  
 </pre>
-</li>
-    <li>TimedTrigger<br />
-      日時指定型．指定した日時に実行します．
-<pre>
+                </li>
+                <li>TimedTrigger<br />
+                  日時指定型．指定した日時に実行します．
+                  <pre>
 @Task
 @TimedTrigger(startTime = "2008/05/05 12:00:00")  // 指定日時に実行
 public class BasicTask {  
 </pre>
-</li>
-</ul>
-
-</li>
-<li>トリガーのカスタマイズ<br/>
-トリガーはカスタマイズすることが可能です．以下のようにルートパッケージ＋triggerに"C"で始まって"Trigger"で終わるトリガークラスを実装してください．トリガークラスはTaskTriggerインターフェイスを実装している必要があります．実際にはAbstractTriggerクラスを継承すると便利です．
-
-<pre>  
+                </li>
+              </ul>
+            </li>
+            <li>トリガーのカスタマイズ<br/>
+              トリガーはカスタマイズすることが可能です．以下のようにルートパッケージ＋triggerに"C"で始まって"Trigger"で終わるトリガークラスを実装してください．トリガークラスはTaskTriggerインターフェイスを実装している必要があります．実際にはAbstractTriggerクラスを継承すると便利です．
+              <pre>  
 public class CExampleTrigger extends AbstractTrigger {
 
     private static final long serialVersionUID = 1L;
@@ -200,8 +198,8 @@ public class CExampleTrigger extends AbstractTrigger {
 
 }
 </pre>
-トリガークラスに対応するアノテーションは以下のように同名のプロパティを持たせます．
-<pre>
+              トリガークラスに対応するアノテーションは以下のように同名のプロパティを持たせます．
+              <pre>
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface ExampleTrigger {
@@ -210,18 +208,18 @@ public @interface ExampleTrigger {
 
 }
 </pre>
-タスクへの適用は以下のようになります．
-アノテーションで指定された属性はトリガークラスの同名のプロパティにDIされます．
-<pre>
+              タスクへの適用は以下のようになります．
+              アノテーションで指定された属性はトリガークラスの同名のプロパティにDIされます．
+              <pre>
 @Task
 <strong>@ExampleTrigger(div = 3)</strong>
 public class ExampleTriggerTask extends AbstractCommonTask {
 snip...
 </pre>
-</li>
-<li>ダイナミックトリガーの実装について<br/>
-以下のようにタスククラスにトリガーアノテーションを記述しないで，triggerプロパティを持たせることで動的なトリガーを定義することが可能です．もちろん，独自に作成したトリガーにも対応しています．
-<pre>
+            </li>
+            <li>ダイナミックトリガーの実装について<br/>
+              以下のようにタスククラスにトリガーアノテーションを記述しないで，triggerプロパティを持たせることで動的なトリガーを定義することが可能です．もちろん，独自に作成したトリガーにも対応しています．
+              <pre>
 @Task
 public class ExampleTriggerTask extends AbstractCommonTask {
 	
@@ -233,11 +231,15 @@ public class ExampleTriggerTask extends AbstractCommonTask {
 
 }
 </pre>
-</li>
-</ul>
-</p>
+            </li>
+          </ul>
+          </p>
         </div>
         <!-- section -->
+        <div class="section">
+          <h4>その他情報源</h4>
+          <p>リーダコミッタのblog http://d.hatena.ne.jp/j5ik2o/</p>
+        </div>
       </div>
       <!-- section -->
     </div>
