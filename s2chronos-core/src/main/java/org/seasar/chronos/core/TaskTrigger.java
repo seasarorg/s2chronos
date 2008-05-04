@@ -34,4 +34,5 @@ public interface TaskTrigger extends Serializable {
 
 	public boolean isReSchedule();
 
+	public void setReSchedule(boolean reSchedule);
 }

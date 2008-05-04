@@ -68,24 +68,20 @@ public class TaskIsStartTaskPropertyReadHandlerImpl extends
 
 						private void convertProperty(TaskTrigger taskTrigger,
 								Method m, PropertyDesc pd, Object value) {
-							if (m.getReturnType().equals(
-									pd.getPropertyType())) {
+							if (m.getReturnType().equals(pd.getPropertyType())) {
 								pd.setValue(taskTrigger, value);
 							} else {
 								// StringからDateに変換する処理
-								if (pd.getPropertyType().equals(
-										Date.class)
+								if (pd.getPropertyType().equals(Date.class)
 										&& m.getReturnType().equals(
 												String.class)
-										&& !StringUtil
-												.isEmpty((String) value)) {
+										&& !StringUtil.isEmpty((String) value)) {
 									SimpleDateFormat sdf = new SimpleDateFormat(
 											YYYY_MM_DD_HH_MM_SS);
 
 									Date date = null;
 									try {
-										date = sdf
-												.parse((String) value);
+										date = sdf.parse((String) value);
 									} catch (ParseException e) {
 										;
 									}
