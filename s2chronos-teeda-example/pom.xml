@@ -98,7 +98,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>s2chronos-core</artifactId>
+			<artifactId>s2chronos-extension</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
