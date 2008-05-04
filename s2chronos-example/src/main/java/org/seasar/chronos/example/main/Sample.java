@@ -1,4 +1,4 @@
-package org.seasar.chronos.examples.main;
+package org.seasar.chronos.example.main;
 
 import org.seasar.chronos.core.Scheduler;
 import org.seasar.framework.container.S2Container;

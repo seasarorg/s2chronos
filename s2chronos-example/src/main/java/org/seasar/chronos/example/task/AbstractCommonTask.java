@@ -1,4 +1,4 @@
-package org.seasar.chronos.examples.task;
+package org.seasar.chronos.example.task;
 
 import org.seasar.chronos.core.annotation.task.method.NextTask;
 import org.seasar.framework.log.Logger;

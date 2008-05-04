@@ -1,7 +1,7 @@
-package org.seasar.chronos.examples.task;
+package org.seasar.chronos.example.task;
 
 import org.seasar.chronos.core.annotation.task.Task;
-import org.seasar.chronos.examples.annotation.ExampleTrigger;
+import org.seasar.chronos.example.annotation.ExampleTrigger;
 
 /**
  * ExampleTriggerに対応するタスクです．
