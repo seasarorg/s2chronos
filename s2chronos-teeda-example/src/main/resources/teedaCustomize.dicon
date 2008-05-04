@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.4//EN"
+	"http://www.seasar.org/dtd/components24.dtd">
+<components>
+	<component class="org.seasar.teeda.core.render.DefaultComponentIdLookupStrategy">
+        <property name="cooperateWithForeach">true</property>
+	</component>
+	<!-- JSF標準のIDの採番方式にしなくてはいけない場合は下記を使用。 -->
+	<!--
+	<component class="org.seasar.teeda.core.render.JsfSpecComponentIdLookupStrategy"/>
+	-->
+	<component class="org.seasar.teeda.core.application.impl.DefaultComponentLookupStrategy" />
+	<component class="org.seasar.teeda.extension.util.TreeNavigationImageLocatorImpl">
+		<property name="imageRoot">"/img/"</property>
+	</component>
+	<component class="org.seasar.teeda.core.util.DefaultCancelHandler">
+		<initMethod name="addCancellableException">
+			<arg>@java.net.SocketException@class</arg>
+		</initMethod>
+	</component>
+
+	<component class="org.seasar.teeda.extension.util.TeedaExtensionConfiguration">
+		<!-- outputText を <span> 要素の場合のみ関連づける(1.0.12互換)には以下のプロパティを true に設定 -->
+		<property name="outputTextSpanOnly">false</property>
+
+		<!-- <span id="～Label"> が <a> の子要素の場合のみラベルに関連づける(1.0.12互換)には以下のプロパティを true に設定 -->
+		<property name="outputTextLabelUnderAnchorOnly">false</property>
+	</component>
+</components>
