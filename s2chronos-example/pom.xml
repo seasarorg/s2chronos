@@ -10,33 +10,7 @@
 	<name>S2Chronos Example</name>
 	<url>http://s2chronos.sandbox.seasar.org/</url>
 	<build>
-		<sourceDirectory>src/main/java</sourceDirectory>
-		<testSourceDirectory>src/test/java</testSourceDirectory>
-		<outputDirectory>
-			src/main/webapp/WEB-INF/classes
-		</outputDirectory>
-		<testOutputDirectory>target/test-classes</testOutputDirectory>
 		<defaultGoal>validate</defaultGoal>
-		<resources>
-			<resource>
-				<directory>src/main/resources</directory>
-			</resource>
-		</resources>
-		<testResources>
-			<testResource>
-				<directory>src/test/resources</directory>
-			</testResource>
-		</testResources>
-		<pluginManagement>
-			<plugins>
-				<plugin>
-					<artifactId>maven-eclipse-plugin</artifactId>
-					<configuration>
-						<wtpversion>1.5</wtpversion>
-					</configuration>
-				</plugin>
-			</plugins>
-		</pluginManagement>
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -57,7 +31,6 @@
 					</execution>
 				</executions>
 			</plugin>
-			<plugin>
 		</plugins>
 		<extensions>
 			<extension>
