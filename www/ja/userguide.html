@@ -50,7 +50,7 @@ urchinTracker();
     <h2>ドキュメント</h2>
     <ul>
       <li><a href="install.html">インストール</a></li>
-      <li><a href="userguide.html">ユーザガイド</a></li>
+      <li><a href="userguide.html">ユーザガイド</a> </li>
       <li><a href="sampleguide.html">サンプルガイド</a></li>
     </ul>
   </div>
@@ -87,6 +87,7 @@ urchinTracker();
               まず，初期化処理としてinitializeメソッドを定義して初期化処理を実装してください．NextTaskアノテーションを使って，次に呼び出されるタスク処理(以下，タスクメソッド)の名前を指定します．(タスクメソッド名からdoを除いた名前をキャメル式で指定します)
               タスクメソッドを実装します．
               最後にdestoryメソッドを実装します．(destoryメソッドは任意で定義可能)
+              また，NextTaskアノテーションはタスクメソッドに対しても割り当て可能です．
               <pre>
 @Task
 @NonDelayTrigger
@@ -150,6 +151,13 @@ public class BasicTask {
                 </li>
               </ul>
             </li>
+          </ul>
+          </p>
+        </div>
+        <div class="section">
+          <h4>トリガークラスの実装</h4>
+          <p>
+          <ul>
             <li>トリガーのカスタマイズ<br/>
               トリガーはカスタマイズすることが可能です．以下のようにルートパッケージ＋triggerに"C"で始まって"Trigger"で終わるトリガークラスを実装してください．トリガークラスはTaskTriggerインターフェイスを実装している必要があります．実際にはAbstractTriggerクラスを継承すると便利です．
               <pre>  
@@ -232,6 +240,100 @@ public class ExampleTriggerTask extends AbstractCommonTask {
 }
 </pre>
             </li>
+          </ul>
+          </p>
+        </div>
+        <!-- section -->
+        <div class="section">
+          <h4>タスクのフロー制御</h4>
+          <p>
+          <ul>
+            <li>タスクのフロー制御をNexTaskアノテーションとJoinTaskアノテーションで行う<br />
+              タスクメソッドに対してNetTaskアノテーションを付与することでタスク処理のフローを実装することができます．以下の例では，doTaskAが正常に終了した場合doTaskBに遷移します．<br/>
+              また，タスクメソッドを同期もしくは非同期で実行するかどうかを，JoinTaskアノテーションで指定することができます．JoinType.NoWaitを指定した場合はスケジューラがタスクメソッドを非同期に呼び出します．JoinType.Waitの場合は同期呼び出しになります．デフォルトは同期呼び出しです．doTaskBのようにStringで遷移先のタスクメソッドを指定することもできます．この場合は無条件に同期呼び出しになります．
+              <pre>
+/**
+ * Simpleタスクです．
+ * <p>
+ * NonDelayTriggerアノテーションの場合は，即時実行のトリガーとなります．
+ * </p>
+ * @author junichi
+ *
+ */
+@Task
+@NonDelayTrigger
+public class SimpleTask {
+
+	/**
+	 * ロガーです．
+	 */
+	private static Logger log = Logger.getLogger(SimpleTask.class);
+
+	/**
+	 * タスクが実行されるときに最初に呼ばれます．
+	 * <p>
+	 * 次のタスクはdoTaskAメソッドになります．
+	 * </p>
+	 */ 
+	@NextTask("taskA")
+	public void initialize() {
+		log.info("[[SimpleTask::initialize]]");
+	}
+
+	/**
+	 * タスクメソッドAです．
+	 * <p>
+	 * JoinTaskアノテーションがNoWaitの場合は本メソッドは非同期に実行されます．
+	 * 次のタスクはdoTaskBメソッドになります．
+	 * </p>
+	 */
+	@NextTask("taskB")
+	@JoinTask(JoinType.NoWait)
+	public void doTaskA() {
+		log.info("[[SimpleTask::doTaskA]]");
+	}
+
+	/**
+	 * タスクメソッドBです．
+	 * <p>
+	 * JoinTaskアノテーションがWaitの場合は本メソッドは同期的に実行されます．
+	 * 次のタスクは，戻り値で設定されます．
+	 * </p>
+	 * @return 次のタスク名
+	 */
+	@JoinTask(JoinType.Wait)
+	public String doTaskB() {
+		log.info("[[SimpleTask::doTaskB]]");
+		return "taskC";
+	}
+
+	/**
+	 * タスクメソッドCです．
+	 * <p>
+	 * JoinTaskアノテーションがNoWaitの場合は本メソッドは非同期に実行されます．
+	 * CloneTaskで本メソッドを並列処理数を指定できます．
+	 * 次のタスクはありません．
+	 * </p>
+	 */
+	@JoinTask(JoinType.NoWait)
+	@CloneTask(10)
+	public void doTaskC() {
+		log.info("[[SimpleTask::doTaskC]]");
+	}
+
+	/**
+	 * すべてのタスクメソッドが終了したら呼ばれます．
+	 */
+	public void destroy() {
+		log.info("[[SimpleTask::destroy]]");
+	}
+
+}
+
+            </pre>
+            </li>
+            <li>CloneTaskアノテーションでタスクメソッドの並列実行<br/>
+              タスクメソッドを並列実行する際は，CloneTaskアノテーションが使えます．上記のように10を指定した場合は，タスクに割り当てられたスレッドプール内で同時10個のタスクメソッドを処理しようとします． </li>
           </ul>
           </p>
         </div>
