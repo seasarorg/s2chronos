@@ -9,6 +9,9 @@ public class TaskPropertyWriteHandlerFactoryImpl extends
 		AbstractTaskPropertyHandlerFactory {
 
 	public TaskPropertyHandler create(Method method) {
+		if (method == null) {
+			return null;
+		}
 		TaskPropertyHandler result = taskPropertyHandlerMap.get(method
 				.getName());
 		return result;
