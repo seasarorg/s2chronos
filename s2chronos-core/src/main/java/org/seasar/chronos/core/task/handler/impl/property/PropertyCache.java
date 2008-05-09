@@ -1,20 +1,31 @@
 package org.seasar.chronos.core.task.handler.impl.property;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public final class PropertyCache {
 
-	private static Map<Object, PropertyCache> propertyCacheInstanceMap = new HashMap<Object, PropertyCache>();
+	private static Map<Object, PropertyCache> propertyCacheInstanceMap = new ConcurrentHashMap<Object, PropertyCache>();
 
-	private Map<String, Object> propertyCache = new HashMap<String, Object>();
+	private Map<String, Object> propertyCache = new ConcurrentHashMap<String, Object>();
 
 	private Object selfKey;
 
+	/**
+	 * セルフキーを返します．
+	 * 
+	 * @return セルフキー
+	 */
 	public Object getSelfKey() {
 		return selfKey;
 	}
 
+	/**
+	 * コンストラクタです．
+	 * 
+	 * @param selfKey
+	 *            セルフキー
+	 */
 	private PropertyCache(Object selfKey) {
 		this.selfKey = selfKey;
 	}
@@ -38,10 +49,25 @@ public final class PropertyCache {
 		return propertyCacheInstance;
 	}
 
+	/**
+	 * キーに対応するプロパティを返します．
+	 * 
+	 * @param key
+	 *            キー
+	 * @return プロパティ
+	 */
 	public Object get(String key) {
 		return this.propertyCache.get(key);
 	}
 
+	/**
+	 * キーとプロパティを設定します．
+	 * 
+	 * @param key
+	 *            キー
+	 * @param value
+	 *            プロパティ
+	 */
 	public void put(String key, Object value) {
 		this.propertyCache.put(key, value);
 	}

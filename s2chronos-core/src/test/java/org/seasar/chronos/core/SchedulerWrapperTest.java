@@ -26,23 +26,23 @@ public class SchedulerWrapperTest extends S2TestCaseBase {
 	}
 
 	public void testIsPaused() {
-		
+		this.schedulerWrapper.isPaused();
 	}
 
 	public void testJoin() {
-		
+
 	}
 
 	public void testPause() {
-		
+
 	}
 
 	public void testShutdown() {
-		
+
 	}
 
 	public void testStart() {
-		
+
 	}
 
 }
