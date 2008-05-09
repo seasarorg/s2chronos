@@ -21,6 +21,7 @@ public final class TaskConstant {
 	public static final String METHOD_NAME_IS_START_TASK = "isStartTask";
 	public static final String METHOD_NAME_IS_END_TASK = "isEndTask";
 	public static final String METHOD_NAME_GET_TRIGGER = "getTrigger";
+	public static final String METHOD_NAME_IS_EXECUTED = "isExecuted";
 
 	public static final String METHOD_NAME_SET_TASK_NAME = "setTaskName";
 	public static final String METHOD_NAME_SET_RE_SCHEDULE = "setReSchedule";
@@ -29,5 +30,6 @@ public final class TaskConstant {
 	public static final String METHOD_NAME_SET_START_TASK = "setStartTask";
 	public static final String METHOD_NAME_SET_END_TASK = "setEndTask";
 	public static final String METHOD_NAME_SET_TRIGGER = "setTrigger";
+	public static final String METHOD_NAME_SET_EXECUTED = "setExecuted";
 
 }
