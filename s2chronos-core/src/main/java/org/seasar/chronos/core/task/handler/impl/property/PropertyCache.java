@@ -72,4 +72,12 @@ public final class PropertyCache {
 		this.propertyCache.put(key, value);
 	}
 
+	public boolean remove(String key) {
+		return this.propertyCache.remove(key) == null ? false : true;
+	}
+
+	public void clear() {
+		this.propertyCache.clear();
+	}
+
 }
