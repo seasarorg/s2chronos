@@ -14,4 +14,8 @@ public class CustomTriggerTask {
 		log.debug("[CustomTriggerTask::initialize]");
 	}
 
+	public void destroy() {
+		log.debug("[CustomTriggerTask::destroy]");
+	}
+
 }
