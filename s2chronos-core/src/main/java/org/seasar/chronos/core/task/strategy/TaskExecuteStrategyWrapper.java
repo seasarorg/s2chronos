@@ -101,8 +101,8 @@ public class TaskExecuteStrategyWrapper implements TaskExecuteStrategy {
 		return this.taskExecuteStrategy.initialize();
 	}
 
-	public boolean isExecute() {
-		return this.taskExecuteStrategy.isExecute();
+	public boolean isExecuted() {
+		return this.taskExecuteStrategy.isExecuted();
 	}
 
 	public void load() {
@@ -117,8 +117,8 @@ public class TaskExecuteStrategyWrapper implements TaskExecuteStrategy {
 		this.taskExecuteStrategy.setEndTask(endTask);
 	}
 
-	public void setExecute(boolean executed) {
-		this.taskExecuteStrategy.setExecute(executed);
+	public void setExecuted(boolean executed) {
+		this.taskExecuteStrategy.setExecuted(executed);
 	}
 
 	public void setGetterSignal(Object getterSignal) {

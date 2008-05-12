@@ -35,11 +35,11 @@ public interface TaskProperties {
 
 	public TaskTrigger getTrigger();
 
-	public boolean isExecute();
+	public boolean isExecuted();
 
 	public void setEndTask(boolean endTask);
 
-	public void setExecute(boolean executed);
+	public void setExecuted(boolean executed);
 
 	public void setGetterSignal(Object getterSignal);
 

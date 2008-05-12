@@ -154,7 +154,7 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 					METHOD_NAME_DESTROY);
 			nextTask = md.getNextTask();
 		}
-		this.setExecute(false);
+		this.setExecuted(false);
 		this.notifyGetterSignal();
 		return nextTask;
 	}
@@ -272,7 +272,7 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 	}
 
 	public TaskTrigger getTrigger() {
-		return this.taskPropertyReader.getTrigger(this.taskTrigger);
+		return this.taskPropertyReader.getTrigger(null);
 	}
 
 	private Transition handleRequest(TaskExecuteHandler taskExecuteHandler,
@@ -284,7 +284,7 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 	}
 
 	public String initialize() throws InterruptedException {
-		this.setExecute(true);
+		this.setExecuted(true);
 		if (this.lifecycleMethodInvoker.hasMethod(METHOD_NAME_INITIALIZE)) {
 			AsyncResult ar = this.lifecycleMethodInvoker
 					.beginInvoke(METHOD_NAME_INITIALIZE);
@@ -297,7 +297,7 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 		return null;
 	}
 
-	public boolean isExecute() {
+	public boolean isExecuted() {
 		return this.taskPropertyReader.isExecuted(false);
 	}
 
@@ -427,7 +427,7 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 		this.taskPropertyWriter.setEndTask(endTask);
 	}
 
-	public void setExecute(boolean executed) {
+	public void setExecuted(boolean executed) {
 		this.taskPropertyWriter.setExecuted(executed);
 	}
 
@@ -468,16 +468,16 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 		this.taskPropertyWriter.setThreadPool(taskThreadPool);
 	}
 
-	private TaskTrigger taskTrigger;
+	// private TaskTrigger taskTrigger;
 
 	@Binding(bindingType = BindingType.NONE)
 	public void setTrigger(TaskTrigger taskTrigger) {
-		if (this.taskPropertyWriter.hasTrigger()) {
-			this.taskPropertyWriter.setTrigger(taskTrigger);
-		} else {
-			// プロパティを持っていなければセットする。
-			this.taskTrigger = taskTrigger;
-		}
+		// if (this.taskPropertyWriter.hasTrigger()) {
+		this.taskPropertyWriter.setTrigger(taskTrigger);
+		// } else {
+		// プロパティを持っていなければセットする。
+		// this.taskTrigger = taskTrigger;
+		// }
 	}
 
 	public void waitOne() throws InterruptedException {

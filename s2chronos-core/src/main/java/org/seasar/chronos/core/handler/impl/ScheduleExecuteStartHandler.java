@@ -116,7 +116,7 @@ public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler 
 						taskScheduleEntry.setTaskClass(taskClass);
 						// String[] rootPackageNames = namingConvention
 						// .getRootPackageNames();
-						if (!tes.isExecute()
+						if (!tes.isExecuted()
 								&& tes.getTaskPropertyReader().isStartTask(
 										false)) {
 							log.log("DCHRONOSSSTHRTSTT",

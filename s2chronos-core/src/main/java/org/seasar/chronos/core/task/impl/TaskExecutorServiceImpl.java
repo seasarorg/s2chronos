@@ -106,8 +106,8 @@ public class TaskExecutorServiceImpl implements TaskExecutorService {
 		return this.taskExecuteContext.initialize();
 	}
 
-	public boolean isExecute() {
-		return this.taskExecuteContext.getTaskExecuteStrategy().isExecute();
+	public boolean isExecuted() {
+		return this.taskExecuteContext.getTaskExecuteStrategy().isExecuted();
 	}
 
 	public void load() {
@@ -122,8 +122,8 @@ public class TaskExecutorServiceImpl implements TaskExecutorService {
 		this.taskExecuteContext.getTaskExecuteStrategy().setEndTask(endTask);
 	}
 
-	public void setExecute(boolean executed) {
-		this.taskExecuteContext.getTaskExecuteStrategy().setExecute(executed);
+	public void setExecuted(boolean executed) {
+		this.taskExecuteContext.getTaskExecuteStrategy().setExecuted(executed);
 	}
 
 	@Binding(bindingType = BindingType.NONE)
