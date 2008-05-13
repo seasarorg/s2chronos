@@ -70,7 +70,12 @@ public class TaskScheduleEntryManager {
 	}
 
 	public boolean contains(TaskStateType key, TaskScheduleEntry taskContena) {
-		return taskScheduleEntryMap.get(key).contains(taskContena);
+		CopyOnWriteArrayList<TaskScheduleEntry> result = taskScheduleEntryMap
+				.get(key);
+		if (result != null) {
+			return result.contains(taskContena);
+		}
+		return false;
 	}
 
 	public Object forEach(TaskScheduleEntryHanlder handler) {
@@ -113,8 +118,11 @@ public class TaskScheduleEntryManager {
 		boolean result = allTaskList.remove(taskScheduleEntry);
 		if (result) {
 			for (TaskStateType key : taskScheduleEntryMap.keySet()) {
-				result = taskScheduleEntryMap.get(key)
-						.remove(taskScheduleEntry);
+				CopyOnWriteArrayList<TaskScheduleEntry> taskScheduleEntryList = taskScheduleEntryMap
+						.get(key);
+				if (taskScheduleEntryList != null) {
+					result = taskScheduleEntryList.remove(taskScheduleEntry);
+				}
 			}
 			Class<?> taskComponentClass = taskScheduleEntry.getTaskClass();
 			if (taskComponentClass != null) {

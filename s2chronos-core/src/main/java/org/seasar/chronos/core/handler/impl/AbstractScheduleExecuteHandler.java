@@ -13,7 +13,7 @@ import org.seasar.framework.log.Logger;
 public abstract class AbstractScheduleExecuteHandler implements
 		ScheduleExecuteHandler {
 
-	protected static Logger log = Logger
+	protected static final Logger log = Logger
 			.getLogger(AbstractScheduleExecuteHandler.class);
 
 	protected TaskScheduleEntryManager taskContenaStateManager = TaskScheduleEntryManager

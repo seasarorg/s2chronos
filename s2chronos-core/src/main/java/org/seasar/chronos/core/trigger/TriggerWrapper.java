@@ -8,6 +8,11 @@ public class TriggerWrapper extends AbstractTrigger {
 
 	private TaskTrigger taskTrigger;
 
+	@Override
+	public int hashCode() {
+		return super.hashCode();
+	}
+
 	public TriggerWrapper(TaskTrigger taskTrigger) {
 		this.taskTrigger = taskTrigger;
 	}

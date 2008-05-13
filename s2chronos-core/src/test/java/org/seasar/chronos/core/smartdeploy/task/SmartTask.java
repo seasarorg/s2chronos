@@ -13,10 +13,17 @@ public class SmartTask {
 
 	@Override
 	public boolean equals(Object obj) {
-		boolean result = true;
-		SmartTask src = (SmartTask) obj;
-		result = result & trigger.equals(src.trigger);
+		boolean result = false;
+		if (obj != null && obj instanceof SmartTask) {
+			SmartTask src = (SmartTask) obj;
+			result = result & trigger.equals(src.trigger);
+		}
 		return result;
+	}
+
+	@Override
+	public int hashCode() {
+		return super.hashCode();
 	}
 
 	private static final Logger log = Logger.getLogger(SmartTask.class);

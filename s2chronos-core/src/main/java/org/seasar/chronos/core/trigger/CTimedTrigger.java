@@ -20,19 +20,19 @@ public class CTimedTrigger extends AbstractTrigger {
 	}
 
 	public void setStartTime(Date startDate) {
-		this.startTime = startDate;
+		this.startTime = (Date) startDate.clone();
 	}
 
 	public Date getStartTime() {
-		return startTime;
+		return (Date) startTime.clone();
 	}
 
 	public void setEndTime(Date endDate) {
-		this.endTime = endDate;
+		this.endTime = (Date) endDate.clone();
 	}
 
 	public Date getEndTime() {
-		return endTime;
+		return (Date) endTime.clone();
 	}
 
 	public boolean isStartTask() {

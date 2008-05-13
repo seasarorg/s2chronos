@@ -6,6 +6,11 @@ public class CDelayTrigger extends AbstractTrigger {
 
 	private long delay = 0;
 
+	@Override
+	public int hashCode() {
+		return super.hashCode();
+	}
+
 	public CDelayTrigger() {
 		super("delayTrigger");
 	}

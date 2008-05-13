@@ -49,6 +49,11 @@ public abstract class AbstractTrigger implements TaskTrigger {
 		}
 	}
 
+	@Override
+	public int hashCode() {
+		return super.hashCode();
+	}
+
 	public String getDescription() {
 		return description;
 	}

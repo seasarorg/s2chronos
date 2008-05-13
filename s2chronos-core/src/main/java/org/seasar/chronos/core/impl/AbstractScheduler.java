@@ -18,7 +18,8 @@ import org.seasar.framework.util.tiger.ReflectionUtil;
 
 public abstract class AbstractScheduler implements Scheduler {
 
-	protected static Logger log = Logger.getLogger(AbstractScheduler.class);
+	protected static final Logger log = Logger
+			.getLogger(AbstractScheduler.class);
 
 	protected S2Container s2container;
 
@@ -69,8 +70,8 @@ public abstract class AbstractScheduler implements Scheduler {
 		return this.registerChildTaskComponent(s2Container, null);
 	}
 
-	protected boolean registerChildTaskComponentByTarget(S2Container s2Container,
-			final Class<?> targetTaskComponentClass) {
+	protected boolean registerChildTaskComponentByTarget(
+			S2Container s2Container, final Class<?> targetTaskComponentClass) {
 		return this.registerChildTaskComponent(s2Container,
 				targetTaskComponentClass);
 	}

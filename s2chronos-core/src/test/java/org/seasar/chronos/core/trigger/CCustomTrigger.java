@@ -6,6 +6,11 @@ public class CCustomTrigger extends AbstractTrigger {
 
 	private int div;
 
+	@Override
+	public int hashCode() {
+		return super.hashCode();
+	}
+
 	public boolean isEndTask() {
 		return false;
 	}

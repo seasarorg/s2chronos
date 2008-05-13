@@ -116,7 +116,7 @@ public class TaskGroupMethodExecuteHandlerImpl extends
 		// nextTask = groupList.get(nextIndex);
 		// }
 		if (nextTask == null) {
-			return new Transition(true, nextTask);
+			return new Transition(true);
 		} else if (this.taskMethodManager.existGroup(nextTask)) {
 			return handleRequest(nextTask);
 		}

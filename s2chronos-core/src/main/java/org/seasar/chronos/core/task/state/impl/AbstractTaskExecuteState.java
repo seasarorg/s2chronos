@@ -9,7 +9,7 @@ import org.seasar.framework.log.Logger;
 
 public abstract class AbstractTaskExecuteState implements TaskExecuteState {
 
-	protected static Logger log = Logger
+	protected static final Logger log = Logger
 			.getLogger(AbstractTaskExecuteState.class);
 
 	private TaskExecuteStrategy taskExecuteStrategy;

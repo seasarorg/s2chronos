@@ -15,11 +15,18 @@ public class CronExpression implements Serializable {
 
 	@Override
 	public boolean equals(Object obj) {
-		boolean result = true;
-		CronExpression src = (CronExpression) obj;
-		result = result & cronExpression.equals(src.cronExpression);
-		result = result & startTimeList.equals(src.startTimeList);
+		boolean result = false;
+		if (obj != null && obj instanceof CronExpression) {
+			CronExpression src = (CronExpression) obj;
+			result = result & cronExpression.equals(src.cronExpression);
+			result = result & startTimeList.equals(src.startTimeList);
+		}
 		return result;
+	}
+
+	@Override
+	public int hashCode() {
+		return super.hashCode();
 	}
 
 	private static final String TOKEN_DELIMITER = " \t";

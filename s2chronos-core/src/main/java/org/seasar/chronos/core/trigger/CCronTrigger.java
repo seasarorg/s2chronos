@@ -43,6 +43,12 @@ public class CCronTrigger extends AbstractTrigger {
 		return result;
 	}
 
+	@Override
+	public int hashCode() {
+		// TODO 自動生成されたメソッド・スタブ
+		return super.hashCode();
+	}
+
 	public String getCronExpression() {
 		return this.expression.getCronExprssion();
 	}

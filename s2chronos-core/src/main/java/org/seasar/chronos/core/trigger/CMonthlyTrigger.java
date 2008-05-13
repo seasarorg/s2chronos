@@ -6,6 +6,11 @@ public class CMonthlyTrigger extends AbstractTrigger {
 
 	private static final long serialVersionUID = 1L;
 
+	@Override
+	public int hashCode() {
+		return super.hashCode();
+	}
+
 	public boolean isEndTask() {
 		return false;
 	}
