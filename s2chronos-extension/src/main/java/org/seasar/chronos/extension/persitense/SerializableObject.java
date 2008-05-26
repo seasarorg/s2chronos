@@ -11,7 +11,7 @@ import java.util.Map;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 
-public class SerializebleObject implements Serializable {
+public class SerializableObject implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -19,15 +19,15 @@ public class SerializebleObject implements Serializable {
 
 	private Object target;
 
-	public static SerializebleObject create(String className, Object target) {
-		return new SerializebleObject(className, target);
+	public static SerializableObject create(String className, Object target) {
+		return new SerializableObject(className, target);
 	}
 
-	public SerializebleObject() {
+	public SerializableObject() {
 
 	}
 
-	public SerializebleObject(String className, Object target) {
+	public SerializableObject(String className, Object target) {
 		this.className = className;
 		this.target = target;
 	}
@@ -43,8 +43,8 @@ public class SerializebleObject implements Serializable {
 		try {
 			className = String.class.cast(stream.readObject());
 			Class sourceClazz = Class.forName(className);
-			// Class clazz = ProxyFactory.createProxy(sourceClazz);
-			target = sourceClazz.newInstance();
+			Class clazz = SerializeFactory.createProxy(sourceClazz);
+			target = clazz.newInstance();
 			Map<String, Object> fieldMap = Map.class.cast(stream.readObject());
 			restoreFields(fieldMap);
 		} catch (Exception e) {
@@ -89,8 +89,8 @@ public class SerializebleObject implements Serializable {
 						fields[i].setAccessible(true);
 					}
 					Object value = fieldMap.get(fields[i].getName());
-					if (value instanceof SerializebleObject) { // ポイント！！
-						value = SerializebleObject.class.cast(value)
+					if (value instanceof SerializableObject) { // ポイント！！
+						value = SerializableObject.class.cast(value)
 								.readResolve();
 					}
 					fields[i].set(target, value);

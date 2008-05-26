@@ -8,6 +8,9 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
+import javassist.CannotCompileException;
+import javassist.NotFoundException;
+
 import org.junit.Test;
 import org.seasar.framework.exception.IORuntimeException;
 
@@ -16,19 +19,22 @@ public class SerializebleObjectTest implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Test
-	public void testSerializebleObject() {
-		String className = TestTask.class.getName();
-		TestTask a = new TestTask();
+	public void testSerializebleObject() throws NotFoundException,
+			CannotCompileException, InstantiationException,
+			IllegalAccessException {
+
+		Class clazz = SerializeFactory.createProxy(TestTask.class);
+		TestTask a = (TestTask) clazz.newInstance();
+
 		a.testTask = new TestTask();
 		a.testTask.name = "hoge";
-		SerializebleObject so = new SerializebleObject(className, a);
 
 		FileOutputStream fos = null;
 		try {
-			File targetFile = new File("C:\\temp\\", className);
+			File targetFile = new File("C:\\temp\\", TestTask.class.getName());
 			fos = new FileOutputStream(targetFile);
 			ObjectOutputStream oos = new ObjectOutputStream(fos);
-			oos.writeObject(so);
+			oos.writeObject(a);
 		} catch (IOException e) {
 			throw new IORuntimeException(e);
 		} finally {
