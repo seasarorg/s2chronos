@@ -6,6 +6,7 @@ import java.io.ObjectOutputStream;
 import java.io.ObjectStreamException;
 import java.io.Serializable;
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -85,6 +86,10 @@ public class SerializableObject implements Serializable {
 			while (clazz != Object.class) {
 				Field[] fields = clazz.getDeclaredFields();
 				for (int i = 0; i < fields.length; i++) {
+					int modifiers = fields[i].getModifiers();
+					if (Modifier.isFinal(modifiers)) {
+						continue;
+					}
 					if (!fields[i].isAccessible()) {
 						fields[i].setAccessible(true);
 					}
