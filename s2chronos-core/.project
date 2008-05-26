@@ -7,18 +7,18 @@
       <name>org.eclipse.jdt.core.javabuilder</name>
     </buildCommand>
     <buildCommand>
+      <name>edu.umd.cs.findbugs.plugin.eclipse.findbugsBuilder</name>
+    </buildCommand>
+    <buildCommand>
       <name>org.seasar.kijimuna.core.builder</name>
     </buildCommand>
     <buildCommand>
       <name>org.seasar.kijimuna.core.validator</name>
     </buildCommand>
-    <buildCommand>
-      <name>edu.umd.cs.findbugs.plugin.eclipse.findbugsBuilder</name>
-    </buildCommand>
   </buildSpec>
   <natures>
     <nature>org.eclipse.jdt.core.javanature</nature>
-    <nature>org.seasar.kijimuna.core.nature</nature>
     <nature>edu.umd.cs.findbugs.plugin.eclipse.findbugsNature</nature>
+    <nature>org.seasar.kijimuna.core.nature</nature>
   </natures>
 </projectDescription>
