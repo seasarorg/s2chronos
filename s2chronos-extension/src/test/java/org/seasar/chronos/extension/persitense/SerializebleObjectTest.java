@@ -12,9 +12,12 @@ import javassist.CannotCompileException;
 import javassist.NotFoundException;
 
 import org.junit.Test;
+import org.seasar.chronos.core.S2TestCaseBase;
+import org.seasar.chronos.extension.task.TestTask;
 import org.seasar.framework.exception.IORuntimeException;
 
-public class SerializebleObjectTest implements Serializable {
+public class SerializebleObjectTest extends S2TestCaseBase implements
+		Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -26,7 +29,7 @@ public class SerializebleObjectTest implements Serializable {
 		Class clazz = SerializeFactory.createProxy(TestTask.class);
 		TestTask a = (TestTask) clazz.newInstance();
 
-		a.testTask = new TestTask();
+		a.testTask = (TestTask) clazz.newInstance();
 		a.testTask.name = "hoge";
 
 		FileOutputStream fos = null;
@@ -63,8 +66,7 @@ public class SerializebleObjectTest implements Serializable {
 		} catch (IOException e) {
 			throw new IORuntimeException(e);
 		} catch (ClassNotFoundException e) {
-			// TODO 自動生成された catch ブロック
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		} finally {
 			if (fis != null) {
 				try {

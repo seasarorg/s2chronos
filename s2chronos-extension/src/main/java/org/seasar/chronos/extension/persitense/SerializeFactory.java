@@ -19,6 +19,7 @@ public class SerializeFactory {
 			return clazz;
 		} catch (ClassNotFoundException e) {
 		}
+
 		ClassPool cp = new ClassPool();
 		cp.appendClassPath(new LoaderClassPath(ProxyFactory.class
 				.getClassLoader()));
