@@ -53,7 +53,7 @@ public class SerializableObject implements Serializable {
 		return target;
 	}
 
-	private Map createFieldMap() {
+	private Map<String, Object> createFieldMap() {
 		try {
 			Map<String, Object> fieldMap = new HashMap<String, Object>();
 			Class<? extends Object> clazz = target.getClass();
@@ -78,7 +78,7 @@ public class SerializableObject implements Serializable {
 
 	private void restoreFields(Map<String, Object> fieldMap) {
 		try {
-			Class clazz = target.getClass();
+			Class<?> clazz = target.getClass();
 			while (clazz != Object.class) {
 				Field[] fields = clazz.getDeclaredFields();
 				for (int i = 0; i < fields.length; i++) {
@@ -106,10 +106,6 @@ public class SerializableObject implements Serializable {
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this).toString();
-	}
-
-	public Object getTarget() {
-		return target;
 	}
 
 }

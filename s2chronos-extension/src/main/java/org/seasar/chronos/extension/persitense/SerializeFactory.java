@@ -6,7 +6,6 @@ import javassist.CtClass;
 import javassist.CtMethod;
 import javassist.LoaderClassPath;
 import javassist.NotFoundException;
-import javassist.util.proxy.ProxyFactory;
 
 public class SerializeFactory {
 
@@ -14,15 +13,16 @@ public class SerializeFactory {
 			throws NotFoundException, CannotCompileException {
 		String proxyClassName = "org.seasar.chronos.extension.persitense."
 				+ target.getSimpleName() + "Proxy";
+		ClassLoader classLoader = Thread.currentThread()
+				.getContextClassLoader();
 		try {
-			Class<?> clazz = Class.forName(proxyClassName);
+			Class<?> clazz = Class.forName(proxyClassName, true, classLoader);
 			return clazz;
 		} catch (ClassNotFoundException e) {
 		}
 
 		ClassPool cp = new ClassPool();
-		cp.appendClassPath(new LoaderClassPath(ProxyFactory.class
-				.getClassLoader()));
+		cp.appendClassPath(new LoaderClassPath(classLoader));
 		CtClass formCtClass = cp.get(target.getName());
 		CtClass formProxyCtClass = cp.makeClass(proxyClassName, formCtClass);
 		formProxyCtClass.setSuperclass(formCtClass);

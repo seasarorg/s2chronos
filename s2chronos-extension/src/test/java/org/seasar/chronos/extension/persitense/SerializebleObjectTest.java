@@ -24,7 +24,7 @@ public class SerializebleObjectTest extends S2TestCaseBase {
 			CannotCompileException, InstantiationException,
 			IllegalAccessException {
 
-		Class clazz = SerializeFactory.createProxy(TestTask.class);
+		Class<?> clazz = SerializeFactory.createProxy(TestTask.class);
 		TestTask a = (TestTask) clazz.newInstance();
 
 		a.testTask = (TestTask) clazz.newInstance();
