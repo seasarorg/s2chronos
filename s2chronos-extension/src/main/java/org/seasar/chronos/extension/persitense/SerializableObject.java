@@ -105,7 +105,7 @@ public class SerializableObject implements Serializable {
 
 	@Override
 	public String toString() {
-		return new ToStringBuilder(this).toString();
+		return  ToStringBuilder.reflectionToString(this);
 	}
 
 }
