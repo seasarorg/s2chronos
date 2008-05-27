@@ -24,10 +24,6 @@ public class SerializableObject implements Serializable {
 		return new SerializableObject(className, target);
 	}
 
-	public SerializableObject() {
-
-	}
-
 	public SerializableObject(String className, Object target) {
 		this.className = className;
 		this.target = target;

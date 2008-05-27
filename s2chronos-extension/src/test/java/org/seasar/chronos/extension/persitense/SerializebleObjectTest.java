@@ -6,7 +6,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.Serializable;
 
 import javassist.CannotCompileException;
 import javassist.NotFoundException;
@@ -16,8 +15,7 @@ import org.seasar.chronos.core.S2TestCaseBase;
 import org.seasar.chronos.extension.task.TestTask;
 import org.seasar.framework.exception.IORuntimeException;
 
-public class SerializebleObjectTest extends S2TestCaseBase implements
-		Serializable {
+public class SerializebleObjectTest extends S2TestCaseBase {
 
 	private static final long serialVersionUID = 1L;
 
