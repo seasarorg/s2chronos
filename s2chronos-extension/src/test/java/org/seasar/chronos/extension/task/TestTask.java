@@ -10,13 +10,36 @@ public class TestTask implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	public String name = "aaaa";
-	public Integer id = 10;
-
-	public TestTask testTask = this;
+	private String name = "aaaa";
+	private Integer id = 10;
+	private TestTask testTask = this;
 
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this).toString();
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public TestTask getTestTask() {
+		return testTask;
+	}
+
+	public void setTestTask(TestTask testTask) {
+		this.testTask = testTask;
 	}
 }
