@@ -17,7 +17,8 @@ public class XmlObjectInputStream extends ObjectInputStream {
 	@Override
 	protected Object readObjectOverride() throws IOException,
 			ClassNotFoundException {
-		return super.readObjectOverride();
+
+		return null;
 	}
 
 }
