@@ -110,6 +110,7 @@ public class TaskPropertyWriterImpl implements TaskPropertyWriter {
 		}
 	}
 
+	@Binding(bindingType = BindingType.NONE)
 	public void setThreadPool(TaskThreadPool value) {
 		if (this.hasThreadPool()) {
 			PropertyDesc pd = this.beanDesc
@@ -128,8 +129,7 @@ public class TaskPropertyWriterImpl implements TaskPropertyWriter {
 
 	@Binding(bindingType = BindingType.NONE)
 	public void setTrigger(TaskTrigger value) {
-		if (this.beanDesc
-				.hasPropertyDesc(TaskConstant.PROPERTY_NAME_TRIGGER)) {
+		if (this.beanDesc.hasPropertyDesc(TaskConstant.PROPERTY_NAME_TRIGGER)) {
 			PropertyDesc pd = this.beanDesc
 					.getPropertyDesc(TaskConstant.PROPERTY_NAME_TRIGGER);
 			pd.setValue(this.task, value);
