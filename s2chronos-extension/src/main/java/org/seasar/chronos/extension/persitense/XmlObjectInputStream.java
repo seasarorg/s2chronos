@@ -6,19 +6,8 @@ import java.io.ObjectInputStream;
 
 public class XmlObjectInputStream extends ObjectInputStream {
 
-	public XmlObjectInputStream() throws IOException, SecurityException {
-		super();
-	}
+	public XmlObjectInputStream(InputStream in) throws IOException {
 
-	public XmlObjectInputStream(InputStream arg0) throws IOException {
-		super(arg0);
-	}
-
-	@Override
-	protected Object readObjectOverride() throws IOException,
-			ClassNotFoundException {
-
-		return null;
 	}
 
 }
