@@ -31,7 +31,7 @@
 			"jdbc:hsqldb:hsql://localhost:9001/data/chronos"
 			-->
 			"jdbc:hsqldb:file:"
-				+ @org.seasar.framework.util.ResourceUtil@getBuildDir(@org.seasar.chronos.extension.test.ResouceTest@class).getCanonicalPath()
+				+ @org.seasar.framework.util.ResourceUtil@getBuildDir(@org.seasar.chronos.extension.servlet.S2ChronosServlet@class).getCanonicalPath()
 				+ "/data/chronos"
 		</property>
 		<property name="user">"sa"</property>
