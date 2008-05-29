@@ -29,7 +29,7 @@ public class Sample {
 		try {
 			scheduler.join();
 		} catch (Exception e) {
-			;
+			e.printStackTrace();
 		}
 		SingletonS2ContainerFactory.destroy();
 	}
