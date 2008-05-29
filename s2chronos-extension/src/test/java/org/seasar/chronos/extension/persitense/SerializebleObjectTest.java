@@ -27,8 +27,8 @@ public class SerializebleObjectTest extends S2TestCaseBase {
 		Class<?> clazz = SerializeFactory.createProxy(TestTask.class);
 		TestTask a = (TestTask) clazz.newInstance();
 
-		a.testTask = (TestTask) clazz.newInstance();
-		a.testTask.name = "hoge";
+		a.setTestTask((TestTask) clazz.newInstance());
+		a.getTestTask().setName("hoge");
 
 		FileOutputStream fos = null;
 		try {
@@ -75,10 +75,10 @@ public class SerializebleObjectTest extends S2TestCaseBase {
 			}
 		}
 		System.out.println(target);
-		System.out.println(target.name);
-		System.out.println(target.id);
-		System.out.println(target.testTask);
-		System.out.println(target.testTask.name);
-		System.out.println(target.testTask.id);
+		System.out.println(target.getName());
+		// System.out.println(target.id);
+		// System.out.println(target.testTask);
+		// System.out.println(target.testTask.name);
+		// System.out.println(target.testTask.id);
 	}
 }
