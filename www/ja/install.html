@@ -100,6 +100,7 @@ urchinTracker();
 		&lt;property name=&quot;autoFinish&quot;&gt;false&lt;/property&gt;  // &lt;- 実行するタスクがない場合自動的にスケジューラを終了させるかどうかのフラグ．trueの場合自動的に終了します．
 		&lt;property name=&quot;autoFinishTimeLimit&quot;&gt;5000L&lt;/property&gt;	// &lt;- 実行するタスクがなくなってからどれぐらいでスケジューラを終了させるかの時間(msec)．
 		&lt;property name=&quot;taskScanIntervalTime&quot;&gt;2000L&lt;/property&gt; // &lt;- タスクを関するする時間間隔(msec).
+		&lt;property name=&quot;threadPoolType&quot;&gt;@org.seasar.chronos.core.ThreadPoolType@CACHED&lt;/property&gt; // 注意！0.0.1-RC2より追加になりました．
 	&lt;/component&gt;
 &lt;/components&gt; 
 </pre>
@@ -137,7 +138,6 @@ urchinTracker();
 		&lt;/initMethod&gt;
 	&lt;/component&gt;
 </pre>
-
     </li>
 </ul>
 </p>
