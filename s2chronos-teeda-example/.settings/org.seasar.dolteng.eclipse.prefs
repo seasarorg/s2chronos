@@ -1,0 +1,8 @@
+#Mon Jun 02 01:20:37 JST 2008
+DaoType=S2Dao
+DefaultResourcePath=/s2chronos-teeda-example/src/main/resources
+DefaultRootPackage=org.seasar.chronos.teeda.example
+DefaultSrcPath=/s2chronos-teeda-example/src/main/java
+UseSqlMarker=true
+WebContentsRoot=src/main/java
+eclipse.preferences.version=1

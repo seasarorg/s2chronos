@@ -1,0 +1,5 @@
+#Mon Jun 02 01:19:45 JST 2008
+baseDir=/s2chronos-teeda-example/src/main/resources/data
+dbPortNo=9093
+eclipse.preferences.version=1
+webPortNo=8083
