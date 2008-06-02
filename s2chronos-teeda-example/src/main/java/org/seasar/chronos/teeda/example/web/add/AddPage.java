@@ -15,9 +15,12 @@
  */
 package org.seasar.chronos.teeda.example.web.add;
 
+import org.seasar.chronos.teeda.example.dto.UserAuthDto;
 import org.seasar.teeda.extension.annotation.validator.GreaterThanConstant;
 
 public class AddPage {
+
+	public UserAuthDto userAuthDto;
 
 	@GreaterThanConstant
 	private int arg1;
