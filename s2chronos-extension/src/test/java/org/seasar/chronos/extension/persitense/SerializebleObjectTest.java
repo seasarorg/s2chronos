@@ -11,14 +11,13 @@ import javassist.CannotCompileException;
 import javassist.NotFoundException;
 
 import org.junit.Test;
-import org.seasar.chronos.core.S2TestCaseBase;
 import org.seasar.chronos.extension.task.TestTask;
 import org.seasar.framework.exception.IORuntimeException;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 
-public class SerializebleObjectTest extends S2TestCaseBase {
+public class SerializebleObjectTest {
 
 	private static final long serialVersionUID = 1L;
 
