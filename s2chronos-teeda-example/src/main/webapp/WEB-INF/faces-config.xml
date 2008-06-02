@@ -16,13 +16,4 @@
     	</locale-config>
 	</application>
 
-	<render-kit>
-		<renderer>
-			<component-family>javax.faces.Output</component-family>
-			<renderer-type>org.seasar.teeda.extension.HtmlOutputText</renderer-type>
-			<renderer-class>
-				examples.teeda.render.HogeOutputRenderer
-			</renderer-class>
-		</renderer>
-	</render-kit>
 </faces-config>

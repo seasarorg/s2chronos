@@ -5,8 +5,8 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.seasar.chronos</groupId>
 	<artifactId>s2chronos-teeda-example</artifactId>
-	<packaging>jar</packaging>
-	<version>0.0.1-RC2</version>
+	<packaging>war</packaging>
+	<version>0.0.1-RC3</version>
 	<name>S2Chronos Teeda Example</name>
 	<url>http://s2chronos.sandbox.seasar.org/</url>
 	<build>

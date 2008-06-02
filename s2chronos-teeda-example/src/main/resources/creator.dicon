@@ -15,4 +15,6 @@
 	<component class="org.seasar.framework.container.creator.InterceptorCreator"/>
 	<component class="org.seasar.framework.container.creator.ValidatorCreator"/>
 	<component class="org.seasar.framework.container.creator.ConverterCreator"/>
+	<component class="org.seasar.chronos.core.creator.TaskCreator"/>
+	<component class="org.seasar.chronos.core.creator.TriggerCreator"/>
 </components>

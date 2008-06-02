@@ -2,7 +2,13 @@
 DaoType=S2Dao
 DefaultResourcePath=/s2chronos-teeda-example/src/main/resources
 DefaultRootPackage=org.seasar.chronos.teeda.example
+DefaultWebPackage=org.seasar.chronos.teeda.example.web
 DefaultSrcPath=/s2chronos-teeda-example/src/main/java
+ServletPath=s2chronos-teeda-example
+WebContentsRoot=src/main/webapp
+WebServer=http\://localhost\:8080/
 UseSqlMarker=true
-WebContentsRoot=src/main/java
+WebContentsRoot=src/main/webapp
 eclipse.preferences.version=1
+instance/org.eclipse.core.net/org.eclipse.core.net.hasMigrated=true
+prefs.children=,jdbc.dicon,destiny,
