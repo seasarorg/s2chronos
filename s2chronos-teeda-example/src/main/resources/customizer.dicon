@@ -22,7 +22,14 @@
 			<arg>actionSupportAspectCustomizer</arg>
 		</initMethod>
 	</component>
-	
+	<component name="daoCustomizer" class="org.seasar.framework.container.customizer.CustomizerChain">
+	    <initMethod name="addCustomizer">
+	      <arg>traceCustomizer</arg>
+	    </initMethod>
+	    <initMethod name="addCustomizer">
+	      <arg>s2DaoCustomizer</arg>
+	    </initMethod>
+	</component>
 	<component name="taskSupportAspectCustomizer" class="org.seasar.framework.container.customizer.AspectCustomizer">
 		<initMethod name="addInterceptorName">
 			<arg>"aop.traceInterceptor"</arg>

@@ -6,9 +6,8 @@
 	<include path="aop.dicon"/>
 	<include path="app_aop.dicon"/>
 	<include path="teedaExtension.dicon"/>
+	<include path="dao.dicon"/>
 	<include path="chronos-extension.dicon"/>
-	<!--
 	<include path="dbsession.dicon"/>
-	-->
 
 </components>

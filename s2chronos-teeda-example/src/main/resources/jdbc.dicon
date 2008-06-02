@@ -19,18 +19,18 @@
 	<component class="org.seasar.extension.jdbc.impl.BooleanToIntStatementFactory"/>
 	-->
 
-	<!-- for HSQLDB -->
+	<!-- for H2 -->
 	<component name="xaDataSource"
 		class="org.seasar.extension.dbcp.impl.XADataSourceImpl">
 		<property name="driverClassName">
-			"org.hsqldb.jdbcDriver"
+			"org.h2.Driver"
 		</property>
 		<property name="URL">
 			<!--
-			"jdbc:hsqldb:hsql://localhost:9001"
+			"jdbc:h2://localhost:9001"
 			-->
-			"jdbc:hsqldb:file:"
-				+ @org.seasar.framework.util.ResourceUtil@getBuildDir(@examples.teeda.dto.AaaDto@class).getCanonicalPath()
+			"jdbc:h2:file:"
+				+ @org.seasar.framework.util.ResourceUtil@getBuildDir(@org.seasar.chronos.teeda.example.task.SessionTimerTask@class).getCanonicalPath()
 				+ "/data/demo"
 		</property>
 		<property name="user">"sa"</property>
