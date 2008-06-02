@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="s2chronos-teeda-example" default="dist" basedir=".">
+  <property name="ver" value="0.0.1-RC3"/>
+
+  <path id="s2chronos.classpath">
+    <pathelement location="build/classes" />
+<!--
+  	<fileset dir="src/main/webapp/WEB-INF/lib">
+      <include name="**/*.jar" />
+    </fileset>
+-->
+  </path>
+
+  <taskdef resource="s2chronos-tasks.properties" classpathref="s2chronos.classpath" />
+
+  <target name="dist">
+    <mkdir dir="target" />
+    <zip destfile="target/s2chronos-teeda-example-${ver}.zip">
+    <zipfileset dir="."
+                prefix="s2chronos-teeda-example"
+                includes="* .settings/** src/**"
+                excludes="target"/>
+    </zip>
+  	<mkdir dir="../www/release" />
+  	<copy file="target/s2chronos-teeda-example-${ver}.zip" todir="../www/release"/>
+  </target>
+
+</project>
