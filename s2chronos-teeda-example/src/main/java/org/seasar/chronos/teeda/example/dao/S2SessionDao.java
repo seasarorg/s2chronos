@@ -7,7 +7,7 @@ import org.seasar.dao.annotation.tiger.Sql;
 @S2Dao(bean = S2Session.class)
 public interface S2SessionDao {
 
-	@Sql("DELETE FROM S2SESSION WHERE LAST_ACCESS > NOW()+/*expireTime*/")
+	@Sql("DELETE FROM S2SESSION WHERE LAST_ACCESS > NOW()+/*expireTime*/1")
 	public int deleteOldSession(int expireTime);
 
 }
