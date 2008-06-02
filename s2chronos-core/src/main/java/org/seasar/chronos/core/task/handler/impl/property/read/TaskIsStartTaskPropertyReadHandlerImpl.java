@@ -37,12 +37,15 @@ public class TaskIsStartTaskPropertyReadHandlerImpl extends
 						public TaskTrigger process(Annotation annotaion,
 								Class<?> triggerAnnotationClass) {
 							if (triggerAnnotationClass != null) {
-								// TODO ランタイムエラー処理
-								TaskTrigger taskTrigger = (TaskTrigger) ReflectionUtil
-										.newInstance(triggerAnnotationClass);
-								build(taskTrigger, annotaion,
-										triggerAnnotationClass);
-								return taskTrigger;
+								try {
+									TaskTrigger taskTrigger = (TaskTrigger) ReflectionUtil
+											.newInstance(triggerAnnotationClass);
+									build(taskTrigger, annotaion,
+											triggerAnnotationClass);
+									return taskTrigger;
+								} catch (Exception e) {
+									e.printStackTrace();
+								}
 							}
 							return null;
 						}
