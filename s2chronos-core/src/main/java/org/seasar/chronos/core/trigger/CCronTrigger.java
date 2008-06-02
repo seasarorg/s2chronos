@@ -74,9 +74,9 @@ public class CCronTrigger extends AbstractTrigger {
 	public boolean isStartTask() {
 		long nowTime = System.currentTimeMillis();
 		Date nextValidTime = this.expression.getNextValidTimeAfter(buildTime);
-		log.debug("nextValidTime = " + nextValidTime);
-		log.debug("nowTime = " + nowTime + ", nextValidTime = "
-				+ nextValidTime.getTime());
+		// log.debug("nextValidTime = " + nextValidTime);
+		// log.debug("nowTime = " + nowTime + ", nextValidTime = "
+		// + nextValidTime.getTime());
 		if (nowTime > nextValidTime.getTime()) {
 			buildTime = new Date(nowTime);
 			return true;
