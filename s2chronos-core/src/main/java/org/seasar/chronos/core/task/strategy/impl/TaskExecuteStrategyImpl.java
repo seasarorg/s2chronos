@@ -163,12 +163,18 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 
 	public String destroy() throws InterruptedException {
 		String nextTask = null;
+		log.debug("check point 1 : this.lifecycleMethodInvoker = "
+				+ this.lifecycleMethodInvoker);
 		if (this.lifecycleMethodInvoker.hasMethod(METHOD_NAME_DESTROY)) {
+			log.debug("check point 2");
 			AsyncResult ar = this.lifecycleMethodInvoker
 					.beginInvoke(METHOD_NAME_DESTROY);
+			log.debug("check point 3");
 			this.lifecycleMethodInvoker.endInvoke(ar);
+			log.debug("check point 4");
 			TaskMethodMetaData md = new TaskMethodMetaData(this.beanDesc,
 					METHOD_NAME_DESTROY);
+			log.debug("check point 5");
 			nextTask = md.getNextTask();
 		}
 		this.setExecuted(false);

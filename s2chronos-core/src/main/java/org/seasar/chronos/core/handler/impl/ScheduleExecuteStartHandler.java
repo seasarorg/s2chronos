@@ -71,14 +71,25 @@ public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler 
 			}
 			try {
 				fireStartTaskEvent(taskExecutorService);
+				log
+						.debug("$$$$$$$$$$$$$$$$$$ initialize start $$$$$$$$$$$$$$$$$$");
 				final String nextTaskName = taskExecutorService.initialize();
+				log
+						.debug("$$$$$$$$$$$$$$$$$$ initialize end $$$$$$$$$$$$$$$$$$");
+				log
+						.debug("$$$$$$$$$$$$$$$$$$ taskExecute start $$$$$$$$$$$$$$$$$$");
 				taskExecute(taskExecutorService, nextTaskName);
+				log
+						.debug("$$$$$$$$$$$$$$$$$$ taskExecute end $$$$$$$$$$$$$$$$$$");
 			} catch (final Exception e) {
 				fireExceptionTaskEvent(taskExecutorService, e);
 			} finally {
+				log
+						.debug("$$$$$$$$$$$$$$$$$$ destroy start $$$$$$$$$$$$$$$$$$");
 				final String nextTaskName = taskExecutorService.destroy();
 				// scheduleTask(taskExecutorService, nextTaskName);
 				fireEndTaskEvent(taskExecutorService);
+				log.debug("$$$$$$$$$$$$$$$$$$ destroy end $$$$$$$$$$$$$$$$$$");
 			}
 			taskContenaStateManager.removeTaskScheduleEntry(
 					TaskStateType.RUNNING, taskScheduleEntry);
@@ -130,9 +141,10 @@ public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler 
 							taskScheduleEntry
 									.setTaskStaterFuture(taskStaterFuture);
 						} else {
-							tes.unprepare();
-							taskScheduleEntry.setTask(null);
-							taskScheduleEntry.setTaskClass(null);
+							// TODO このコードは必要か
+							// tes.unprepare();
+							// taskScheduleEntry.setTask(null);
+							// taskScheduleEntry.setTaskClass(null);
 						}
 						return null;
 					}
