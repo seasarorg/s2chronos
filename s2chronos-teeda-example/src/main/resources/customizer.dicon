@@ -8,7 +8,31 @@
 		<property name="interceptorName">"aop.classLoaderAwareTraceInterceptor"</property>
 		<property name="pointcut">"do.*, initialize, prerender"</property>
 	</component>
-
+  <component name="pageCustomizer" class="org.seasar.framework.container.customizer.CustomizerChain">
+    <initMethod name="addCustomizer">
+      <arg>traceCustomizer</arg>
+    </initMethod>
+    <initMethod name="addCustomizer">
+      <arg>
+        <component class="org.seasar.framework.container.customizer.AspectCustomizer">
+          <initMethod name="addInterceptorName">
+            <arg>"app_aop.appFacesExceptionThrowsInterceptor"</arg>
+          </initMethod>
+          <property name="pointcut">"do.*, initialize, prerender"</property>
+        </component>
+      </arg>
+    </initMethod>
+    <initMethod name="addCustomizer">
+      <arg>
+        <component class="org.seasar.framework.container.customizer.AspectCustomizer">
+          <initMethod name="addInterceptorName">
+            <arg>"j2ee.requiredTx"</arg>
+          </initMethod>
+          <property name="pointcut">"do.*, initialize, prerender"</property>
+        </component>
+      </arg>
+    </initMethod>
+  </component>
 	<component name="actionSupportAspectCustomizer" class="org.seasar.framework.container.customizer.AspectCustomizer">
 		<property name="interceptorName">"app_aop.actionSupportInterceptor"</property>
 		<property name="pointcut">"do.*, initialize, prerender"</property>
