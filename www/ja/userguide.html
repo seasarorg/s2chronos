@@ -134,10 +134,10 @@ public class BasicTask {
 </pre>
                 </li>
                 <li>CronTrigger<br />
-                  クーロン型．CROND形式で指定した時間に実行されます．
+                  クーロン型．CROND形式で指定した時間に実行されます．CROND形式はQuartz互換です．詳しい仕様は<a href="http://www.opensymphony.com/quartz/wikidocs/CronTriggers%20Tutorial.html">こちら</a>
                   <pre>
 @Task
-@CronTrigger(expression = "*/1 * * * *")  // 1分ごとに実行
+@CronTrigger(expression = "0 0 12 * * ?")  // 1分ごとに実行
 public class BasicTask {  
 </pre>
                 </li>
