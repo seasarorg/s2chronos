@@ -12,6 +12,7 @@
     <initMethod name="addCustomizer">
       <arg>traceCustomizer</arg>
     </initMethod>
+<!--
     <initMethod name="addCustomizer">
       <arg>
         <component class="org.seasar.framework.container.customizer.AspectCustomizer">
@@ -22,6 +23,7 @@
         </component>
       </arg>
     </initMethod>
+-->
     <initMethod name="addCustomizer">
       <arg>
         <component class="org.seasar.framework.container.customizer.AspectCustomizer">
@@ -58,11 +60,9 @@
 		<initMethod name="addInterceptorName">
 			<arg>"aop.traceInterceptor"</arg>
 		</initMethod>
-<!--
 		<initMethod name="addInterceptorName">
 			<arg>"j2ee.requiredTx"</arg>
 		</initMethod>
--->
 		<property name="pointcut">"do.*, initialize, destroy"</property>
 	</component>
 	<component name="taskCustomizer" class="org.seasar.framework.container.customizer.CustomizerChain">
