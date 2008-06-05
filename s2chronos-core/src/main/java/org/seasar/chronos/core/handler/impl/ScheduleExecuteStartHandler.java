@@ -140,11 +140,6 @@ public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler 
 									.submit(tesc);
 							taskScheduleEntry
 									.setTaskStaterFuture(taskStaterFuture);
-						} else {
-							// TODO このコードは必要か
-							// tes.unprepare();
-							// taskScheduleEntry.setTask(null);
-							// taskScheduleEntry.setTaskClass(null);
 						}
 						return null;
 					}
