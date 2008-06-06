@@ -33,7 +33,6 @@ import org.seasar.chronos.core.TaskThreadPool;
 import org.seasar.chronos.core.TaskTrigger;
 import org.seasar.chronos.core.ThreadPoolType;
 import org.seasar.chronos.core.annotation.task.Task;
-import org.seasar.chronos.core.delegate.AsyncResult;
 import org.seasar.chronos.core.delegate.MethodInvoker;
 import org.seasar.chronos.core.executor.ExecutorServiceFactory;
 import org.seasar.chronos.core.schedule.TaskScheduleEntryManager;
@@ -104,6 +103,12 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 
 	private long taskId = 0;
 
+	private boolean prepared = false;
+
+	private ExecutorServiceFactory executorServiceFactory;
+
+	private ComponentDef componentDef;
+
 	public TaskExecuteStrategyImpl() {
 
 	}
@@ -142,8 +147,6 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 		return false;
 	}
 
-	private ExecutorServiceFactory executorServiceFactory;
-
 	private ExecutorService createJobMethodExecutorService(Object target) {
 		ExecutorService result = executorServiceFactory.create(this
 				.getThreadPoolType(target), this.getThreadPoolSize(target));
@@ -163,18 +166,13 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 
 	public String destroy() throws InterruptedException {
 		String nextTask = null;
-		log.debug("check point 1 : this.lifecycleMethodInvoker = "
-				+ this.lifecycleMethodInvoker);
 		if (this.lifecycleMethodInvoker.hasMethod(METHOD_NAME_DESTROY)) {
-			log.debug("check point 2");
-			AsyncResult ar = this.lifecycleMethodInvoker
-					.beginInvoke(METHOD_NAME_DESTROY);
-			log.debug("check point 3");
-			this.lifecycleMethodInvoker.endInvoke(ar);
-			log.debug("check point 4");
+			// AsyncResult ar = this.lifecycleMethodInvoker
+			// .beginInvoke(METHOD_NAME_DESTROY);
+			// this.lifecycleMethodInvoker.endInvoke(ar);
+			this.beanDesc.invoke(this.task, METHOD_NAME_DESTROY, null);
 			TaskMethodMetaData md = new TaskMethodMetaData(this.beanDesc,
 					METHOD_NAME_DESTROY);
-			log.debug("check point 5");
 			nextTask = md.getNextTask();
 		}
 		this.setExecuted(false);
@@ -190,7 +188,7 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 			TaskExecuteHandler teh = this.getTaskExecuteHandler(type);
 			Transition transition = this.handleRequest(teh, nextTaskName);
 			this.notifyGetterSignal();
-			if (transition.isProcessResult()) {
+			if (transition == null || transition.isProcessResult()) {
 				break;
 			}
 			type = type == TaskType.JOB ? TaskType.JOBGROUP : TaskType.JOB;
@@ -210,16 +208,8 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 		return executorService;
 	}
 
-	public boolean isReSchedule() {
-		return this.taskPropertyReader.isReSchedule(false);
-	}
-
 	public String getDescription() {
 		return this.taskPropertyReader.getDescription(null);
-	}
-
-	public boolean isEndTask() {
-		return this.taskPropertyReader.isEndTask(false);
 	}
 
 	private ExecutorService getExecutorService() {
@@ -232,19 +222,12 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 			jobMethodExecutorService = this
 					.getCacheExecutorsService(taskThreadPool);
 		}
+
 		return jobMethodExecutorService;
 	}
 
 	public Scheduler getScheduler() {
 		return this.scheduler;
-	}
-
-	public boolean isShutdownTask() {
-		return this.taskPropertyReader.isShutdownTask(false);
-	}
-
-	public boolean isStartTask() {
-		return this.taskPropertyReader.isStartTask(false);
 	}
 
 	public Object getTask() {
@@ -270,6 +253,14 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 
 	public String getTaskName() {
 		return this.taskPropertyReader.getTaskName(null);
+	}
+
+	public TaskPropertyReader getTaskPropertyReader() {
+		return taskPropertyReader;
+	}
+
+	public TaskPropertyWriter getTaskPropertyWriter() {
+		return taskPropertyWriter;
 	}
 
 	public TaskThreadPool getThreadPool() {
@@ -306,12 +297,29 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 		return taskExecuteHandler.handleRequest(startTaskName);
 	}
 
+	public void hotdeployStart() {
+		String name = this.componentDef.getComponentClass().getName();
+		log.debug("HOT deploy class preload " + name);
+		ReflectionUtil.forNameNoException(name);
+		if (HotdeployUtil.isHotdeploy()) {
+			HotdeployUtil.start();
+		}
+	}
+
+	public void hotdeployStop() {
+		if (HotdeployUtil.isHotdeploy()) {
+			HotdeployUtil.stop();
+		}
+	}
+
 	public String initialize() throws InterruptedException {
 		this.setExecuted(true);
 		if (this.lifecycleMethodInvoker.hasMethod(METHOD_NAME_INITIALIZE)) {
-			AsyncResult ar = this.lifecycleMethodInvoker
-					.beginInvoke(METHOD_NAME_INITIALIZE);
-			this.lifecycleMethodInvoker.endInvoke(ar);
+			// ここで増えている
+			// AsyncResult ar = this.lifecycleMethodInvoker
+			// .beginInvoke(METHOD_NAME_INITIALIZE);
+			// this.lifecycleMethodInvoker.endInvoke(ar);
+			this.beanDesc.invoke(this.task, METHOD_NAME_INITIALIZE, null);
 			TaskMethodMetaData md = new TaskMethodMetaData(this.beanDesc,
 					METHOD_NAME_INITIALIZE);
 			this.notifyGetterSignal();
@@ -320,12 +328,32 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 		return null;
 	}
 
+	public boolean isEndTask() {
+		return this.taskPropertyReader.isEndTask(false);
+	}
+
 	public boolean isExecuted() {
 		return this.taskPropertyReader.isExecuted(false);
 	}
 
 	private boolean isGroupMethod(String groupName) {
 		return this.taskMethodManager.existGroup(groupName);
+	}
+
+	public boolean isPrepared() {
+		return this.prepared;
+	}
+
+	public boolean isReSchedule() {
+		return this.taskPropertyReader.isReSchedule(false);
+	}
+
+	public boolean isShutdownTask() {
+		return this.taskPropertyReader.isShutdownTask(false);
+	}
+
+	public boolean isStartTask() {
+		return this.taskPropertyReader.isStartTask(false);
 	}
 
 	public void load() {
@@ -369,12 +397,6 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 
 	public void prepare() {
 
-		ReflectionUtil.forNameNoException(this.componentDef.getComponentClass()
-				.getName());
-		if (HotdeployUtil.isHotdeploy()) {
-			HotdeployUtil.start();
-		}
-
 		this.task = this.componentDef.getComponent();
 		this.taskClass = this.componentDef.getComponentClass();
 
@@ -393,57 +415,29 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 		this.taskMethodManager = new TaskMethodManager(this.taskClass,
 				METHOD_PREFIX_NAME_DO);
 
-		ExecutorService lifecycleMethodExecutorService = Executors
-				.newSingleThreadExecutor();
-		ExecutorService jobMethodExecutorService = this.getExecutorService();
-		this.taskMethodInvoker = new MethodInvoker(jobMethodExecutorService,
-				this.task, this.beanDesc);
-		this.lifecycleMethodInvoker = new MethodInvoker(
-				lifecycleMethodExecutorService, this.task, this.beanDesc);
-
+		if (this.taskMethodInvoker == null) {
+			ExecutorService jobMethodExecutorService = this
+					.getExecutorService();
+			this.taskMethodInvoker = new MethodInvoker(
+					jobMethodExecutorService, this.task, this.beanDesc);
+		}
+		if (lifecycleMethodInvoker == null) {
+			ExecutorService lifecycleMethodExecutorService = Executors
+					.newSingleThreadExecutor();
+			this.lifecycleMethodInvoker = new MethodInvoker(
+					lifecycleMethodExecutorService, this.task, this.beanDesc);
+		}
+		this.prepared = true;
 		this.save();
 		this.load();
 	}
 
-	public void unprepare() {
+	public void save() {
 
-		this.taskMethodInvoker = null;
-		this.lifecycleMethodInvoker = null;
-
-		if (HotdeployUtil.isHotdeploy()) {
-			HotdeployUtil.stop();
-		}
 	}
 
-	public void save() {
-		// Map<String, Object> taskProperties = new HashMap<String, Object>();
-		// int size = beanDesc.getPropertyDescSize();
-		// for (int i = 0; i < size; i++) {
-		// PropertyDesc pd = beanDesc.getPropertyDesc(i);
-		// Object value = pd.getValue(this.task);
-		// taskProperties.put(pd.getPropertyName(), value);
-		// }
-		// if (size > 0) {
-		// byte[] binary = SerializeUtil.fromObjectToBinary(taskProperties);
-		// FileOutputStream fos = null;
-		// try {
-		// File targetFile = new File("C:\\temp\\", this.getTaskClass()
-		// .getCanonicalName());
-		// fos = new FileOutputStream(targetFile);
-		// fos.write(binary.length);
-		// fos.write(binary);
-		// } catch (IOException e) {
-		// throw new IORuntimeException(e);
-		// } finally {
-		// if (fos != null) {
-		// try {
-		// fos.close();
-		// } catch (IOException e) {
-		// throw new IORuntimeException(e);
-		// }
-		// }
-		// }
-		// }
+	public void setComponentDef(ComponentDef componentDef) {
+		this.componentDef = componentDef;
 	}
 
 	public void setEndTask(boolean endTask) {
@@ -452,6 +446,11 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 
 	public void setExecuted(boolean executed) {
 		this.taskPropertyWriter.setExecuted(executed);
+	}
+
+	public void setExecutorServiceFactory(
+			ExecutorServiceFactory executorServiceFactory) {
+		this.executorServiceFactory = executorServiceFactory;
 	}
 
 	public void setGetterSignal(Object getterSignal) {
@@ -486,33 +485,6 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 		this.taskId = taskId;
 	}
 
-	@Binding(bindingType = BindingType.NONE)
-	public void setThreadPool(TaskThreadPool taskThreadPool) {
-		this.taskPropertyWriter.setThreadPool(taskThreadPool);
-	}
-
-	// private TaskTrigger taskTrigger;
-
-	@Binding(bindingType = BindingType.NONE)
-	public void setTrigger(TaskTrigger taskTrigger) {
-		// if (this.taskPropertyWriter.hasTrigger()) {
-		this.taskPropertyWriter.setTrigger(taskTrigger);
-		// } else {
-		// プロパティを持っていなければセットする。
-		// this.taskTrigger = taskTrigger;
-		// }
-	}
-
-	public void waitOne() throws InterruptedException {
-		this.taskMethodInvoker.waitInvokes();
-	}
-
-	private ComponentDef componentDef;
-
-	public void setComponentDef(ComponentDef componentDef) {
-		this.componentDef = componentDef;
-	}
-
 	public void setTaskPropertyReader(TaskPropertyReader taskPropertyReader) {
 		this.taskPropertyReader = taskPropertyReader;
 	}
@@ -521,17 +493,25 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 		this.taskPropertyWriter = taskPropertyWriter;
 	}
 
-	public TaskPropertyReader getTaskPropertyReader() {
-		return taskPropertyReader;
+	@Binding(bindingType = BindingType.NONE)
+	public void setThreadPool(TaskThreadPool taskThreadPool) {
+		this.taskPropertyWriter.setThreadPool(taskThreadPool);
 	}
 
-	public TaskPropertyWriter getTaskPropertyWriter() {
-		return taskPropertyWriter;
+	@Binding(bindingType = BindingType.NONE)
+	public void setTrigger(TaskTrigger taskTrigger) {
+		this.taskPropertyWriter.setTrigger(taskTrigger);
 	}
 
-	public void setExecutorServiceFactory(
-			ExecutorServiceFactory executorServiceFactory) {
-		this.executorServiceFactory = executorServiceFactory;
+	public void unprepare() {
+		log.debug("<<<unprepare>>>");
+		// this.taskMethodInvoker = null;
+		// this.lifecycleMethodInvoker = null;
+		prepared = false;
+	}
+
+	public void waitOne() throws InterruptedException {
+		this.taskMethodInvoker.waitInvokes();
 	}
 
 }

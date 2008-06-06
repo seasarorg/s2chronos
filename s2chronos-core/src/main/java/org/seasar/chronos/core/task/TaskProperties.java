@@ -7,6 +7,8 @@ import org.seasar.chronos.core.ThreadPoolType;
 
 public interface TaskProperties {
 
+	public boolean isPrepared();
+
 	public boolean isReSchedule();
 
 	public String getDescription();

@@ -6,10 +6,14 @@ import java.util.concurrent.Executors;
 import org.seasar.chronos.core.ThreadPoolType;
 import org.seasar.chronos.core.executor.ExecutorServiceFactory;
 import org.seasar.chronos.core.threadpool.ThreadPool;
+import org.seasar.framework.log.Logger;
 
 public class ExecutorServiceFactoryImpl implements ExecutorServiceFactory {
+	private static Logger log = Logger
+			.getLogger(ExecutorServiceFactoryImpl.class);
 
 	public ExecutorService create(ThreadPoolType type, Integer threadPoolSize) {
+		log.debug("ExecutorServiceFactoryImpl#create");
 		ExecutorService executorService = null;
 		if (type.equals(ThreadPoolType.CACHED)) {
 			executorService = Executors.newCachedThreadPool();

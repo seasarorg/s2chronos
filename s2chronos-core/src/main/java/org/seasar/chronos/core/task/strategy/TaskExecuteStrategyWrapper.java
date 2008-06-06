@@ -183,4 +183,17 @@ public class TaskExecuteStrategyWrapper implements TaskExecuteStrategy {
 		return this.taskExecuteStrategy.getTaskPropertyWriter();
 	}
 
+	public void hotdeployStart() {
+		this.taskExecuteStrategy.hotdeployStart();
+	}
+
+	public void hotdeployStop() {
+		this.taskExecuteStrategy.hotdeployStop();
+	}
+
+	public boolean isPrepared() {
+		// TODO 自動生成されたメソッド・スタブ
+		return false;
+	}
+
 }

@@ -8,6 +8,10 @@ public interface TaskMethods {
 
 	public void setGetterSignal(Object getterSignal);
 
+	public void hotdeployStart();
+
+	public void hotdeployStop();
+
 	public void prepare();
 
 	public void unprepare();

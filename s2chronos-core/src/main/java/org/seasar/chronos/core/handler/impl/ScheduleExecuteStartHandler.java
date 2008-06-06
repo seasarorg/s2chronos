@@ -118,15 +118,16 @@ public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler 
 							final TaskScheduleEntry taskScheduleEntry) {
 						final TaskExecutorService tes = taskScheduleEntry
 								.getTaskExecutorService();
-						// ここでgetComponentされます。
-						tes.prepare();
-						Object task = tes.getTask();
-						Class<?> taskClass = tes.getTaskClass();
-						// 
-						taskScheduleEntry.setTask(task);
-						taskScheduleEntry.setTaskClass(taskClass);
-						// String[] rootPackageNames = namingConvention
-						// .getRootPackageNames();
+
+						tes.hotdeployStart();
+						if (!tes.isPrepared()) {
+							log.debug("--prepare--");
+							tes.prepare();
+							Object task = tes.getTask();
+							Class<?> taskClass = tes.getTaskClass();
+							taskScheduleEntry.setTask(task);
+							taskScheduleEntry.setTaskClass(taskClass);
+						}
 						if (!tes.isExecuted()
 								&& tes.getTaskPropertyReader().isStartTask(
 										false)) {
@@ -136,11 +137,13 @@ public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler 
 							TaskExecutorServiceCallable tesc = new TaskExecutorServiceCallable();
 							tesc.setTaskExecutorService(tes);
 							tesc.setTaskScheduleEntry(taskScheduleEntry);
+							// TODO 切り替える
 							Future<TaskExecutorService> taskStaterFuture = executorService
 									.submit(tesc);
 							taskScheduleEntry
 									.setTaskStaterFuture(taskStaterFuture);
 						}
+						tes.hotdeployStop();
 						return null;
 					}
 				});

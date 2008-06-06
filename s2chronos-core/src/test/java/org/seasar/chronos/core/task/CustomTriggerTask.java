@@ -6,7 +6,7 @@ import org.seasar.chronos.core.annotation.trigger.CronTrigger;
 import org.seasar.framework.log.Logger;
 
 @Task
-@CronTrigger(expression = "0 30 2 * * ?")
+@CronTrigger(expression = "*/20 * * * * ?")
 public class CustomTriggerTask {
 
 	private Logger log = Logger.getLogger(CustomTriggerTask.class);

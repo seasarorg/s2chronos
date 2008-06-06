@@ -179,6 +179,10 @@ public class TaskExecutorServiceImpl implements TaskExecutorService {
 				componentDef);
 	}
 
+	public boolean isPrepared() {
+		return this.taskExecuteContext.getTaskExecuteStrategy().isPrepared();
+	}
+
 	public void prepare() {
 		this.taskExecuteContext.getTaskExecuteStrategy().prepare();
 	}
@@ -195,5 +199,13 @@ public class TaskExecutorServiceImpl implements TaskExecutorService {
 	public TaskPropertyWriter getTaskPropertyWriter() {
 		return this.taskExecuteContext.getTaskExecuteStrategy()
 				.getTaskPropertyWriter();
+	}
+
+	public void hotdeployStart() {
+		this.taskExecuteContext.getTaskExecuteStrategy().hotdeployStart();
+	}
+
+	public void hotdeployStop() {
+		this.taskExecuteContext.getTaskExecuteStrategy().hotdeployStop();
 	}
 }
