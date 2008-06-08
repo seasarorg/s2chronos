@@ -79,7 +79,6 @@ public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler 
 				final String nextTaskName = taskExecutorService.destroy();
 				// scheduleTask(taskExecutorService, nextTaskName);
 				fireEndTaskEvent(taskExecutorService);
-				log.debug("$$$$$$$$$$$$$$$$$$ destroy end $$$$$$$$$$$$$$$$$$");
 			}
 			taskContenaStateManager.removeTaskScheduleEntry(
 					TaskStateType.RUNNING, taskScheduleEntry);

@@ -504,7 +504,6 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 	}
 
 	public void unprepare() {
-		log.debug("<<<unprepare>>>");
 		// this.taskMethodInvoker = null;
 		// this.lifecycleMethodInvoker = null;
 		prepared = false;
