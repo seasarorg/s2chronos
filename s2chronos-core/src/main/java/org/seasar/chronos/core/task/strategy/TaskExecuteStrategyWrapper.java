@@ -20,10 +20,6 @@ public class TaskExecuteStrategyWrapper implements TaskExecuteStrategy {
 		this.taskExecuteStrategy = taskExecuteStrategy;
 	}
 
-	public boolean isReSchedule() {
-		return this.taskExecuteStrategy.isReSchedule();
-	}
-
 	public boolean await(long time, TimeUnit timeUnit)
 			throws InterruptedException {
 		return this.taskExecuteStrategy.await(time, timeUnit);
@@ -49,20 +45,8 @@ public class TaskExecuteStrategyWrapper implements TaskExecuteStrategy {
 		return this.taskExecuteStrategy.getDescription();
 	}
 
-	public boolean isEndTask() {
-		return this.taskExecuteStrategy.isEndTask();
-	}
-
 	public Scheduler getScheduler() {
 		return this.taskExecuteStrategy.getScheduler();
-	}
-
-	public boolean isShutdownTask() {
-		return this.taskExecuteStrategy.isShutdownTask();
-	}
-
-	public boolean isStartTask() {
-		return this.taskExecuteStrategy.isStartTask();
 	}
 
 	public Object getTask() {
@@ -81,6 +65,14 @@ public class TaskExecuteStrategyWrapper implements TaskExecuteStrategy {
 		return this.taskExecuteStrategy.getTaskName();
 	}
 
+	public TaskPropertyReader getTaskPropertyReader() {
+		return this.taskExecuteStrategy.getTaskPropertyReader();
+	}
+
+	public TaskPropertyWriter getTaskPropertyWriter() {
+		return this.taskExecuteStrategy.getTaskPropertyWriter();
+	}
+
 	public TaskThreadPool getThreadPool() {
 		return this.taskExecuteStrategy.getThreadPool();
 	}
@@ -97,20 +89,56 @@ public class TaskExecuteStrategyWrapper implements TaskExecuteStrategy {
 		return this.taskExecuteStrategy.getTrigger();
 	}
 
+	public void hotdeployStart() {
+		this.taskExecuteStrategy.hotdeployStart();
+	}
+
+	public void hotdeployStop() {
+		this.taskExecuteStrategy.hotdeployStop();
+	}
+
 	public String initialize() throws InterruptedException {
 		return this.taskExecuteStrategy.initialize();
+	}
+
+	public boolean isEndTask() {
+		return this.taskExecuteStrategy.isEndTask();
 	}
 
 	public boolean isExecuted() {
 		return this.taskExecuteStrategy.isExecuted();
 	}
 
+	public boolean isPrepared() {
+		return this.taskExecuteStrategy.isPrepared();
+	}
+
+	public boolean isReSchedule() {
+		return this.taskExecuteStrategy.isReSchedule();
+	}
+
+	public boolean isShutdownTask() {
+		return this.taskExecuteStrategy.isShutdownTask();
+	}
+
+	public boolean isStartTask() {
+		return this.taskExecuteStrategy.isStartTask();
+	}
+
 	public void load() {
 		this.taskExecuteStrategy.load();
 	}
 
+	public void prepare() {
+		this.taskExecuteStrategy.prepare();
+	}
+
 	public void save() {
 		this.taskExecuteStrategy.save();
+	}
+
+	public void setComponentDef(ComponentDef componentDef) {
+		this.taskExecuteStrategy.setComponentDef(componentDef);
 	}
 
 	public void setEndTask(boolean endTask) {
@@ -159,41 +187,12 @@ public class TaskExecuteStrategyWrapper implements TaskExecuteStrategy {
 		this.taskExecuteStrategy.setTrigger(taskTrigger);
 	}
 
-	public void waitOne() throws InterruptedException {
-		this.taskExecuteStrategy.waitOne();
-	}
-
-	public void setComponentDef(ComponentDef componentDef) {
-		this.taskExecuteStrategy.setComponentDef(componentDef);
-	}
-
-	public void prepare() {
-		this.taskExecuteStrategy.prepare();
-	}
-
 	public void unprepare() {
 		this.taskExecuteStrategy.unprepare();
 	}
 
-	public TaskPropertyReader getTaskPropertyReader() {
-		return this.taskExecuteStrategy.getTaskPropertyReader();
-	}
-
-	public TaskPropertyWriter getTaskPropertyWriter() {
-		return this.taskExecuteStrategy.getTaskPropertyWriter();
-	}
-
-	public void hotdeployStart() {
-		this.taskExecuteStrategy.hotdeployStart();
-	}
-
-	public void hotdeployStop() {
-		this.taskExecuteStrategy.hotdeployStop();
-	}
-
-	public boolean isPrepared() {
-		// TODO 自動生成されたメソッド・スタブ
-		return false;
+	public void waitOne() throws InterruptedException {
+		this.taskExecuteStrategy.waitOne();
 	}
 
 }

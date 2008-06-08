@@ -71,21 +71,11 @@ public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler 
 			}
 			try {
 				fireStartTaskEvent(taskExecutorService);
-				log
-						.debug("$$$$$$$$$$$$$$$$$$ initialize start $$$$$$$$$$$$$$$$$$");
 				final String nextTaskName = taskExecutorService.initialize();
-				log
-						.debug("$$$$$$$$$$$$$$$$$$ initialize end $$$$$$$$$$$$$$$$$$");
-				log
-						.debug("$$$$$$$$$$$$$$$$$$ taskExecute start $$$$$$$$$$$$$$$$$$");
 				taskExecute(taskExecutorService, nextTaskName);
-				log
-						.debug("$$$$$$$$$$$$$$$$$$ taskExecute end $$$$$$$$$$$$$$$$$$");
 			} catch (final Exception e) {
 				fireExceptionTaskEvent(taskExecutorService, e);
 			} finally {
-				log
-						.debug("$$$$$$$$$$$$$$$$$$ destroy start $$$$$$$$$$$$$$$$$$");
 				final String nextTaskName = taskExecutorService.destroy();
 				// scheduleTask(taskExecutorService, nextTaskName);
 				fireEndTaskEvent(taskExecutorService);
@@ -118,10 +108,10 @@ public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler 
 							final TaskScheduleEntry taskScheduleEntry) {
 						final TaskExecutorService tes = taskScheduleEntry
 								.getTaskExecutorService();
-
+						// HOT deploy 開始
 						tes.hotdeployStart();
+						// タスクの準備ができていないなら
 						if (!tes.isPrepared()) {
-							log.debug("--prepare--");
 							tes.prepare();
 							Object task = tes.getTask();
 							Class<?> taskClass = tes.getTaskClass();
@@ -137,12 +127,12 @@ public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler 
 							TaskExecutorServiceCallable tesc = new TaskExecutorServiceCallable();
 							tesc.setTaskExecutorService(tes);
 							tesc.setTaskScheduleEntry(taskScheduleEntry);
-							// TODO 切り替える
 							Future<TaskExecutorService> taskStaterFuture = executorService
 									.submit(tesc);
 							taskScheduleEntry
 									.setTaskStaterFuture(taskStaterFuture);
 						}
+						// HOT deploy 終了
 						tes.hotdeployStop();
 						return null;
 					}
