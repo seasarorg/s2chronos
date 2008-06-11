@@ -51,6 +51,7 @@ import org.seasar.framework.beans.BeanDesc;
 import org.seasar.framework.beans.PropertyDesc;
 import org.seasar.framework.beans.factory.BeanDescFactory;
 import org.seasar.framework.container.ComponentDef;
+import org.seasar.framework.container.S2Container;
 import org.seasar.framework.container.annotation.tiger.Binding;
 import org.seasar.framework.container.annotation.tiger.BindingType;
 import org.seasar.framework.container.hotdeploy.HotdeployUtil;
@@ -77,6 +78,8 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 
 	private static ConcurrentHashMap<TaskThreadPool, ExecutorService> threadPoolExecutorServiceMap = new ConcurrentHashMap<TaskThreadPool, ExecutorService>();
 
+	private S2Container s2Container;
+	
 	private Object task;
 
 	private Class<?> taskClass;
@@ -299,7 +302,7 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 
 	public void hotdeployStart() {
 		String name = this.componentDef.getComponentClass().getName();
-		log.debug("HOT deploy class preload " + name);
+		//log.debug("HOT deploy class preload " + name);
 		ReflectionUtil.forNameNoException(name);
 		if (HotdeployUtil.isHotdeploy()) {
 			HotdeployUtil.start();
@@ -409,6 +412,9 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 
 		this.beanDesc = BeanDescFactory.getBeanDesc(this.taskClass);
 
+		this.taskPropertyReader = (TaskPropertyReader) this.s2Container.getComponent(TaskPropertyReader.class);
+		this.taskPropertyWriter = (TaskPropertyWriter) this.s2Container.getComponent(TaskPropertyWriter.class);
+		
 		this.taskPropertyReader.loadTask(task, beanDesc);
 		this.taskPropertyWriter.loadTask(task, beanDesc);
 
@@ -485,13 +491,6 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 		this.taskId = taskId;
 	}
 
-	public void setTaskPropertyReader(TaskPropertyReader taskPropertyReader) {
-		this.taskPropertyReader = taskPropertyReader;
-	}
-
-	public void setTaskPropertyWriter(TaskPropertyWriter taskPropertyWriter) {
-		this.taskPropertyWriter = taskPropertyWriter;
-	}
 
 	@Binding(bindingType = BindingType.NONE)
 	public void setThreadPool(TaskThreadPool taskThreadPool) {
@@ -511,6 +510,10 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 
 	public void waitOne() throws InterruptedException {
 		this.taskMethodInvoker.waitInvokes();
+	}
+
+	public void setS2Container(S2Container container) {
+		s2Container = container;
 	}
 
 }

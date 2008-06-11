@@ -27,7 +27,7 @@ public class ScheduleExecuteWaitHandler extends AbstractScheduleExecuteHandler {
 							}
 						}
 						pauseLock.wait(waitInterval);
-					} while (this.pause.get());
+					} while (this.pause.get() && !(taskContenaStateManager.size(TaskStateType.SCHEDULED) == 0));
 				} catch (InterruptedException e) {
 					throw e;
 				} finally {

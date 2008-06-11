@@ -20,35 +20,35 @@ public class SchedulerImplTest extends S2TestCaseBase implements
 		this.scheduler.start();
 		this.scheduler.join();
 	}
-
-	public void testAddTask() {
-		this.scheduler.addTask(NoScheduleTask.class);
-		this.scheduler.addListener(this);
-		this.scheduler.start();
-		this.scheduler.join();
-	}
-
-	public void testRemoveTask() {
-		this.scheduler.addTask(NoScheduleTask.class);
-		this.scheduler.removeTask(NoScheduleTask.class);
-		this.scheduler.addListener(this);
-		this.scheduler.start();
-		this.scheduler.join();
-	}
-
-	public void testPause() {
-		this.scheduler.addTask(NoScheduleTask.class);
-		this.scheduler.removeTask(NoScheduleTask.class);
-		this.scheduler.addListener(this);
-		this.scheduler.start();
-		this.scheduler.pause();
-		try {
-			Thread.sleep(2200);
-		} catch (InterruptedException e) {
-		}
-		this.scheduler.pause();
-		this.scheduler.join();
-	}
+//
+//	public void testAddTask() {
+//		this.scheduler.addTask(NoScheduleTask.class);
+//		this.scheduler.addListener(this);
+//		this.scheduler.start();
+//		this.scheduler.join();
+//	}
+//
+//	public void testRemoveTask() {
+//		this.scheduler.addTask(NoScheduleTask.class);
+//		this.scheduler.removeTask(NoScheduleTask.class);
+//		this.scheduler.addListener(this);
+//		this.scheduler.start();
+//		this.scheduler.join();
+//	}
+//
+//	public void testPause() {
+//		this.scheduler.addTask(NoScheduleTask.class);
+//		this.scheduler.removeTask(NoScheduleTask.class);
+//		this.scheduler.addListener(this);
+//		this.scheduler.start();
+//		this.scheduler.pause();
+//		try {
+//			Thread.sleep(2200);
+//		} catch (InterruptedException e) {
+//		}
+//		this.scheduler.pause();
+//		this.scheduler.join();
+//	}
 
 	public void addTaskScheduleEntry(Scheduler scheduler,
 			TaskScheduleEntry taskScheduleEntry) {

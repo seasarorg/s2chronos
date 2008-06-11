@@ -120,13 +120,13 @@
  	</component>
  	
 	<!-- タスクのプロパティリーダー -->
-	<component class="org.seasar.chronos.core.task.impl.TaskPropertyReaderImpl">
+	<component class="org.seasar.chronos.core.task.impl.TaskPropertyReaderImpl" instance="prototype">
 	    <aspect pointcut="getTrigger,getTaskName,isEndTask,isStartTask,isReSchedule,getThreadPoolType,getThreadPoolSize,isExecuted">
 			triggerPropertyReadInterceptor
 	    </aspect>
 	</component>
 	<!-- タスクのプロパティライター -->
-	<component class="org.seasar.chronos.core.task.impl.TaskPropertyWriterImpl">
+	<component class="org.seasar.chronos.core.task.impl.TaskPropertyWriterImpl" instance="prototype">
 	    <aspect pointcut="setTrigger, setTaskName,setEndTask,setStartTask,setReSchedule,setThreadPoolType,setThreadPoolSize,setExecuted">
 			triggerPropertyWriteInterceptor
 	    </aspect>

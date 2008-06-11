@@ -8,13 +8,10 @@ import org.seasar.chronos.core.TaskScheduleEntry;
 import org.seasar.chronos.core.impl.TaskStateType;
 import org.seasar.chronos.core.schedule.TaskScheduleEntryManager.TaskScheduleEntryHanlder;
 import org.seasar.chronos.core.task.TaskExecutorService;
-import org.seasar.framework.convention.NamingConvention;
 
 public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler {
 
 	private String taskName;
-
-	private NamingConvention namingConvention;
 
 	private void fireExceptionTaskEvent(TaskExecutorService tes, Exception e) {
 		if (schedulerEventHandler != null) {
@@ -66,6 +63,7 @@ public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler 
 			// 定期スケジュール以外ならスケジュールドリストから削除する
 			if (!taskExecutorService.getTaskPropertyReader()
 					.isReSchedule(false)) {
+				log.debug("<<<<< remove Scheduled = " + taskName);
 				taskContenaStateManager.removeTaskScheduleEntry(
 						TaskStateType.SCHEDULED, taskScheduleEntry);
 			}
@@ -80,19 +78,26 @@ public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler 
 				// scheduleTask(taskExecutorService, nextTaskName);
 				fireEndTaskEvent(taskExecutorService);
 			}
+			log.debug("<<<<< remove running = " + taskName);
 			taskContenaStateManager.removeTaskScheduleEntry(
 					TaskStateType.RUNNING, taskScheduleEntry);
 			// 定期スケジュール以外ならアンスケジュールドリストに登録する
 			// TODO アンスケジュールドに入った時刻をtseに持たせて，別のハンドラーで一定時間経過後にアンスケジュールドリストから削除する．
 			if (!taskExecutorService.getTaskPropertyReader()
 					.isReSchedule(false)) {
+				log.debug("<<<<< remove unscheduled = " + taskName);
 				taskContenaStateManager.addTaskScheduleEntry(
 						TaskStateType.UNSCHEDULED, taskScheduleEntry);
 			}
+			log.debug("<<<<< finished task = " + taskName);
+
 			log.log("DCHRONOSSSTHRTTCF", new Object[] { taskName });
 			taskExecutorService.unprepare();
 			taskScheduleEntry.setTask(null);
 			taskScheduleEntry.setTaskClass(null);
+
+			log.debug("<<<<< finished task function = " + taskName);
+
 			return taskExecutorService;
 		}
 
@@ -100,7 +105,6 @@ public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler 
 
 	@Override
 	public void handleRequest() throws InterruptedException {
-
 		this.taskContenaStateManager.forEach(TaskStateType.SCHEDULED,
 				new TaskScheduleEntryHanlder() {
 					public Object processTaskScheduleEntry(
@@ -112,14 +116,20 @@ public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler 
 						// タスクの準備ができていないなら
 						if (!tes.isPrepared()) {
 							tes.prepare();
-							Object task = tes.getTask();
-							Class<?> taskClass = tes.getTaskClass();
-							taskScheduleEntry.setTask(task);
-							taskScheduleEntry.setTaskClass(taskClass);
 						}
+						log
+								.debug("--- START --- taskName = "
+										+ tes.getTaskPropertyReader()
+												.getTaskName(null));
 						if (!tes.isExecuted()
 								&& tes.getTaskPropertyReader().isStartTask(
 										false)) {
+							Object task = tes.getTask();
+							log.debug("task class = " + task);
+							Class<?> taskClass = tes.getTaskClass();
+							taskScheduleEntry.setTask(task);
+							taskScheduleEntry.setTaskClass(taskClass);
+
 							log.log("DCHRONOSSSTHRTSTT",
 									new Object[] { tes.getTaskPropertyReader()
 											.getTaskName(null) });
@@ -133,6 +143,7 @@ public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler 
 						}
 						// HOT deploy 終了
 						tes.hotdeployStop();
+						log.debug("--- END ---");
 						return null;
 					}
 				});
@@ -155,10 +166,6 @@ public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler 
 				log.log("ECHRONOS0002", new Object[] { taskName }, ex);
 			}
 		}
-	}
-
-	public void setNamingConvention(NamingConvention namingConvention) {
-		this.namingConvention = namingConvention;
 	}
 
 }

@@ -34,7 +34,7 @@
 	
 	<component name="taskExecuteStrategy" class="org.seasar.chronos.core.task.strategy.impl.TaskExecuteStrategyImpl" instance="prototype" />
 	<component name="taskExecuteContext" class="org.seasar.chronos.core.task.state.impl.TaskExecuteContextImpl" instance="prototype"/>
-	<component name="taskExecutorService" class="org.seasar.chronos.core.task.impl.TaskExecutorServiceImpl" instance="singleton" autoBinding="none">
+	<component name="taskExecutorService" class="org.seasar.chronos.core.task.impl.TaskExecutorServiceImpl" instance="prototype" autoBinding="none">
 		<arg>taskExecuteContext</arg>
 	</component>
 </components>

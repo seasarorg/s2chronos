@@ -3,9 +3,11 @@ package org.seasar.chronos.core.task;
 import org.seasar.chronos.core.annotation.task.Task;
 import org.seasar.chronos.core.annotation.task.method.NextTask;
 import org.seasar.chronos.core.annotation.task.method.TaskGroup;
+import org.seasar.chronos.core.annotation.trigger.CronTrigger;
 import org.seasar.framework.log.Logger;
 
-@Task(autoSchedule = false)
+@Task
+@CronTrigger(expression = "*/11 * * * * ?")
 public class TaskGroupTask {
 
 	private Logger log = Logger.getLogger(TaskGroupTask.class);

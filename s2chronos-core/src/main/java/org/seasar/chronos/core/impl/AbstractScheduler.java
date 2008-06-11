@@ -166,6 +166,7 @@ public abstract class AbstractScheduler implements Scheduler {
 	protected TaskScheduleEntry scheduleTask(ComponentDef taskComponentDef,
 			boolean force) {
 		Class<?> clazz = taskComponentDef.getComponentClass();
+		log.debug("clazzName = "+clazz.getName());
 		Task task = clazz.getAnnotation(Task.class);
 		if (!task.autoSchedule() && !force) {
 			return null;
@@ -193,6 +194,7 @@ public abstract class AbstractScheduler implements Scheduler {
 
 	protected TaskScheduleEntry scheduleTask(final S2Container s2Container,
 			final Class<?> taskClass) {
+		log.debug("scheduleTask [[className = "+taskClass.getName()+" ]]");
 		ComponentDef componentDef = s2Container.getComponentDef(taskClass);
 		return this.scheduleTask(componentDef);
 	}
