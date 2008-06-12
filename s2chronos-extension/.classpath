@@ -22,12 +22,12 @@
   <classpathentry kind="var" path="M2_REPO/log4j/log4j/1.2.13/log4j-1.2.13.jar"/>
   <classpathentry kind="var" path="M2_REPO/ognl/ognl/2.6.9-patch-20070908/ognl-2.6.9-patch-20070908.jar" sourcepath="M2_REPO/ognl/ognl/2.6.9-patch-20070908/ognl-2.6.9-patch-20070908-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/apache/poi/poi/3.0-FINAL/poi-3.0-FINAL.jar" sourcepath="M2_REPO/org/apache/poi/poi/3.0-FINAL/poi-3.0-FINAL-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/seasar/container/s2-extension/2.4.22/s2-extension-2.4.22.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/seasar/container/s2-framework/2.4.22/s2-framework-2.4.22.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/seasar/container/s2-tiger/2.4.22/s2-tiger-2.4.22.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/seasar/container/s2-extension/2.4.22/s2-extension-2.4.22.jar" sourcepath="M2_REPO/org/seasar/container/s2-extension/2.4.22/s2-extension-2.4.22-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/seasar/container/s2-framework/2.4.22/s2-framework-2.4.22.jar" sourcepath="M2_REPO/org/seasar/container/s2-framework/2.4.22/s2-framework-2.4.22-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/seasar/container/s2-tiger/2.4.22/s2-tiger-2.4.22.jar" sourcepath="M2_REPO/org/seasar/container/s2-tiger/2.4.22/s2-tiger-2.4.22-sources.jar"/>
   <classpathentry kind="src" path="/s2chronos-core"/>
-  <classpathentry kind="var" path="M2_REPO/xerces/xercesImpl/2.6.2/xercesImpl-2.6.2.jar" sourcepath="M2_REPO/xerces/xercesImpl/2.6.2/xercesImpl-2.6.2-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/xerces/xercesImpl/2.6.2/xercesImpl-2.6.2.jar"/>
   <classpathentry kind="var" path="M2_REPO/xerces/xmlParserAPIs/2.6.2/xmlParserAPIs-2.6.2.jar"/>
-  <classpathentry kind="var" path="M2_REPO/xpp3/xpp3_min/1.1.4c/xpp3_min-1.1.4c.jar" sourcepath="M2_REPO/xpp3/xpp3_min/1.1.4c/xpp3_min-1.1.4c-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/com/thoughtworks/xstream/xstream/1.3/xstream-1.3.jar" sourcepath="M2_REPO/com/thoughtworks/xstream/xstream/1.3/xstream-1.3-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/xpp3/xpp3_min/1.1.4c/xpp3_min-1.1.4c.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/thoughtworks/xstream/xstream/1.3/xstream-1.3.jar"/>
 </classpath>
