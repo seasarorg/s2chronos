@@ -1,5 +1,6 @@
 package org.seasar.chronos.core.schedule;
 
+import java.util.Date;
 import java.util.concurrent.Future;
 
 import org.seasar.chronos.core.TaskScheduleEntry;
@@ -9,7 +10,7 @@ import org.seasar.framework.container.ComponentDef;
 
 public class ScheduleEntryWrapper extends AbstractScheduleEntry {
 
-	private TaskScheduleEntry taskScheduleEntry;
+	private final TaskScheduleEntry taskScheduleEntry;
 
 	public ScheduleEntryWrapper(TaskScheduleEntry taskScheduleEntry) {
 		this.taskScheduleEntry = taskScheduleEntry;
@@ -19,11 +20,12 @@ public class ScheduleEntryWrapper extends AbstractScheduleEntry {
 		return taskScheduleEntry.getComponentDef();
 	}
 
+	@Override
 	public Long getScheduleId() {
 		return taskScheduleEntry.getScheduleId();
 	}
 
-	 public Object getTask() {
+	public Object getTask() {
 		return taskScheduleEntry.getTask();
 	}
 
@@ -47,6 +49,7 @@ public class ScheduleEntryWrapper extends AbstractScheduleEntry {
 		taskScheduleEntry.setComponentDef(componentDef);
 	}
 
+	@Override
 	public void setScheduleId(Long scheduleId) {
 		taskScheduleEntry.setScheduleId(scheduleId);
 	}
@@ -69,6 +72,14 @@ public class ScheduleEntryWrapper extends AbstractScheduleEntry {
 
 	public void setTaskStateType(TaskStateType taskStateType) {
 		taskScheduleEntry.setTaskStateType(taskStateType);
+	}
+
+	public Date getUnScheduledDate() {
+		return taskScheduleEntry.getUnScheduledDate();
+	}
+
+	public void setUnScheduledDate(Date date) {
+		taskScheduleEntry.setUnScheduledDate(date);
 	}
 
 }

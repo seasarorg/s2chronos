@@ -1,5 +1,6 @@
 package org.seasar.chronos.core.schedule;
 
+import java.util.Date;
 import java.util.concurrent.Future;
 
 import org.seasar.chronos.core.impl.TaskStateType;
@@ -50,6 +51,7 @@ public class ScheduleEntry extends AbstractScheduleEntry {
 		return taskStateType;
 	}
 
+	@Override
 	public void save() {
 
 	}
@@ -78,6 +80,16 @@ public class ScheduleEntry extends AbstractScheduleEntry {
 
 	public void setTaskStateType(TaskStateType taskStateType) {
 		this.taskStateType = taskStateType;
+	}
+
+	private Date unScheduledDate;
+
+	public Date getUnScheduledDate() {
+		return unScheduledDate;
+	}
+
+	public void setUnScheduledDate(Date date) {
+		unScheduledDate = date;
 	}
 
 }

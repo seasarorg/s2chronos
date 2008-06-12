@@ -88,6 +88,7 @@ public class CCronTrigger extends AbstractTrigger {
 		try {
 			this.expression = new CronExpression(cronExpression);
 		} catch (ParseException e) {
+			log.log("ECHRONOS0200", null);
 			throw new ParseRuntimeException(e);
 		}
 	}

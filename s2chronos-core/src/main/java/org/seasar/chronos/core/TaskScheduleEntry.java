@@ -1,5 +1,6 @@
 package org.seasar.chronos.core;
 
+import java.util.Date;
 import java.util.concurrent.Future;
 
 import org.seasar.chronos.core.impl.TaskStateType;
@@ -12,7 +13,7 @@ public interface TaskScheduleEntry extends Serializable {
 
 	public Long getScheduleId();
 
-	 public Object getTask();
+	public Object getTask();
 
 	public Class<?> getTaskClass();
 
@@ -35,5 +36,9 @@ public interface TaskScheduleEntry extends Serializable {
 	public void setTaskStaterFuture(Future<TaskExecutorService> future);
 
 	public void setTaskStateType(TaskStateType taskStateType);
+
+	public Date getUnScheduledDate();
+
+	public void setUnScheduledDate(Date date);
 
 }

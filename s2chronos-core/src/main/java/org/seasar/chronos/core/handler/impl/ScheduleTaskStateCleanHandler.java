@@ -8,17 +8,29 @@ import org.seasar.chronos.core.schedule.TaskScheduleEntryManager.TaskScheduleEnt
 public class ScheduleTaskStateCleanHandler extends
 		AbstractScheduleExecuteHandler {
 
+	private static int TIME_OUT = 60;
+
 	@Override
 	public void handleRequest() throws InterruptedException {
-		this.taskContenaStateManager.forEach(TaskStateType.UNSCHEDULED,
-				new TaskScheduleEntryHanlder() {
-					public Object processTaskScheduleEntry(
-							TaskScheduleEntry scheduleEntry) {
-						//scheduleEntry.getTaskExecutorService().getUnScheduledDateTime();
-						return null;
-					}
-		});
+		TaskScheduleEntry taskScheduleEntry = (TaskScheduleEntry) this.taskContenaStateManager
+				.forEach(TaskStateType.UNSCHEDULED,
+						new TaskScheduleEntryHanlder() {
+							public Object processTaskScheduleEntry(
+									TaskScheduleEntry scheduleEntry) {
+								long now = System.currentTimeMillis();
+								if (scheduleEntry.getUnScheduledDate() != null
+										&& now > TIME_OUT
+												+ scheduleEntry
+														.getUnScheduledDate()
+														.getTime()) {
+									return scheduleEntry;
+								}
+								return null;
+							}
+						});
+		if (taskScheduleEntry != null) {
+			taskContenaStateManager.removeTaskScheduleEntry(taskScheduleEntry);
+		}
 
 	}
-
 }

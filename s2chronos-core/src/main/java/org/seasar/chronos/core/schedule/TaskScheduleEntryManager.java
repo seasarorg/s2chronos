@@ -31,11 +31,11 @@ public class TaskScheduleEntryManager {
 		return instance;
 	}
 
-	private ConcurrentHashMap<TaskStateType, CopyOnWriteArrayList<TaskScheduleEntry>> taskScheduleEntryMap = new ConcurrentHashMap<TaskStateType, CopyOnWriteArrayList<TaskScheduleEntry>>();
+	private final ConcurrentHashMap<TaskStateType, CopyOnWriteArrayList<TaskScheduleEntry>> taskScheduleEntryMap = new ConcurrentHashMap<TaskStateType, CopyOnWriteArrayList<TaskScheduleEntry>>();
 
-	private CopyOnWriteArrayList<TaskScheduleEntry> allTaskList = new CopyOnWriteArrayList<TaskScheduleEntry>();
+	private final CopyOnWriteArrayList<TaskScheduleEntry> allTaskList = new CopyOnWriteArrayList<TaskScheduleEntry>();
 
-	private ConcurrentHashMap<Class<?>, TaskScheduleEntry> taskScheduleEntryClassMap = new ConcurrentHashMap<Class<?>, TaskScheduleEntry>();
+	private final ConcurrentHashMap<Class<?>, TaskScheduleEntry> taskScheduleEntryClassMap = new ConcurrentHashMap<Class<?>, TaskScheduleEntry>();
 
 	private TaskScheduleEntryManager() {
 
@@ -54,6 +54,8 @@ public class TaskScheduleEntryManager {
 			} else {
 				result = false;
 			}
+		} else if (key == TaskStateType.UNSCHEDULED) {
+
 		}
 		return result;
 	}
@@ -64,7 +66,7 @@ public class TaskScheduleEntryManager {
 
 	public boolean contains(Object key) {
 		if (key instanceof ScheduleEntry) {
-			return this.allTaskList.contains((TaskScheduleEntry) key);
+			return this.allTaskList.contains(key);
 		}
 		return this.taskScheduleEntryClassMap.containsKey(key);
 	}
