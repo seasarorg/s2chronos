@@ -79,7 +79,7 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 	private static ConcurrentHashMap<TaskThreadPool, ExecutorService> threadPoolExecutorServiceMap = new ConcurrentHashMap<TaskThreadPool, ExecutorService>();
 
 	private S2Container s2Container;
-	
+
 	private Object task;
 
 	private Class<?> taskClass;
@@ -302,7 +302,6 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 
 	public void hotdeployStart() {
 		String name = this.componentDef.getComponentClass().getName();
-		//log.debug("HOT deploy class preload " + name);
 		ReflectionUtil.forNameNoException(name);
 		if (HotdeployUtil.isHotdeploy()) {
 			HotdeployUtil.start();
@@ -412,9 +411,11 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 
 		this.beanDesc = BeanDescFactory.getBeanDesc(this.taskClass);
 
-		this.taskPropertyReader = (TaskPropertyReader) this.s2Container.getComponent(TaskPropertyReader.class);
-		this.taskPropertyWriter = (TaskPropertyWriter) this.s2Container.getComponent(TaskPropertyWriter.class);
-		
+		this.taskPropertyReader = (TaskPropertyReader) this.s2Container
+				.getComponent(TaskPropertyReader.class);
+		this.taskPropertyWriter = (TaskPropertyWriter) this.s2Container
+				.getComponent(TaskPropertyWriter.class);
+
 		this.taskPropertyReader.loadTask(task, beanDesc);
 		this.taskPropertyWriter.loadTask(task, beanDesc);
 
@@ -490,7 +491,6 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 		}
 		this.taskId = taskId;
 	}
-
 
 	@Binding(bindingType = BindingType.NONE)
 	public void setThreadPool(TaskThreadPool taskThreadPool) {

@@ -8,16 +8,16 @@ import org.seasar.framework.log.Logger;
 public class TaskIsReSchedulePropertyReadHandlerImpl extends
 		AbstractTaskPropertyHandler {
 
-	private static final Logger log = Logger.getLogger(TaskIsReSchedulePropertyReadHandlerImpl.class);
-	
+	@SuppressWarnings("unused")
+	private static final Logger log = Logger
+			.getLogger(TaskIsReSchedulePropertyReadHandlerImpl.class);
+
 	public Object execute(MethodInvocation methodInvocation) throws Throwable {
 		boolean reSchedule = (Boolean) methodInvocation.proceed();
 		TaskTrigger taskTrigger = this.getTaskPropertyReader(methodInvocation)
 				.getTrigger(null);
-		log.debug("Class = "+taskTrigger+" reSchedule = "+reSchedule);
 		if (taskTrigger != null) {
-			boolean triggerReSchedule = (Boolean)taskTrigger.isReSchedule();
-			log.debug("Class = "+taskTrigger+" triggerReSchedule = "+triggerReSchedule);
+			boolean triggerReSchedule = (Boolean) taskTrigger.isReSchedule();
 			reSchedule = reSchedule || triggerReSchedule;
 		}
 		return reSchedule;

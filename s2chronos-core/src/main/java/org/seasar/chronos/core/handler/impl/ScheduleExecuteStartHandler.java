@@ -63,7 +63,6 @@ public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler 
 			// 定期スケジュール以外ならスケジュールドリストから削除する
 			if (!taskExecutorService.getTaskPropertyReader()
 					.isReSchedule(false)) {
-				log.debug("<<<<< remove Scheduled = " + taskName);
 				taskContenaStateManager.removeTaskScheduleEntry(
 						TaskStateType.SCHEDULED, taskScheduleEntry);
 			}
@@ -78,26 +77,19 @@ public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler 
 				// scheduleTask(taskExecutorService, nextTaskName);
 				fireEndTaskEvent(taskExecutorService);
 			}
-			log.debug("<<<<< remove running = " + taskName);
 			taskContenaStateManager.removeTaskScheduleEntry(
 					TaskStateType.RUNNING, taskScheduleEntry);
 			// 定期スケジュール以外ならアンスケジュールドリストに登録する
 			// TODO アンスケジュールドに入った時刻をtseに持たせて，別のハンドラーで一定時間経過後にアンスケジュールドリストから削除する．
 			if (!taskExecutorService.getTaskPropertyReader()
 					.isReSchedule(false)) {
-				log.debug("<<<<< remove unscheduled = " + taskName);
 				taskContenaStateManager.addTaskScheduleEntry(
 						TaskStateType.UNSCHEDULED, taskScheduleEntry);
 			}
-			log.debug("<<<<< finished task = " + taskName);
-
-			log.log("DCHRONOSSSTHRTTCF", new Object[] { taskName });
+			// log.log("DCHRONOSSSTHRTTCF", new Object[] { taskName });
 			taskExecutorService.unprepare();
 			taskScheduleEntry.setTask(null);
 			taskScheduleEntry.setTaskClass(null);
-
-			log.debug("<<<<< finished task function = " + taskName);
-
 			return taskExecutorService;
 		}
 
@@ -117,19 +109,13 @@ public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler 
 						if (!tes.isPrepared()) {
 							tes.prepare();
 						}
-						log
-								.debug("--- START --- taskName = "
-										+ tes.getTaskPropertyReader()
-												.getTaskName(null));
 						if (!tes.isExecuted()
 								&& tes.getTaskPropertyReader().isStartTask(
 										false)) {
 							Object task = tes.getTask();
-							log.debug("task class = " + task);
 							Class<?> taskClass = tes.getTaskClass();
 							taskScheduleEntry.setTask(task);
 							taskScheduleEntry.setTaskClass(taskClass);
-
 							log.log("DCHRONOSSSTHRTSTT",
 									new Object[] { tes.getTaskPropertyReader()
 											.getTaskName(null) });
@@ -143,7 +129,6 @@ public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler 
 						}
 						// HOT deploy 終了
 						tes.hotdeployStop();
-						log.debug("--- END ---");
 						return null;
 					}
 				});

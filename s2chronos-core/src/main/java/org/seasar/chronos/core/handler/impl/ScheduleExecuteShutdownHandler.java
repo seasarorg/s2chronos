@@ -34,7 +34,6 @@ public class ScheduleExecuteShutdownHandler extends
 											log.log("DCHRONOS0002", logArgs);
 											log.log("DCHRONOS0012", logArgs);
 											if (tes.cancel()) {
-												log.debug("cancel ok");
 												while (!tes
 														.await(
 																SchedulerImpl.SHUTDOWN_AWAIT_TIME,

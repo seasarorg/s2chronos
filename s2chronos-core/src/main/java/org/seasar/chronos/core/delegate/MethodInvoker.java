@@ -181,7 +181,6 @@ public class MethodInvoker {
 			} else {
 				sb.append(callbackMethodName);
 			}
-			log.debug("CallbackMethodName = " + sb.toString());
 			Method mt = ReflectionUtil.getDeclaredMethod(methodCallback
 					.getTargetClass(), sb.toString(), AsyncResult.class);
 			mt.setAccessible(true);
@@ -221,13 +220,9 @@ public class MethodInvoker {
 
 	public void cancelInvokes(boolean shutdown) {
 		if (shutdown) {
-			log.debug("shutdownNow start");
 			this.executorService.shutdownNow();
-			log.debug("shutdownNow end");
 		} else {
-			log.debug("shutdown start");
 			this.executorService.shutdown();
-			log.debug("shutdown end");
 		}
 	}
 

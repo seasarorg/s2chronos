@@ -91,9 +91,6 @@ public class TaskScheduleEntryManager {
 	public Object forEach(TaskStateType key, TaskScheduleEntryHanlder handler) {
 		CopyOnWriteArrayList<TaskScheduleEntry> scheduleEntryList = getScheduleEntryList(key);
 		for (TaskScheduleEntry tse : scheduleEntryList) {
-			log.debug("scheduleEntryList.size() = "+scheduleEntryList.size());
-			log.debug("tse.getTaskClass() = "+tse.getTaskClass());
-			
 			Object result = handler.processTaskScheduleEntry(tse);
 			if (result != null) {
 				return result;
@@ -138,7 +135,6 @@ public class TaskScheduleEntryManager {
 	public boolean removeTaskScheduleEntry(TaskStateType key,
 			TaskScheduleEntry taskScheduleEntry) {
 		boolean result = false;
-		log.debug("removeTaskScheduleEntry = "+taskScheduleEntry.getComponentDef().getComponentClass());
 		result = this.getScheduleEntryList(key).remove(taskScheduleEntry);
 		if (key == TaskStateType.UNSCHEDULED) {
 			result = result & this.allTaskList.remove(taskScheduleEntry);

@@ -13,7 +13,6 @@ public class ExecutorServiceFactoryImpl implements ExecutorServiceFactory {
 			.getLogger(ExecutorServiceFactoryImpl.class);
 
 	public ExecutorService create(ThreadPoolType type, Integer threadPoolSize) {
-		log.debug("ExecutorServiceFactoryImpl#create");
 		ExecutorService executorService = null;
 		if (type.equals(ThreadPoolType.CACHED)) {
 			executorService = Executors.newCachedThreadPool();

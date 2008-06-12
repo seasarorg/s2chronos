@@ -180,8 +180,8 @@ public class SchedulerImpl extends AbstractScheduler {
 	@Override
 	protected void registerTaskFromS2Container() {
 		final S2Container target = this.s2container.getRoot();
+		this.registerTaskFromS2ContainerOnSmartDeploy(target);
 		this.registerChildTaskComponent(target);
-		//this.registerTaskFromS2ContainerOnSmartDeploy(target);
 		this.registerJavascriptTaskComponent();
 	}
 
@@ -234,6 +234,11 @@ public class SchedulerImpl extends AbstractScheduler {
 	@Override
 	protected TaskScheduleEntry scheduleTask(ComponentDef taskComponentDef,
 			boolean force) {
+		boolean contains = this.taskScheduleEntryManager
+				.contains(taskComponentDef.getComponentClass());
+		if (contains) {
+			return null;
+		}
 		TaskScheduleEntry taskScheduleEntry = super.scheduleTask(
 				taskComponentDef, force);
 		if (taskScheduleEntry == null) {

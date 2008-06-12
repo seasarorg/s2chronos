@@ -22,14 +22,14 @@ import org.seasar.framework.util.tiger.ReflectionUtil;
 public class TaskIsStartTaskPropertyReadHandlerImpl extends
 		AbstractTaskPropertyHandler {
 
-	private static Logger log = Logger.getLogger(TaskIsStartTaskPropertyReadHandlerImpl.class);
-	
+	private static Logger log = Logger
+			.getLogger(TaskIsStartTaskPropertyReadHandlerImpl.class);
+
 	private static final String YYYY_MM_DD_HH_MM_SS = "yyyy/MM/dd HH:mm:ss";
 	private TaskAnnotationReader taskAnnotationReader;
 	private TaskPropertyWriter taskPropertyWriter;
 
 	public Object execute(MethodInvocation methodInvocation) throws Throwable {
-		log.debug("isStartTask = "+methodInvocation.getThis());
 		boolean start = false;
 		TaskTrigger taskTrigger = this.getTaskPropertyReader(methodInvocation)
 				.getTrigger(null);
