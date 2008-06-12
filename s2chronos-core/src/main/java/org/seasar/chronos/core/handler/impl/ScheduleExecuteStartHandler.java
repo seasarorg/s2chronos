@@ -57,7 +57,7 @@ public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler 
 		public TaskExecutorService call() throws Exception {
 			final String taskName = taskExecutorService.getTaskPropertyReader()
 					.getTaskName(null);
-			log.log("DCHRONOS0121", new Object[] { taskName });
+			log.log("DCHRONOS0122", new Object[] { taskName });
 			taskContenaStateManager.addTaskScheduleEntry(TaskStateType.RUNNING,
 					taskScheduleEntry);
 			// 定期スケジュール以外ならスケジュールドリストから削除する
@@ -75,6 +75,7 @@ public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler 
 			} finally {
 				final String nextTaskName = taskExecutorService.destroy();
 				// scheduleTask(taskExecutorService, nextTaskName);
+				log.log("DCHRONOS0123", new Object[] { taskName });
 				fireEndTaskEvent(taskExecutorService);
 			}
 			taskContenaStateManager.removeTaskScheduleEntry(
@@ -86,10 +87,10 @@ public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler 
 				taskContenaStateManager.addTaskScheduleEntry(
 						TaskStateType.UNSCHEDULED, taskScheduleEntry);
 			}
-			// log.log("DCHRONOSSSTHRTTCF", new Object[] { taskName });
 			taskExecutorService.unprepare();
 			taskScheduleEntry.setTask(null);
 			taskScheduleEntry.setTaskClass(null);
+			log.log("DCHRONOS0124", new Object[] { taskName });
 			return taskExecutorService;
 		}
 
@@ -116,7 +117,7 @@ public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler 
 							Class<?> taskClass = tes.getTaskClass();
 							taskScheduleEntry.setTask(task);
 							taskScheduleEntry.setTaskClass(taskClass);
-							log.log("DCHRONOSSSTHRTSTT",
+							log.log("DCHRONOS0121",
 									new Object[] { tes.getTaskPropertyReader()
 											.getTaskName(null) });
 							TaskExecutorServiceCallable tesc = new TaskExecutorServiceCallable();

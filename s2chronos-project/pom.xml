@@ -4,7 +4,7 @@
 	<groupId>org.seasar.chronos</groupId>
 	<artifactId>s2chronos-project</artifactId>
 	<packaging>pom</packaging>
-	<version>0.0.1-RC4</version>
+	<version>0.0.1-RC4-SNAPSHOT</version>
 	<name>S2Chronos Project</name>
 	<description></description>
 	<url>http://s2chronos.sandbox.seasar.org/</url>
@@ -55,6 +55,7 @@
 			<extension>
 				<groupId>org.apache.maven.wagon</groupId>
 				<artifactId>wagon-webdav</artifactId>
+				<version></version>
 			</extension>
 		</extensions>
 		<plugins>
