@@ -46,7 +46,7 @@ public class SchedulerImpl extends AbstractScheduler {
 
 	private SchedulerConfiguration configuration = defaultConfiguration;
 
-	private List<ScheduleExecuteHandler> scheduleExecuteHandlerList = new ArrayList<ScheduleExecuteHandler>();
+	private final List<ScheduleExecuteHandler> scheduleExecuteHandlerList = new ArrayList<ScheduleExecuteHandler>();
 
 	private ExecutorServiceFactory executorServiceFactory;
 
@@ -59,9 +59,13 @@ public class SchedulerImpl extends AbstractScheduler {
 		this.scheduleExecuteHandlerList.add(scheduleExecuteHandler);
 	}
 
-	private void initialize() {
+	private synchronized void initialize() {
+		if (this.initialized) {
+			return;
+		}
 		executorService = executorServiceFactory.create(this.configuration
 				.getThreadPoolType(), this.configuration.getThreadPoolSize());
+		this.initialized = true;
 	}
 
 	/**
@@ -303,12 +307,7 @@ public class SchedulerImpl extends AbstractScheduler {
 	 * @see org.seasar.chronos.core.Scheduler#start()
 	 */
 	public void start() {
-
-		if (!this.initialized) {
-			initialize();
-			this.initialized = true;
-		}
-
+		this.initialize();
 		log.log("DCHRONOS0011", null);
 		this.schedulerEventHandler.fireRegisterTaskBeforeScheduler();
 		this.registerTaskFromS2Container();
