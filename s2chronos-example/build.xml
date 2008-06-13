@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <project name="s2chronos-example" default="dist" basedir=".">
-  <property name="ver" value="0.0.1-RC4"/>
+  <property name="ver" value="0.0.1-RC5"/>
 
   <path id="s2chronos.classpath">
     <pathelement location="build/classes" />
