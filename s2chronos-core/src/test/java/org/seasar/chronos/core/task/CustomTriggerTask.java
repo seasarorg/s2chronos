@@ -1,15 +1,15 @@
 package org.seasar.chronos.core.task;
 
+import org.seasar.chronos.core.annotation.CustomTrigger;
 import org.seasar.chronos.core.annotation.task.Task;
 import org.seasar.chronos.core.annotation.task.method.NextTask;
-import org.seasar.chronos.core.annotation.trigger.CronTrigger;
 import org.seasar.framework.log.Logger;
 
 @Task
-@CronTrigger(expression = "*/20 * * * * ?")
+@CustomTrigger
 public class CustomTriggerTask {
 
-	private Logger log = Logger.getLogger(CustomTriggerTask.class);
+	private final Logger log = Logger.getLogger(CustomTriggerTask.class);
 
 	public TimedTask timedTask;
 

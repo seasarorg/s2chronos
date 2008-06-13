@@ -36,7 +36,7 @@ public abstract class AbstractCommonTask {
 	// タスクメソッドC 本体
 	// 非同期に10個タスクメソッドを生成して実行
 	@JoinTask(JoinType.NoWait)
-	@CloneTask(10)
+	@CloneTask(20)
 	public synchronized void doTaskC() {
 		log.info(this.getClass().getName() + " : [[doTaskCを実行しました．]]");
 	}
