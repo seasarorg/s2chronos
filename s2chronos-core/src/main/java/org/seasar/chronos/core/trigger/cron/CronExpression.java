@@ -20,7 +20,6 @@ package org.seasar.chronos.core.trigger.cron;
 
 import java.io.Serializable;
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -44,7 +43,6 @@ public class CronExpression implements Serializable {
 		if (obj != null && obj instanceof CronExpression) {
 			CronExpression src = (CronExpression) obj;
 			result = result & cronExpression.equals(src.cronExpression);
-			result = result & startTimeList.equals(src.startTimeList);
 		}
 		return result;
 	}
@@ -63,8 +61,6 @@ public class CronExpression implements Serializable {
 			.getLogger(CronExpression.class);
 
 	private String cronExpression;
-
-	private ArrayList<Date> startTimeList;
 
 	protected static final int SECOND = 0;
 	protected static final int MINUTE = 1;
@@ -150,10 +146,6 @@ public class CronExpression implements Serializable {
 
 	public void setCronExpression(String cronExpression) {
 		this.cronExpression = cronExpression;
-	}
-
-	public ArrayList<Date> getStartTimes() {
-		return this.startTimeList;
 	}
 
 	public Date getNextValidTimeAfter(Date date) {
