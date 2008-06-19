@@ -27,8 +27,8 @@ public class SessionTimerTask {
 				System.currentTimeMillis() - 36000));
 	}
 
-	public void destory() {
-		log.info("SessionTimerTask#destory");
+	public void destroy() {
+		log.info("SessionTimerTask#destroy");
 	}
 
 }
