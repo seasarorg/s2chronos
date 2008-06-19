@@ -9,6 +9,11 @@ public interface ExecutorServiceFactory {
 
 	public ExecutorService create(ThreadPoolType type, Integer threadPoolSize);
 
+	public ExecutorService create(ThreadPoolType type, Integer threadPoolSize,
+			boolean daemon);
+
 	public ExecutorService create(ThreadPool threadPool);
+
+	public ExecutorService create(ThreadPool threadPool, boolean daemon);
 
 }

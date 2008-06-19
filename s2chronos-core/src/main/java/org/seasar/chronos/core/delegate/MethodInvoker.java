@@ -5,11 +5,12 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
+import org.seasar.chronos.core.ThreadPoolType;
 import org.seasar.chronos.core.exception.ExecutionRuntimeException;
+import org.seasar.chronos.core.executor.ExecutorServiceFactory;
 import org.seasar.framework.beans.BeanDesc;
 import org.seasar.framework.beans.factory.BeanDescFactory;
 import org.seasar.framework.container.ComponentDef;
@@ -34,8 +35,9 @@ public class MethodInvoker {
 
 	private ExecutorService executorService;
 
-	private ExecutorService callbackExecutorService = Executors
-			.newSingleThreadExecutor();
+	private ExecutorServiceFactory executorServiceFactory;
+
+	private ExecutorService callbackExecutorService;
 
 	/**
 	 * コンストラクタ
@@ -51,6 +53,8 @@ public class MethodInvoker {
 		this.target = componentDef.getComponent();
 		this.targetClass = componentDef.getComponentClass();
 		this.beanDesc = BeanDescFactory.getBeanDesc(this.targetClass);
+		callbackExecutorService = executorServiceFactory.create(
+				ThreadPoolType.SINGLE, null);
 	}
 
 	/**

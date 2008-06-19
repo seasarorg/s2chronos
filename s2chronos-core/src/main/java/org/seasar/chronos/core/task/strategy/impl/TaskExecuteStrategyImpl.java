@@ -24,7 +24,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import org.seasar.chronos.core.Scheduler;
@@ -300,17 +299,23 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 		return taskExecuteHandler.handleRequest(startTaskName);
 	}
 
-	public void hotdeployStart() {
-		String name = this.componentDef.getComponentClass().getName();
-		ReflectionUtil.forNameNoException(name);
+	private boolean hotdeployStart;
+
+	public synchronized void hotdeployStart() {
 		if (HotdeployUtil.isHotdeploy()) {
+			String name = this.componentDef.getComponentClass().getName();
+			ReflectionUtil.forNameNoException(name);
 			HotdeployUtil.start();
+			this.hotdeployStart = true;
 		}
 	}
 
-	public void hotdeployStop() {
+	public synchronized void hotdeployStop() {
 		if (HotdeployUtil.isHotdeploy()) {
-			HotdeployUtil.stop();
+			if (this.hotdeployStart) {
+				HotdeployUtil.stop();
+				this.hotdeployStart = false;
+			}
 		}
 	}
 
@@ -429,8 +434,8 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 					jobMethodExecutorService, this.task, this.beanDesc);
 		}
 		if (lifecycleMethodInvoker == null) {
-			ExecutorService lifecycleMethodExecutorService = Executors
-					.newSingleThreadExecutor();
+			ExecutorService lifecycleMethodExecutorService = executorServiceFactory
+					.create(ThreadPoolType.SINGLE, null);
 			this.lifecycleMethodInvoker = new MethodInvoker(
 					lifecycleMethodExecutorService, this.task, this.beanDesc);
 		}

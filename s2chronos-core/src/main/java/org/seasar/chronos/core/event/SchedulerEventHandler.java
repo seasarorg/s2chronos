@@ -3,19 +3,22 @@ package org.seasar.chronos.core.event;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import org.seasar.chronos.core.Scheduler;
 import org.seasar.chronos.core.SchedulerEventListener;
 import org.seasar.chronos.core.TaskScheduleEntry;
+import org.seasar.chronos.core.ThreadPoolType;
+import org.seasar.chronos.core.executor.ExecutorServiceFactory;
 import org.seasar.framework.log.Logger;
 
 public class SchedulerEventHandler {
 
 	private Logger log = Logger.getLogger(SchedulerEventHandler.class);
 
-	private ExecutorService ExecutorService = Executors.newCachedThreadPool();
+	private ExecutorServiceFactory executorServiceFacotry;
+
+	private ExecutorService executorService;
 
 	private CopyOnWriteArrayList<SchedulerEventListener> schedulerEventListener = new CopyOnWriteArrayList<SchedulerEventListener>();
 
@@ -51,7 +54,7 @@ public class SchedulerEventHandler {
 	public void fireAddTaskScheduleEntry(
 			final TaskScheduleEntry taskScheduleEntry) {
 		for (final SchedulerEventListener listener : schedulerEventListener) {
-			Future<?> future = ExecutorService.submit(new Runnable() {
+			Future<?> future = executorService.submit(new Runnable() {
 				public void run() {
 					listener.addTaskScheduleEntry(scheduler, taskScheduleEntry);
 				}
@@ -68,7 +71,7 @@ public class SchedulerEventHandler {
 	 */
 	public void fireCancelTask(final Object task) {
 		for (final SchedulerEventListener listener : schedulerEventListener) {
-			Future<?> future = ExecutorService.submit(new Runnable() {
+			Future<?> future = executorService.submit(new Runnable() {
 				public void run() {
 					listener.cancelTask(scheduler, task);
 				}
@@ -82,7 +85,7 @@ public class SchedulerEventHandler {
 	 */
 	public void fireEndScheduler() {
 		for (final SchedulerEventListener listener : schedulerEventListener) {
-			Future<?> future = ExecutorService.submit(new Runnable() {
+			Future<?> future = executorService.submit(new Runnable() {
 				public void run() {
 					listener.endScheduler(scheduler);
 				}
@@ -101,7 +104,7 @@ public class SchedulerEventHandler {
 	 */
 	public void fireExceptionTask(final Object task, final Exception e) {
 		for (final SchedulerEventListener listener : schedulerEventListener) {
-			Future<?> future = ExecutorService.submit(new Runnable() {
+			Future<?> future = executorService.submit(new Runnable() {
 				public void run() {
 					listener.exceptionTask(scheduler, task, e);
 				}
@@ -118,7 +121,7 @@ public class SchedulerEventHandler {
 	 */
 	public void fireEndTask(final Object task) {
 		for (final SchedulerEventListener listener : schedulerEventListener) {
-			Future<?> future = ExecutorService.submit(new Runnable() {
+			Future<?> future = executorService.submit(new Runnable() {
 				public void run() {
 					listener.endTask(scheduler, task);
 				}
@@ -132,7 +135,7 @@ public class SchedulerEventHandler {
 	 */
 	public void firePauseScheduler() {
 		for (final SchedulerEventListener listener : schedulerEventListener) {
-			Future<?> future = ExecutorService.submit(new Runnable() {
+			Future<?> future = executorService.submit(new Runnable() {
 				public void run() {
 					listener.pauseScheduler(scheduler);
 				}
@@ -146,7 +149,7 @@ public class SchedulerEventHandler {
 	 */
 	public void fireResumeScheduler() {
 		for (final SchedulerEventListener listener : schedulerEventListener) {
-			Future<?> future = ExecutorService.submit(new Runnable() {
+			Future<?> future = executorService.submit(new Runnable() {
 				public void run() {
 					listener.resumeScheduler(scheduler);
 				}
@@ -160,7 +163,7 @@ public class SchedulerEventHandler {
 	 */
 	public void fireRegisterTaskAfterScheduler() {
 		for (final SchedulerEventListener listener : schedulerEventListener) {
-			Future<?> future = ExecutorService.submit(new Runnable() {
+			Future<?> future = executorService.submit(new Runnable() {
 				public void run() {
 					listener.resigtTaskAfterScheduler(scheduler);
 				}
@@ -174,7 +177,7 @@ public class SchedulerEventHandler {
 	 */
 	public void fireRegisterTaskBeforeScheduler() {
 		for (final SchedulerEventListener listener : schedulerEventListener) {
-			Future<?> future = ExecutorService.submit(new Runnable() {
+			Future<?> future = executorService.submit(new Runnable() {
 				public void run() {
 					listener.resigtTaskBeforeScheduler(scheduler);
 				}
@@ -190,7 +193,7 @@ public class SchedulerEventHandler {
 	public void fireRemoveTaskScheduleEntry(
 			final TaskScheduleEntry taskScheduleEntry) {
 		for (final SchedulerEventListener listener : schedulerEventListener) {
-			Future<?> future = ExecutorService.submit(new Runnable() {
+			Future<?> future = executorService.submit(new Runnable() {
 				public void run() {
 					listener.removeTaskScheduleEntry(scheduler,
 							taskScheduleEntry);
@@ -205,7 +208,7 @@ public class SchedulerEventHandler {
 	 */
 	public void fireShutdownScheduler() {
 		for (final SchedulerEventListener listener : schedulerEventListener) {
-			Future<?> future = ExecutorService.submit(new Runnable() {
+			Future<?> future = executorService.submit(new Runnable() {
 				public void run() {
 					listener.shutdownScheduler(scheduler);
 				}
@@ -219,7 +222,7 @@ public class SchedulerEventHandler {
 	 */
 	public void fireStartScheduler() {
 		for (final SchedulerEventListener listener : schedulerEventListener) {
-			Future<?> future = ExecutorService.submit(new Runnable() {
+			Future<?> future = executorService.submit(new Runnable() {
 				public void run() {
 					listener.startScheduler(scheduler);
 				}
@@ -236,7 +239,7 @@ public class SchedulerEventHandler {
 	 */
 	public void fireStartTask(final Object task) {
 		for (final SchedulerEventListener listener : schedulerEventListener) {
-			Future<?> future = ExecutorService.submit(new Runnable() {
+			Future<?> future = executorService.submit(new Runnable() {
 				public void run() {
 					listener.startTask(scheduler, task);
 				}
@@ -293,4 +296,14 @@ public class SchedulerEventHandler {
 		}
 	}
 
+	/**
+	 * @param executorServiceFacotry
+	 *            the executorServiceFacotry to set
+	 */
+	public void setExecutorServiceFacotry(
+			ExecutorServiceFactory executorServiceFacotry) {
+		this.executorServiceFacotry = executorServiceFacotry;
+		this.executorService = this.executorServiceFacotry.create(
+				ThreadPoolType.CACHED, null);
+	}
 }

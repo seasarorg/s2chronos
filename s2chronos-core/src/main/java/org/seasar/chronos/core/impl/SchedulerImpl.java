@@ -54,6 +54,9 @@ public class SchedulerImpl extends AbstractScheduler {
 
 	private boolean initialized;
 
+	public SchedulerImpl() {
+	}
+
 	public void addScheduleExecuteHandler(
 			ScheduleExecuteHandler scheduleExecuteHandler) {
 		this.scheduleExecuteHandlerList.add(scheduleExecuteHandler);
@@ -64,7 +67,9 @@ public class SchedulerImpl extends AbstractScheduler {
 			return;
 		}
 		executorService = executorServiceFactory.create(this.configuration
-				.getThreadPoolType(), this.configuration.getThreadPoolSize());
+				.getThreadPoolType(), this.configuration.getThreadPoolSize(),
+				this.configuration.isDaemon());
+		schedulerEventHandler.setExecutorServiceFacotry(executorServiceFactory);
 		this.initialized = true;
 	}
 
@@ -144,6 +149,9 @@ public class SchedulerImpl extends AbstractScheduler {
 	 * スケジューラの終了を待機します．
 	 */
 	public void join() {
+		if (this.configuration.isDaemon()) {
+			return;
+		}
 		log.log("DCHRONOS0016", null);
 		try {
 			this.schedulerTaskFuture.get();

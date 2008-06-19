@@ -8,6 +8,8 @@ package org.seasar.chronos.core;
  */
 public final class SchedulerConfiguration {
 
+	private boolean daemon;
+
 	private boolean autoFinish;
 
 	private long autoFinishTimeLimit;
@@ -56,5 +58,20 @@ public final class SchedulerConfiguration {
 
 	public void setThreadPoolType(ThreadPoolType threadPoolType) {
 		this.threadPoolType = threadPoolType;
+	}
+
+	/**
+	 * @return the daemon
+	 */
+	public boolean isDaemon() {
+		return daemon;
+	}
+
+	/**
+	 * @param daemon
+	 *            the daemon to set
+	 */
+	public void setDaemon(boolean daemon) {
+		this.daemon = daemon;
 	}
 }

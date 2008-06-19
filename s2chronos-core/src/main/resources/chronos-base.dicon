@@ -9,6 +9,8 @@
 	<include path="chronosCustomize.dicon"
 		condition="@org.seasar.chronos.core.util.DiconConditionUtil@hasCustomizeDicon()" />
 	
+	<component class="org.seasar.chronos.core.executor.impl.ExecutorServiceFactoryImpl"/>
+	
 	<!-- タスクアノテーションリーダ -->
 	<component class="org.seasar.chronos.core.task.impl.TaskAnnotationReaderImpl"/>
 	

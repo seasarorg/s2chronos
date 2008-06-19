@@ -4,8 +4,6 @@
 <components>
 	<include path="chronos-base.dicon"/>
 	
-	<component class="org.seasar.chronos.core.executor.impl.ExecutorServiceFactoryImpl"/>
-	
 	<component name="scheduleExecuteShutdownHandler" class="org.seasar.chronos.core.handler.impl.ScheduleExecuteShutdownHandler" />
 	<component name="scheduleExecuteStartHandler" class="org.seasar.chronos.core.handler.impl.ScheduleExecuteStartHandler" />
 	<component name="scheduleExecuteWaitHandler" class="org.seasar.chronos.core.handler.impl.ScheduleExecuteWaitHandler">
