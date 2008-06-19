@@ -81,10 +81,10 @@
     <dependent-module archiveName="s2-tiger-2.4.24.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/org/seasar/container/s2-tiger/2.4.24/s2-tiger-2.4.24.jar">
       <dependency-type>uses</dependency-type>
     </dependent-module>
-    <dependent-module archiveName="s2chronos-core-0.0.1-RC5.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/org/seasar/chronos/s2chronos-core/0.0.1-RC5/s2chronos-core-0.0.1-RC5.jar">
+    <dependent-module archiveName="s2chronos-core-0.0.1-RC6-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/org/seasar/chronos/s2chronos-core/0.0.1-RC6-SNAPSHOT/s2chronos-core-0.0.1-RC6-SNAPSHOT.jar">
       <dependency-type>uses</dependency-type>
     </dependent-module>
-    <dependent-module archiveName="s2chronos-extension-0.0.1-RC5.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/org/seasar/chronos/s2chronos-extension/0.0.1-RC5/s2chronos-extension-0.0.1-RC5.jar">
+    <dependent-module archiveName="s2chronos-extension-0.0.1-RC6-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/org/seasar/chronos/s2chronos-extension/0.0.1-RC6-SNAPSHOT/s2chronos-extension-0.0.1-RC6-SNAPSHOT.jar">
       <dependency-type>uses</dependency-type>
     </dependent-module>
     <dependent-module archiveName="teeda-ajax-1.0.13.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/org/seasar/teeda/teeda-ajax/1.0.13/teeda-ajax-1.0.13.jar">
