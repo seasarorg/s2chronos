@@ -1,3 +1,18 @@
+/*
+ * Copyright 2007-2008 the Seasar Foundation and the Others.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+ * either express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
+ */
 package org.seasar.chronos.core.delegate;
 
 import java.lang.reflect.Method;
@@ -25,15 +40,15 @@ public class MethodInvoker {
 
 	private static final String CALLBACK_SUFFIX = "Callback";
 
-	private CopyOnWriteArrayList<AsyncResult> resultList = new CopyOnWriteArrayList<AsyncResult>();
+	private final CopyOnWriteArrayList<AsyncResult> resultList = new CopyOnWriteArrayList<AsyncResult>();
 
-	private Class<?> targetClass;
+	private final Class<?> targetClass;
 
-	private Object target;
+	private final Object target;
 
-	private BeanDesc beanDesc;
+	private final BeanDesc beanDesc;
 
-	private ExecutorService executorService;
+	private final ExecutorService executorService;
 
 	private ExecutorServiceFactory executorServiceFactory;
 
@@ -53,7 +68,7 @@ public class MethodInvoker {
 		this.target = componentDef.getComponent();
 		this.targetClass = componentDef.getComponentClass();
 		this.beanDesc = BeanDescFactory.getBeanDesc(this.targetClass);
-		callbackExecutorService = executorServiceFactory.create(
+		this.callbackExecutorService = executorServiceFactory.create(
 				ThreadPoolType.SINGLE, null);
 	}
 
@@ -218,10 +233,22 @@ public class MethodInvoker {
 		return asyncResult.getFuture().cancel(shutdown);
 	}
 
+	/**
+	 * 非同期呼び出しをキャンセルします．
+	 * <p>
+	 * シャットダウン(即座に終了)でキャンセルします．
+	 * </p>
+	 */
 	public void cancelInvokes() {
 		this.cancelInvokes(true);
 	}
 
+	/**
+	 * 非同期呼び出しをキャンセルします．
+	 * 
+	 * @param shutdown
+	 *            シャットダウン(即座に終了)ならtrue, それ以外ならfalse
+	 */
 	public void cancelInvokes(boolean shutdown) {
 		if (shutdown) {
 			this.executorService.shutdownNow();
@@ -301,11 +328,15 @@ public class MethodInvoker {
 	 * @return 戻り値
 	 */
 	public Object invoke(final String methodName, final Object[] args) {
-		Object result = (Object) this.beanDesc.invoke(this.target, methodName,
-				args);
+		Object result = this.beanDesc.invoke(this.target, methodName, args);
 		return result;
 	}
 
+	/**
+	 * 非同期呼び出しの終了を待機します．
+	 * 
+	 * @throws InterruptedException
+	 */
 	public void waitInvokes() throws InterruptedException {
 		for (AsyncResult ar : resultList) {
 			this.endInvoke(ar);

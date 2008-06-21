@@ -10,7 +10,7 @@ public class ThreadPool implements TaskThreadPool {
 
 	private Long id;
 
-	private ThreadPoolType threadPoolType = ThreadPoolType.SINGLE;
+	private ThreadPoolType threadPoolType = ThreadPoolType.CACHED;
 
 	private Integer threadPoolSize;
 
