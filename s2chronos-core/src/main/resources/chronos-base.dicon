@@ -35,7 +35,7 @@
 	<component name="taskSetExecutedPropertyWriteHandler" class="org.seasar.chronos.core.task.handler.impl.property.write.TaskSetExecutedPropertyWriteHandlerImpl" instance="prototype"/>
 	
 	<!-- タスクのプロパティを読み込むコマンドのファクトリ -->
-	<component name="taskPropertyReadHandlerFactory" class="org.seasar.chronos.core.task.handler.impl.factory.TaskPropertyReadHandlerFactoryImpl">
+	<component name="taskPropertyReadHandlerFactory" class="org.seasar.chronos.core.task.handler.impl.property.factory.TaskPropertyReadHandlerFactoryImpl">
 		<initMethod name="putTaskPropertyHandler">
 			<arg>@org.seasar.chronos.core.task.TaskConstant@METHOD_NAME_IS_START_TASK</arg>
 			<arg>"taskIsStartTaskPropertyReadHandler"</arg>
@@ -73,7 +73,7 @@
 			<arg>"taskIsExecutedPropertyReadHandler"</arg>
 		</initMethod>
 	</component>
-	<component name="taskPropertyWriteHandlerFactory" class="org.seasar.chronos.core.task.handler.impl.factory.TaskPropertyWriteHandlerFactoryImpl">
+	<component name="taskPropertyWriteHandlerFactory" class="org.seasar.chronos.core.task.handler.impl.property.factory.TaskPropertyWriteHandlerFactoryImpl">
 		<initMethod name="putTaskPropertyHandler">
 			<arg>@org.seasar.chronos.core.task.TaskConstant@METHOD_NAME_SET_START_TASK</arg>
 			<arg>"taskSetStartTaskPropertyWriteHandler"</arg>
