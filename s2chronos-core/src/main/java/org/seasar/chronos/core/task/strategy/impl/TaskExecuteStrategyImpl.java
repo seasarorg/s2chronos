@@ -87,7 +87,7 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 
 	private MethodInvoker taskMethodInvoker;
 
-	private MethodInvoker lifecycleMethodInvoker;
+	// private MethodInvoker lifecycleMethodInvoker;
 
 	private TaskMethodManager taskMethodManager;
 
@@ -168,7 +168,7 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 
 	public String destroy() throws InterruptedException {
 		String nextTask = null;
-		if (this.lifecycleMethodInvoker.hasMethod(METHOD_NAME_DESTROY)) {
+		if (this.beanDesc.hasMethod(METHOD_NAME_DESTROY)) {
 			// AsyncResult ar = this.lifecycleMethodInvoker
 			// .beginInvoke(METHOD_NAME_DESTROY);
 			// this.lifecycleMethodInvoker.endInvoke(ar);
@@ -198,6 +198,13 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 		}
 	}
 
+	/**
+	 * TaskThreadPoolに対応するExecutorServiceを返します．
+	 * 
+	 * @param taskThreadPool
+	 *            スレッドプール
+	 * @return
+	 */
 	private ExecutorService getCacheExecutorsService(
 			TaskThreadPool taskThreadPool) {
 		ExecutorService executorService = threadPoolExecutorServiceMap
@@ -214,6 +221,16 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 		return this.taskPropertyReader.getDescription(null);
 	}
 
+	/**
+	 * ExecutorServiceを返します．
+	 * <p>
+	 * TaskにTaskThreadPoolが存在する場合はキャッシュから対応するExecutorServiceを返します．<br>
+	 * 存在しない場合はTaskのThreadTypeとThreadPoolSizeから作成して返します．<br>
+	 * 複数のタスク間でスレッドプールを共有したければTaskThreadPoolを利用すること．
+	 * </p>
+	 * 
+	 * @return
+	 */
 	private ExecutorService getExecutorService() {
 		TaskThreadPool taskThreadPool = this.getThreadPool();
 		ExecutorService jobMethodExecutorService = null;
@@ -321,11 +338,8 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 
 	public String initialize() throws InterruptedException {
 		this.setExecuted(true);
-		if (this.lifecycleMethodInvoker.hasMethod(METHOD_NAME_INITIALIZE)) {
+		if (this.beanDesc.hasMethod(METHOD_NAME_INITIALIZE)) {
 			// ここで増えている
-			// AsyncResult ar = this.lifecycleMethodInvoker
-			// .beginInvoke(METHOD_NAME_INITIALIZE);
-			// this.lifecycleMethodInvoker.endInvoke(ar);
 			this.beanDesc.invoke(this.task, METHOD_NAME_INITIALIZE, null);
 			TaskMethodMetaData md = new TaskMethodMetaData(this.beanDesc,
 					METHOD_NAME_INITIALIZE);
@@ -433,12 +447,13 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 			this.taskMethodInvoker = new MethodInvoker(
 					jobMethodExecutorService, this.task, this.beanDesc);
 		}
-		if (lifecycleMethodInvoker == null) {
-			ExecutorService lifecycleMethodExecutorService = executorServiceFactory
-					.create(ThreadPoolType.SINGLE, null);
-			this.lifecycleMethodInvoker = new MethodInvoker(
-					lifecycleMethodExecutorService, this.task, this.beanDesc);
-		}
+		// if (lifecycleMethodInvoker == null) {
+		// ExecutorService lifecycleMethodExecutorService =
+		// executorServiceFactory
+		// .create(ThreadPoolType.SINGLE, null);
+		// this.lifecycleMethodInvoker = new MethodInvoker(
+		// lifecycleMethodExecutorService, this.task, this.beanDesc);
+		// }
 		this.prepared = true;
 		this.save();
 		this.load();
