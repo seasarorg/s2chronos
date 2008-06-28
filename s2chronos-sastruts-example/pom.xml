@@ -112,19 +112,24 @@
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.seasar.dao</groupId>
-			<artifactId>s2-dao</artifactId>
-			<version>1.0.48</version>
-		</dependency>
-		<dependency>
-			<groupId>org.seasar.dao</groupId>
-			<artifactId>s2-dao-tiger</artifactId>
-			<version>1.0.48</version>
-		</dependency>
-		<dependency>
             <groupId>org.seasar.sastruts</groupId>
             <artifactId>sa-struts</artifactId>
             <version>1.0.2</version>
+        </dependency>
+		<dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+            <version>1.1.1</version>
+        </dependency>
+		<dependency>
+            <groupId>taglibs</groupId>
+            <artifactId>standard</artifactId>
+            <version>1.1.1</version>
+        </dependency>
+		<dependency>
+            <groupId>hsqldb</groupId>
+            <artifactId>hsqldb</artifactId>
+            <version>1.7.0</version>
         </dependency>
 	</dependencies>
 	<distributionManagement>
