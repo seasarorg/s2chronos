@@ -20,6 +20,12 @@ import org.seasar.framework.container.creator.ComponentCreatorImpl;
 import org.seasar.framework.container.deployer.InstanceDefFactory;
 import org.seasar.framework.convention.NamingConvention;
 
+/**
+ * タスククラス用のCreatorです．
+ * 
+ * @author j5ik2o
+ * 
+ */
 public class TaskCreator extends ComponentCreatorImpl {
 
 	private static final String NAME_SUFFIX_TASK = "Task";
@@ -29,8 +35,8 @@ public class TaskCreator extends ComponentCreatorImpl {
 		this.setNameSuffix(NAME_SUFFIX_TASK);
 		this.setInstanceDef(InstanceDefFactory.SINGLETON);
 		this.setExternalBinding(false);
-		this.setEnableAbstract(false);
-		this.setEnableInterface(false);
+		this.setEnableAbstract(true);
+		this.setEnableInterface(true);
 	}
 
 	public ComponentCustomizer getTaskCustomizer() {
