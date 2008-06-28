@@ -88,6 +88,7 @@ public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler 
 			} catch (final Exception e) {
 				fireExceptionTaskEvent(taskExecutorService, e);
 			} finally {
+				@SuppressWarnings("unused")
 				final String nextTaskName = taskExecutorService.destroy();
 				// scheduleTask(taskExecutorService, nextTaskName);
 				log.log("DCHRONOS0123", new Object[] { taskName });

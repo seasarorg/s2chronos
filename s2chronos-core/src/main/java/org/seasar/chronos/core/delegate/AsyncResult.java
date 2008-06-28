@@ -21,6 +21,11 @@ import java.util.concurrent.Future;
 
 import org.seasar.chronos.core.exception.ExecutionRuntimeException;
 
+/**
+ * 非同期結果セットです．
+ * 
+ * @author j5ik2o
+ */
 public class AsyncResult {
 
 	private static final long serialVersionUID = -5239879067321325795L;
@@ -29,22 +34,49 @@ public class AsyncResult {
 
 	private Object state = null;
 
+	/**
+	 * {@link Future}を返します．
+	 * 
+	 * @return {@link Future}
+	 */
 	Future<Object> getFuture() {
 		return future;
 	}
 
+	/**
+	 * {@link Future}を設定します．
+	 * 
+	 * @param future
+	 *            {@link Future}
+	 */
 	void setFuture(Future<Object> future) {
 		this.future = future;
 	}
 
+	/**
+	 * 非同期呼び出しの状態を返します．
+	 * 
+	 * @return 非同期呼び出しの状態
+	 */
 	public Object getState() {
 		return state;
 	}
 
+	/**
+	 * 非同期呼び出しの状態を設定します．
+	 * 
+	 * @param state
+	 *            非同期呼び出しの状態
+	 */
 	void setState(Object state) {
 		this.state = state;
 	}
 
+	/**
+	 * 非同期呼び出しを待機します．
+	 * 
+	 * @throws InterruptedException
+	 */
 	public void waitOne() throws InterruptedException {
 		try {
 			this.future.get();
@@ -55,6 +87,11 @@ public class AsyncResult {
 		}
 	}
 
+	/**
+	 * 非同期呼び出しが完了したかどうかを返します．
+	 * 
+	 * @return 完了した場合true,完了していない場合false
+	 */
 	public boolean isCompleted() {
 		return this.future.isDone();
 	}

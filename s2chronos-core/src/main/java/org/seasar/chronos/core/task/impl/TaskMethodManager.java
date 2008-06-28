@@ -1,3 +1,18 @@
+/*
+ * Copyright 2007-2008 the Seasar Foundation and the Others.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+ * either express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
+ */
 package org.seasar.chronos.core.task.impl;
 
 import java.lang.reflect.Method;
@@ -16,13 +31,13 @@ public class TaskMethodManager {
 
 	private final String prefixMethodName;
 
-	private HashMap<String, HashMap<String, Method>> methodMap = new HashMap<String, HashMap<String, Method>>();
+	private final HashMap<String, HashMap<String, Method>> methodMap = new HashMap<String, HashMap<String, Method>>();
 
-	private HashMap<String, ArrayList<Method>> methodList = new HashMap<String, ArrayList<Method>>();
+	private final HashMap<String, ArrayList<Method>> methodList = new HashMap<String, ArrayList<Method>>();
 
-	private ArrayList<String> groupList = new ArrayList<String>();
+	private final ArrayList<String> groupList = new ArrayList<String>();
 
-	private ArrayList<Method> methodAllList = new ArrayList<Method>();
+	private final ArrayList<Method> methodAllList = new ArrayList<Method>();
 
 	public TaskMethodManager(Class<?> clazz, String prefixMethodName) {
 		this.clazz = clazz;

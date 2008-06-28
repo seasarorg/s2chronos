@@ -28,6 +28,7 @@ import org.seasar.framework.log.Logger;
 
 public class ExecutorServiceFactoryImpl implements ExecutorServiceFactory {
 
+	@SuppressWarnings("unused")
 	private static Logger log = Logger
 			.getLogger(ExecutorServiceFactoryImpl.class);
 

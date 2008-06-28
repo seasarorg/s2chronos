@@ -63,6 +63,7 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 
 	private static final long serialVersionUID = -6091926808483360988L;
 
+	@SuppressWarnings("unused")
 	private static Logger log = Logger.getLogger(TaskExecuteStrategyImpl.class);
 
 	private static final String METHOD_PREFIX_NAME_DO = "do";
