@@ -49,7 +49,12 @@ version="2.4">
         <filter-name>hotdeployfilter</filter-name>
         <filter-class>org.seasar.framework.container.hotdeploy.HotdeployFilter</filter-class>
     </filter>
-
+    
+    <filter>
+        <filter-name>dbSessionFilter</filter-name>
+        <filter-class>org.seasar.extension.httpsession.SessionFilter</filter-class>
+    </filter>
+    
     <filter>
         <filter-name>routingfilter</filter-name>
         <filter-class>org.seasar.struts.filter.RoutingFilter</filter-class>
@@ -92,6 +97,11 @@ version="2.4">
         <dispatcher>REQUEST</dispatcher>
         <dispatcher>FORWARD</dispatcher>
         <dispatcher>INCLUDE</dispatcher>
+    </filter-mapping>
+    
+    <filter-mapping>
+        <filter-name>dbSessionFilter</filter-name>
+        <url-pattern>/*</url-pattern>
     </filter-mapping>
     
     <servlet>

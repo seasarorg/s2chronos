@@ -1,41 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
-	"http://www.seasar.org/dtd/components21.dtd">
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.4//EN"
+	"http://www.seasar.org/dtd/components24.dtd">
 <components namespace="jdbc">
 	<include path="jta.dicon"/>
 
-	<!-- for HSQLDB -->
-	<component name="xaDataSource"
-		class="org.seasar.extension.dbcp.impl.XADataSourceImpl">
-		<property name="driverClassName">
-			"org.hsqldb.jdbcDriver"
-		</property>
-		<property name="URL">
-			"jdbc:hsqldb:file:"
-				+ @org.seasar.framework.util.ResourceUtil@getBuildDir('app.dicon').getCanonicalPath()
-				+ "/data/test"
-		</property>
-		<property name="user">"sa"</property>
-		<property name="password">""</property>
+	<component class="org.seasar.extension.jdbc.impl.BasicResultSetFactory"/>
+	<component class="org.seasar.extension.jdbc.impl.ConfigurableStatementFactory">
+		<arg>
+			<component class="org.seasar.extension.jdbc.impl.BasicStatementFactory"/>
+		</arg>
+		<property name="fetchSize">100</property>
+		<!--
+		<property name="maxRows">100</property>
+		-->
 	</component>
-	
-	<!-- for H2 -->
 	<!--
+	<component class="org.seasar.extension.jdbc.impl.OracleResultSetFactory"/>
+	<component class="org.seasar.extension.jdbc.impl.BooleanToIntStatementFactory"/>
+	-->
+
+	<!-- for H2 -->
 	<component name="xaDataSource"
 		class="org.seasar.extension.dbcp.impl.XADataSourceImpl">
 		<property name="driverClassName">
 			"org.h2.Driver"
 		</property>
 		<property name="URL">
+			<!--
+			"jdbc:h2:tcp://localhost:9093/demo"
+			-->
 			"jdbc:h2:file:"
-				+ @org.seasar.framework.util.ResourceUtil@getBuildDir(@examples.entity.JdbcManagerTest@class).getCanonicalPath()
-				+ "/data/demo;DB_CLOSE_ON_EXIT=FALSE"
+				+ @org.seasar.framework.util.ResourceUtil@getBuildDir(@org.seasar.chronos.sastruts.example.task.SessionTimerTask@class).getCanonicalPath()
+				+ "/data/demo"
 		</property>
 		<property name="user">"sa"</property>
-		<property name="password"></property>
+		<property name="password">""</property>
 	</component>
-	-->
-	
+
 	<!-- for Oracle -->
 	<!--
 	<component name="xaDataSource"
@@ -51,25 +52,6 @@
 	</component>
 	-->
 
-	<!-- for DB2 -->
-	<!--
-	<component name="xaDataSource"
-		class="org.seasar.extension.dbcp.impl.XADataSourceImpl">
-		<property name="driverClassName">
-			"com.ibm.db2.jcc.DB2Driver"
-		</property>
-		<property name="URL">
-			"jdbc:db2://foo.bar.com:50000/SAMPLE"
-		</property>
-		<property name="user">"db2user"</property>
-		<property name="password">"db2password"</property>
-		<initMethod name="addProperty">
-			<arg>"currentSchema"</arg>
-			<arg>"SCHEMA"</arg>
-		</initMethod>
-	</component>
-	-->
-	
 	<!-- for PostgreSQL -->
 	<!--
 	<component name="xaDataSource"
@@ -147,20 +129,15 @@
 		<destroyMethod name="close"/>
 	</component>
 
-	<component name="DataSource"
+	<component name="dataSource"
 		class="org.seasar.extension.dbcp.impl.DataSourceImpl"
 	/>
 
 	<!-- from JNDI -->
 	<!--
-	<component name="DataSource"
+	<component name="dataSource"
 		class="javax.sql.DataSource">
 		@org.seasar.extension.j2ee.JndiResourceLocator@lookup("java:comp/env/jdbc/DataSource")
 	</component>
-	-->
-
-	<!--
-	<component name="dataSource"
-		class="org.seasar.extension.datasource.impl.SelectableDataSourceProxy"/>
 	-->
 </components>
