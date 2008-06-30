@@ -1,0 +1,5 @@
+#Mon Jun 30 23:52:51 JST 2008
+baseDir=/s2chronos-sastruts-example/src/main/resources/data
+dbPortNo=9095
+eclipse.preferences.version=1
+webPortNo=8085
