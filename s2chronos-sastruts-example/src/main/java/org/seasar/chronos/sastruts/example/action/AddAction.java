@@ -1,10 +1,13 @@
 package org.seasar.chronos.sastruts.example.action;
 
+import org.seasar.chronos.sastruts.example.dto.UserAuthDto;
 import org.seasar.struts.annotation.Execute;
 import org.seasar.struts.annotation.IntegerType;
 import org.seasar.struts.annotation.Required;
 
 public class AddAction {
+
+	public UserAuthDto userAuthDto;
 
 	@Required
 	@IntegerType
