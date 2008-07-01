@@ -1,5 +1,7 @@
 package org.seasar.chronos.sastruts.example.task;
 
+import java.sql.Timestamp;
+
 import org.seasar.chronos.core.annotation.task.Task;
 import org.seasar.chronos.core.annotation.task.method.NextTask;
 import org.seasar.chronos.core.annotation.trigger.CronTrigger;
@@ -21,10 +23,8 @@ public class SessionTimerTask {
 
 	public void doExpire() {
 		log.info("SessionTimerTask#doExpire");
-
-		/*
-		 * s2SessionDao.deleteOldSession(new Timestamp(
-		 * System.currentTimeMillis() - 36000));
-		 */
+		jdbcManager.updateBySql("DELETE FROM S2SESSION WHERE LAST_ACCESS < ?",
+				Timestamp.class).params(
+				new Timestamp(System.currentTimeMillis() - 36000)).execute();
 	}
 }
