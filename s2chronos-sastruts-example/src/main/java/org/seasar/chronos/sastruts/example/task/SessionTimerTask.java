@@ -27,4 +27,9 @@ public class SessionTimerTask {
 				Timestamp.class).params(
 				new Timestamp(System.currentTimeMillis() - 36000)).execute();
 	}
+
+	public void destroy() {
+		log.info("SessionTimerTask#destroy");
+	}
+
 }

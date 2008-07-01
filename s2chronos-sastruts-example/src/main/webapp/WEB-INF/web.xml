@@ -86,6 +86,11 @@ version="2.4">
     </filter-mapping>
     
     <filter-mapping>
+        <filter-name>dbSessionFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    
+    <filter-mapping>
         <filter-name>routingfilter</filter-name>
         <url-pattern>/*</url-pattern>
         <dispatcher>REQUEST</dispatcher>
@@ -98,12 +103,7 @@ version="2.4">
         <dispatcher>FORWARD</dispatcher>
         <dispatcher>INCLUDE</dispatcher>
     </filter-mapping>
-    
-    <filter-mapping>
-        <filter-name>dbSessionFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
-    
+
     <servlet>
         <servlet-name>action</servlet-name>
         <servlet-class>org.apache.struts.action.ActionServlet</servlet-class>
