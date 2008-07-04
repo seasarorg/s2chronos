@@ -97,6 +97,7 @@ urchinTracker();
 	&quot;http://www.seasar.org/dtd/components24.dtd&quot;&gt;
 &lt;components&gt;
 	&lt;component name=&quot;schedulerConfiguration&quot; class=&quot;org.seasar.chronos.core.SchedulerConfiguration&quot;&gt;
+		&lt;property name=&quot;daemon&quot;&gt;true&lt;/property&gt;	// 注意！0.0.1-RC6より追加になりました．
 		&lt;property name=&quot;autoFinish&quot;&gt;false&lt;/property&gt;  // &lt;- 実行するタスクがない場合自動的にスケジューラを終了させるかどうかのフラグ．trueの場合自動的に終了します．
 		&lt;property name=&quot;autoFinishTimeLimit&quot;&gt;5000L&lt;/property&gt;	// &lt;- 実行するタスクがなくなってからどれぐらいでスケジューラを終了させるかの時間(msec)．
 		&lt;property name=&quot;taskScanIntervalTime&quot;&gt;2000L&lt;/property&gt; // &lt;- タスクを関するする時間間隔(msec).
