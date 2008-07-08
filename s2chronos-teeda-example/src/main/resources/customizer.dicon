@@ -4,6 +4,20 @@
 <components>
 	<include path="default-customizer.dicon"/>
 
+	<component name="loginAspectCustomizer" class="org.seasar.framework.container.customizer.AspectCustomizer">
+		<property name="pointcut">"initialize,prerender,do.*"</property>
+		<property name="useLookupAdapter">true</property>
+		<property name="interceptorName">"loginInterceptor"</property>
+		<initMethod name="addClassPattern">
+			<arg>"org.seasar.chronos.teeda.example.web"</arg>
+			<arg>".*Page"</arg>
+		</initMethod>
+		<initMethod name="addIgnoreClassPattern">
+			<arg>"org.seasar.chronos.teeda.example.web"</arg>
+			<arg>".*LoginPage"</arg>
+		</initMethod>
+	</component>
+
 	<component name="commandAspectCustomizer" class="org.seasar.framework.container.customizer.AspectCustomizer">
 		<property name="interceptorName">"aop.classLoaderAwareTraceInterceptor"</property>
 		<property name="pointcut">"do.*, initialize, prerender"</property>
