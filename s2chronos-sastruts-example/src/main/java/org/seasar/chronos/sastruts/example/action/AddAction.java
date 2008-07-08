@@ -1,5 +1,6 @@
 package org.seasar.chronos.sastruts.example.action;
 
+import org.apache.struts.action.ActionMessages;
 import org.seasar.chronos.sastruts.example.dto.UserAuthDto;
 import org.seasar.struts.annotation.Execute;
 import org.seasar.struts.annotation.IntegerType;
@@ -29,4 +30,6 @@ public class AddAction {
 		result = Integer.valueOf(arg1) + Integer.valueOf(arg2);
 		return "index.jsp";
 	}
+	
+	
 }

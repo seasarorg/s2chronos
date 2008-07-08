@@ -3,7 +3,21 @@
     "http://www.seasar.org/dtd/components24.dtd">
 <components>
     <include path="default-customizer.dicon"/>
-	
+
+	<component name="loginAspectCustomizer" class="org.seasar.framework.container.customizer.AspectCustomizer">
+		<property name="pointcut">"index,submit,validate.*"</property>
+		<property name="useLookupAdapter">true</property>
+		<property name="interceptorName">"loginInterceptor"</property>
+		<initMethod name="addClassPattern">
+			<arg>"org.seasar.chronos.sastruts.example.action"</arg>
+			<arg>".*Action"</arg>
+		</initMethod>
+		<initMethod name="addIgnoreClassPattern">
+			<arg>"org.seasar.chronos.sastruts.example.action"</arg>
+			<arg>".*LoginAction"</arg>
+		</initMethod>
+	</component>
+		
     <component name="actionCustomizer"
         class="org.seasar.framework.container.customizer.CustomizerChain">
         <initMethod name="addAspectCustomizer">
@@ -23,6 +37,9 @@
                 <component
                     class="org.seasar.struts.customizer.ActionCustomizer"/>
             </arg>
+        </initMethod>
+        <initMethod name="addCustomizer">
+        	<arg>loginAspectCustomizer</arg>
         </initMethod>
     </component>
 	

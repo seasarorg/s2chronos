@@ -9,23 +9,25 @@ import org.seasar.framework.container.annotation.tiger.InstanceType;
 public class UserAuthDto implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	private Long id;
-	private String name;
 
-	public Long getId() {
-		return id;
+	private String userId;
+
+	private boolean authed;
+
+	public boolean isAuthed() {
+		return authed;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setAuthed(boolean authed) {
+		this.authed = authed;
 	}
 
-	public String getName() {
-		return name;
+	public String getUserId() {
+		return userId;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 
 }
