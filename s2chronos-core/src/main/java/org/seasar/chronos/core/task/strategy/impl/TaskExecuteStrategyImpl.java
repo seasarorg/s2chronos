@@ -169,11 +169,8 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 
 	public String destroy() throws InterruptedException {
 		String nextTask = null;
-		if (this.beanDesc.hasMethod(METHOD_NAME_DESTROY)) {
-			// AsyncResult ar = this.lifecycleMethodInvoker
-			// .beginInvoke(METHOD_NAME_DESTROY);
-			// this.lifecycleMethodInvoker.endInvoke(ar);
-			this.beanDesc.invoke(this.task, METHOD_NAME_DESTROY, null);
+		if (this.taskMethodInvoker.hasMethod(METHOD_NAME_DESTROY)) {
+			this.taskMethodInvoker.beginInvoke(METHOD_NAME_DESTROY);
 			TaskMethodMetaData md = new TaskMethodMetaData(this.beanDesc,
 					METHOD_NAME_DESTROY);
 			nextTask = md.getNextTask();
@@ -339,9 +336,8 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 
 	public String initialize() throws InterruptedException {
 		this.setExecuted(true);
-		if (this.beanDesc.hasMethod(METHOD_NAME_INITIALIZE)) {
-			// ここで増えている
-			this.beanDesc.invoke(this.task, METHOD_NAME_INITIALIZE, null);
+		if (this.taskMethodInvoker.hasMethod(METHOD_NAME_INITIALIZE)) {
+			this.taskMethodInvoker.beginInvoke(METHOD_NAME_INITIALIZE);
 			TaskMethodMetaData md = new TaskMethodMetaData(this.beanDesc,
 					METHOD_NAME_INITIALIZE);
 			this.notifyGetterSignal();
@@ -448,13 +444,6 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 			this.taskMethodInvoker = new MethodInvoker(
 					jobMethodExecutorService, this.task, this.beanDesc);
 		}
-		// if (lifecycleMethodInvoker == null) {
-		// ExecutorService lifecycleMethodExecutorService =
-		// executorServiceFactory
-		// .create(ThreadPoolType.SINGLE, null);
-		// this.lifecycleMethodInvoker = new MethodInvoker(
-		// lifecycleMethodExecutorService, this.task, this.beanDesc);
-		// }
 		this.prepared = true;
 		this.save();
 		this.load();
@@ -524,9 +513,8 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 	}
 
 	public void unprepare() {
-		// this.taskMethodInvoker = null;
-		// this.lifecycleMethodInvoker = null;
 		prepared = false;
+		taskGroupMethodExecuteHandler = null;
 	}
 
 	public void waitOne() throws InterruptedException {
