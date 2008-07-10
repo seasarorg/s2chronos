@@ -3,13 +3,10 @@ package org.seasar.chronos.sastruts.example.action;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.seasar.chronos.sastruts.example.dto.UserAuthDto;
-import org.seasar.extension.jdbc.JdbcManager;
 import org.seasar.struts.annotation.Execute;
 import org.seasar.struts.annotation.Required;
 
 public class LoginAction {
-
-	public JdbcManager jdbcManager;
 
 	public UserAuthDto userAuthDto;
 
