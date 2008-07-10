@@ -145,6 +145,5 @@
 	<component name="nonDelayTrigger" class="org.seasar.chronos.core.trigger.CNonDelayTrigger" instance="prototype"/>
 	<component name="delayTrigger" class="org.seasar.chronos.core.trigger.CDelayTrigger" instance="prototype"/>
 	<component name="cronTrigger" class="org.seasar.chronos.core.trigger.CCronTrigger" instance="prototype"/>
-	<component name="chainTrigger" class="org.seasar.chronos.core.trigger.CChainTrigger" instance="prototype"/>
 
 </components>
