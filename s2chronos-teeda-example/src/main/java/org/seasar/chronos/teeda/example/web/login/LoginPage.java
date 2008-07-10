@@ -4,11 +4,14 @@ import javax.faces.internal.FacesMessageUtil;
 
 import org.seasar.chronos.teeda.example.dto.UserAuthDto;
 import org.seasar.chronos.teeda.example.web.add.AddPage;
+import org.seasar.teeda.extension.annotation.validator.Required;
 
 public class LoginPage {
 
+	@Required
 	public String userId;
 
+	@Required
 	public String password;
 
 	public UserAuthDto userAuthDto;
