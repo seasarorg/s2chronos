@@ -15,6 +15,7 @@
  */
 package org.seasar.chronos.core.schedule;
 
+import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -70,7 +71,8 @@ public class TaskScheduleEntryManager {
 				result = false;
 			}
 		} else if (key == TaskStateType.UNSCHEDULED) {
-
+			taskScheduleEntry.setUnScheduledDate(Calendar.getInstance()
+					.getTime());
 		}
 		return result;
 	}
@@ -96,8 +98,8 @@ public class TaskScheduleEntryManager {
 	}
 
 	public Object forEach(TaskScheduleEntryHanlder handler) {
-		for (TaskScheduleEntry tc : allTaskList) {
-			Object result = handler.processTaskScheduleEntry(tc);
+		for (TaskScheduleEntry tse : allTaskList) {
+			Object result = handler.processTaskScheduleEntry(tse);
 			if (result != null) {
 				return result;
 			}

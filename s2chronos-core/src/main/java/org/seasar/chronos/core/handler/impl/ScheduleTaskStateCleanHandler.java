@@ -33,17 +33,20 @@ public class ScheduleTaskStateCleanHandler extends
 							public Object processTaskScheduleEntry(
 									TaskScheduleEntry scheduleEntry) {
 								long now = System.currentTimeMillis();
-								if (scheduleEntry.getUnScheduledDate() != null
-										&& now > TIME_OUT
-												+ scheduleEntry
-														.getUnScheduledDate()
-														.getTime()) {
-									return scheduleEntry;
+								if (scheduleEntry.getUnScheduledDate() != null) {
+									if (now > TIME_OUT
+											+ scheduleEntry
+													.getUnScheduledDate()
+													.getTime()) {
+										return scheduleEntry;
+									}
 								}
 								return null;
 							}
 						});
 		if (taskScheduleEntry != null) {
+			log.debug("UNSCHEDULEDなタスクを削除しました "
+					+ taskScheduleEntry.getComponentDef().getComponentName());
 			taskContenaStateManager.removeTaskScheduleEntry(taskScheduleEntry);
 		}
 
