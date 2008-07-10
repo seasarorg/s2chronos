@@ -12,6 +12,7 @@
 	<component class="org.seasar.chronos.core.executor.impl.ExecutorServiceFactoryImpl"/>
 	
 	<!-- タスクアノテーションリーダ -->
+	<component class="org.seasar.chronos.core.task.impl.TaskTriggerFinderImpl"/>
 	<component class="org.seasar.chronos.core.task.impl.TaskAnnotationReaderImpl"/>
 	
 	<!-- タスクのプロパティを読み込むためのコマンド群 -->
@@ -144,4 +145,6 @@
 	<component name="nonDelayTrigger" class="org.seasar.chronos.core.trigger.CNonDelayTrigger" instance="prototype"/>
 	<component name="delayTrigger" class="org.seasar.chronos.core.trigger.CDelayTrigger" instance="prototype"/>
 	<component name="cronTrigger" class="org.seasar.chronos.core.trigger.CCronTrigger" instance="prototype"/>
+	<component name="chainTrigger" class="org.seasar.chronos.core.trigger.CChainTrigger" instance="prototype"/>
+
 </components>
