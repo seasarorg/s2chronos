@@ -16,6 +16,8 @@
 package org.seasar.chronos.core.task;
 
 public final class TaskConstant {
+	
+	public static final String NAME_SPACE_TRIGGER_ANNOTATION_SUFFIX = "Trigger";
 
 	public static final String PROPERTY_NAME_TASKID = "taskId";
 	public static final String PROPERTY_NAME_TASKNAME = "taskName";
