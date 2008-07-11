@@ -140,16 +140,8 @@ public class TaskExecuteStrategyWrapper implements TaskExecuteStrategy {
 		return this.taskExecuteStrategy.isStartTask();
 	}
 
-	public void load() {
-		this.taskExecuteStrategy.load();
-	}
-
 	public void prepare() {
 		this.taskExecuteStrategy.prepare();
-	}
-
-	public void save() {
-		this.taskExecuteStrategy.save();
 	}
 
 	public void setComponentDef(ComponentDef componentDef) {

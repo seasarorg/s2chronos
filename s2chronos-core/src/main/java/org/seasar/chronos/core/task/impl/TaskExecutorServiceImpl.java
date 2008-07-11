@@ -31,7 +31,7 @@ import org.seasar.framework.container.annotation.tiger.BindingType;
 
 public class TaskExecutorServiceImpl implements TaskExecutorService {
 
-	private static final long serialVersionUID = 59104659363668777L;
+	private static final long serialVersionUID = 1L;
 
 	private final TaskExecuteContext taskExecuteContext;
 
@@ -123,14 +123,6 @@ public class TaskExecutorServiceImpl implements TaskExecutorService {
 
 	public boolean isExecuted() {
 		return this.taskExecuteContext.getTaskExecuteStrategy().isExecuted();
-	}
-
-	public void load() {
-		this.taskExecuteContext.getTaskExecuteStrategy().load();
-	}
-
-	public void save() {
-		this.taskExecuteContext.getTaskExecuteStrategy().save();
 	}
 
 	public void setEndTask(boolean endTask) {

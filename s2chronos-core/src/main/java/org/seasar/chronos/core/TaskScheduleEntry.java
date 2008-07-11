@@ -15,6 +15,7 @@
  */
 package org.seasar.chronos.core;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.concurrent.Future;
 

@@ -40,14 +40,6 @@ public class ThreadPoolWrapper implements TaskThreadPool {
 		return taskThreadPool.getThreadPoolType();
 	}
 
-	public void load() {
-		taskThreadPool.load();
-	}
-
-	public void save() {
-		taskThreadPool.save();
-	}
-
 	public void setThreadPoolId(Long id) {
 		taskThreadPool.setThreadPoolId(id);
 	}
