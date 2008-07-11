@@ -26,8 +26,6 @@ import org.seasar.chronos.core.task.TaskExecutorService;
 
 public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler {
 
-	private String taskName;
-
 	private void fireExceptionTaskEvent(TaskExecutorService tes, Exception e) {
 		if (schedulerEventHandler != null) {
 			schedulerEventHandler.fireExceptionTask(tes.getTask(), e);
@@ -73,8 +71,8 @@ public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler 
 			final String taskName = taskExecutorService.getTaskPropertyReader()
 					.getTaskName(null);
 			log.log("DCHRONOS0122", new Object[] { taskName });
-			taskScheduleEntryManager.addTaskScheduleEntry(TaskStateType.RUNNING,
-					taskScheduleEntry);
+			taskScheduleEntryManager.addTaskScheduleEntry(
+					TaskStateType.RUNNING, taskScheduleEntry);
 			// 定期スケジュール以外ならスケジュールドリストから削除する
 			if (!taskExecutorService.getTaskPropertyReader()
 					.isReSchedule(false)) {
@@ -107,6 +105,7 @@ public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler 
 			taskScheduleEntry.setTask(null);
 			taskScheduleEntry.setTaskClass(null);
 			log.log("DCHRONOS0124", new Object[] { taskName });
+			taskExecutorService.hotdeployStop();
 			return taskExecutorService;
 		}
 
@@ -125,6 +124,8 @@ public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler 
 						// タスクの準備ができていないなら
 						if (!tes.isPrepared()) {
 							tes.prepare();
+							tes.hotdeployStop();
+							return null;
 						}
 						if (!tes.isExecuted()
 								&& tes.getTaskPropertyReader().isStartTask(
@@ -143,20 +144,14 @@ public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler 
 									.submit(tesc);
 							taskScheduleEntry
 									.setTaskStaterFuture(taskStaterFuture);
+						} else {
+							// HOT deploy 終了
+							tes.hotdeployStop();
 						}
-						// HOT deploy 終了
-						tes.hotdeployStop();
 						return null;
 					}
 				});
 	}
-
-	// private void scheduleTask(TaskExecutorService tes, String nextTaskName) {
-	// if (nextTaskName != null) {
-	// Scheduler scheduler = tes.getScheduler();
-	// scheduler.addTask(nextTaskName);
-	// }
-	// }
 
 	private void taskExecute(TaskExecutorService tes, String nextTaskName)
 			throws InterruptedException {
@@ -165,6 +160,8 @@ public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler 
 				tes.execute(nextTaskName);
 				tes.waitOne();
 			} catch (RejectedExecutionException ex) {
+				final String taskName = tes.getTaskPropertyReader()
+						.getTaskName(null);
 				log.log("ECHRONOS0002", new Object[] { taskName }, ex);
 			}
 		}
