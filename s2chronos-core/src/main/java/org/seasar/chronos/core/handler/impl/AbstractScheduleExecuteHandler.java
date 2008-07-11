@@ -31,7 +31,7 @@ public abstract class AbstractScheduleExecuteHandler implements
 	protected static final Logger log = Logger
 			.getLogger(AbstractScheduleExecuteHandler.class);
 
-	protected TaskScheduleEntryManager taskContenaStateManager = TaskScheduleEntryManager
+	protected TaskScheduleEntryManager taskScheduleEntryManager = TaskScheduleEntryManager
 			.getInstance();
 
 	protected ExecutorService executorService;

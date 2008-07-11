@@ -29,7 +29,7 @@ public class ScheduleExecuteShutdownHandler extends
 
 	@Override
 	public void handleRequest() throws InterruptedException {
-		this.taskContenaStateManager.forEach(TaskStateType.RUNNING,
+		this.taskScheduleEntryManager.forEach(TaskStateType.RUNNING,
 				new TaskScheduleEntryHanlder() {
 					public Object processTaskScheduleEntry(
 							final TaskScheduleEntry taskScheduleEntry) {
@@ -59,11 +59,11 @@ public class ScheduleExecuteShutdownHandler extends
 												schedulerEventHandler
 														.fireCancelTask(tes
 																.getTask());
-												taskContenaStateManager
+												taskScheduleEntryManager
 														.removeTaskScheduleEntry(
 																TaskStateType.CANCELING,
 																taskScheduleEntry);
-												taskContenaStateManager
+												taskScheduleEntryManager
 														.addTaskScheduleEntry(
 																TaskStateType.UNSCHEDULED,
 																taskScheduleEntry);
@@ -82,9 +82,9 @@ public class ScheduleExecuteShutdownHandler extends
 										}
 									});
 							taskScheduleEntry.setTaskStaterFuture(future);
-							taskContenaStateManager.addTaskScheduleEntry(
+							taskScheduleEntryManager.addTaskScheduleEntry(
 									TaskStateType.CANCELING, taskScheduleEntry);
-							taskContenaStateManager.removeTaskScheduleEntry(
+							taskScheduleEntryManager.removeTaskScheduleEntry(
 									TaskStateType.RUNNING, taskScheduleEntry);
 
 						}

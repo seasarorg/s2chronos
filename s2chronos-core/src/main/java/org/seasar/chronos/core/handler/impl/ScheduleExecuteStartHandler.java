@@ -73,12 +73,12 @@ public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler 
 			final String taskName = taskExecutorService.getTaskPropertyReader()
 					.getTaskName(null);
 			log.log("DCHRONOS0122", new Object[] { taskName });
-			taskContenaStateManager.addTaskScheduleEntry(TaskStateType.RUNNING,
+			taskScheduleEntryManager.addTaskScheduleEntry(TaskStateType.RUNNING,
 					taskScheduleEntry);
 			// 定期スケジュール以外ならスケジュールドリストから削除する
 			if (!taskExecutorService.getTaskPropertyReader()
 					.isReSchedule(false)) {
-				taskContenaStateManager.removeTaskScheduleEntry(
+				taskScheduleEntryManager.removeTaskScheduleEntry(
 						TaskStateType.SCHEDULED, taskScheduleEntry);
 			}
 			try {
@@ -94,13 +94,13 @@ public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler 
 				log.log("DCHRONOS0123", new Object[] { taskName });
 				fireEndTaskEvent(taskExecutorService);
 			}
-			taskContenaStateManager.removeTaskScheduleEntry(
+			taskScheduleEntryManager.removeTaskScheduleEntry(
 					TaskStateType.RUNNING, taskScheduleEntry);
 			// 定期スケジュール以外ならアンスケジュールドリストに登録する
 			// TODO アンスケジュールドに入った時刻をtseに持たせて，別のハンドラーで一定時間経過後にアンスケジュールドリストから削除する．
 			if (!taskExecutorService.getTaskPropertyReader()
 					.isReSchedule(false)) {
-				taskContenaStateManager.addTaskScheduleEntry(
+				taskScheduleEntryManager.addTaskScheduleEntry(
 						TaskStateType.UNSCHEDULED, taskScheduleEntry);
 			}
 			taskExecutorService.unprepare();
@@ -114,7 +114,7 @@ public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler 
 
 	@Override
 	public void handleRequest() throws InterruptedException {
-		this.taskContenaStateManager.forEach(TaskStateType.SCHEDULED,
+		this.taskScheduleEntryManager.forEach(TaskStateType.SCHEDULED,
 				new TaskScheduleEntryHanlder() {
 					public Object processTaskScheduleEntry(
 							final TaskScheduleEntry taskScheduleEntry) {

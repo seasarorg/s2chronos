@@ -27,8 +27,8 @@ public class ScheduleExecuteWaitHandler extends AbstractScheduleExecuteHandler {
 	public void handleRequest() throws InterruptedException {
 		// 一時停止命令があるか，スケジュールおよび実行中のタスクがなければ
 		if (this.pause.get()
-				|| taskContenaStateManager.size(TaskStateType.SCHEDULED) == 0
-				&& taskContenaStateManager.size(TaskStateType.RUNNING) == 0) {
+				|| taskScheduleEntryManager.size(TaskStateType.SCHEDULED) == 0
+				&& taskScheduleEntryManager.size(TaskStateType.RUNNING) == 0) {
 			synchronized (pauseLock) {
 				try {
 					do {
@@ -43,7 +43,7 @@ public class ScheduleExecuteWaitHandler extends AbstractScheduleExecuteHandler {
 						}
 						pauseLock.wait(waitInterval);
 					} while (this.pause.get()
-							&& !(taskContenaStateManager
+							&& !(taskScheduleEntryManager
 									.size(TaskStateType.SCHEDULED) == 0));
 				} catch (InterruptedException e) {
 					throw e;

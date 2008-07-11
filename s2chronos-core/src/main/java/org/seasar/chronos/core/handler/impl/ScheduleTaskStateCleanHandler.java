@@ -32,7 +32,7 @@ public class ScheduleTaskStateCleanHandler extends
 
 	@Override
 	public void handleRequest() throws InterruptedException {
-		TaskScheduleEntry taskScheduleEntry = (TaskScheduleEntry) this.taskContenaStateManager
+		TaskScheduleEntry taskScheduleEntry = (TaskScheduleEntry) this.taskScheduleEntryManager
 				.forEach(TaskStateType.UNSCHEDULED,
 						new TaskScheduleEntryHanlder() {
 							public Object processTaskScheduleEntry(
@@ -52,7 +52,7 @@ public class ScheduleTaskStateCleanHandler extends
 		if (taskScheduleEntry != null) {
 			log.debug("UNSCHEDULEDなタスクを削除しました "
 					+ taskScheduleEntry.getComponentDef().getComponentName());
-			taskContenaStateManager.removeTaskScheduleEntry(taskScheduleEntry);
+			taskScheduleEntryManager.removeTaskScheduleEntry(taskScheduleEntry);
 		}
 
 	}
