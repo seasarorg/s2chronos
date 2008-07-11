@@ -18,10 +18,13 @@ public class TaskPropertyWriterImplTest {
 
 	private final NormalATask testTask = new NormalATask();
 
+	public void postBindFields() {
+		taskPropertyWriter.loadTask(testTask, NormalATask.class);
+	}
+
 	@Test
 	public void testSetThreadPoolType() {
 		try {
-			this.taskPropertyWriter.loadTask(this.testTask, NormalATask.class);
 			this.taskPropertyWriter.setThreadPoolType(ThreadPoolType.CACHED);
 			assertEquals(this.testTask.getThreadPoolType(),
 					ThreadPoolType.CACHED);
@@ -33,7 +36,6 @@ public class TaskPropertyWriterImplTest {
 	@Test
 	public void testSetDescription() {
 		try {
-			this.taskPropertyWriter.loadTask(this.testTask, NormalATask.class);
 			this.taskPropertyWriter.setDescription("description");
 			assertEquals(this.testTask.getDescription(), "description");
 		} catch (Exception ex) {
@@ -44,7 +46,6 @@ public class TaskPropertyWriterImplTest {
 	@Test
 	public void testSetEndTask() {
 		try {
-			this.taskPropertyWriter.loadTask(this.testTask, NormalATask.class);
 			this.taskPropertyWriter.setEndTask(false);
 			assertEquals(this.testTask.isEndTask(), false);
 		} catch (Exception ex) {
@@ -55,7 +56,6 @@ public class TaskPropertyWriterImplTest {
 	@Test
 	public void testSetExecuted() {
 		try {
-			this.taskPropertyWriter.loadTask(this.testTask, NormalATask.class);
 			this.taskPropertyWriter.setExecuted(false);
 			assertEquals(this.testTask.isExecuted(), false);
 		} catch (Exception ex) {
@@ -66,10 +66,10 @@ public class TaskPropertyWriterImplTest {
 	@Test
 	public void testSetReSchedule() {
 		try {
-			this.taskPropertyWriter.loadTask(this.testTask, NormalATask.class);
 			this.taskPropertyWriter.setReSchedule(false);
 			assertEquals(this.testTask.isReSchedule(), false);
 		} catch (Exception ex) {
+			ex.printStackTrace();
 			fail();
 		}
 	}
@@ -77,7 +77,6 @@ public class TaskPropertyWriterImplTest {
 	@Test
 	public void testSetShutdownTask() {
 		try {
-			this.taskPropertyWriter.loadTask(this.testTask, NormalATask.class);
 			this.taskPropertyWriter.setShutdownTask(false);
 			assertEquals(this.testTask.isShutdownTask(), false);
 		} catch (Exception ex) {
@@ -88,10 +87,10 @@ public class TaskPropertyWriterImplTest {
 	@Test
 	public void testSetStartTask() {
 		try {
-			this.taskPropertyWriter.loadTask(this.testTask, NormalATask.class);
 			this.taskPropertyWriter.setStartTask(false);
 			assertEquals(this.testTask.isStartTask(), false);
 		} catch (Exception ex) {
+			ex.printStackTrace();
 			fail();
 		}
 	}
@@ -99,9 +98,8 @@ public class TaskPropertyWriterImplTest {
 	@Test
 	public void testSetTaskId() {
 		try {
-			this.taskPropertyWriter.loadTask(this.testTask, NormalATask.class);
 			this.taskPropertyWriter.setTaskId(1L);
-			assertEquals(this.testTask.getTaskId(), 1L);
+			assertEquals(this.testTask.getTaskId(), Long.valueOf(1L));
 		} catch (Exception ex) {
 			fail();
 		}
@@ -110,7 +108,6 @@ public class TaskPropertyWriterImplTest {
 	@Test
 	public void testSetTaskName() {
 		try {
-			this.taskPropertyWriter.loadTask(this.testTask, NormalATask.class);
 			this.taskPropertyWriter.setTaskName("taskName");
 			assertEquals(this.testTask.getTaskName(), "taskName");
 		} catch (Exception ex) {
@@ -121,7 +118,6 @@ public class TaskPropertyWriterImplTest {
 	@Test
 	public void testSetThreadPoolSize() {
 		try {
-			this.taskPropertyWriter.loadTask(this.testTask, NormalATask.class);
 			this.taskPropertyWriter.setThreadPoolSize(1);
 			assertEquals(this.testTask.getThreadPoolSize(), 1);
 		} catch (Exception ex) {
@@ -133,7 +129,6 @@ public class TaskPropertyWriterImplTest {
 	public void testSetTrigger() {
 		try {
 			CNonDelayTrigger trigger = new CNonDelayTrigger();
-			this.taskPropertyWriter.loadTask(this.testTask, NormalATask.class);
 			this.taskPropertyWriter.setTrigger(trigger);
 			assertEquals(this.testTask.getTrigger(), trigger);
 		} catch (Exception ex) {
@@ -144,7 +139,6 @@ public class TaskPropertyWriterImplTest {
 	@Test
 	public void testHasDescription() {
 		try {
-			this.taskPropertyWriter.loadTask(this.testTask, NormalATask.class);
 			this.taskPropertyWriter.hasDescription();
 		} catch (Exception ex) {
 			fail();
@@ -154,7 +148,6 @@ public class TaskPropertyWriterImplTest {
 	@Test
 	public void testHasEndTask() {
 		try {
-			this.taskPropertyWriter.loadTask(this.testTask, NormalATask.class);
 			this.taskPropertyWriter.hasEndTask();
 		} catch (Exception ex) {
 			fail();
@@ -164,7 +157,6 @@ public class TaskPropertyWriterImplTest {
 	@Test
 	public void testHasExecuted() {
 		try {
-			this.taskPropertyWriter.loadTask(this.testTask, NormalATask.class);
 			this.taskPropertyWriter.hasExecuted();
 		} catch (Exception ex) {
 			fail();
@@ -174,7 +166,6 @@ public class TaskPropertyWriterImplTest {
 	@Test
 	public void testHasReSchedule() {
 		try {
-			this.taskPropertyWriter.loadTask(this.testTask, NormalATask.class);
 			this.taskPropertyWriter.hasReSchedule();
 		} catch (Exception ex) {
 			fail();
@@ -184,7 +175,6 @@ public class TaskPropertyWriterImplTest {
 	@Test
 	public void testHasShutdownTask() {
 		try {
-			this.taskPropertyWriter.loadTask(this.testTask, NormalATask.class);
 			this.taskPropertyWriter.hasShutdownTask();
 		} catch (Exception ex) {
 			fail();
@@ -194,7 +184,6 @@ public class TaskPropertyWriterImplTest {
 	@Test
 	public void testHasStartTask() {
 		try {
-			this.taskPropertyWriter.loadTask(this.testTask, NormalATask.class);
 			this.taskPropertyWriter.hasStartTask();
 		} catch (Exception ex) {
 			fail();
@@ -204,7 +193,6 @@ public class TaskPropertyWriterImplTest {
 	@Test
 	public void testHasTaskId() {
 		try {
-			this.taskPropertyWriter.loadTask(this.testTask, NormalATask.class);
 			this.taskPropertyWriter.hasTaskId();
 		} catch (Exception ex) {
 			fail();
@@ -214,7 +202,6 @@ public class TaskPropertyWriterImplTest {
 	@Test
 	public void testHasTaskName() {
 		try {
-			this.taskPropertyWriter.loadTask(this.testTask, NormalATask.class);
 			this.taskPropertyWriter.hasTaskName();
 		} catch (Exception ex) {
 			fail();
@@ -224,7 +211,6 @@ public class TaskPropertyWriterImplTest {
 	@Test
 	public void testHasThreadPoolSize() {
 		try {
-			this.taskPropertyWriter.loadTask(this.testTask, NormalATask.class);
 			this.taskPropertyWriter.hasThreadPoolSize();
 		} catch (Exception ex) {
 			fail();
@@ -234,7 +220,6 @@ public class TaskPropertyWriterImplTest {
 	@Test
 	public void testHasThreadPoolType() {
 		try {
-			this.taskPropertyWriter.loadTask(this.testTask, NormalATask.class);
 			this.taskPropertyWriter.hasThreadPoolType();
 		} catch (Exception ex) {
 			fail();
@@ -244,7 +229,6 @@ public class TaskPropertyWriterImplTest {
 	@Test
 	public void testHasTrigger() {
 		try {
-			this.taskPropertyWriter.loadTask(this.testTask, NormalATask.class);
 			this.taskPropertyWriter.hasTrigger();
 		} catch (Exception ex) {
 			fail();

@@ -17,14 +17,18 @@ package org.seasar.chronos.core.task.handler.impl.property.write;
 
 import org.aopalliance.intercept.MethodInvocation;
 import org.seasar.chronos.core.TaskTrigger;
+import org.seasar.chronos.core.task.TaskPropertyReader;
 import org.seasar.chronos.core.task.handler.impl.AbstractTaskPropertyHandler;
 
 public class TaskSetStartTaskPropertyWriteHandlerImpl extends
 		AbstractTaskPropertyHandler {
 
+	private TaskPropertyReader taskPropertyReader;
+
 	public Object execute(MethodInvocation methodInvocation) throws Throwable {
-		TaskTrigger taskTrigger = this.getTaskPropertyReader(methodInvocation)
-				.getTrigger(null);
+		taskPropertyReader.loadTask(methodInvocation.getThis(),
+				methodInvocation.getClass());
+		TaskTrigger taskTrigger = taskPropertyReader.getTrigger(null);
 		if (taskTrigger == null) {
 			methodInvocation.proceed();
 		} else {
@@ -32,6 +36,10 @@ public class TaskSetStartTaskPropertyWriteHandlerImpl extends
 					.setStartTask((Boolean) methodInvocation.getArguments()[0]);
 		}
 		return null;
+	}
+
+	public void setTaskPropertyReader(TaskPropertyReader taskPropertyReader) {
+		this.taskPropertyReader = taskPropertyReader;
 	}
 
 }

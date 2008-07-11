@@ -18,30 +18,31 @@ public class TaskPropertyReaderImplTest {
 
 	private final NormalATask testTask = new NormalATask();
 
+	public void postBindFields() {
+		taskPropertyReader.loadTask(testTask, NormalATask.class);
+	}
+
 	@Test
 	public void testGetDescription() {
-		taskPropertyReader.loadTask(testTask, NormalATask.class);
 		String result = taskPropertyReader.getDescription("test");
 		assertEquals(result, testTask.getDescription());
 	}
 
 	@Test
 	public void testGetTaskId() {
-		taskPropertyReader.loadTask(testTask, NormalATask.class);
 		Long result = taskPropertyReader.getTaskId(0L);
 		assertEquals(result, testTask.getTaskId());
 	}
 
 	@Test
 	public void testGetTaskName() {
-		taskPropertyReader.loadTask(testTask, NormalATask.class);
-		String result = taskPropertyReader.getTaskName("taskName");
-		assertEquals(result, testTask.getTaskName());
+		String result = taskPropertyReader.getTaskName(null);
+		assertEquals(result, "taskName");
 	}
 
 	@Test
 	public void testGetThreadPoolSize() {
-		taskPropertyReader.loadTask(testTask, NormalATask.class);
+
 		int result = taskPropertyReader.getThreadPoolSize(1);
 		assertEquals(result, testTask.getThreadPoolSize());
 	}
@@ -56,21 +57,21 @@ public class TaskPropertyReaderImplTest {
 
 	@Test
 	public void testGetTrigger() {
-		taskPropertyReader.loadTask(testTask, NormalATask.class);
+
 		TaskTrigger result = taskPropertyReader.getTrigger(null);
 		assertEquals(result, testTask.getTrigger());
 	}
 
 	@Test
 	public void testIsEndTask() {
-		taskPropertyReader.loadTask(testTask, NormalATask.class);
+
 		boolean result = taskPropertyReader.isEndTask(false);
 		assertEquals(result, testTask.isEndTask());
 	}
 
 	@Test
 	public void testIsExecuted() {
-		taskPropertyReader.loadTask(testTask, NormalATask.class);
+
 		boolean result = taskPropertyReader.isExecuted(false);
 		assertEquals(result, testTask.isExecuted());
 	}
@@ -84,21 +85,20 @@ public class TaskPropertyReaderImplTest {
 
 	@Test
 	public void testIsShutdownTask() {
-		taskPropertyReader.loadTask(testTask, NormalATask.class);
+
 		boolean result = taskPropertyReader.isShutdownTask(false);
 		assertEquals(result, testTask.isShutdownTask());
 	}
 
 	@Test
 	public void testIsStartTask() {
-		taskPropertyReader.loadTask(testTask, NormalATask.class);
 		boolean result = taskPropertyReader.isStartTask(false);
 		assertEquals(result, testTask.isStartTask());
 	}
 
 	@Test
 	public void testHasDescription() {
-		taskPropertyReader.loadTask(testTask, NormalATask.class);
+
 		boolean result = taskPropertyReader.hasDescription();
 		assertTrue(result);
 	}
@@ -112,63 +112,61 @@ public class TaskPropertyReaderImplTest {
 
 	@Test
 	public void testHasTaskName() {
-		taskPropertyReader.loadTask(testTask, NormalATask.class);
+
 		boolean result = taskPropertyReader.hasTaskName();
 		assertTrue(result);
 	}
 
 	@Test
 	public void testHasThreadPoolSize() {
-		taskPropertyReader.loadTask(testTask, NormalATask.class);
+
 		boolean result = taskPropertyReader.hasThreadPoolSize();
 		assertTrue(result);
 	}
 
 	@Test
 	public void testHasThreadPoolType() {
-		taskPropertyReader.loadTask(testTask, NormalATask.class);
+
 		boolean result = taskPropertyReader.hasThreadPoolType();
 		assertTrue(result);
 	}
 
 	@Test
 	public void testHasTrigger() {
-		taskPropertyReader.loadTask(testTask, NormalATask.class);
+
 		boolean result = taskPropertyReader.hasTrigger();
 		assertTrue(result);
 	}
 
 	@Test
 	public void testHasEndTask() {
-		taskPropertyReader.loadTask(testTask, NormalATask.class);
+
 		boolean result = taskPropertyReader.hasEndTask();
 		assertTrue(result);
 	}
 
 	@Test
 	public void testHasExecuted() {
-		taskPropertyReader.loadTask(testTask, NormalATask.class);
+
 		boolean result = taskPropertyReader.hasExecuted();
 		assertTrue(result);
 	}
 
 	@Test
 	public void testHasReSchedule() {
-		taskPropertyReader.loadTask(testTask, NormalATask.class);
+
 		boolean result = taskPropertyReader.hasReSchedule();
 		assertTrue(result);
 	}
 
 	@Test
 	public void testHasShutdownTask() {
-		taskPropertyReader.loadTask(testTask, NormalATask.class);
 		boolean result = taskPropertyReader.hasShutdownTask();
 		assertTrue(result);
 	}
 
 	@Test
 	public void testHasStartTask() {
-		taskPropertyReader.loadTask(testTask, NormalATask.class);
 		boolean result = taskPropertyReader.hasStartTask();
 		assertTrue(result);
 	}

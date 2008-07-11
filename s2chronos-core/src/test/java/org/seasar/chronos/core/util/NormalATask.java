@@ -3,10 +3,8 @@ package org.seasar.chronos.core.util;
 import org.seasar.chronos.core.TaskTrigger;
 import org.seasar.chronos.core.ThreadPoolType;
 import org.seasar.chronos.core.annotation.task.Task;
-import org.seasar.chronos.core.annotation.trigger.NonDelayTrigger;
 
-@Task
-@NonDelayTrigger
+@Task(name = "taskName")
 public class NormalATask {
 	private Long taskId;
 	private String taskName;
