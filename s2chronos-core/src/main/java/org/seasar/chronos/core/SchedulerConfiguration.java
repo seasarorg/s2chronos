@@ -18,7 +18,7 @@ package org.seasar.chronos.core;
 /**
  * スケジューラ設定クラスです．
  * 
- * @author junichi
+ * @author j5ik2o
  * 
  */
 public final class SchedulerConfiguration {
@@ -35,6 +35,8 @@ public final class SchedulerConfiguration {
 
 	private ThreadPoolType threadPoolType;
 
+	private long taskStateCleanupTime;
+	
 	public boolean isAutoFinish() {
 		return autoFinish;
 	}
@@ -88,5 +90,13 @@ public final class SchedulerConfiguration {
 	 */
 	public void setDaemon(boolean daemon) {
 		this.daemon = daemon;
+	}
+
+	public long getTaskStateCleanupTime() {
+		return taskStateCleanupTime;
+	}
+
+	public void setTaskStateCleanupTime(long taskStateCleanupTime) {
+		this.taskStateCleanupTime = taskStateCleanupTime;
 	}
 }

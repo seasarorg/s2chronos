@@ -15,15 +15,20 @@
  */
 package org.seasar.chronos.core.handler.impl;
 
+import org.seasar.chronos.core.SchedulerConfiguration;
 import org.seasar.chronos.core.TaskScheduleEntry;
 import org.seasar.chronos.core.impl.TaskStateType;
 import org.seasar.chronos.core.schedule.TaskScheduleEntryManager.TaskScheduleEntryHanlder;
 
-// TODO アンスケジュールドなタスク状態を掃除します．
+/**
+ * 
+ * @author j5ik2o
+ *
+ */
 public class ScheduleTaskStateCleanHandler extends
 		AbstractScheduleExecuteHandler {
 
-	private static int TIME_OUT = 60;
+	private SchedulerConfiguration schedulerConfiguration;
 
 	@Override
 	public void handleRequest() throws InterruptedException {
@@ -34,7 +39,7 @@ public class ScheduleTaskStateCleanHandler extends
 									TaskScheduleEntry scheduleEntry) {
 								long now = System.currentTimeMillis();
 								if (scheduleEntry.getUnScheduledDate() != null) {
-									if (now > TIME_OUT
+									if (now > schedulerConfiguration.getTaskStateCleanupTime()
 											+ scheduleEntry
 													.getUnScheduledDate()
 													.getTime()) {
@@ -50,5 +55,10 @@ public class ScheduleTaskStateCleanHandler extends
 			taskContenaStateManager.removeTaskScheduleEntry(taskScheduleEntry);
 		}
 
+	}
+
+	public void setSchedulerConfiguration(
+			SchedulerConfiguration schedulerConfiguration) {
+		this.schedulerConfiguration = schedulerConfiguration;
 	}
 }

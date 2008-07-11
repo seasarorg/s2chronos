@@ -23,6 +23,11 @@ import org.seasar.chronos.core.impl.TaskStateType;
 import org.seasar.chronos.core.task.TaskExecutorService;
 import org.seasar.framework.container.ComponentDef;
 
+/**
+ * 
+ * @author j5ik2o
+ *
+ */
 public interface TaskScheduleEntry extends Serializable {
 
 	public ComponentDef getComponentDef();

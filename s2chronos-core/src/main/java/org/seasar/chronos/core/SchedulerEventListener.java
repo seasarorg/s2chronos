@@ -18,7 +18,7 @@ package org.seasar.chronos.core;
 /**
  * スケジューライベントリスナークラスです．
  * 
- * @author junichi
+ * @author j5ik2o
  * 
  */
 public interface SchedulerEventListener {

@@ -17,6 +17,11 @@ package org.seasar.chronos.core;
 
 import org.seasar.chronos.core.impl.AbstractScheduler;
 
+/**
+ * 
+ * @author j5ik2o
+ *
+ */
 public abstract class SchedulerWrapper extends AbstractScheduler {
 
 	private final Scheduler scheduler;

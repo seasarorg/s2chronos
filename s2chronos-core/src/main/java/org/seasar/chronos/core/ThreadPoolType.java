@@ -15,6 +15,11 @@
  */
 package org.seasar.chronos.core;
 
+/**
+ * 
+ * @author j5ik2o
+ *
+ */
 public enum ThreadPoolType {
 
 	FIXED, CACHED, SINGLE, SCHEDULED;
