@@ -4,10 +4,11 @@ import org.seasar.chronos.core.annotation.task.Task;
 import org.seasar.chronos.core.annotation.task.method.NextTask;
 import org.seasar.chronos.core.annotation.task.method.TaskGroup;
 import org.seasar.chronos.core.annotation.trigger.CronTrigger;
+import org.seasar.chronos.core.annotation.trigger.NonDelayTrigger;
 import org.seasar.framework.log.Logger;
 
 @Task
-@CronTrigger(expression = "*/11 * * * * ?")
+@NonDelayTrigger
 public class TaskGroupTask {
 
 	private Logger log = Logger.getLogger(TaskGroupTask.class);
@@ -17,7 +18,7 @@ public class TaskGroupTask {
 	}
 
 	public boolean isReSchedule() {
-		return true;
+		return false;
 	}
 
 	@NextTask("groupA")

@@ -3,10 +3,11 @@ package org.seasar.chronos.core.task;
 import org.seasar.chronos.core.annotation.CustomTrigger;
 import org.seasar.chronos.core.annotation.task.Task;
 import org.seasar.chronos.core.annotation.task.method.NextTask;
+import org.seasar.chronos.core.annotation.trigger.NonDelayTrigger;
 import org.seasar.framework.log.Logger;
 
 @Task
-@CustomTrigger
+@NonDelayTrigger
 public class CustomTriggerTask {
 
 	private final Logger log = Logger.getLogger(CustomTriggerTask.class);

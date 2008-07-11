@@ -11,7 +11,7 @@ import org.seasar.chronos.core.schedule.ScheduleEntry;
 public class SchedulerEventHandlerTest extends TestCase implements
 		SchedulerEventListener {
 
-	private SchedulerEventHandler target;
+	private SchedulerEventHandler schedulerEventHandler;
 
 	public void addTaskScheduleEntry(Scheduler scheduler,
 			TaskScheduleEntry taskScheduleEntry) {
@@ -57,8 +57,8 @@ public class SchedulerEventHandlerTest extends TestCase implements
 
 	@Override
 	protected void setUp() throws Exception {
-		target = new SchedulerEventHandler(new SchedulerImpl());
-		target.add(this);
+		schedulerEventHandler = new SchedulerEventHandler(new SchedulerImpl());
+		schedulerEventHandler.add(this);
 		super.setUp();
 	}
 
@@ -76,7 +76,7 @@ public class SchedulerEventHandlerTest extends TestCase implements
 
 	public void testFireAddTask() {
 		TaskScheduleEntry taskScheduleEntry = new ScheduleEntry();
-		target.fireAddTaskScheduleEntry(taskScheduleEntry);
+		schedulerEventHandler.fireAddTaskScheduleEntry(taskScheduleEntry);
 		try {
 			Thread.sleep(2000);
 		} catch (InterruptedException e) {
@@ -84,7 +84,7 @@ public class SchedulerEventHandlerTest extends TestCase implements
 	}
 
 	public void testFireCancelTask() {
-		target.fireCancelTask(this);
+		schedulerEventHandler.fireCancelTask(this);
 		try {
 			Thread.sleep(2000);
 		} catch (InterruptedException e) {
@@ -92,7 +92,7 @@ public class SchedulerEventHandlerTest extends TestCase implements
 	}
 
 	public void testFireEndScheduler() {
-		target.fireEndScheduler();
+		schedulerEventHandler.fireEndScheduler();
 		try {
 			Thread.sleep(2000);
 		} catch (InterruptedException e) {
@@ -100,7 +100,7 @@ public class SchedulerEventHandlerTest extends TestCase implements
 	}
 
 	public void testFireEndTask() {
-		target.fireEndTask(this);
+		schedulerEventHandler.fireEndTask(this);
 		try {
 			Thread.sleep(2000);
 		} catch (InterruptedException e) {
@@ -108,7 +108,7 @@ public class SchedulerEventHandlerTest extends TestCase implements
 	}
 
 	public void testFirePauseScheduler() {
-		target.firePauseScheduler();
+		schedulerEventHandler.firePauseScheduler();
 		try {
 			Thread.sleep(2000);
 		} catch (InterruptedException e) {
@@ -116,7 +116,7 @@ public class SchedulerEventHandlerTest extends TestCase implements
 	}
 
 	public void testFireRegistTaskAfterScheduler() {
-		target.fireRegisterTaskAfterScheduler();
+		schedulerEventHandler.fireRegisterTaskAfterScheduler();
 		try {
 			Thread.sleep(2000);
 		} catch (InterruptedException e) {
@@ -124,7 +124,7 @@ public class SchedulerEventHandlerTest extends TestCase implements
 	}
 
 	public void testFireRegistTaskBeforeScheduler() {
-		target.fireRegisterTaskBeforeScheduler();
+		schedulerEventHandler.fireRegisterTaskBeforeScheduler();
 		try {
 			Thread.sleep(2000);
 		} catch (InterruptedException e) {
@@ -132,7 +132,7 @@ public class SchedulerEventHandlerTest extends TestCase implements
 	}
 
 	public void testFireShutdownScheduler() {
-		target.fireShutdownScheduler();
+		schedulerEventHandler.fireShutdownScheduler();
 		try {
 			Thread.sleep(2000);
 		} catch (InterruptedException e) {
@@ -140,7 +140,7 @@ public class SchedulerEventHandlerTest extends TestCase implements
 	}
 
 	public void testFireStartScheduler() {
-		target.fireStartScheduler();
+		schedulerEventHandler.fireStartScheduler();
 		try {
 			Thread.sleep(2000);
 		} catch (InterruptedException e) {
@@ -148,7 +148,7 @@ public class SchedulerEventHandlerTest extends TestCase implements
 	}
 
 	public void testFireStartTask() {
-		target.fireStartTask(this);
+		schedulerEventHandler.fireStartTask(this);
 		try {
 			Thread.sleep(2000);
 		} catch (InterruptedException e) {
@@ -156,7 +156,7 @@ public class SchedulerEventHandlerTest extends TestCase implements
 	}
 
 	public void testFireExceptionTask() {
-		target.fireExceptionTask(this, new Exception());
+		schedulerEventHandler.fireExceptionTask(this, new Exception());
 		try {
 			Thread.sleep(2000);
 		} catch (InterruptedException e) {
