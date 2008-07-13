@@ -6,6 +6,7 @@ import org.seasar.chronos.core.Scheduler;
 import org.seasar.chronos.core.SchedulerEventListener;
 import org.seasar.chronos.core.TaskScheduleEntry;
 import org.seasar.chronos.core.impl.SchedulerImpl;
+import org.seasar.chronos.core.impl.TaskStateType;
 import org.seasar.chronos.core.schedule.ScheduleEntry;
 
 public class SchedulerEventHandlerTest extends TestCase implements
@@ -13,7 +14,7 @@ public class SchedulerEventHandlerTest extends TestCase implements
 
 	private SchedulerEventHandler schedulerEventHandler;
 
-	public void addTaskScheduleEntry(Scheduler scheduler,
+	public void addTaskScheduleEntry(Scheduler scheduler,TaskStateType taskStateType,
 			TaskScheduleEntry taskScheduleEntry) {
 		System.out.println("addTaskScheduleEntry");
 	}
@@ -38,7 +39,7 @@ public class SchedulerEventHandlerTest extends TestCase implements
 		System.out.println("resumeScheduler");
 	}
 
-	public void removeTaskScheduleEntry(Scheduler scheduler,
+	public void removeTaskScheduleEntry(Scheduler scheduler,TaskStateType taskStateType,
 			TaskScheduleEntry taskScheduleEntry) {
 		System.out.println("removeTaskScheduleEntry");
 	}
@@ -57,7 +58,8 @@ public class SchedulerEventHandlerTest extends TestCase implements
 
 	@Override
 	protected void setUp() throws Exception {
-		schedulerEventHandler = new SchedulerEventHandler(new SchedulerImpl());
+		schedulerEventHandler = new SchedulerEventHandler();
+		schedulerEventHandler.setScheduler(new SchedulerImpl());
 		schedulerEventHandler.add(this);
 		super.setUp();
 	}
@@ -76,7 +78,7 @@ public class SchedulerEventHandlerTest extends TestCase implements
 
 	public void testFireAddTask() {
 		TaskScheduleEntry taskScheduleEntry = new ScheduleEntry();
-		schedulerEventHandler.fireAddTaskScheduleEntry(taskScheduleEntry);
+		schedulerEventHandler.fireAddTaskScheduleEntry(TaskStateType.SCHEDULED, taskScheduleEntry);
 		try {
 			Thread.sleep(2000);
 		} catch (InterruptedException e) {
