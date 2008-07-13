@@ -15,6 +15,8 @@
  */
 package org.seasar.chronos.core;
 
+import org.seasar.chronos.core.impl.TaskStateType;
+
 /**
  * スケジューライベントリスナークラスです．
  * 
@@ -24,7 +26,7 @@ package org.seasar.chronos.core;
 public interface SchedulerEventListener {
 
 	public void addTaskScheduleEntry(Scheduler scheduler,
-			TaskScheduleEntry taskScheduleEntry);
+			TaskStateType taskStateType, TaskScheduleEntry taskScheduleEntry);
 
 	public void cancelTask(Scheduler scheduler, Object task);
 
@@ -37,7 +39,7 @@ public interface SchedulerEventListener {
 	public void resumeScheduler(Scheduler scheduler);
 
 	public void removeTaskScheduleEntry(Scheduler scheduler,
-			TaskScheduleEntry taskScheduleEntry);
+			TaskStateType taskStateType, TaskScheduleEntry taskScheduleEntry);
 
 	public void resigtTaskAfterScheduler(Scheduler scheduler);
 
