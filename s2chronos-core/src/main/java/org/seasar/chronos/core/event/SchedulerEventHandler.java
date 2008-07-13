@@ -25,6 +25,7 @@ import org.seasar.chronos.core.SchedulerEventListener;
 import org.seasar.chronos.core.TaskScheduleEntry;
 import org.seasar.chronos.core.ThreadPoolType;
 import org.seasar.chronos.core.executor.ExecutorServiceFactory;
+import org.seasar.chronos.core.impl.TaskStateType;
 import org.seasar.framework.log.Logger;
 
 public class SchedulerEventHandler {
@@ -39,7 +40,7 @@ public class SchedulerEventHandler {
 
 	private boolean async;
 
-	private final Scheduler scheduler;
+	private Scheduler scheduler;
 
 	/**
 	 * コンストラクタ
@@ -47,8 +48,7 @@ public class SchedulerEventHandler {
 	 * @param scheduler
 	 *            スケジューラ
 	 */
-	public SchedulerEventHandler(Scheduler scheduler) {
-		this.scheduler = scheduler;
+	public SchedulerEventHandler() {
 	}
 
 	/**
@@ -66,12 +66,13 @@ public class SchedulerEventHandler {
 	 * 
 	 * @param taskScheduleEntry
 	 */
-	public void fireAddTaskScheduleEntry(
+	public void fireAddTaskScheduleEntry(final TaskStateType taskStateType,
 			final TaskScheduleEntry taskScheduleEntry) {
 		for (final SchedulerEventListener listener : schedulerEventListener) {
 			Future<?> future = executorService.submit(new Runnable() {
 				public void run() {
-					listener.addTaskScheduleEntry(scheduler, taskScheduleEntry);
+					listener.addTaskScheduleEntry(scheduler, taskStateType,
+							taskScheduleEntry);
 				}
 			});
 			waitFuture(future);
@@ -205,12 +206,12 @@ public class SchedulerEventHandler {
 	 * 
 	 * @param taskScheduleEntry
 	 */
-	public void fireRemoveTaskScheduleEntry(
+	public void fireRemoveTaskScheduleEntry(final TaskStateType taskStateType,
 			final TaskScheduleEntry taskScheduleEntry) {
 		for (final SchedulerEventListener listener : schedulerEventListener) {
 			Future<?> future = executorService.submit(new Runnable() {
 				public void run() {
-					listener.removeTaskScheduleEntry(scheduler,
+					listener.removeTaskScheduleEntry(scheduler, taskStateType,
 							taskScheduleEntry);
 				}
 			});
@@ -320,5 +321,9 @@ public class SchedulerEventHandler {
 		this.executorServiceFacotry = executorServiceFacotry;
 		this.executorService = this.executorServiceFacotry.create(
 				ThreadPoolType.CACHED, null);
+	}
+
+	public void setScheduler(Scheduler scheduler) {
+		this.scheduler = scheduler;
 	}
 }
