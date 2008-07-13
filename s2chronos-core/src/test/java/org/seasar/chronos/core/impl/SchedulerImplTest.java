@@ -50,7 +50,7 @@ public class SchedulerImplTest extends S2TestCaseBase implements
 //		this.scheduler.join();
 //	}
 
-	public void addTaskScheduleEntry(Scheduler scheduler,
+	public void addTaskScheduleEntry(Scheduler scheduler,TaskStateType taskStateType,
 			TaskScheduleEntry taskScheduleEntry) {
 
 	}
@@ -80,8 +80,7 @@ public class SchedulerImplTest extends S2TestCaseBase implements
 	}
 
 	public void removeTaskScheduleEntry(Scheduler scheduler,
-			TaskScheduleEntry taskScheduleEntry) {
-
+			TaskStateType taskStateType, TaskScheduleEntry taskScheduleEntry) {		
 	}
 
 	public void resigtTaskAfterScheduler(Scheduler scheduler) {
@@ -103,5 +102,6 @@ public class SchedulerImplTest extends S2TestCaseBase implements
 	public void startTask(Scheduler scheduler, Object task) {
 
 	}
+
 
 }
