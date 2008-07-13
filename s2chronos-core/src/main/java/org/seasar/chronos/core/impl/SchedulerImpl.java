@@ -48,7 +48,7 @@ public class SchedulerImpl extends AbstractScheduler {
 	private static final SchedulerConfiguration defaultConfiguration = new SchedulerConfiguration();
 
 	private final SchedulerEventHandler schedulerEventHandler = new SchedulerEventHandler(
-			this);
+			);
 
 	private final AtomicBoolean pause = new AtomicBoolean();
 
@@ -70,6 +70,7 @@ public class SchedulerImpl extends AbstractScheduler {
 	private boolean initialized;
 
 	public SchedulerImpl() {
+		schedulerEventHandler.setScheduler(this);
 	}
 
 	public void addScheduleExecuteHandler(
@@ -273,7 +274,7 @@ public class SchedulerImpl extends AbstractScheduler {
 		}
 		this.taskScheduleEntryManager.addTaskScheduleEntry(
 				TaskStateType.SCHEDULED, taskScheduleEntry);
-		this.schedulerEventHandler.fireAddTaskScheduleEntry(taskScheduleEntry);
+		this.schedulerEventHandler.fireAddTaskScheduleEntry(TaskStateType.SCHEDULED,taskScheduleEntry);
 		return taskScheduleEntry;
 	}
 
