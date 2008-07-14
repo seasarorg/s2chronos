@@ -19,11 +19,12 @@ import org.seasar.chronos.core.SchedulerConfiguration;
 import org.seasar.chronos.core.TaskScheduleEntry;
 import org.seasar.chronos.core.impl.TaskStateType;
 import org.seasar.chronos.core.schedule.TaskScheduleEntryManager.TaskScheduleEntryHanlder;
+import org.seasar.chronos.core.task.handler.impl.property.PropertyCache;
 
 /**
  * 
  * @author j5ik2o
- *
+ * 
  */
 public class ScheduleTaskStateCleanHandler extends
 		AbstractScheduleExecuteHandler {
@@ -39,7 +40,8 @@ public class ScheduleTaskStateCleanHandler extends
 									TaskScheduleEntry scheduleEntry) {
 								long now = System.currentTimeMillis();
 								if (scheduleEntry.getUnScheduledDate() != null) {
-									if (now > schedulerConfiguration.getTaskStateCleanupTime()
+									if (now > schedulerConfiguration
+											.getTaskStateCleanupTime()
 											+ scheduleEntry
 													.getUnScheduledDate()
 													.getTime()) {
@@ -51,8 +53,11 @@ public class ScheduleTaskStateCleanHandler extends
 						});
 		if (taskScheduleEntry != null) {
 			log.debug("UNSCHEDULEDなタスクを削除しました "
-					+ taskScheduleEntry.getComponentDef().getComponentName());
+					+ taskScheduleEntry.getTaskExecutorService().getTaskName());
 			taskScheduleEntryManager.removeTaskScheduleEntry(taskScheduleEntry);
+			PropertyCache propertyCache = PropertyCache
+					.getInstance(taskScheduleEntry.getTask());
+			propertyCache.clear();
 		}
 
 	}
