@@ -29,14 +29,6 @@ public abstract class AbstractScheduleEntry implements TaskScheduleEntry {
 		return this.scheduleId;
 	}
 
-	public void load() {
-
-	}
-
-	public void save() {
-
-	}
-
 	public void setScheduleId(Long scheduleId) {
 		this.scheduleId = scheduleId;
 	}
