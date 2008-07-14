@@ -102,8 +102,6 @@ public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler 
 						TaskStateType.UNSCHEDULED, taskScheduleEntry);
 			}
 			taskExecutorService.unprepare();
-			taskScheduleEntry.setTask(null);
-			taskScheduleEntry.setTaskClass(null);
 			log.log("DCHRONOS0124", new Object[] { taskName });
 			taskExecutorService.hotdeployStop();
 			return taskExecutorService;

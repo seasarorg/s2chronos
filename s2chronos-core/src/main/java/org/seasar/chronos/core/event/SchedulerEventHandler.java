@@ -27,6 +27,7 @@ import org.seasar.chronos.core.ThreadPoolType;
 import org.seasar.chronos.core.executor.ExecutorServiceFactory;
 import org.seasar.chronos.core.impl.TaskStateType;
 import org.seasar.framework.log.Logger;
+import org.seasar.framework.util.tiger.CollectionsUtil;
 
 public class SchedulerEventHandler {
 
@@ -36,7 +37,7 @@ public class SchedulerEventHandler {
 
 	private ExecutorService executorService;
 
-	private final CopyOnWriteArrayList<SchedulerEventListener> schedulerEventListener = new CopyOnWriteArrayList<SchedulerEventListener>();
+	private final CopyOnWriteArrayList<SchedulerEventListener> schedulerEventListener = CollectionsUtil.newCopyOnWriteArrayList();
 
 	private boolean async;
 

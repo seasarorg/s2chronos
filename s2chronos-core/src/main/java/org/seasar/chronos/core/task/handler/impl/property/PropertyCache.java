@@ -16,13 +16,16 @@
 package org.seasar.chronos.core.task.handler.impl.property;
 
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+
+import org.seasar.framework.util.tiger.CollectionsUtil;
 
 public final class PropertyCache {
 
-	private static Map<Object, PropertyCache> propertyCacheInstanceMap = new ConcurrentHashMap<Object, PropertyCache>();
+	private static Map<Object, PropertyCache> propertyCacheInstanceMap = CollectionsUtil
+			.newConcurrentHashMap();
 
-	private final Map<String, Object> propertyCache = new ConcurrentHashMap<String, Object>();
+	private final Map<String, Object> propertyCache = CollectionsUtil
+			.newConcurrentHashMap();
 
 	private final Object selfKey;
 

@@ -15,13 +15,15 @@
  */
 package org.seasar.chronos.core.task.handler.factory;
 
-import java.util.HashMap;
 import java.util.Map;
+
+import org.seasar.framework.util.tiger.CollectionsUtil;
 
 public abstract class AbstractTaskPropertyHandlerFactory implements
 		TaskPropertyHandlerFactory {
 
-	protected Map<String, String> taskPropertyHandlerMap = new HashMap<String, String>();
+	protected Map<String, String> taskPropertyHandlerMap = CollectionsUtil
+			.newHashMap();
 
 	public void putTaskPropertyHandler(String key, String compoenentName) {
 		taskPropertyHandlerMap.put(key, compoenentName);

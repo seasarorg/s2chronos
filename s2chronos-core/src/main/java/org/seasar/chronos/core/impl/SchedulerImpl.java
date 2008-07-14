@@ -38,6 +38,7 @@ import org.seasar.chronos.core.schedule.TaskScheduleEntryManager;
 import org.seasar.chronos.core.schedule.TaskScheduleEntryManager.TaskScheduleEntryHanlder;
 import org.seasar.framework.container.ComponentDef;
 import org.seasar.framework.container.S2Container;
+import org.seasar.framework.util.tiger.CollectionsUtil;
 
 public class SchedulerImpl extends AbstractScheduler {
 
@@ -61,7 +62,7 @@ public class SchedulerImpl extends AbstractScheduler {
 
 	private SchedulerConfiguration configuration = defaultConfiguration;
 
-	private final List<ScheduleExecuteHandler> scheduleExecuteHandlerList = new ArrayList<ScheduleExecuteHandler>();
+	private final List<ScheduleExecuteHandler> scheduleExecuteHandlerList = CollectionsUtil.newArrayList();
 
 	private ExecutorServiceFactory executorServiceFactory;
 

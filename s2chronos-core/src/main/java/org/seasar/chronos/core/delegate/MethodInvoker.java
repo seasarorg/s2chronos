@@ -30,6 +30,7 @@ import org.seasar.framework.beans.BeanDesc;
 import org.seasar.framework.beans.factory.BeanDescFactory;
 import org.seasar.framework.container.ComponentDef;
 import org.seasar.framework.log.Logger;
+import org.seasar.framework.util.tiger.CollectionsUtil;
 import org.seasar.framework.util.tiger.ReflectionUtil;
 
 public class MethodInvoker {
@@ -40,7 +41,7 @@ public class MethodInvoker {
 
 	private static final String CALLBACK_SUFFIX = "Callback";
 
-	private final CopyOnWriteArrayList<AsyncResult> resultList = new CopyOnWriteArrayList<AsyncResult>();
+	private final CopyOnWriteArrayList<AsyncResult> resultList = CollectionsUtil.newCopyOnWriteArrayList();
 
 	private final Class<?> targetClass;
 

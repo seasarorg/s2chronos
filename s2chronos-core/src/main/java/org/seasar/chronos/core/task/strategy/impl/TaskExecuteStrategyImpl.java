@@ -57,6 +57,7 @@ import org.seasar.framework.container.hotdeploy.HotdeployUtil;
 import org.seasar.framework.exception.IORuntimeException;
 import org.seasar.framework.log.Logger;
 import org.seasar.framework.util.SerializeUtil;
+import org.seasar.framework.util.tiger.CollectionsUtil;
 import org.seasar.framework.util.tiger.ReflectionUtil;
 
 public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
@@ -76,7 +77,8 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 
 	private static final int DEFAULT_THREAD_POOLSIZE = 1;
 
-	private static ConcurrentHashMap<TaskThreadPool, ExecutorService> threadPoolExecutorServiceMap = new ConcurrentHashMap<TaskThreadPool, ExecutorService>();
+	private static ConcurrentHashMap<TaskThreadPool, ExecutorService> threadPoolExecutorServiceMap = CollectionsUtil
+			.newConcurrentHashMap();
 
 	private S2Container s2Container;
 
