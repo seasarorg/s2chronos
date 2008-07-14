@@ -66,11 +66,6 @@ public class ScheduleEntry extends AbstractScheduleEntry {
 		return taskStateType;
 	}
 
-	@Override
-	public void save() {
-
-	}
-
 	public void setComponentDef(ComponentDef componentDef) {
 		this.componentDef = componentDef;
 		// this.setTask(componentDef.getComponent());
