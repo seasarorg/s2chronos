@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<m:mayaa xmlns:m="http://mayaa.seasar.org"
+		xmlns:html="http://struts.apache.org/tags-html">
+	<m:with m:id="messages"><html:errors/></m:with>
+	<m:echo m:id="userId">
+		<m:attribute name="value" value="${loginActionForm.userId}" />
+	</m:echo>
+	<m:echo m:id="password">
+		<m:attribute name="value" value="${loginActionForm.password}" />
+	</m:echo>
+</m:mayaa>
