@@ -19,15 +19,14 @@ public class AddAction {
 
 	public Integer result;
 
-	@Execute(validator = false)
 	public String index() {
-		return "index.jsp";
+		return "index.html";
 	}
 
-	@Execute(input = "index.jsp")
+	@Execute(input = "index.html")
 	public String submit() {
 		result = Integer.valueOf(arg1) + Integer.valueOf(arg2);
-		return "index.jsp";
+		return "index.html";
 	}
 
 }

@@ -131,6 +131,17 @@ version="2.4">
         <load-on-startup>3</load-on-startup>
     </servlet>
     
+    <servlet>
+        <servlet-name>MayaaServlet</servlet-name>
+        <servlet-class>org.seasar.mayaa.impl.MayaaServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>MayaaServlet</servlet-name>
+        <url-pattern>*.html</url-pattern>
+    </servlet-mapping>
+    
     <servlet-mapping>
         <servlet-name>action</servlet-name>
         <url-pattern>*.do</url-pattern>

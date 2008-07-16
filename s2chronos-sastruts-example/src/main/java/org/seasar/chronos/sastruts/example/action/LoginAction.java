@@ -18,17 +18,16 @@ public class LoginAction {
 
 	@Execute(validator = false)
 	public String index() {
-		return "index.jsp";
+		return "index.html";
 	}
 
-	@Execute(validate = "validate", input = "index.jsp")
+	@Execute(validate = "validate", input = "index.html")
 	public String submit() {
-		return "../add/index.jsp";
+		return "../add/index.html";
 	}
 
 	public ActionMessages validate() {
 		ActionMessages errors = new ActionMessages();
-
 		if ("admin".equals(userId) && "admin".equals(password)) {
 			this.userAuthDto.setUserId(userId);
 			this.userAuthDto.setAuthed(true);
