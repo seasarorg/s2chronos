@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<m:mayaa xmlns:m="http://mayaa.seasar.org"
+		xmlns:html="http://struts.apache.org/tags-html">
+	<m:with m:id="messages"><html:errors/></m:with>
+	<m:echo m:id="arg1">
+		<m:attribute name="value" value="${addActionForm.arg1}" />
+	</m:echo>
+	<m:echo m:id="arg2">
+		<m:attribute name="value" value="${addActionForm.arg2}" />
+	</m:echo>
+	<m:write m:id="result" value="${addActionForm.result}"/>
+</m:mayaa>
