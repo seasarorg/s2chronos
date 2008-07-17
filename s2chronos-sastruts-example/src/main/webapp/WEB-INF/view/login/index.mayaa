@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <m:mayaa xmlns:m="http://mayaa.seasar.org"
 		xmlns:html="http://struts.apache.org/tags-html">
-	<m:with m:id="messages"><html:errors/></m:with>
+	<m:with m:id="allMessages">
+		<html:errors/>
+	</m:with>
 	<m:echo m:id="userId">
 		<m:attribute name="value" value="${loginAction.userId}" />
 	</m:echo>
