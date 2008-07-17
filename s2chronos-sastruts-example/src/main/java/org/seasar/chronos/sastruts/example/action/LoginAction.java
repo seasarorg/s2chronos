@@ -23,7 +23,7 @@ public class LoginAction {
 
 	@Execute(validate = "validate", input = "index.html")
 	public String submit() {
-		return "../add/index.html";
+		return "../add/?redirect=true";
 	}
 
 	public ActionMessages validate() {
