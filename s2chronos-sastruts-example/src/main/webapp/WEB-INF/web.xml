@@ -204,7 +204,8 @@ version="2.4">
             <form-error-page>/WEB-INF/view/login/loginError.html</form-error-page>
         </form-login-config>
     </login-config>
-    
+  	
+  	<!--  
     <jsp-config>
     	<jsp-property-group>
     		<url-pattern>*.jsp</url-pattern>
@@ -214,4 +215,5 @@ version="2.4">
     		<include-prelude>/WEB-INF/view/common/common.jsp</include-prelude>
     	</jsp-property-group>
     </jsp-config>
+    --> 
 </web-app>
