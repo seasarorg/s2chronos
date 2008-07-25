@@ -42,14 +42,12 @@ public class TaskPropertyReaderImplTest {
 
 	@Test
 	public void testGetThreadPoolSize() {
-
 		int result = taskPropertyReader.getThreadPoolSize(1);
 		assertEquals(result, testTask.getThreadPoolSize());
 	}
 
 	@Test
 	public void testGetThreadPoolType() {
-		taskPropertyReader.loadTask(testTask, NormalATask.class);
 		ThreadPoolType result = taskPropertyReader
 				.getThreadPoolType(ThreadPoolType.CACHED);
 		assertEquals(result, testTask.getThreadPoolType());
@@ -78,14 +76,12 @@ public class TaskPropertyReaderImplTest {
 
 	@Test
 	public void testIsReSchedule() {
-		taskPropertyReader.loadTask(testTask, NormalATask.class);
 		boolean result = taskPropertyReader.isReSchedule(false);
 		assertEquals(result, testTask.isReSchedule());
 	}
 
 	@Test
 	public void testIsShutdownTask() {
-
 		boolean result = taskPropertyReader.isShutdownTask(false);
 		assertEquals(result, testTask.isShutdownTask());
 	}
@@ -98,63 +94,54 @@ public class TaskPropertyReaderImplTest {
 
 	@Test
 	public void testHasDescription() {
-
 		boolean result = taskPropertyReader.hasDescription();
 		assertTrue(result);
 	}
 
 	@Test
 	public void testHasTaskId() {
-		taskPropertyReader.loadTask(testTask, NormalATask.class);
 		boolean result = taskPropertyReader.hasTaskId();
 		assertTrue(result);
 	}
 
 	@Test
 	public void testHasTaskName() {
-
 		boolean result = taskPropertyReader.hasTaskName();
 		assertTrue(result);
 	}
 
 	@Test
 	public void testHasThreadPoolSize() {
-
 		boolean result = taskPropertyReader.hasThreadPoolSize();
 		assertTrue(result);
 	}
 
 	@Test
 	public void testHasThreadPoolType() {
-
 		boolean result = taskPropertyReader.hasThreadPoolType();
 		assertTrue(result);
 	}
 
 	@Test
 	public void testHasTrigger() {
-
 		boolean result = taskPropertyReader.hasTrigger();
 		assertTrue(result);
 	}
 
 	@Test
 	public void testHasEndTask() {
-
 		boolean result = taskPropertyReader.hasEndTask();
 		assertTrue(result);
 	}
 
 	@Test
 	public void testHasExecuted() {
-
 		boolean result = taskPropertyReader.hasExecuted();
 		assertTrue(result);
 	}
 
 	@Test
 	public void testHasReSchedule() {
-
 		boolean result = taskPropertyReader.hasReSchedule();
 		assertTrue(result);
 	}

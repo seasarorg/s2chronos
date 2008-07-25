@@ -3,7 +3,6 @@ package org.seasar.chronos.core.task;
 import org.seasar.chronos.core.annotation.task.Task;
 import org.seasar.chronos.core.annotation.task.method.NextTask;
 import org.seasar.chronos.core.annotation.task.method.TaskGroup;
-import org.seasar.chronos.core.annotation.trigger.CronTrigger;
 import org.seasar.chronos.core.annotation.trigger.NonDelayTrigger;
 import org.seasar.framework.log.Logger;
 

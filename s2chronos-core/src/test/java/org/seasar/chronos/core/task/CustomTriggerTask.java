@@ -1,6 +1,5 @@
 package org.seasar.chronos.core.task;
 
-import org.seasar.chronos.core.annotation.CustomTrigger;
 import org.seasar.chronos.core.annotation.task.Task;
 import org.seasar.chronos.core.annotation.task.method.NextTask;
 import org.seasar.chronos.core.annotation.trigger.NonDelayTrigger;
