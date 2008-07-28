@@ -16,7 +16,7 @@ public class TaskGroupTask {
 		return true;
 	}
 
-	public boolean isReSchedule() {
+	public boolean isReScheduleTask() {
 		return false;
 	}
 
