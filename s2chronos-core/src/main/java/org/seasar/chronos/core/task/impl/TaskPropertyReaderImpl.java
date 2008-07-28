@@ -41,12 +41,12 @@ public class TaskPropertyReaderImpl implements TaskPropertyReader {
 	private BeanDesc beanDesc;
 	private Object task;
 
-	public void loadTask(Object task, Class<?> taskClass) {
+	public void setup(Object task, Class<?> taskClass) {
 		this.task = task;
 		this.beanDesc = BeanDescFactory.getBeanDesc(taskClass);
 	}
 
-	public void loadTask(Object task, BeanDesc beanDesc) {
+	public void setup(Object task, BeanDesc beanDesc) {
 		this.task = task;
 		this.beanDesc = beanDesc;
 	}
@@ -142,11 +142,11 @@ public class TaskPropertyReaderImpl implements TaskPropertyReader {
 		return result;
 	}
 
-	public boolean isReSchedule(boolean defaultValue) {
+	public boolean isReScheduleTask(boolean defaultValue) {
 		boolean result = defaultValue;
-		if (this.hasReSchedule()) {
+		if (this.hasReScheduleTask()) {
 			PropertyDesc pd = this.beanDesc
-					.getPropertyDesc(TaskConstant.PROPERTY_NAME_RESCHEDULE);
+					.getPropertyDesc(TaskConstant.PROPERTY_NAME_RESCHEDULE_TASK);
 			result = Boolean.TRUE.equals(pd.getValue(this.task));
 		}
 		return result;
@@ -280,12 +280,12 @@ public class TaskPropertyReaderImpl implements TaskPropertyReader {
 		return result;
 	}
 
-	public boolean hasReSchedule() {
+	public boolean hasReScheduleTask() {
 		boolean result = this.beanDesc
-				.hasPropertyDesc(TaskConstant.PROPERTY_NAME_RESCHEDULE);
+				.hasPropertyDesc(TaskConstant.PROPERTY_NAME_RESCHEDULE_TASK);
 		if (result) {
 			PropertyDesc pd = this.beanDesc
-					.getPropertyDesc(TaskConstant.PROPERTY_NAME_RESCHEDULE);
+					.getPropertyDesc(TaskConstant.PROPERTY_NAME_RESCHEDULE_TASK);
 			result = pd.hasReadMethod();
 			return result;
 		}
@@ -315,4 +315,5 @@ public class TaskPropertyReaderImpl implements TaskPropertyReader {
 		}
 		return result;
 	}
+
 }

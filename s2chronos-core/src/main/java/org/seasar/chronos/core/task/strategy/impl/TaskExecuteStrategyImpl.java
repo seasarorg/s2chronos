@@ -114,6 +114,8 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 
 	private ComponentDef componentDef;
 
+	private boolean hotdeployStart;
+
 	public TaskExecuteStrategyImpl() {
 
 	}
@@ -152,23 +154,6 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 		return false;
 	}
 
-	private ExecutorService createJobMethodExecutorService(Object target) {
-		ExecutorService result = executorServiceFactory.create(this
-				.getThreadPoolType(target), this.getThreadPoolSize(target));
-		return result;
-	}
-
-	protected TaskExecuteHandler createTaskGroupMethodExecuteHandler(
-			TaskExecuteHandler taskMethdoExecuteHandler) {
-		TaskGroupMethodExecuteHandlerImpl result = new TaskGroupMethodExecuteHandlerImpl();
-		result.setTaskMethodExecuteHandler(this.taskMethodExecuteHandler);
-		return result;
-	}
-
-	protected TaskExecuteHandler createTaskMethodExecuteHandler() {
-		return new TaskMethodExecuteHandlerImpl();
-	}
-
 	public String destroy() throws InterruptedException {
 		String nextTask = null;
 		if (this.taskMethodInvoker.hasMethod(METHOD_NAME_DESTROY)) {
@@ -198,51 +183,8 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 		}
 	}
 
-	/**
-	 * TaskThreadPoolに対応するExecutorServiceを返します．
-	 * 
-	 * @param taskThreadPool
-	 *            スレッドプール
-	 * @return
-	 */
-	private ExecutorService getCacheExecutorsService(
-			TaskThreadPool taskThreadPool) {
-		ExecutorService executorService = threadPoolExecutorServiceMap
-				.get(taskThreadPool);
-		if (executorService == null) {
-			executorService = this
-					.createJobMethodExecutorService(taskThreadPool);
-			threadPoolExecutorServiceMap.put(taskThreadPool, executorService);
-		}
-		return executorService;
-	}
-
 	public String getDescription() {
 		return this.taskPropertyReader.getDescription(null);
-	}
-
-	/**
-	 * ExecutorServiceを返します．
-	 * <p>
-	 * TaskにTaskThreadPoolが存在する場合はキャッシュから対応するExecutorServiceを返します．<br>
-	 * 存在しない場合はTaskのThreadTypeとThreadPoolSizeから作成して返します．<br>
-	 * 複数のタスク間でスレッドプールを共有したければTaskThreadPoolを利用すること．
-	 * </p>
-	 * 
-	 * @return
-	 */
-	private ExecutorService getExecutorService() {
-		TaskThreadPool taskThreadPool = this.getThreadPool();
-		ExecutorService jobMethodExecutorService = null;
-		if (taskThreadPool == null) {
-			jobMethodExecutorService = this
-					.createJobMethodExecutorService(this.task);
-		} else {
-			jobMethodExecutorService = this
-					.getCacheExecutorsService(taskThreadPool);
-		}
-
-		return jobMethodExecutorService;
 	}
 
 	public Scheduler getScheduler() {
@@ -255,11 +197,6 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 
 	public Class<?> getTaskClass() {
 		return this.taskClass;
-	}
-
-	private TaskExecuteHandler getTaskExecuteHandler(TaskType type) {
-		return type == TaskType.JOB ? this.taskMethodExecuteHandler
-				: this.taskGroupMethodExecuteHandler;
 	}
 
 	public long getTaskId() {
@@ -290,33 +227,13 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 		return this.getThreadPoolSize(this.task);
 	}
 
-	private int getThreadPoolSize(Object target) {
-		return this.taskPropertyReader
-				.getThreadPoolSize(DEFAULT_THREAD_POOLSIZE);
-	}
-
 	public ThreadPoolType getThreadPoolType() {
 		return this.getThreadPoolType(this.task);
-	}
-
-	private ThreadPoolType getThreadPoolType(Object target) {
-		return this.taskPropertyReader
-				.getThreadPoolType(DEFAULT_THREADPOOL_TYPE);
 	}
 
 	public TaskTrigger getTrigger() {
 		return this.taskPropertyReader.getTrigger(null);
 	}
-
-	private Transition handleRequest(TaskExecuteHandler taskExecuteHandler,
-			String startTaskName) throws InterruptedException {
-		taskExecuteHandler.setTaskExecuteStrategy(this);
-		taskExecuteHandler.setMethodInvoker(this.taskMethodInvoker);
-		taskExecuteHandler.setMethodGroupMap(this.taskMethodManager);
-		return taskExecuteHandler.handleRequest(startTaskName);
-	}
-
-	private boolean hotdeployStart;
 
 	public synchronized void hotdeployStart() {
 		if (HotdeployUtil.isHotdeploy()) {
@@ -356,16 +273,12 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 		return this.taskPropertyReader.isExecuted(false);
 	}
 
-	private boolean isGroupMethod(String groupName) {
-		return this.taskMethodManager.existGroup(groupName);
-	}
-
 	public boolean isPrepared() {
 		return this.prepared;
 	}
 
-	public boolean isReSchedule() {
-		return this.taskPropertyReader.isReSchedule(false);
+	public boolean isReScheduleTask() {
+		return this.taskPropertyReader.isReScheduleTask(false);
 	}
 
 	public boolean isShutdownTask() {
@@ -409,12 +322,6 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 		}
 	}
 
-	private void notifyGetterSignal() {
-		synchronized (this.getterSignal) {
-			this.getterSignal.notify();
-		}
-	}
-
 	public void prepare() {
 
 		this.task = this.componentDef.getComponent();
@@ -434,7 +341,7 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 		this.taskPropertyWriter = (TaskPropertyWriter) this.s2Container
 				.getComponent(TaskPropertyWriter.class);
 
-		this.taskPropertyReader.loadTask(task, beanDesc);
+		this.taskPropertyReader.setup(task, beanDesc);
 		this.taskPropertyWriter.loadTask(task, beanDesc);
 
 		this.taskMethodManager = new TaskMethodManager(this.taskClass,
@@ -474,6 +381,10 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 
 	public void setGetterSignal(Object getterSignal) {
 		this.getterSignal = getterSignal;
+	}
+
+	public void setS2Container(S2Container container) {
+		s2Container = container;
 	}
 
 	public void setScheduler(Scheduler scheduler) {
@@ -523,8 +434,97 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 		this.taskMethodInvoker.waitInvokes();
 	}
 
-	public void setS2Container(S2Container container) {
-		s2Container = container;
+	private ExecutorService createJobMethodExecutorService(Object target) {
+		ExecutorService result = executorServiceFactory.create(this
+				.getThreadPoolType(target), this.getThreadPoolSize(target));
+		return result;
+	}
+
+	/**
+	 * TaskThreadPoolに対応するExecutorServiceを返します．
+	 * 
+	 * @param taskThreadPool
+	 *            スレッドプール
+	 * @return
+	 */
+	private ExecutorService getCacheExecutorsService(
+			TaskThreadPool taskThreadPool) {
+		ExecutorService executorService = threadPoolExecutorServiceMap
+				.get(taskThreadPool);
+		if (executorService == null) {
+			executorService = this
+					.createJobMethodExecutorService(taskThreadPool);
+			threadPoolExecutorServiceMap.put(taskThreadPool, executorService);
+		}
+		return executorService;
+	}
+
+	/**
+	 * ExecutorServiceを返します．
+	 * <p>
+	 * TaskにTaskThreadPoolが存在する場合はキャッシュから対応するExecutorServiceを返します．<br>
+	 * 存在しない場合はTaskのThreadTypeとThreadPoolSizeから作成して返します．<br>
+	 * 複数のタスク間でスレッドプールを共有したければTaskThreadPoolを利用すること．
+	 * </p>
+	 * 
+	 * @return
+	 */
+	private ExecutorService getExecutorService() {
+		TaskThreadPool taskThreadPool = this.getThreadPool();
+		ExecutorService jobMethodExecutorService = null;
+		if (taskThreadPool == null) {
+			jobMethodExecutorService = this
+					.createJobMethodExecutorService(this.task);
+		} else {
+			jobMethodExecutorService = this
+					.getCacheExecutorsService(taskThreadPool);
+		}
+
+		return jobMethodExecutorService;
+	}
+
+	private TaskExecuteHandler getTaskExecuteHandler(TaskType type) {
+		return type == TaskType.JOB ? this.taskMethodExecuteHandler
+				: this.taskGroupMethodExecuteHandler;
+	}
+
+	private int getThreadPoolSize(Object target) {
+		return this.taskPropertyReader
+				.getThreadPoolSize(DEFAULT_THREAD_POOLSIZE);
+	}
+
+	private ThreadPoolType getThreadPoolType(Object target) {
+		return this.taskPropertyReader
+				.getThreadPoolType(DEFAULT_THREADPOOL_TYPE);
+	}
+
+	private Transition handleRequest(TaskExecuteHandler taskExecuteHandler,
+			String startTaskName) throws InterruptedException {
+		taskExecuteHandler.setTaskExecuteStrategy(this);
+		taskExecuteHandler.setMethodInvoker(this.taskMethodInvoker);
+		taskExecuteHandler.setMethodGroupMap(this.taskMethodManager);
+		return taskExecuteHandler.handleRequest(startTaskName);
+	}
+
+	private boolean isGroupMethod(String groupName) {
+		return this.taskMethodManager.existGroup(groupName);
+	}
+
+	private void notifyGetterSignal() {
+		synchronized (this.getterSignal) {
+			this.getterSignal.notify();
+		}
+	}
+
+	protected TaskExecuteHandler createTaskGroupMethodExecuteHandler(
+			TaskExecuteHandler taskMethdoExecuteHandler) {
+		TaskGroupMethodExecuteHandlerImpl result = new TaskGroupMethodExecuteHandlerImpl();
+		result.setTaskMethodExecuteHandler(this.taskMethodExecuteHandler);
+		return result;
+	}
+
+	protected TaskExecuteHandler createTaskMethodExecuteHandler() {
+		return new TaskMethodExecuteHandlerImpl();
 	}
 
 }

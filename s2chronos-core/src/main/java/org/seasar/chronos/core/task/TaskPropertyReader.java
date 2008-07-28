@@ -28,9 +28,9 @@ public interface TaskPropertyReader {
 
 	public BeanDesc getBeanDesc();
 
-	public void loadTask(Object task, Class<?> taskClass);
+	public void setup(Object task, Class<?> taskClass);
 
-	public void loadTask(Object task, BeanDesc beanDesc);
+	public void setup(Object task, BeanDesc beanDesc);
 
 	public boolean hasTaskId();
 
@@ -46,7 +46,7 @@ public interface TaskPropertyReader {
 
 	public boolean hasExecuted();
 
-	public boolean hasReSchedule();
+	public boolean hasReScheduleTask();
 
 	public boolean hasTrigger();
 
@@ -70,7 +70,7 @@ public interface TaskPropertyReader {
 
 	public boolean isExecuted(boolean defaultValue);
 
-	public boolean isReSchedule(boolean defaultValue);
+	public boolean isReScheduleTask(boolean defaultValue);
 
 	public TaskTrigger getTrigger(TaskTrigger defaultValue);
 

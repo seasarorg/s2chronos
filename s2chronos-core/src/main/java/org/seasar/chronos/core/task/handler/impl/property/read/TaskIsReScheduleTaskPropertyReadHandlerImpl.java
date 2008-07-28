@@ -20,19 +20,19 @@ import org.seasar.chronos.core.TaskTrigger;
 import org.seasar.chronos.core.task.handler.impl.AbstractTaskPropertyHandler;
 import org.seasar.framework.log.Logger;
 
-public class TaskIsReSchedulePropertyReadHandlerImpl extends
+public class TaskIsReScheduleTaskPropertyReadHandlerImpl extends
 		AbstractTaskPropertyHandler {
 
 	@SuppressWarnings("unused")
 	private static final Logger log = Logger
-			.getLogger(TaskIsReSchedulePropertyReadHandlerImpl.class);
+			.getLogger(TaskIsReScheduleTaskPropertyReadHandlerImpl.class);
 
 	public Object execute(MethodInvocation methodInvocation) throws Throwable {
 		boolean reSchedule = (Boolean) methodInvocation.proceed();
 		TaskTrigger taskTrigger = this.getTaskPropertyReader(methodInvocation)
 				.getTrigger(null);
 		if (taskTrigger != null) {
-			boolean triggerReSchedule = taskTrigger.isReSchedule();
+			boolean triggerReSchedule = taskTrigger.isReScheduleTask();
 			reSchedule = reSchedule || triggerReSchedule;
 		}
 		return reSchedule;

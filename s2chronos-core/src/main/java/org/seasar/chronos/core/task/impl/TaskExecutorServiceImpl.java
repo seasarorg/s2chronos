@@ -39,8 +39,8 @@ public class TaskExecutorServiceImpl implements TaskExecutorService {
 		this.taskExecuteContext = taskExecuteContext;
 	}
 
-	public boolean isReSchedule() {
-		return taskExecuteContext.getTaskExecuteStrategy().isReSchedule();
+	public boolean isReScheduleTask() {
+		return taskExecuteContext.getTaskExecuteStrategy().isReScheduleTask();
 	}
 
 	public boolean await(long time, TimeUnit timeUnit)

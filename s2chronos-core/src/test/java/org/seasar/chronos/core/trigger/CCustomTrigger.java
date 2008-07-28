@@ -28,7 +28,7 @@ public class CCustomTrigger extends AbstractTrigger {
 	}
 
 	@Override
-	public boolean isReSchedule() {
+	public boolean isReScheduleTask() {
 		return true;
 	}
 

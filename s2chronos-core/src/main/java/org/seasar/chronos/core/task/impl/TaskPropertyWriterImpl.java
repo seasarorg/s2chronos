@@ -88,7 +88,7 @@ public class TaskPropertyWriterImpl implements TaskPropertyWriter {
 	public void setReSchedule(boolean value) {
 		if (this.hasReSchedule()) {
 			PropertyDesc pd = this.beanDesc
-					.getPropertyDesc(TaskConstant.PROPERTY_NAME_RESCHEDULE);
+					.getPropertyDesc(TaskConstant.PROPERTY_NAME_RESCHEDULE_TASK);
 			pd.setValue(this.task, value);
 		}
 	}
@@ -189,10 +189,10 @@ public class TaskPropertyWriterImpl implements TaskPropertyWriter {
 
 	public boolean hasReSchedule() {
 		boolean result = this.beanDesc
-				.hasPropertyDesc(TaskConstant.PROPERTY_NAME_RESCHEDULE);
+				.hasPropertyDesc(TaskConstant.PROPERTY_NAME_RESCHEDULE_TASK);
 		if (result) {
 			PropertyDesc pd = this.beanDesc
-					.getPropertyDesc(TaskConstant.PROPERTY_NAME_RESCHEDULE);
+					.getPropertyDesc(TaskConstant.PROPERTY_NAME_RESCHEDULE_TASK);
 			result = pd.hasWriteMethod();
 			return result;
 		}

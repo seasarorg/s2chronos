@@ -8,7 +8,7 @@ import org.seasar.chronos.core.annotation.task.Task;
 public class NormalATask {
 	private Long taskId;
 	private String taskName;
-	private boolean reSchedule;
+	private boolean reScheduleTask;
 	private boolean executed;
 	private boolean shutdownTask;
 	private boolean startTask;
@@ -74,14 +74,6 @@ public class NormalATask {
 		this.executed = executed;
 	}
 
-	public boolean isReSchedule() {
-		return this.reSchedule;
-	}
-
-	public void setReSchedule(boolean reSchedule) {
-		this.reSchedule = reSchedule;
-	}
-
 	public Long getTaskId() {
 		return this.taskId;
 	}
@@ -104,5 +96,13 @@ public class NormalATask {
 
 	public void setTrigger(TaskTrigger trigger) {
 		this.trigger = trigger;
+	}
+
+	public boolean isReScheduleTask() {
+		return reScheduleTask;
+	}
+
+	public void setReScheduleTask(boolean reScheduleTask) {
+		this.reScheduleTask = reScheduleTask;
 	}
 }

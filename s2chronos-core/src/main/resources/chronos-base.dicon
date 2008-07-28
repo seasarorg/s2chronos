@@ -21,9 +21,10 @@
 	<component name="taskGetThreadPoolTypePropertyReadHandler" class="org.seasar.chronos.core.task.handler.impl.property.read.TaskGetThreadPoolTypePropertyReadHandlerImpl" instance="prototype"/>
 	<component name="taskIsStartTaskPropertyReadHandler" class="org.seasar.chronos.core.task.handler.impl.property.read.TaskIsStartTaskPropertyReadHandlerImpl" instance="prototype"/>
 	<component name="taskIsEndTaskPropertyReadHandler" class="org.seasar.chronos.core.task.handler.impl.property.read.TaskIsEndTaskPropertyReadHandlerImpl" instance="prototype"/>
-	<component name="taskIsReSchedulePropertyReadHandler" class="org.seasar.chronos.core.task.handler.impl.property.read.TaskIsReSchedulePropertyReadHandlerImpl" instance="prototype"/>
+	<component name="taskIsReScheduleTaskPropertyReadHandler" class="org.seasar.chronos.core.task.handler.impl.property.read.TaskIsReScheduleTaskPropertyReadHandlerImpl" instance="prototype"/>
 	<component name="taskGetTriggerPropertyReadHandler" class="org.seasar.chronos.core.task.handler.impl.property.read.TaskGetTriggerPropertyReadHandlerImpl" instance="prototype"/>
 	<component name="taskIsExecutedPropertyReadHandler" class="org.seasar.chronos.core.task.handler.impl.property.read.TaskIsExecutedPropertyReadHandlerImpl" instance="prototype"/>
+	<component name="taskIsShutdownTaskPropertyReadHandler" class="org.seasar.chronos.core.task.handler.impl.property.read.TaskIsExecutedPropertyReadHandlerImpl" instance="prototype"/>
 	
 	<!-- タスクのプロパティに書き込むためのコマンド群 -->
 	<component name="taskSetTaskNamePropertyWriteHandler" class="org.seasar.chronos.core.task.handler.impl.property.write.TaskSetTaskNamePropertyWriteHandlerImpl" instance="prototype"/>
@@ -46,6 +47,14 @@
 			<arg>"taskIsEndTaskPropertyReadHandler"</arg>
 		</initMethod>
 		<initMethod name="putTaskPropertyHandler">
+			<arg>@org.seasar.chronos.core.task.TaskConstant@METHOD_NAME_IS_RE_SCHEDULE_TASK</arg>
+			<arg>"taskIsReScheduleTaskPropertyReadHandler"</arg>
+		</initMethod>
+		<initMethod name="putTaskPropertyHandler">
+			<arg>@org.seasar.chronos.core.task.TaskConstant@METHOD_NAME_IS_SHUTDOWN_TASK</arg>
+			<arg>"taskIsShutdownTaskPropertyReadHandler"</arg>
+		</initMethod>
+		<initMethod name="putTaskPropertyHandler">
 			<arg>@org.seasar.chronos.core.task.TaskConstant@METHOD_NAME_GET_THREAD_POOL_SIZE</arg>
 			<arg>"taskGetThreadPoolSizePropertyReadHandler"</arg>
 		</initMethod>		
@@ -56,10 +65,6 @@
 		<initMethod name="putTaskPropertyHandler">
 			<arg>@org.seasar.chronos.core.task.TaskConstant@METHOD_NAME_GET_THREAD_POOL_TYPE</arg>
 			<arg>"taskGetThreadPoolTypePropertyReadHandler"</arg>
-		</initMethod>
-		<initMethod name="putTaskPropertyHandler">
-			<arg>@org.seasar.chronos.core.task.TaskConstant@METHOD_NAME_IS_RE_SCHEDULE</arg>
-			<arg>"taskIsReSchedulePropertyReadHandler"</arg>
 		</initMethod>
 		<initMethod name="putTaskPropertyHandler">
 			<arg>@org.seasar.chronos.core.task.TaskConstant@METHOD_NAME_GET_TASK_NAME</arg>
@@ -96,7 +101,7 @@
 			<arg>"taskSetThreadPoolTypePropertyWriteHandler"</arg>
 		</initMethod>
 		<initMethod name="putTaskPropertyHandler">
-			<arg>@org.seasar.chronos.core.task.TaskConstant@METHOD_NAME_SET_RE_SCHEDULE</arg>
+			<arg>@org.seasar.chronos.core.task.TaskConstant@METHOD_NAME_SET_RE_SCHEDULE_TASK</arg>
 			<arg>"taskSetReSchedulePropertyWriteHandler"</arg>
 		</initMethod>
 		<initMethod name="putTaskPropertyHandler">

@@ -32,7 +32,9 @@ public abstract class AbstractTrigger implements TaskTrigger {
 
 	private boolean execute;
 
-	private boolean reSchedule;
+	private boolean reScheduleTask;
+
+	private boolean shutdownTask;
 
 	public AbstractTrigger() {
 
@@ -122,12 +124,20 @@ public abstract class AbstractTrigger implements TaskTrigger {
 		this.triggerId = id;
 	}
 
-	public boolean isReSchedule() {
-		return reSchedule;
+	public boolean isReScheduleTask() {
+		return reScheduleTask;
 	}
 
-	public void setReSchedule(boolean reSchedule) {
-		this.reSchedule = reSchedule;
+	public void setReScheduleTask(boolean reScheduleTask) {
+		this.reScheduleTask = reScheduleTask;
+	}
+
+	public boolean isShutdownTask() {
+		return shutdownTask;
+	}
+
+	public void setShutdownTask(boolean shutdownTask) {
+		this.shutdownTask = shutdownTask;
 	}
 
 }

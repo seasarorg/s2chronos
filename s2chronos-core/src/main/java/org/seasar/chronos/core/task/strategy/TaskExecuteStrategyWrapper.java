@@ -128,8 +128,8 @@ public class TaskExecuteStrategyWrapper implements TaskExecuteStrategy {
 		return this.taskExecuteStrategy.isPrepared();
 	}
 
-	public boolean isReSchedule() {
-		return this.taskExecuteStrategy.isReSchedule();
+	public boolean isReScheduleTask() {
+		return this.taskExecuteStrategy.isReScheduleTask();
 	}
 
 	public boolean isShutdownTask() {

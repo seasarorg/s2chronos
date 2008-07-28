@@ -19,7 +19,7 @@ public class TaskPropertyReaderImplTest {
 	private final NormalATask testTask = new NormalATask();
 
 	public void postBindFields() {
-		taskPropertyReader.loadTask(testTask, NormalATask.class);
+		taskPropertyReader.setup(testTask, NormalATask.class);
 	}
 
 	@Test
@@ -76,8 +76,8 @@ public class TaskPropertyReaderImplTest {
 
 	@Test
 	public void testIsReSchedule() {
-		boolean result = taskPropertyReader.isReSchedule(false);
-		assertEquals(result, testTask.isReSchedule());
+		boolean result = taskPropertyReader.isReScheduleTask(false);
+		assertEquals(result, testTask.isReScheduleTask());
 	}
 
 	@Test
@@ -141,8 +141,8 @@ public class TaskPropertyReaderImplTest {
 	}
 
 	@Test
-	public void testHasReSchedule() {
-		boolean result = taskPropertyReader.hasReSchedule();
+	public void testHasReScheduleTask() {
+		boolean result = taskPropertyReader.hasReScheduleTask();
 		assertTrue(result);
 	}
 

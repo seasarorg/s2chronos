@@ -67,7 +67,7 @@ public class TaskPropertyWriterImplTest {
 	public void testSetReSchedule() {
 		try {
 			this.taskPropertyWriter.setReSchedule(false);
-			assertEquals(this.testTask.isReSchedule(), false);
+			assertEquals(this.testTask.isReScheduleTask(), false);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			fail();

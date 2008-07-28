@@ -74,8 +74,8 @@ public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler 
 			taskScheduleEntryManager.addTaskScheduleEntry(
 					TaskStateType.RUNNING, taskScheduleEntry);
 			// 定期スケジュール以外ならスケジュールドリストから削除する
-			if (!taskExecutorService.getTaskPropertyReader()
-					.isReSchedule(false)) {
+			if (!taskExecutorService.getTaskPropertyReader().isReScheduleTask(
+					false)) {
 				taskScheduleEntryManager.removeTaskScheduleEntry(
 						TaskStateType.SCHEDULED, taskScheduleEntry);
 			}
@@ -96,8 +96,8 @@ public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler 
 					TaskStateType.RUNNING, taskScheduleEntry);
 			// 定期スケジュール以外ならアンスケジュールドリストに登録する
 			// TODO アンスケジュールドに入った時刻をtseに持たせて，別のハンドラーで一定時間経過後にアンスケジュールドリストから削除する．
-			if (!taskExecutorService.getTaskPropertyReader()
-					.isReSchedule(false)) {
+			if (!taskExecutorService.getTaskPropertyReader().isReScheduleTask(
+					false)) {
 				taskScheduleEntryManager.addTaskScheduleEntry(
 						TaskStateType.UNSCHEDULED, taskScheduleEntry);
 			}

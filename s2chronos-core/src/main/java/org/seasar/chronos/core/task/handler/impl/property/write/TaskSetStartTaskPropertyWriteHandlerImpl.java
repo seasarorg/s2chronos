@@ -26,7 +26,7 @@ public class TaskSetStartTaskPropertyWriteHandlerImpl extends
 	private TaskPropertyReader taskPropertyReader;
 
 	public Object execute(MethodInvocation methodInvocation) throws Throwable {
-		taskPropertyReader.loadTask(methodInvocation.getThis(),
+		taskPropertyReader.setup(methodInvocation.getThis(),
 				methodInvocation.getClass());
 		TaskTrigger taskTrigger = taskPropertyReader.getTrigger(null);
 		if (taskTrigger == null) {

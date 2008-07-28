@@ -20,7 +20,7 @@ import java.io.Serializable;
 /**
  * 
  * @author j5ik2o
- *
+ * 
  */
 public interface TaskTrigger extends Serializable {
 
@@ -52,7 +52,11 @@ public interface TaskTrigger extends Serializable {
 
 	public void setTask(Object task);
 
-	public boolean isReSchedule();
+	public boolean isReScheduleTask();
 
-	public void setReSchedule(boolean reSchedule);
+	public void setReScheduleTask(boolean reScheduleTask);
+
+	public void setShutdownTask(boolean shutdownTask);
+
+	public boolean isShutdownTask();
 }

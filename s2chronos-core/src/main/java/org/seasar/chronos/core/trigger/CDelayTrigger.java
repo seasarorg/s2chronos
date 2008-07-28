@@ -38,7 +38,7 @@ public class CDelayTrigger extends AbstractTrigger {
 	}
 
 	@Override
-	public boolean isReSchedule() {
+	public boolean isReScheduleTask() {
 		return false;
 	}
 

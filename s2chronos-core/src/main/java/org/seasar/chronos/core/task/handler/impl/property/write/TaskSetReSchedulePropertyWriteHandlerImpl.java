@@ -26,11 +26,11 @@ public class TaskSetReSchedulePropertyWriteHandlerImpl extends
 	private TaskPropertyReader taskPropertyReader;
 
 	public Object execute(MethodInvocation methodInvocation) throws Throwable {
-		taskPropertyReader.loadTask(methodInvocation.getThis(),
+		taskPropertyReader.setup(methodInvocation.getThis(),
 				methodInvocation.getClass());
 		TaskTrigger trigger = taskPropertyReader.getTrigger(null);
 		if (trigger != null) {
-			trigger.setReSchedule((Boolean) methodInvocation.getArguments()[0]);
+			trigger.setReScheduleTask((Boolean) methodInvocation.getArguments()[0]);
 			return null;
 		}
 		return methodInvocation.proceed();
