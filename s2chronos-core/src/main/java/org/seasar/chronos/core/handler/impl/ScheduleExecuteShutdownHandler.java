@@ -68,6 +68,7 @@ public class ScheduleExecuteShutdownHandler extends
 																TaskStateType.UNSCHEDULED,
 																taskScheduleEntry);
 											} else {
+												// TODO キャンセル失敗をワーニングでログを出力する
 												log.debug("cancel error!");
 											}
 											log.log("DCHRONOS0014", logArgs);
@@ -82,6 +83,7 @@ public class ScheduleExecuteShutdownHandler extends
 										}
 									});
 							taskScheduleEntry.setTaskStaterFuture(future);
+							// キャンセル中に登録する
 							taskScheduleEntryManager.addTaskScheduleEntry(
 									TaskStateType.CANCELING, taskScheduleEntry);
 							taskScheduleEntryManager.removeTaskScheduleEntry(
