@@ -202,4 +202,12 @@ public class TaskExecuteStrategyWrapper implements TaskExecuteStrategy {
 		this.taskExecuteStrategy.waitOne();
 	}
 
+	public Exception getException() {
+		return this.taskExecuteStrategy.getException();
+	}
+
+	public void setException(Exception exception) {
+		this.taskExecuteStrategy.setException(exception);
+	}
+
 }

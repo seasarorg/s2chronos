@@ -32,7 +32,7 @@ public class TaskAnnotationReaderImpl implements TaskAnnotationReader {
 	private Class<?> taskClass;
 	private TaskTriggerFinder taskTriggerFinder;
 	
-	public void loadTask(Class<?> taskClass) {
+	public void setup(Class<?> taskClass) {
 		this.taskClass = taskClass;
 	}
 

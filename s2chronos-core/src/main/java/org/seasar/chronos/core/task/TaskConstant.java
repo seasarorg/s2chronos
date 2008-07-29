@@ -31,6 +31,7 @@ public final class TaskConstant {
 	public static final String PROPERTY_NAME_THREADPOOL = "threadPool";
 	public static final String PROPERTY_NAME_THREAD_POOL_TYPE = "threadPoolType";
 	public static final String PROPERTY_NAME_THREAD_POOL_SIZE = "threadPoolSize";
+	public static final String PROPERTY_NAME_EXCEPTION = "exception";
 
 	public static final String METHOD_NAME_IS_START_TASK = "isStartTask";
 	public static final String METHOD_NAME_IS_END_TASK = "isEndTask";

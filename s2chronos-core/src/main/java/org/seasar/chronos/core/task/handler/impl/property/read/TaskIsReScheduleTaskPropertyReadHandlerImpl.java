@@ -28,14 +28,14 @@ public class TaskIsReScheduleTaskPropertyReadHandlerImpl extends
 			.getLogger(TaskIsReScheduleTaskPropertyReadHandlerImpl.class);
 
 	public Object execute(MethodInvocation methodInvocation) throws Throwable {
-		boolean reSchedule = (Boolean) methodInvocation.proceed();
+		boolean reScheduleTask = false;
 		TaskTrigger taskTrigger = this.getTaskPropertyReader(methodInvocation)
 				.getTrigger(null);
-		if (taskTrigger != null) {
-			boolean triggerReSchedule = taskTrigger.isReScheduleTask();
-			reSchedule = reSchedule || triggerReSchedule;
+		if (taskTrigger == null) {
+			reScheduleTask = (Boolean) methodInvocation.proceed();
+		} else {
+			reScheduleTask = taskTrigger.isReScheduleTask();
 		}
-		return reSchedule;
+		return reScheduleTask;
 	}
-
 }

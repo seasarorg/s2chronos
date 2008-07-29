@@ -27,7 +27,7 @@ public interface TaskAnnotationReader {
 				Class<?> triggerAnnotationClass);
 	}
 
-	public void loadTask(Class<?> taskClass);
+	public void setup(Class<?> taskClass);
 
 	public boolean hasTaskAnnotation();
 

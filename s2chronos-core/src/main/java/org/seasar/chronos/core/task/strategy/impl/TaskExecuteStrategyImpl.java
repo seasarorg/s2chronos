@@ -342,7 +342,7 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 				.getComponent(TaskPropertyWriter.class);
 
 		this.taskPropertyReader.setup(task, beanDesc);
-		this.taskPropertyWriter.loadTask(task, beanDesc);
+		this.taskPropertyWriter.setup(task, beanDesc);
 
 		this.taskMethodManager = new TaskMethodManager(this.taskClass,
 				METHOD_PREFIX_NAME_DO);
@@ -525,6 +525,14 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 
 	protected TaskExecuteHandler createTaskMethodExecuteHandler() {
 		return new TaskMethodExecuteHandlerImpl();
+	}
+
+	public Exception getException() {
+		return this.taskPropertyReader.getException(null);
+	}
+
+	public void setException(Exception exception) {
+		this.taskPropertyWriter.setException(exception);
 	}
 
 }

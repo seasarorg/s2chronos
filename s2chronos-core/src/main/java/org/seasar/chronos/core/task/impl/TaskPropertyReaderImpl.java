@@ -26,29 +26,12 @@ import org.seasar.framework.beans.factory.BeanDescFactory;
 
 public class TaskPropertyReaderImpl implements TaskPropertyReader {
 
-	public Object getTask() {
-		return this.task;
-	}
+	private BeanDesc beanDesc;
 
-	public Class<?> getTaskClass() {
-		return this.beanDesc.getBeanClass();
-	}
+	private Object task;
 
 	public BeanDesc getBeanDesc() {
 		return this.beanDesc;
-	}
-
-	private BeanDesc beanDesc;
-	private Object task;
-
-	public void setup(Object task, Class<?> taskClass) {
-		this.task = task;
-		this.beanDesc = BeanDescFactory.getBeanDesc(taskClass);
-	}
-
-	public void setup(Object task, BeanDesc beanDesc) {
-		this.task = task;
-		this.beanDesc = beanDesc;
 	}
 
 	public String getDescription(String defaultValue) {
@@ -58,6 +41,24 @@ public class TaskPropertyReaderImpl implements TaskPropertyReader {
 			return (String) pd.getValue(this.task);
 		}
 		return defaultValue;
+	}
+
+	public Exception getException(Exception defaultValue) {
+		Exception result = defaultValue;
+		if (hasException()) {
+			PropertyDesc pd = this.beanDesc
+					.getPropertyDesc(TaskConstant.PROPERTY_NAME_SHUTDOWN_TASK);
+			result = (Exception) pd.getValue(this.task);
+		}
+		return result;
+	}
+
+	public Object getTask() {
+		return this.task;
+	}
+
+	public Class<?> getTaskClass() {
+		return this.beanDesc.getBeanClass();
 	}
 
 	public Long getTaskId(Long defaultValue) {
@@ -122,6 +123,162 @@ public class TaskPropertyReaderImpl implements TaskPropertyReader {
 		return result;
 	}
 
+	public boolean hasDescription() {
+		boolean result = this.beanDesc
+				.hasPropertyDesc(TaskConstant.PROPERTY_NAME_DESCRIPTION);
+		if (result) {
+			PropertyDesc pd = this.beanDesc
+					.getPropertyDesc(TaskConstant.PROPERTY_NAME_DESCRIPTION);
+			result = pd.hasReadMethod();
+			return result;
+		}
+		return result;
+	}
+
+	public boolean hasEndTask() {
+		boolean result = this.beanDesc
+				.hasPropertyDesc(TaskConstant.PROPERTY_NAME_END_TASK);
+		if (result) {
+			PropertyDesc pd = this.beanDesc
+					.getPropertyDesc(TaskConstant.PROPERTY_NAME_END_TASK);
+			result = pd.isReadable();
+			return result;
+		}
+		return result;
+	}
+
+	public boolean hasException() {
+		boolean result = this.beanDesc
+				.hasPropertyDesc(TaskConstant.PROPERTY_NAME_EXCEPTION);
+		if (result) {
+			PropertyDesc pd = this.beanDesc
+					.getPropertyDesc(TaskConstant.PROPERTY_NAME_EXCEPTION);
+			result = pd.isReadable();
+			return result;
+		}
+		return false;
+	}
+
+	public boolean hasExecuted() {
+		boolean result = this.beanDesc
+				.hasPropertyDesc(TaskConstant.PROPERTY_NAME_EXECUTED);
+		if (result) {
+			PropertyDesc pd = this.beanDesc
+					.getPropertyDesc(TaskConstant.PROPERTY_NAME_EXECUTED);
+			result = pd.isReadable();
+			return result;
+		}
+		return result;
+	}
+
+	public boolean hasReScheduleTask() {
+		boolean result = this.beanDesc
+				.hasPropertyDesc(TaskConstant.PROPERTY_NAME_RESCHEDULE_TASK);
+		if (result) {
+			PropertyDesc pd = this.beanDesc
+					.getPropertyDesc(TaskConstant.PROPERTY_NAME_RESCHEDULE_TASK);
+			result = pd.isReadable();
+			return result;
+		}
+		return result;
+	}
+
+	public boolean hasShutdownTask() {
+		boolean result = this.beanDesc
+				.hasPropertyDesc(TaskConstant.PROPERTY_NAME_SHUTDOWN_TASK);
+		if (result) {
+			PropertyDesc pd = this.beanDesc
+					.getPropertyDesc(TaskConstant.PROPERTY_NAME_SHUTDOWN_TASK);
+			result = pd.isReadable();
+			return result;
+		}
+		return result;
+	}
+
+	public boolean hasStartTask() {
+		boolean result = this.beanDesc
+				.hasPropertyDesc(TaskConstant.PROPERTY_NAME_START_TASK);
+		if (result) {
+			PropertyDesc pd = this.beanDesc
+					.getPropertyDesc(TaskConstant.PROPERTY_NAME_START_TASK);
+			result = pd.isReadable();
+			return result;
+		}
+		return result;
+	}
+
+	public boolean hasTaskId() {
+		boolean result = this.beanDesc
+				.hasPropertyDesc(TaskConstant.PROPERTY_NAME_TASKID);
+		if (result) {
+			PropertyDesc pd = this.beanDesc
+					.getPropertyDesc(TaskConstant.PROPERTY_NAME_TASKID);
+			result = pd.isReadable();
+			return result;
+		}
+		return result;
+	}
+
+	public boolean hasTaskName() {
+		boolean result = this.beanDesc
+				.hasPropertyDesc(TaskConstant.PROPERTY_NAME_TASKNAME);
+		if (result) {
+			PropertyDesc pd = this.beanDesc
+					.getPropertyDesc(TaskConstant.PROPERTY_NAME_TASKNAME);
+			result = pd.isReadable();
+			return result;
+		}
+		return result;
+	}
+
+	public boolean hasThreadPool() {
+		boolean result = this.beanDesc
+				.hasPropertyDesc(TaskConstant.PROPERTY_NAME_THREADPOOL);
+		if (result) {
+			PropertyDesc pd = this.beanDesc
+					.getPropertyDesc(TaskConstant.PROPERTY_NAME_THREADPOOL);
+			result = pd.isReadable();
+			return result;
+		}
+		return result;
+	}
+
+	public boolean hasThreadPoolSize() {
+		boolean result = this.beanDesc
+				.hasPropertyDesc(TaskConstant.PROPERTY_NAME_THREAD_POOL_SIZE);
+		if (result) {
+			PropertyDesc pd = this.beanDesc
+					.getPropertyDesc(TaskConstant.PROPERTY_NAME_THREAD_POOL_SIZE);
+			result = pd.isReadable();
+			return result;
+		}
+		return result;
+	}
+
+	public boolean hasThreadPoolType() {
+		boolean result = this.beanDesc
+				.hasPropertyDesc(TaskConstant.PROPERTY_NAME_TASKNAME);
+		if (result) {
+			PropertyDesc pd = this.beanDesc
+					.getPropertyDesc(TaskConstant.PROPERTY_NAME_TASKNAME);
+			result = pd.isReadable();
+			return result;
+		}
+		return result;
+	}
+
+	public boolean hasTrigger() {
+		boolean result = this.beanDesc
+				.hasPropertyDesc(TaskConstant.PROPERTY_NAME_TRIGGER);
+		if (result) {
+			PropertyDesc pd = this.beanDesc
+					.getPropertyDesc(TaskConstant.PROPERTY_NAME_TRIGGER);
+			result = pd.isReadable();
+			return result;
+		}
+		return result;
+	}
+
 	public boolean isEndTask(boolean defaultValue) {
 		boolean result = defaultValue;
 		if (this.hasEndTask()) {
@@ -172,148 +329,14 @@ public class TaskPropertyReaderImpl implements TaskPropertyReader {
 		return result;
 	}
 
-	public boolean hasDescription() {
-		boolean result = this.beanDesc
-				.hasPropertyDesc(TaskConstant.PROPERTY_NAME_DESCRIPTION);
-		if (result) {
-			PropertyDesc pd = this.beanDesc
-					.getPropertyDesc(TaskConstant.PROPERTY_NAME_DESCRIPTION);
-			result = pd.hasReadMethod();
-			return result;
-		}
-		return result;
+	public void setup(Object task, BeanDesc beanDesc) {
+		this.task = task;
+		this.beanDesc = beanDesc;
 	}
 
-	public boolean hasTaskId() {
-		boolean result = this.beanDesc
-				.hasPropertyDesc(TaskConstant.PROPERTY_NAME_TASKID);
-		if (result) {
-			PropertyDesc pd = this.beanDesc
-					.getPropertyDesc(TaskConstant.PROPERTY_NAME_TASKID);
-			result = pd.hasReadMethod();
-			return result;
-		}
-		return result;
-	}
-
-	public boolean hasTaskName() {
-		boolean result = this.beanDesc
-				.hasPropertyDesc(TaskConstant.PROPERTY_NAME_TASKNAME);
-		if (result) {
-			PropertyDesc pd = this.beanDesc
-					.getPropertyDesc(TaskConstant.PROPERTY_NAME_TASKNAME);
-			result = pd.hasReadMethod();
-			return result;
-		}
-		return result;
-	}
-
-	public boolean hasThreadPool() {
-		boolean result = this.beanDesc
-				.hasPropertyDesc(TaskConstant.PROPERTY_NAME_THREADPOOL);
-		if (result) {
-			PropertyDesc pd = this.beanDesc
-					.getPropertyDesc(TaskConstant.PROPERTY_NAME_THREADPOOL);
-			result = pd.hasReadMethod();
-			return result;
-		}
-		return result;
-	}
-
-	public boolean hasThreadPoolSize() {
-		boolean result = this.beanDesc
-				.hasPropertyDesc(TaskConstant.PROPERTY_NAME_THREAD_POOL_SIZE);
-		if (result) {
-			PropertyDesc pd = this.beanDesc
-					.getPropertyDesc(TaskConstant.PROPERTY_NAME_THREAD_POOL_SIZE);
-			result = pd.hasReadMethod();
-			return result;
-		}
-		return result;
-	}
-
-	public boolean hasThreadPoolType() {
-		boolean result = this.beanDesc
-				.hasPropertyDesc(TaskConstant.PROPERTY_NAME_TASKNAME);
-		if (result) {
-			PropertyDesc pd = this.beanDesc
-					.getPropertyDesc(TaskConstant.PROPERTY_NAME_TASKNAME);
-			result = pd.hasReadMethod();
-			return result;
-		}
-		return result;
-	}
-
-	public boolean hasTrigger() {
-		boolean result = this.beanDesc
-				.hasPropertyDesc(TaskConstant.PROPERTY_NAME_TRIGGER);
-		if (result) {
-			PropertyDesc pd = this.beanDesc
-					.getPropertyDesc(TaskConstant.PROPERTY_NAME_TRIGGER);
-			result = pd.hasReadMethod();
-			return result;
-		}
-		return result;
-	}
-
-	public boolean hasEndTask() {
-		boolean result = this.beanDesc
-				.hasPropertyDesc(TaskConstant.PROPERTY_NAME_END_TASK);
-		if (result) {
-			PropertyDesc pd = this.beanDesc
-					.getPropertyDesc(TaskConstant.PROPERTY_NAME_END_TASK);
-			result = pd.hasReadMethod();
-			return result;
-		}
-		return result;
-	}
-
-	public boolean hasExecuted() {
-		boolean result = this.beanDesc
-				.hasPropertyDesc(TaskConstant.PROPERTY_NAME_EXECUTED);
-		if (result) {
-			PropertyDesc pd = this.beanDesc
-					.getPropertyDesc(TaskConstant.PROPERTY_NAME_EXECUTED);
-			result = pd.hasReadMethod();
-			return result;
-		}
-		return result;
-	}
-
-	public boolean hasReScheduleTask() {
-		boolean result = this.beanDesc
-				.hasPropertyDesc(TaskConstant.PROPERTY_NAME_RESCHEDULE_TASK);
-		if (result) {
-			PropertyDesc pd = this.beanDesc
-					.getPropertyDesc(TaskConstant.PROPERTY_NAME_RESCHEDULE_TASK);
-			result = pd.hasReadMethod();
-			return result;
-		}
-		return result;
-	}
-
-	public boolean hasShutdownTask() {
-		boolean result = this.beanDesc
-				.hasPropertyDesc(TaskConstant.PROPERTY_NAME_SHUTDOWN_TASK);
-		if (result) {
-			PropertyDesc pd = this.beanDesc
-					.getPropertyDesc(TaskConstant.PROPERTY_NAME_SHUTDOWN_TASK);
-			result = pd.hasReadMethod();
-			return result;
-		}
-		return result;
-	}
-
-	public boolean hasStartTask() {
-		boolean result = this.beanDesc
-				.hasPropertyDesc(TaskConstant.PROPERTY_NAME_START_TASK);
-		if (result) {
-			PropertyDesc pd = this.beanDesc
-					.getPropertyDesc(TaskConstant.PROPERTY_NAME_START_TASK);
-			result = pd.hasReadMethod();
-			return result;
-		}
-		return result;
+	public void setup(Object task, Class<?> taskClass) {
+		this.task = task;
+		this.beanDesc = BeanDescFactory.getBeanDesc(taskClass);
 	}
 
 }

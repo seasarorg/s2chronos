@@ -50,7 +50,7 @@ public class TaskIsStartTaskPropertyReadHandlerImpl extends
 		TaskTrigger taskTrigger = this.getTaskPropertyReader(methodInvocation)
 				.getTrigger(null);
 		if (taskTrigger == null) {
-			taskAnnotationReader.loadTask(this.getTaskPropertyReader(
+			taskAnnotationReader.setup(this.getTaskPropertyReader(
 					methodInvocation).getTaskClass());
 			taskTrigger = taskAnnotationReader
 					.getTriggerAnnotationClass(new TriggerAnnotationHandler() {
@@ -114,7 +114,7 @@ public class TaskIsStartTaskPropertyReadHandlerImpl extends
 							}
 						}
 					});
-			taskPropertyWriter.loadTask(this.getTaskPropertyReader(
+			taskPropertyWriter.setup(this.getTaskPropertyReader(
 					methodInvocation).getTask(), this.getTaskPropertyReader(
 					methodInvocation).getBeanDesc());
 			taskPropertyWriter.setTrigger(taskTrigger);

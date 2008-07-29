@@ -215,4 +215,13 @@ public class TaskExecutorServiceImpl implements TaskExecutorService {
 	public void hotdeployStop() {
 		this.taskExecuteContext.getTaskExecuteStrategy().hotdeployStop();
 	}
+
+	public Exception getException() {
+		return this.taskExecuteContext.getTaskExecuteStrategy().getException();
+	}
+
+	public void setException(Exception exception) {
+		this.taskExecuteContext.getTaskExecuteStrategy()
+				.setException(exception);
+	}
 }

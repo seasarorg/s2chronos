@@ -1,23 +1,21 @@
 package org.seasar.chronos.core.task;
 
+import org.seasar.chronos.core.TaskTrigger;
 import org.seasar.chronos.core.annotation.task.Task;
 import org.seasar.chronos.core.annotation.task.method.NextTask;
 import org.seasar.chronos.core.annotation.task.method.TaskGroup;
-import org.seasar.chronos.core.annotation.trigger.NonDelayTrigger;
+import org.seasar.chronos.core.trigger.CNonDelayTrigger;
 import org.seasar.framework.log.Logger;
 
 @Task
-@NonDelayTrigger
 public class TaskGroupTask {
 
 	private Logger log = Logger.getLogger(TaskGroupTask.class);
 
-	public boolean isStartTask() {
-		return true;
-	}
+	public Exception exception;
 
-	public boolean isReScheduleTask() {
-		return false;
+	public TaskTrigger getTrigger() {
+		return new CNonDelayTrigger();
 	}
 
 	@NextTask("groupA")
@@ -27,7 +25,8 @@ public class TaskGroupTask {
 
 	@NextTask("taskA")
 	public void startGroupA() {
-		log.info("startGroupA");
+		throw new RuntimeException();
+		// log.info("startGroupA");
 	}
 
 	@TaskGroup("groupA")
@@ -46,7 +45,18 @@ public class TaskGroupTask {
 	}
 
 	public void destroy() {
+		if (exception != null) {
+			exception.printStackTrace();
+		}
 		log.info("destroy");
 	}
+
+	// public Exception getException() {
+	// return exception;
+	// }
+	//
+	// public void setException(Exception exception) {
+	// this.exception = exception;
+	// }
 
 }

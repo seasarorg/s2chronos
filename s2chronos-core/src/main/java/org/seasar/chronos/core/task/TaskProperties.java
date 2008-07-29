@@ -75,4 +75,8 @@ public interface TaskProperties {
 	public void setThreadPool(TaskThreadPool taskThreadPool);
 
 	public void setTrigger(TaskTrigger taskTrigger);
+
+	public void setException(Exception exception);
+
+	public Exception getException();
 }

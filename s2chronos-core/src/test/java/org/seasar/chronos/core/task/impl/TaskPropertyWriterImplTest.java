@@ -19,7 +19,7 @@ public class TaskPropertyWriterImplTest {
 	private final NormalATask testTask = new NormalATask();
 
 	public void postBindFields() {
-		taskPropertyWriter.loadTask(testTask, NormalATask.class);
+		taskPropertyWriter.setup(testTask, NormalATask.class);
 	}
 
 	@Test

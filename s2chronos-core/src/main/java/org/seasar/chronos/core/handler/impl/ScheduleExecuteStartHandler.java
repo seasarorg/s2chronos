@@ -84,6 +84,7 @@ public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler 
 				final String nextTaskName = taskExecutorService.initialize();
 				taskExecute(taskExecutorService, nextTaskName);
 			} catch (final Exception e) {
+				taskExecutorService.setException(e);
 				fireExceptionTaskEvent(taskExecutorService, e);
 			} finally {
 				@SuppressWarnings("unused")

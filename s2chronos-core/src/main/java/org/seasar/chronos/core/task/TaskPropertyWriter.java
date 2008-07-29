@@ -52,6 +52,8 @@ public interface TaskPropertyWriter {
 
 	public boolean hasThreadPoolType();
 
+	public boolean hasException();
+
 	public void setTaskId(Long value);
 
 	public void setTaskName(String value);
@@ -76,8 +78,10 @@ public interface TaskPropertyWriter {
 
 	public void setThreadPoolType(ThreadPoolType value);
 
-	public void loadTask(Object task, Class<?> taskClass);
+	public void setup(Object task, Class<?> taskClass);
 
-	public void loadTask(Object task, BeanDesc beanDesc);
+	public void setup(Object task, BeanDesc beanDesc);
+
+	public void setException(Exception exception);
 
 }

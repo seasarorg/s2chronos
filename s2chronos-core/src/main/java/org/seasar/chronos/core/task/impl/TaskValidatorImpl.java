@@ -29,7 +29,7 @@ public class TaskValidatorImpl implements TaskValidator {
 	 * @see org.seasar.chronos.core.task.TaskValidator#isValid(java.lang.Class)
 	 */
 	public boolean isValid(Class<?> taskClass) {
-		this.taskAnnotationReader.loadTask(taskClass);
+		this.taskAnnotationReader.setup(taskClass);
 		if (this.taskAnnotationReader.hasTaskAnnotation()) {
 			if (this.taskAnnotationReader.hasTriggerAnnotation()
 					|| this.taskAnnotationReader.hasTriggerProperty()) {

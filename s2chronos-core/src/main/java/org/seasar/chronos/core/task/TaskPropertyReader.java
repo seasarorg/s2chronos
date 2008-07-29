@@ -56,6 +56,8 @@ public interface TaskPropertyReader {
 
 	public boolean hasThreadPoolType();
 
+	public boolean hasException();
+
 	public Long getTaskId(Long defaultValue);
 
 	public String getTaskName(String defaultValue);
@@ -79,5 +81,7 @@ public interface TaskPropertyReader {
 	public int getThreadPoolSize(int defaultValue);
 
 	public ThreadPoolType getThreadPoolType(ThreadPoolType defaultValue);
+
+	public Exception getException(Exception exception);
 
 }
