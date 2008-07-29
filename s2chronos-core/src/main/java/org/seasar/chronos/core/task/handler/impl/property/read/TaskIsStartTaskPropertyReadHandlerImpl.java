@@ -46,7 +46,7 @@ public class TaskIsStartTaskPropertyReadHandlerImpl extends
 	private TaskPropertyWriter taskPropertyWriter;
 
 	public Object execute(MethodInvocation methodInvocation) throws Throwable {
-		boolean start = false;
+		boolean start = (Boolean) methodInvocation.proceed();
 		TaskTrigger taskTrigger = this.getTaskPropertyReader(methodInvocation)
 				.getTrigger(null);
 		if (taskTrigger == null) {
@@ -119,10 +119,8 @@ public class TaskIsStartTaskPropertyReadHandlerImpl extends
 					methodInvocation).getBeanDesc());
 			taskPropertyWriter.setTrigger(taskTrigger);
 		}
-		if (taskTrigger == null) {
-			start = (Boolean) methodInvocation.proceed();
-		} else {
-			start = taskTrigger.isStartTask();
+		if (taskTrigger != null) {
+			start = start || taskTrigger.isStartTask();
 		}
 		return start;
 	}

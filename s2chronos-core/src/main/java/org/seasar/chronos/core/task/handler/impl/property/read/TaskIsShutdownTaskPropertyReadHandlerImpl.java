@@ -8,13 +8,11 @@ public class TaskIsShutdownTaskPropertyReadHandlerImpl extends
 		AbstractTaskPropertyHandler {
 
 	public Object execute(MethodInvocation methodInvocation) throws Throwable {
-		boolean shutdown = false;
+		boolean shutdown = (Boolean) methodInvocation.proceed();
 		TaskTrigger taskTrigger = this.getTaskPropertyReader(methodInvocation)
 				.getTrigger(null);
 		if (taskTrigger != null) {
-			shutdown = taskTrigger.isShutdownTask();
-		} else {
-			shutdown = (Boolean) methodInvocation.proceed();
+			shutdown = shutdown || taskTrigger.isShutdownTask();
 		}
 		return shutdown;
 	}
