@@ -105,13 +105,13 @@
     <dependent-module archiveName="s2-tiger-2.4.24.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/org/seasar/container/s2-tiger/2.4.24/s2-tiger-2.4.24.jar">
       <dependency-type>uses</dependency-type>
     </dependent-module>
-    <dependent-module archiveName="s2chronos-core-0.0.1-RC6.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/org/seasar/chronos/s2chronos-core/0.0.1-RC6/s2chronos-core-0.0.1-RC6.jar">
+    <dependent-module archiveName="s2chronos-core-0.0.1-RC7-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/org/seasar/chronos/s2chronos-core/0.0.1-RC7-SNAPSHOT/s2chronos-core-0.0.1-RC7-SNAPSHOT.jar">
       <dependency-type>uses</dependency-type>
     </dependent-module>
-    <dependent-module archiveName="s2chronos-extension-0.0.1-RC6.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/org/seasar/chronos/s2chronos-extension/0.0.1-RC6/s2chronos-extension-0.0.1-RC6.jar">
+    <dependent-module archiveName="s2chronos-extension-0.0.1-RC7-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/org/seasar/chronos/s2chronos-extension/0.0.1-RC7-SNAPSHOT/s2chronos-extension-0.0.1-RC7-SNAPSHOT.jar">
       <dependency-type>uses</dependency-type>
     </dependent-module>
-    <dependent-module archiveName="sa-struts-1.0.2.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/org/seasar/sastruts/sa-struts/1.0.2/sa-struts-1.0.2.jar">
+    <dependent-module archiveName="sa-struts-1.0.3-rc1.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/org/seasar/sastruts/sa-struts/1.0.3-rc1/sa-struts-1.0.3-rc1.jar">
       <dependency-type>uses</dependency-type>
     </dependent-module>
     <dependent-module archiveName="standard-1.1.1.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/taglibs/standard/1.1.1/standard-1.1.1.jar">
