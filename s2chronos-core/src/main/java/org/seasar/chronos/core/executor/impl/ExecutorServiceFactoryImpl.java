@@ -34,6 +34,9 @@ public class ExecutorServiceFactoryImpl implements ExecutorServiceFactory {
 
 	private final AtomicLong threadGroupNo = new AtomicLong();
 
+	/**
+	 * ThreadFactoryの実装です。
+	 */
 	private static class ThreadFactoryImpl implements ThreadFactory {
 
 		static final AtomicInteger poolNumber = new AtomicInteger(1);
@@ -43,6 +46,12 @@ public class ExecutorServiceFactoryImpl implements ExecutorServiceFactory {
 
 		private boolean daemon = false;
 
+		/**
+		 * コンストラクタです．
+		 * 
+		 * @param daemon
+		 *            デーモンスレッドならtrue, それ以外ならfalse
+		 */
 		public ThreadFactoryImpl(boolean daemon) {
 			this.daemon = daemon;
 			SecurityManager securitymanager = System.getSecurityManager();
@@ -59,6 +68,11 @@ public class ExecutorServiceFactoryImpl implements ExecutorServiceFactory {
 			namePrefix = sb.toString();
 		}
 
+		/*
+		 * (非 Javadoc)
+		 * 
+		 * @see java.util.concurrent.ThreadFactory#newThread(java.lang.Runnable)
+		 */
 		public Thread newThread(Runnable runnable) {
 			StringBuilder sb = new StringBuilder();
 			sb.append(namePrefix).append(threadNumber.getAndIncrement());
@@ -72,10 +86,22 @@ public class ExecutorServiceFactoryImpl implements ExecutorServiceFactory {
 		}
 	}
 
+	/*
+	 * (非 Javadoc)
+	 * 
+	 * @see org.seasar.chronos.core.executor.ExecutorServiceFactory#create(org.seasar.chronos.core.ThreadPoolType,
+	 *      java.lang.Integer)
+	 */
 	public ExecutorService create(ThreadPoolType type, Integer threadPoolSize) {
 		return this.create(type, threadPoolSize, false);
 	}
 
+	/*
+	 * (非 Javadoc)
+	 * 
+	 * @see org.seasar.chronos.core.executor.ExecutorServiceFactory#create(org.seasar.chronos.core.ThreadPoolType,
+	 *      java.lang.Integer, boolean)
+	 */
 	public ExecutorService create(ThreadPoolType type, Integer threadPoolSize,
 			boolean daemon) {
 		ExecutorService executorService = null;
@@ -96,11 +122,22 @@ public class ExecutorServiceFactoryImpl implements ExecutorServiceFactory {
 		return executorService;
 	}
 
+	/*
+	 * (非 Javadoc)
+	 * 
+	 * @see org.seasar.chronos.core.executor.ExecutorServiceFactory#create(org.seasar.chronos.core.threadpool.ThreadPool)
+	 */
 	public ExecutorService create(ThreadPool threadPool) {
 		return this.create(threadPool.getThreadPoolType(), threadPool
 				.getThreadPoolSize(), false);
 	}
 
+	/*
+	 * (非 Javadoc)
+	 * 
+	 * @see org.seasar.chronos.core.executor.ExecutorServiceFactory#create(org.seasar.chronos.core.threadpool.ThreadPool,
+	 *      boolean)
+	 */
 	public ExecutorService create(ThreadPool threadPool, boolean daemon) {
 		return this.create(threadPool.getThreadPoolType(), threadPool
 				.getThreadPoolSize(), daemon);

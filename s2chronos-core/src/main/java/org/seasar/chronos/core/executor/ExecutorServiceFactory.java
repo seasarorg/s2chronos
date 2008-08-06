@@ -20,8 +20,21 @@ import java.util.concurrent.ExecutorService;
 import org.seasar.chronos.core.ThreadPoolType;
 import org.seasar.chronos.core.threadpool.ThreadPool;
 
+/**
+ * ExecutorServiceのファクトリクラスです．
+ * 
+ * @author j5ik2o
+ * 
+ */
 public interface ExecutorServiceFactory {
 
+	/**
+	 * ExecutorServiceを生成します．
+	 * 
+	 * @param type
+	 * @param threadPoolSize
+	 * @return
+	 */
 	public ExecutorService create(ThreadPoolType type, Integer threadPoolSize);
 
 	public ExecutorService create(ThreadPoolType type, Integer threadPoolSize,
