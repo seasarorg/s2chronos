@@ -38,28 +38,28 @@ public abstract class AbstractScheduleExecuteHandler implements
 
 	protected SchedulerEventHandler schedulerEventHandler;
 
+	protected AtomicBoolean pause;
+
+	protected AtomicBoolean paused;
+
+	public abstract void handleRequest() throws InterruptedException;
+
 	@Binding(bindingType = BindingType.NONE)
 	public void setExecutorService(ExecutorService executorService) {
 		this.executorService = executorService;
 	}
 
-	protected AtomicBoolean pause;
-
-	protected AtomicBoolean paused;
-
 	public void setPause(AtomicBoolean pause) {
 		this.pause = pause;
 	}
 
-	public abstract void handleRequest() throws InterruptedException;
+	public void setPaused(AtomicBoolean paused) {
+		this.paused = paused;
+	}
 
 	public void setSchedulerEventHandler(
 			SchedulerEventHandler schedulerEventHandler) {
 		this.schedulerEventHandler = schedulerEventHandler;
-	}
-
-	public void setPaused(AtomicBoolean paused) {
-		this.paused = paused;
 	}
 
 }
