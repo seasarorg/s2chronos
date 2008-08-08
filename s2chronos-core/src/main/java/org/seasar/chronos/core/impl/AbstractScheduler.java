@@ -31,6 +31,12 @@ import org.seasar.framework.util.ClassTraversal;
 import org.seasar.framework.util.ClassUtil;
 import org.seasar.framework.util.tiger.ReflectionUtil;
 
+/**
+ * 抽象スケジューラクラスです。
+ * 
+ * @author j5ik2o
+ *
+ */
 public abstract class AbstractScheduler implements Scheduler {
 
 	protected static final Logger log = Logger
