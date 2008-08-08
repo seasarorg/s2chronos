@@ -21,6 +21,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.seasar.framework.util.tiger.CollectionsUtil;
+
 public class TaskMethodManager {
 
 	private static final long serialVersionUID = -3749881053983590510L;
@@ -31,13 +33,13 @@ public class TaskMethodManager {
 
 	private final String prefixMethodName;
 
-	private final HashMap<String, HashMap<String, Method>> methodMap = new HashMap<String, HashMap<String, Method>>();
+	private final HashMap<String, HashMap<String, Method>> methodMap = CollectionsUtil.newHashMap();
 
-	private final HashMap<String, ArrayList<Method>> methodList = new HashMap<String, ArrayList<Method>>();
+	private final HashMap<String, ArrayList<Method>> methodList = CollectionsUtil.newHashMap();
 
-	private final ArrayList<String> groupList = new ArrayList<String>();
+	private final ArrayList<String> groupList = CollectionsUtil.newArrayList();
 
-	private final ArrayList<Method> methodAllList = new ArrayList<Method>();
+	private final ArrayList<Method> methodAllList = CollectionsUtil.newArrayList();
 
 	public TaskMethodManager(Class<?> clazz, String prefixMethodName) {
 		this.clazz = clazz;
