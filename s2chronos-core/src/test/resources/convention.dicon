@@ -4,7 +4,7 @@
 <components>
 	<component class="org.seasar.framework.convention.impl.NamingConventionImpl">
 		<initMethod name="addRootPackageName">
-			<arg>"org.seasar.chronos.core"</arg>
+			<arg>"org.seasar.chronos.core.test"</arg>
 		</initMethod>
 	</component>
 </components>

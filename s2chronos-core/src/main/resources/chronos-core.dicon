@@ -34,5 +34,6 @@
 	<component name="taskExecuteContext" class="org.seasar.chronos.core.task.state.impl.TaskExecuteContextImpl" instance="prototype"/>
 	<component name="taskExecutorService" class="org.seasar.chronos.core.task.impl.TaskExecutorServiceImpl" instance="prototype" autoBinding="none">
 		<arg>taskExecuteContext</arg>
+		<property name="hotdeployDisabled">schedulerConfiguration.hotdeployDisabled</property>
 	</component>
 </components>

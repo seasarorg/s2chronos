@@ -116,6 +116,8 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 
 	private boolean hotdeployStart;
 
+	private boolean hotdeployDisabled;
+
 	public TaskExecuteStrategyImpl() {
 
 	}
@@ -236,7 +238,7 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 	}
 
 	public synchronized void hotdeployStart() {
-		if (HotdeployUtil.isHotdeploy()) {
+		if (!hotdeployDisabled && HotdeployUtil.isHotdeploy()) {
 			String name = this.componentDef.getComponentClass().getName();
 			ReflectionUtil.forNameNoException(name);
 			HotdeployUtil.start();
@@ -245,7 +247,7 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 	}
 
 	public synchronized void hotdeployStop() {
-		if (HotdeployUtil.isHotdeploy()) {
+		if (!hotdeployDisabled && HotdeployUtil.isHotdeploy()) {
 			if (this.hotdeployStart) {
 				HotdeployUtil.stop();
 				this.hotdeployStart = false;
@@ -533,6 +535,14 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 
 	public void setException(Exception exception) {
 		this.taskPropertyWriter.setException(exception);
+	}
+
+	public boolean isHotdeployDisabled() {
+		return hotdeployDisabled;
+	}
+
+	public void setHotdeployDisabled(boolean hotdeployDisabled) {
+		this.hotdeployDisabled = hotdeployDisabled;
 	}
 
 }

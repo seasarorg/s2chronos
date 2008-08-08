@@ -37,6 +37,8 @@ public final class SchedulerConfiguration {
 
 	private long taskStateCleanupTime;
 	
+	private boolean hotdeployDisabled;
+	
 	public boolean isAutoFinish() {
 		return autoFinish;
 	}
@@ -98,5 +100,13 @@ public final class SchedulerConfiguration {
 
 	public void setTaskStateCleanupTime(long taskStateCleanupTime) {
 		this.taskStateCleanupTime = taskStateCleanupTime;
+	}
+
+	public boolean isHotdeployDisabled() {
+		return hotdeployDisabled;
+	}
+
+	public void setHotdeployDisabled(boolean hotdeployEnabled) {
+		this.hotdeployDisabled = hotdeployEnabled;
 	}
 }

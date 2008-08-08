@@ -4,7 +4,7 @@ import org.seasar.chronos.core.S2TestCaseBase;
 import org.seasar.chronos.core.Scheduler;
 import org.seasar.chronos.core.SchedulerEventListener;
 import org.seasar.chronos.core.TaskScheduleEntry;
-import org.seasar.chronos.core.task.NoScheduleTask;
+import org.seasar.chronos.core.test.task.NoScheduleTask;
 import org.seasar.framework.log.Logger;
 
 public class SchedulerImplTest extends S2TestCaseBase implements
