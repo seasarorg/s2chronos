@@ -231,7 +231,7 @@ snip...
 @Task
 public class ExampleTriggerTask extends AbstractCommonTask {
 	
-    private CronTrigger trigger = new CronTrigger("*/1 * * * *");
+    private CCronTrigger trigger = new CCronTrigger("0 */1 * * * ?");
     
     <strong>public TaskTrigger getTrigger(){
     	return trigger;
