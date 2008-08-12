@@ -1,8 +1,10 @@
 package org.seasar.chronos.core.handler.impl;
 
-import org.seasar.chronos.core.S2TestCaseBase;
+import org.junit.runner.RunWith;
+import org.seasar.framework.unit.Seasar2;
 
-public class ScheduleExecuteShutdownHandlerTest extends S2TestCaseBase {
+@RunWith(Seasar2.class)
+public class ScheduleExecuteShutdownHandlerTest {
 
 	private ScheduleExecuteShutdownHandler scheduleExecuteShutdownHandler;
 

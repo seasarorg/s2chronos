@@ -69,8 +69,6 @@ public class MethodInvoker {
 		this.target = componentDef.getComponent();
 		this.targetClass = componentDef.getComponentClass();
 		this.beanDesc = BeanDescFactory.getBeanDesc(this.targetClass);
-		this.callbackExecutorService = executorServiceFactory.create(
-				ThreadPoolType.SINGLE, null);
 	}
 
 	/**
@@ -89,6 +87,16 @@ public class MethodInvoker {
 		this.beanDesc = beanDesc;
 		this.target = target;
 		this.targetClass = this.beanDesc.getBeanClass();
+	}
+	
+	private boolean initialized;
+	
+	private synchronized void initialize(){
+		if ( !initialized ){
+			this.callbackExecutorService = executorServiceFactory.create(
+					ThreadPoolType.SINGLE, null);
+			initialized = true;
+		}
 	}
 
 	public boolean awaitInvokes(long time, TimeUnit unit)
@@ -159,6 +167,7 @@ public class MethodInvoker {
 	public AsyncResult beginInvoke(final String methodName,
 			final Object[] args, final MethodCallback methodCallback,
 			final Object state) throws InterruptedException {
+		this.initialize();
 		final AsyncResult asyncResult = new AsyncResult();
 		this.resultList.add(asyncResult);
 		asyncResult.setState(state);
@@ -342,6 +351,11 @@ public class MethodInvoker {
 		for (AsyncResult ar : resultList) {
 			this.endInvoke(ar);
 		}
+	}
+
+	public void setExecutorServiceFactory(
+			ExecutorServiceFactory executorServiceFactory) {
+		this.executorServiceFactory = executorServiceFactory;
 	}
 
 }

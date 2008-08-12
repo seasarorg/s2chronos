@@ -1,11 +1,15 @@
 package org.seasar.chronos.core;
 
+import org.junit.runner.RunWith;
 import org.seasar.chronos.core.impl.SchedulerImpl;
+import org.seasar.framework.unit.Seasar2;
+import static org.junit.Assert.*;
 
-public class SchedulerWrapperTest extends S2TestCaseBase {
+@RunWith(Seasar2.class)
+public class SchedulerWrapperTest  {
 
-	@Override
-	protected void setUp() throws Exception {
+
+	public void postBindFields()  {
 		schedulerWrapper = new SchedulerWrapper(new SchedulerImpl()) {
 
 			@Override
@@ -14,7 +18,6 @@ public class SchedulerWrapperTest extends S2TestCaseBase {
 			}
 
 		};
-		super.setUp();
 	}
 
 	private SchedulerWrapper schedulerWrapper;

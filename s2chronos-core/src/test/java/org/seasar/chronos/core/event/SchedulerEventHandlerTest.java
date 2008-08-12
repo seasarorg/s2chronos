@@ -1,18 +1,24 @@
 package org.seasar.chronos.core.event;
 
-import junit.framework.TestCase;
+import java.util.concurrent.ExecutorService;
 
+import org.junit.runner.RunWith;
 import org.seasar.chronos.core.Scheduler;
 import org.seasar.chronos.core.SchedulerEventListener;
 import org.seasar.chronos.core.TaskScheduleEntry;
+import org.seasar.chronos.core.executor.ExecutorServiceFactory;
 import org.seasar.chronos.core.impl.SchedulerImpl;
 import org.seasar.chronos.core.impl.TaskStateType;
 import org.seasar.chronos.core.schedule.ScheduleEntry;
+import org.seasar.framework.unit.Seasar2;
 
-public class SchedulerEventHandlerTest extends TestCase implements
+@RunWith(Seasar2.class)
+public class SchedulerEventHandlerTest implements
 		SchedulerEventListener {
 
-	private SchedulerEventHandler schedulerEventHandler;
+	private SchedulerEventHandler schedulerEventHandler = new SchedulerEventHandler();
+
+	private ExecutorServiceFactory executorServiceFacotry;
 
 	public void addTaskScheduleEntry(Scheduler scheduler,TaskStateType taskStateType,
 			TaskScheduleEntry taskScheduleEntry) {
@@ -56,12 +62,11 @@ public class SchedulerEventHandlerTest extends TestCase implements
 		System.out.println("exceptionTask");
 	}
 
-	@Override
-	protected void setUp() throws Exception {
+	public void postBindFields() {
 		schedulerEventHandler = new SchedulerEventHandler();
 		schedulerEventHandler.setScheduler(new SchedulerImpl());
 		schedulerEventHandler.add(this);
-		super.setUp();
+		schedulerEventHandler.setExecutorServiceFacotry(executorServiceFacotry);
 	}
 
 	public void shutdownScheduler(Scheduler scheduler) {

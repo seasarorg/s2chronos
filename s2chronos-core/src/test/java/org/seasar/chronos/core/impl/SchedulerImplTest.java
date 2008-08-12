@@ -1,13 +1,15 @@
 package org.seasar.chronos.core.impl;
 
-import org.seasar.chronos.core.S2TestCaseBase;
+import org.junit.runner.RunWith;
 import org.seasar.chronos.core.Scheduler;
 import org.seasar.chronos.core.SchedulerEventListener;
 import org.seasar.chronos.core.TaskScheduleEntry;
 import org.seasar.chronos.core.test.task.NoScheduleTask;
 import org.seasar.framework.log.Logger;
+import org.seasar.framework.unit.Seasar2;
 
-public class SchedulerImplTest extends S2TestCaseBase implements
+@RunWith(Seasar2.class)
+public class SchedulerImplTest implements
 		SchedulerEventListener {
 
 	private transient static Logger log = Logger

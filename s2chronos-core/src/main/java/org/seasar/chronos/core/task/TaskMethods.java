@@ -49,4 +49,6 @@ public interface TaskMethods {
 	public TaskPropertyReader getTaskPropertyReader();
 
 	public TaskPropertyWriter getTaskPropertyWriter();
+	
+	public void catchException(Exception exception);
 }

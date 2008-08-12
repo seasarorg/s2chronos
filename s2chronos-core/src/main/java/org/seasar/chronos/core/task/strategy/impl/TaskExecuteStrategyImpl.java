@@ -354,6 +354,7 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 					.getExecutorService();
 			this.taskMethodInvoker = new MethodInvoker(
 					jobMethodExecutorService, this.task, this.beanDesc);
+			this.taskMethodInvoker.setExecutorServiceFactory(this.executorServiceFactory);
 		}
 		this.prepared = true;
 		this.save();
@@ -543,6 +544,12 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 
 	public void setHotdeployDisabled(boolean hotdeployDisabled) {
 		this.hotdeployDisabled = hotdeployDisabled;
+	}
+
+	public void catchException(Exception exception) {
+		if (this.beanDesc.hasMethod("catchException")){
+			this.beanDesc.invoke(this.task, "catchException", new Object[]{exception});
+		}
 	}
 
 }

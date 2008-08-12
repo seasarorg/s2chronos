@@ -1,25 +1,29 @@
 package org.seasar.chronos.core.delegate;
 
+import static org.junit.Assert.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-import junit.framework.TestCase;
-
+import org.junit.runner.RunWith;
+import org.seasar.chronos.core.executor.ExecutorServiceFactory;
 import org.seasar.framework.beans.BeanDesc;
 import org.seasar.framework.beans.factory.BeanDescFactory;
+import org.seasar.framework.unit.Seasar2;
 
-public class MethodInvokerTest extends TestCase {
+@RunWith(Seasar2.class)
+public class MethodInvokerTest {
 
 	private MethodInvoker methodInvoker;
 
 	private BeanDesc beanDesc;
 
-	@Override
-	protected void setUp() throws Exception {
+	private ExecutorServiceFactory executorServiceFactory;
+
+	public void postBindFields() throws Exception {
 		this.beanDesc = BeanDescFactory.getBeanDesc(MethodInvokerTest.class);
 		methodInvoker = new MethodInvoker(Executors.newSingleThreadExecutor(),
 				this, beanDesc);
-		super.setUp();
+		methodInvoker.setExecutorServiceFactory(executorServiceFactory);
 	}
 
 	public void targetMethod() {
