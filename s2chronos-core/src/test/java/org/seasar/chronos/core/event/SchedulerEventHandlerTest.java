@@ -18,7 +18,7 @@ public class SchedulerEventHandlerTest implements
 
 	private SchedulerEventHandler schedulerEventHandler = new SchedulerEventHandler();
 
-	private ExecutorServiceFactory executorServiceFacotry;
+	private ExecutorServiceFactory executorServiceFactory;
 
 	public void addTaskScheduleEntry(Scheduler scheduler,TaskStateType taskStateType,
 			TaskScheduleEntry taskScheduleEntry) {
@@ -66,7 +66,7 @@ public class SchedulerEventHandlerTest implements
 		schedulerEventHandler = new SchedulerEventHandler();
 		schedulerEventHandler.setScheduler(new SchedulerImpl());
 		schedulerEventHandler.add(this);
-		schedulerEventHandler.setExecutorServiceFacotry(executorServiceFacotry);
+		schedulerEventHandler.setExecutorServiceFacotry(executorServiceFactory);
 	}
 
 	public void shutdownScheduler(Scheduler scheduler) {

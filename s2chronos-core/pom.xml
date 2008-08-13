@@ -73,12 +73,12 @@
 		<dependency>
 			<groupId>org.seasar.container</groupId>
 			<artifactId>s2-extension</artifactId>
-			<version>2.4.27-SNAPSHOT</version>
+			<version>2.4.27</version>
 		</dependency>
 		<dependency>
 			<groupId>org.seasar.container</groupId>
 			<artifactId>s2-tiger</artifactId>
-			<version>2.4.27-SNAPSHOT</version>
+			<version>2.4.27</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.poi</groupId>
