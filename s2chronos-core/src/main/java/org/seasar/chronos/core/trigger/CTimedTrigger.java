@@ -53,30 +53,23 @@ public class CTimedTrigger extends AbstractTrigger {
 	}
 
 	public boolean isStartTask() {
-
 		if (this.isExecute()) {
 			return false;
 		}
-
 		boolean startTimeCheck = false;
-
 		// 開始時刻の確認
 		if (startTime != null) {
 			startTimeCheck = (System.currentTimeMillis() >= startTime.getTime());
 		}
-
 		return startTimeCheck;
 	}
 
 	public boolean isEndTask() {
-
 		boolean endTimeCheck = false;
-
 		// 終了時刻の確認
 		if (endTime != null) {
 			endTimeCheck = (System.currentTimeMillis() >= endTime.getTime());
 		}
-
 		return endTimeCheck;
 	}
 
