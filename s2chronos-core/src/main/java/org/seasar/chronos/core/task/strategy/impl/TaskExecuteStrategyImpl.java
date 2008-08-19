@@ -69,9 +69,11 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 
 	private static final String METHOD_PREFIX_NAME_DO = "do";
 
-	private static final String METHOD_NAME_INITIALIZE = "initialize";
+	private static final String[] METHOD_NAME_START = { "execute",
+			"initialize", "start", "begin" };
 
-	private static final String METHOD_NAME_DESTROY = "destroy";
+	private static final String[] METHOD_NAME_END = { "destroy", "finish",
+			"end" };
 
 	private static final ThreadPoolType DEFAULT_THREADPOOL_TYPE = ThreadPoolType.CACHED;
 
@@ -158,11 +160,14 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 
 	public String destroy() throws InterruptedException {
 		String nextTask = null;
-		if (this.taskMethodInvoker.hasMethod(METHOD_NAME_DESTROY)) {
-			this.taskMethodInvoker.beginInvoke(METHOD_NAME_DESTROY);
-			TaskMethodMetaData md = new TaskMethodMetaData(this.beanDesc,
-					METHOD_NAME_DESTROY);
-			nextTask = md.getNextTask();
+		for (String methodName : METHOD_NAME_END) {
+			if (this.taskMethodInvoker.hasMethod(methodName)) {
+				this.taskMethodInvoker.beginInvoke(methodName);
+				TaskMethodMetaData md = new TaskMethodMetaData(this.beanDesc,
+						methodName);
+				nextTask = md.getNextTask();
+				break;
+			}
 		}
 		this.setExecuted(false);
 		this.notifyGetterSignal();
@@ -257,12 +262,14 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 
 	public String initialize() throws InterruptedException {
 		this.setExecuted(true);
-		if (this.taskMethodInvoker.hasMethod(METHOD_NAME_INITIALIZE)) {
-			this.taskMethodInvoker.beginInvoke(METHOD_NAME_INITIALIZE);
-			TaskMethodMetaData md = new TaskMethodMetaData(this.beanDesc,
-					METHOD_NAME_INITIALIZE);
-			this.notifyGetterSignal();
-			return md.getNextTask();
+		for (String methodName : METHOD_NAME_START) {
+			if (this.taskMethodInvoker.hasMethod(methodName)) {
+				this.taskMethodInvoker.beginInvoke(methodName);
+				TaskMethodMetaData md = new TaskMethodMetaData(this.beanDesc,
+						methodName);
+				this.notifyGetterSignal();
+				return md.getNextTask();
+			}
 		}
 		return null;
 	}
@@ -354,7 +361,8 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 					.getExecutorService();
 			this.taskMethodInvoker = new MethodInvoker(
 					jobMethodExecutorService, this.task, this.beanDesc);
-			this.taskMethodInvoker.setExecutorServiceFactory(this.executorServiceFactory);
+			this.taskMethodInvoker
+					.setExecutorServiceFactory(this.executorServiceFactory);
 		}
 		this.prepared = true;
 		this.save();
@@ -547,8 +555,9 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 	}
 
 	public void catchException(Exception exception) {
-		if (this.beanDesc.hasMethod("catchException")){
-			this.beanDesc.invoke(this.task, "catchException", new Object[]{exception});
+		if (this.beanDesc.hasMethod("catchException")) {
+			this.beanDesc.invoke(this.task, "catchException",
+					new Object[] { exception });
 		}
 	}
 

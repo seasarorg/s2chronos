@@ -11,15 +11,13 @@ public class CustomTriggerTask {
 
 	private final Logger log = Logger.getLogger(CustomTriggerTask.class);
 
-	public TimedTask timedTask;
-
 	@NextTask("taskA")
 	public void initialize() {
 		log.debug("[CustomTriggerTask::initialize]");
 	}
 
 	public void doTaskA() {
-		log.debug("[CustomTriggerTask::doTaskA] = " + timedTask);
+		log.debug("[CustomTriggerTask::doTaskA]");
 	}
 
 	public void destroy() {
