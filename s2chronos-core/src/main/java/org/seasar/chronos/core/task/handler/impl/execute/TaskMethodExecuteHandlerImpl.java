@@ -43,8 +43,7 @@ public class TaskMethodExecuteHandlerImpl extends AbstractTaskExecuteHandler {
 			// (getTaskExecuteStrategy().getScheduler().addTask(nextTaskName)) {
 			// break;
 			// }
-
-			final String methodName = toMethodName(nextTaskName);
+			String methodName = toMethodName(nextTaskName);
 
 			TaskMethodMetaData md = new TaskMethodMetaData(mi
 					.getMethod(methodName));

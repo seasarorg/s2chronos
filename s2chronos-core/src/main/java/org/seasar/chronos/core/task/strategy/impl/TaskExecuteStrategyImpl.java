@@ -69,8 +69,8 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 
 	private static final String METHOD_PREFIX_NAME_DO = "do";
 
-	private static final String[] METHOD_NAME_START = { "execute",
-			"initialize", "start", "begin" };
+	private static final String[] METHOD_NAME_START = { "initialize", "start",
+			"begin" };
 
 	private static final String[] METHOD_NAME_END = { "destroy", "finish",
 			"end" };
@@ -91,8 +91,6 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 	private BeanDesc beanDesc;
 
 	private MethodInvoker taskMethodInvoker;
-
-	// private MethodInvoker lifecycleMethodInvoker;
 
 	private TaskMethodManager taskMethodManager;
 
@@ -175,6 +173,10 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 	}
 
 	public void execute(String startTaskName) throws InterruptedException {
+		if (startTaskName == null
+				&& this.taskMethodInvoker.hasMethod("doExecute")) {
+			startTaskName = "execute";
+		}
 		TaskType type = this.isGroupMethod(startTaskName) ? TaskType.JOBGROUP
 				: TaskType.JOB;
 		String nextTaskName = startTaskName;

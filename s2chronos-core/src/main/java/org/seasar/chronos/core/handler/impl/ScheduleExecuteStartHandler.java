@@ -154,16 +154,15 @@ public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler 
 
 	private void taskExecute(TaskExecutorService tes, String nextTaskName)
 			throws InterruptedException {
-		if (nextTaskName != null) {
-			try {
-				tes.execute(nextTaskName);
-				tes.waitOne();
-			} catch (RejectedExecutionException ex) {
-				final String taskName = tes.getTaskPropertyReader()
-						.getTaskName(null);
-				log.log("ECHRONOS0002", new Object[] { taskName }, ex);
-			}
+		try {
+			tes.execute(nextTaskName);
+			tes.waitOne();
+		} catch (RejectedExecutionException ex) {
+			final String taskName = tes.getTaskPropertyReader().getTaskName(
+					null);
+			log.log("ECHRONOS0002", new Object[] { taskName }, ex);
 		}
+
 	}
 
 }
