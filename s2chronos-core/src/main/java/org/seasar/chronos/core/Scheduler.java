@@ -66,6 +66,8 @@ public interface Scheduler {
 	 */
 	public void join();
 
+	public void process();
+
 	/**
 	 * スケジューラにタスクを追加します．
 	 * <p>

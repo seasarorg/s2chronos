@@ -15,7 +15,6 @@
  */
 package org.seasar.chronos.core.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CancellationException;
@@ -48,8 +47,7 @@ public class SchedulerImpl extends AbstractScheduler {
 
 	private static final SchedulerConfiguration defaultConfiguration = new SchedulerConfiguration();
 
-	private final SchedulerEventHandler schedulerEventHandler = new SchedulerEventHandler(
-			);
+	private final SchedulerEventHandler schedulerEventHandler = new SchedulerEventHandler();
 
 	private final AtomicBoolean pause = new AtomicBoolean();
 
@@ -62,7 +60,8 @@ public class SchedulerImpl extends AbstractScheduler {
 
 	private SchedulerConfiguration configuration = defaultConfiguration;
 
-	private final List<ScheduleExecuteHandler> scheduleExecuteHandlerList = CollectionsUtil.newArrayList();
+	private final List<ScheduleExecuteHandler> scheduleExecuteHandlerList = CollectionsUtil
+			.newArrayList();
 
 	private ExecutorServiceFactory executorServiceFactory;
 
@@ -275,7 +274,8 @@ public class SchedulerImpl extends AbstractScheduler {
 		}
 		this.taskScheduleEntryManager.addTaskScheduleEntry(
 				TaskStateType.SCHEDULED, taskScheduleEntry);
-		this.schedulerEventHandler.fireAddTaskScheduleEntry(TaskStateType.SCHEDULED,taskScheduleEntry);
+		this.schedulerEventHandler.fireAddTaskScheduleEntry(
+				TaskStateType.SCHEDULED, taskScheduleEntry);
 		return taskScheduleEntry;
 	}
 
@@ -359,6 +359,11 @@ public class SchedulerImpl extends AbstractScheduler {
 	public void setExecutorServiceFactory(
 			ExecutorServiceFactory executorServiceFactory) {
 		this.executorServiceFactory = executorServiceFactory;
+	}
+
+	public void process() {
+		this.start();
+		this.join();
 	}
 
 }

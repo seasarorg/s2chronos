@@ -20,7 +20,7 @@ import org.seasar.chronos.core.impl.AbstractScheduler;
 /**
  * 
  * @author j5ik2o
- *
+ * 
  */
 public abstract class SchedulerWrapper extends AbstractScheduler {
 
@@ -79,4 +79,7 @@ public abstract class SchedulerWrapper extends AbstractScheduler {
 		this.scheduler.start();
 	}
 
+	public void process() {
+		this.scheduler.process();
+	}
 }
