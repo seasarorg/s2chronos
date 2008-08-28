@@ -1,7 +1,7 @@
 package org.seasar.chronos.example.main;
 
 import org.seasar.chronos.core.Scheduler;
-import org.seasar.framework.container.S2Container;
+import org.seasar.framework.container.SingletonS2Container;
 import org.seasar.framework.container.factory.SingletonS2ContainerFactory;
 
 /**
@@ -22,16 +22,7 @@ public class Sample {
 	 */
 	public static void main(String[] args) {
 		SingletonS2ContainerFactory.init();
-		S2Container container = SingletonS2ContainerFactory.getContainer();
-		Scheduler scheduler = (Scheduler) container
-				.getComponent(Scheduler.class);
-		scheduler.start();
-		try {
-			scheduler.join();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		SingletonS2Container.getComponent(Scheduler.class).process();
 		SingletonS2ContainerFactory.destroy();
 	}
-
 }
