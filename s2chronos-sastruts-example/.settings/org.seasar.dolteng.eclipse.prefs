@@ -1,0 +1,7 @@
+#Thu Aug 28 19:21:39 JST 2008
+DefaultRootPackage=org.seasar.chronos.sastruts.example
+ServletPath=s2chronos-sastruts-example
+UseSqlMarker=true
+ViewType=SA-Struts+Mayaa
+WebContentsRoot=src/main/webapp
+eclipse.preferences.version=1
