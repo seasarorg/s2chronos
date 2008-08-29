@@ -2,7 +2,7 @@ package org.seasar.chronos.example.trigger;
 
 import org.seasar.chronos.core.trigger.AbstractTrigger;
 
-public class CExampleTrigger extends AbstractTrigger {
+public class CCustomTrigger extends AbstractTrigger {
 
 	private static final long serialVersionUID = 1L;
 

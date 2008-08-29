@@ -1,7 +1,7 @@
 package org.seasar.chronos.example.task;
 
 import org.seasar.chronos.core.annotation.task.Task;
-import org.seasar.chronos.example.annotation.ExampleTrigger;
+import org.seasar.chronos.example.annotation.CustomTrigger;
 
 /**
  * ExampleTriggerに対応するタスクです．
@@ -12,7 +12,7 @@ import org.seasar.chronos.example.annotation.ExampleTrigger;
  *
  */
 @Task
-@ExampleTrigger(div = 3)
-public class ExampleTriggerTask extends AbstractCommonTask {
+@CustomTrigger(div = 3)
+public class CustomTriggerTask extends AbstractCommonTask {
 
 }

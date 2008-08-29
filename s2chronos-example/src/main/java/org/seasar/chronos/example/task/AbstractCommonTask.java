@@ -9,15 +9,15 @@ public abstract class AbstractCommonTask {
 
 	@NextTask("taskA")
 	public synchronized void initialize() {
-		log.info(this.getClass().getSimpleName() + ":initialize");
+		log.info("[[" + this.getClass().getSimpleName() + ":initialize]]");
 	}
 
 	public synchronized void doTaskA() {
-		log.info(this.getClass().getSimpleName() + ":doTaskA");
+		log.info("[[" + this.getClass().getSimpleName() + ":doTaskA]]");
 	}
 
 	public synchronized void destroy() {
-		log.info(this.getClass().getSimpleName() + ":destroy");
+		log.info("[[" + this.getClass().getSimpleName() + ":destroy]]");
 	}
 
 }

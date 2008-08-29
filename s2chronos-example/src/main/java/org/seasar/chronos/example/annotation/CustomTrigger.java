@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-public @interface ExampleTrigger {
+public @interface CustomTrigger {
 
 	int div() default 2;
 
