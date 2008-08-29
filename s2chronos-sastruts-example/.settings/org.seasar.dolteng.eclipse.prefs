@@ -1,5 +1,8 @@
-#Thu Aug 28 19:21:39 JST 2008
+#Fri Aug 29 16:19:42 JST 2008
+DaoType=S2JDBC
+DefaultResourcePath=/s2chronos-sastruts-example/src/main/resources
 DefaultRootPackage=org.seasar.chronos.sastruts.example
+DefaultSrcPath=/s2chronos-sastruts-example/src/main/java
 ServletPath=s2chronos-sastruts-example
 UseSqlMarker=true
 ViewType=SA-Struts+Mayaa
