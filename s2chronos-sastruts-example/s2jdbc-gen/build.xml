@@ -1,0 +1,359 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="s2jdbc-gen" default="showRdbmsName" basedir=".">
+	<property name="maven.repo.local" value="${user.home}/.m2/repository"/>
+	
+	<property name="rdbms" value="h2"/>
+	
+	<property name="temp" value="${rdbms}/temp"/>
+	<property name="build" value="${temp}/build"/>
+	<property name="testresult" value="${temp}/testresult"/>
+	<property name="src" value="${temp}/src"/>
+	<property name="resources" value="${rdbms}/resources"/>
+	<property name="db" value="${temp}/db"/>
+	<property name="migrate" value="${db}/migrate"/>
+	<property name="dump" value="${db}/dump"/>	
+	<property name="ddl-info" value="${db}/ddl-info.txt"/>
+	<property name="sql" value="${rdbms}/sql"/>	
+	
+	<property name="rootpackagename" value="org.seasar.chronos.sastruts.example"/>
+	<property name="ignoreTableName" value="(SCHEMA_INFO|.*\$.*)"/>
+	
+	<path id="classpath">
+		<pathelement location="${build}"/>
+		<pathelement location="../../s2jdbc-gen-core/build/classes"/>
+		<fileset dir="../../s2jdbc-gen-core/lib">
+			<exclude name="**/*-sources.jar"/>
+		</fileset>
+		<fileset dir="${maven.repo.local}">
+			<include name="com/h2database/h2/1.0.69/h2-1.0.69.jar"/>
+			<include name="oracle/ojdbc14/9.2.0.5/ojdbc14-9.2.0.5.jar"/>
+			<include name="org/seasar/container/s2-framework/2.4.28/s2-framework-2.4.28.jar"/>
+			<include name="org/seasar/container/s2-extension/2.4.28/s2-extension-2.4.28.jar"/>
+			<include name="org/seasar/container/s2-tiger/2.4.28/s2-tiger-2.4.28.jar"/>
+			<include name="org/apache/geronimo/specs/geronimo-jpa_3.0_spec/1.0/geronimo-jpa_3.0_spec-1.0.jar"/>
+			<include name="commons-logging/commons-logging/1.0.3/commons-logging-1.0.3.jar"/>
+			<include name="jboss/javassist/3.4.ga/javassist-3.4.ga.jar"/>
+			<include name="ognl/ognl/2.6.9-patch-20070908/ognl-2.6.9-patch-20070908.jar"/>
+			<include name="org/apache/geronimo/specs/geronimo-jta_1.1_spec/1.0/geronimo-jta_1.1_spec-1.0.jar"/>
+			<include name="log4j/log4j/1.2.13/log4j-1.2.13.jar"/>
+		</fileset>
+	</path>
+
+	<taskdef resource="s2jdbc-gen-task.properties" classpathref="classpath"/>
+	
+	<target name="showRdbmsName">
+		<echo>${rdbms}</echo>
+	</target>
+
+	<target name="testFromDbToEntity" depends="showRdbmsName, setup">
+		<!-- setUp 
+		<exec-sql 
+			classpathref="classpath">
+			<sqlFileList dir="${sql}/testFromDbToEntity">
+				<file name="create.sql"/>
+			</sqlFileList>
+		</exec-sql>-->
+		<!-- test -->
+		<gen-entity
+			rootpackagename="${rootpackagename}"
+			javafiledestdir="${src}"
+			pluralformfile="plural.properties"
+			classpathref="classpath"
+			ignoreTableNamePattern="${ignoreTableName}"
+		/>
+		<!--
+		<javac 
+			srcdir="${src}"
+			destdir="${build}"
+			encoding="UTF-8"
+			fork="true"
+			debug="on"
+			classpathref="classpath"
+		/>
+		<gen-ddl 
+			classpathDir="${build}"
+			rootpackagename="${rootpackagename}"
+			migratedir="${migrate}"
+			ddlInfofile="${ddl-info}"
+			classpathref="classpath"
+		/>-->
+		<!-- tearDown 
+		<exec-sql 
+			classpathref="classpath">
+			<sqlFileList dir="${sql}/testFromDbToEntity">
+				<file name="drop.sql"/>
+			</sqlFileList>
+		</exec-sql>-->
+	</target>
+	
+	<target name="testFromEntityToDb" depends="showRdbmsName, setup">
+		<!-- setUp -->
+		<javac 
+			srcdir="../src/main/java"
+			destdir="${build}"
+			encoding="UTF-8"
+			fork="true"
+			debug="on"
+			classpathref="classpath"
+		/>
+		<!-- test -->
+		<gen-test
+			classpathDir="${build}"
+			rootpackagename="${rootpackagename}"
+			javafiledestdir="${src}"
+			classpathref="classpath"
+		/>
+		<gen-condition
+			classpathDir="${build}"
+			rootpackagename="${rootpackagename}"
+			javafiledestdir="${src}"
+			classpathref="classpath"
+		/>
+		<gen-names
+			classpathDir="${build}"
+			rootpackagename="${rootpackagename}"
+			javafiledestdir="${src}"
+			classpathref="classpath"
+		/>
+		<gen-service
+			classpathDir="${build}"
+			rootpackagename="${rootpackagename}"
+			javafiledestdir="${src}"
+			classpathref="classpath"
+		/>
+		<javac 
+			srcdir="${src}"
+			destdir="${build}"
+			encoding="UTF-8"
+			fork="true"
+			debug="on"
+			classpathref="classpath"
+		/>
+		<gen-ddl 
+			classpathDir="${build}"
+			rootpackagename="${rootpackagename}"
+			migratedir="${migrate}"
+			ddlInfofile="${ddl-info}"
+			classpathref="classpath"
+		/>
+		<migrate 
+			classpathDir="${build}"
+			migratedir="${migrate}"
+			ddlInfofile="${ddl-info}"
+			rootpackagename="${rootpackagename}"
+			classpathref="classpath"
+		/>
+		<junit 
+			haltonfailure="no" 
+			printsummary="true">
+			<formatter type="xml"/>
+			<batchtest todir="${testresult}" fork="true">
+				<fileset dir="${src}">
+					<include name="**/AddressTest.java"/>
+				</fileset>
+			</batchtest>
+			<classpath refid="classpath"/>
+		</junit>
+		<!-- tearDown -->
+		<migrate 
+			classpathDir="${build}"
+			migratedir="${migrate}"
+			ddlInfofile="${ddl-info}"
+			version="0"
+			rootpackagename="${rootpackagename}"
+			classpathref="classpath"
+		/>
+	</target>
+
+	<target name="testGenerateDdl" depends="showRdbmsName, setup">
+		<!-- setUp -->
+		<javac 
+			destdir="${build}"
+			encoding="UTF-8"
+			fork="true"
+			debug="on"
+			classpathref="classpath">
+			<src path="../src/main/java"/>
+		</javac>
+		<!-- test -->
+		<gen-ddl 
+			classpathDir="${build}"
+			rootpackagename="${rootpackagename}"
+			migratedir="${migrate}"
+			ddlInfofile="${ddl-info}"
+			classpathref="classpath"
+			sqlkeywordcase="lowercase"
+			sqlidentifiercase="uppercase"
+		/>
+	</target>
+	
+	<target name="testMigrate" depends="showRdbmsName, setup">
+		<!-- setUp -->
+		<javac 
+			destdir="${build}"
+			encoding="UTF-8"
+			fork="true"
+			debug="on"
+			classpathref="classpath">
+			<src path="../src/main/java"/>
+		</javac>
+		<!-- test -->
+		<gen-ddl 
+			classpathDir="${build}"
+			rootpackagename="${rootpackagename}"
+			migratedir="${migrate}"
+			ddlInfofile="${ddl-info}"
+			classpathref="classpath"
+		/>
+		<migrate 
+			classpathDir="${build}"
+			migratedir="${migrate}"
+			ddlInfofile="${ddl-info}"
+			rootpackagename="${rootpackagename}"
+			classpathref="classpath"
+		/>
+		<exec-sql 
+			classpathref="classpath">
+			<sqlFileList dir="${sql}/testDumpData">
+				<file name="insert.sql"/>
+			</sqlFileList>
+		</exec-sql>
+		<gen-ddl 
+			classpathDir="${build}"
+			rootpackagename="${rootpackagename}"
+			migratedir="${migrate}"
+			ddlInfofile="${ddl-info}"
+			classpathref="classpath"
+		/>
+		<migrate 
+			classpathDir="${build}"
+			migratedir="${migrate}"
+			ddlInfofile="${ddl-info}"
+			rootpackagename="${rootpackagename}"
+			classpathref="classpath"
+		/>
+		<!-- tearDown -->
+		<migrate 
+			classpathDir="${build}"
+			migratedir="${migrate}"
+			ddlInfofile="${ddl-info}"
+			version="0"
+			rootpackagename="${rootpackagename}"
+			classpathref="classpath"
+		/>
+	</target>
+
+	<target name="testDumpDbMeta" depends="showRdbmsName, setup">
+		<!-- setUp -->
+		<exec-sql 
+			classpathref="classpath">
+			<sqlFileList dir="${sql}/testDumpDbMeta">
+				<file name="create.sql"/>
+			</sqlFileList>
+		</exec-sql>
+		<!-- test -->
+		<dump-db-meta 
+			classpathref="classpath"
+		/>
+		<!-- tearDown -->
+		<exec-sql 
+			classpathref="classpath">
+			<sqlFileList dir="${sql}/testDumpDbMeta">
+				<file name="drop.sql"/>
+			</sqlFileList>
+		</exec-sql>
+	</target>
+
+	<target name="testDumpData" depends="showRdbmsName, setup">
+		<!-- setUp -->
+		<javac 
+			srcdir="../src/main/java"
+			destdir="${build}"
+			encoding="UTF-8"
+			fork="true"
+			debug="on"
+			classpathref="classpath"
+		/>
+		<exec-sql 
+			classpathref="classpath">
+			<sqlFileList dir="${sql}/testDumpData">
+				<file name="create.sql"/>
+				<file name="insert.sql"/>
+			</sqlFileList>
+		</exec-sql>
+		<!-- test -->
+		<dump-data
+			classpathDir="${build}"
+			rootpackagename="${rootpackagename}"
+			dumpdir="${dump}"
+			classpathref="classpath"
+		/>
+		<!-- tearDown -->
+		<exec-sql classpathref="classpath">
+			<sqlFileList dir="${sql}/testDumpData">
+				<file name="drop.sql"/>
+			</sqlFileList>
+		</exec-sql>
+	</target>
+
+	<target name="testLoadData" depends="showRdbmsName, setup">
+		<!-- setUp -->
+		<javac 
+			srcdir="../src/main/java"
+			destdir="${build}"
+			encoding="UTF-8"
+			fork="true"
+			debug="on"
+			classpathref="classpath"
+		/>
+		<exec-sql 
+			classpathref="classpath">
+			<sqlFileList dir="${sql}/testDumpData">
+				<file name="create.sql"/>
+				<file name="insert.sql"/>
+			</sqlFileList>
+		</exec-sql>
+		<dump-data
+			classpathDir="${build}"
+			rootpackagename="${rootpackagename}"
+			dumpdir="${dump}"
+			classpathref="classpath"
+		/>
+		<exec-sql 
+			classpathref="classpath">
+			<sqlFileList dir="${sql}/testDumpData">
+				<file name="drop.sql"/>
+				<file name="create.sql"/>
+			</sqlFileList>
+		</exec-sql>
+		<!-- test -->
+		<load-data
+			classpathDir="${build}"
+			rootpackagename="${rootpackagename}"
+			dumpdir="${dump}"
+			classpathref="classpath"
+		/>
+		<!-- tearDown -->
+		<exec-sql
+			classpathref="classpath">
+			<sqlFileList dir="${sql}/testDumpData">
+				<file name="drop.sql"/>
+			</sqlFileList>
+		</exec-sql>
+	</target>
+
+	<target name="setup" depends="clean">
+	</target>
+	
+	<target name="clean">
+		<delete dir="${temp}"/>
+		<mkdir dir="${build}"/>
+		<mkdir dir="${testresult}"/>
+		<copy todir="${build}">
+			<fileset dir="${resources}">
+				<include name="**"/>
+			</fileset>
+		</copy>
+	</target>
+
+</project>
