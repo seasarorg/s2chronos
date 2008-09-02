@@ -7,12 +7,12 @@ import org.seasar.chronos.sastruts.example.dto.UserAuthDto;
 public class LoginInterceptor implements MethodInterceptor {
 
 	public UserAuthDto userAuthDto;
-	
+
 	public Object invoke(MethodInvocation invocation) throws Throwable {
-		if ( userAuthDto != null && userAuthDto.isAuthed()){
+		if (userAuthDto != null && userAuthDto.isAuthed()) {
 			return invocation.proceed();
 		}
-		return "../login/index.jsp";
+		return "../login/index.html";
 	}
 
 }

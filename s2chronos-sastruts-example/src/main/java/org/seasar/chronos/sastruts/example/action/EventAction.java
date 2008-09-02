@@ -9,6 +9,7 @@ import org.seasar.chronos.sastruts.example.form.EventForm;
 import org.seasar.extension.jdbc.JdbcManager;
 import org.seasar.framework.beans.util.BeanMap;
 import org.seasar.framework.beans.util.Beans;
+import org.seasar.framework.util.tiger.CollectionsUtil;
 import org.seasar.struts.annotation.ActionForm;
 import org.seasar.struts.annotation.Execute;
 
@@ -21,19 +22,25 @@ public class EventAction {
 	@Resource
 	protected EventForm eventForm;
 
-	public List<BeanMap> eventItems;
+	public List<BeanMap> resultEventItems = CollectionsUtil.newArrayList();
 
 	@Execute(validator = false)
 	public String index() {
 		List<Event> eventList = jdbcManager.from(Event.class)
 				.orderBy("eventId").getResultList();
-		Beans.createAndCopy(BeanMap.class, eventList).execute();
+		for (Event e : eventList) {
+			BeanMap beanMap = Beans.createAndCopy(BeanMap.class, e).execute();
+			resultEventItems.add(beanMap);
+		}
 		return "index.html";
 	}
 
 	@Execute(input = "index.html")
 	public String submit() {
-		return null;
+		Event event = Beans.createAndCopy(Event.class, eventForm)
+				.dateConverter(EventForm.DATE_PATTERN).execute();
+		this.jdbcManager.insert(event).execute();
+		return "../event/?redirect=true";
 	}
 
 }

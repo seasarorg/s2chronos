@@ -8,5 +8,6 @@
 	<include path="s2jdbc.dicon"/>
 	<include path="chronos-extension.dicon"/>
 	<include path="dbsession.dicon"/>
+	<include path="dxo.dicon"/>
 	<component name="actionMessagesThrowsInterceptor" class="org.seasar.struts.interceptor.ActionMessagesThrowsInterceptor"/>
 </components>

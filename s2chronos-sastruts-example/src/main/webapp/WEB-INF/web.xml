@@ -124,12 +124,12 @@ version="2.4">
         <load-on-startup>2</load-on-startup>
     </servlet>
     
-    <!-- for S2Chronos -->
+    <!-- for S2Chronos
     <servlet>
         <servlet-name>chronosServlet</servlet-name>
         <servlet-class>org.seasar.chronos.extension.servlet.S2ChronosServlet</servlet-class>
         <load-on-startup>3</load-on-startup>
-    </servlet>
+    </servlet> -->
     
     <servlet>
         <servlet-name>MayaaServlet</servlet-name>

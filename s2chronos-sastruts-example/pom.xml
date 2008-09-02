@@ -97,6 +97,11 @@
 	</repositories>
 	<dependencies>
 		<dependency>
+			<groupId>org.apache.geronimo.specs</groupId>
+			<artifactId>geronimo-interceptor_3.0_spec</artifactId>
+			<version>1.0</version>
+		</dependency>
+		<dependency>
 			<groupId>org.seasar.container</groupId>
 			<artifactId>s2-extension</artifactId>
 			<version>2.4.24</version>
@@ -119,7 +124,7 @@
 		<dependency>
             <groupId>org.seasar.sastruts</groupId>
             <artifactId>sa-struts</artifactId>
-            <version>1.0.3-rc1</version>
+            <version>1.0.4-sp1</version>
         </dependency>
 		<dependency>
             <groupId>javax.servlet</groupId>

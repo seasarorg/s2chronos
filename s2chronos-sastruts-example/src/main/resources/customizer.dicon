@@ -3,7 +3,11 @@
     "http://www.seasar.org/dtd/components24.dtd">
 <components>
     <include path="default-customizer.dicon"/>
-
+    
+    <component name="formCustomizer"
+        class="org.seasar.framework.container.customizer.CustomizerChain">
+    </component>
+    
 	<component name="loginAspectCustomizer" class="org.seasar.framework.container.customizer.AspectCustomizer">
 		<property name="pointcut">"index,submit,validate.*"</property>
 		<property name="useLookupAdapter">true</property>
@@ -42,6 +46,15 @@
         	<arg>loginAspectCustomizer</arg>
         </initMethod>
     </component>
+    
+	<component name="dxoCustomizer" class="org.seasar.framework.container.customizer.CustomizerChain">
+		<initMethod name="addCustomizer">
+			<arg>traceCustomizer</arg>
+		</initMethod>
+		<initMethod name="addCustomizer">
+			<arg>s2DxoCustomizer</arg>
+		</initMethod>
+	</component>
 	
     <component name="serviceCustomizer"
         class="org.seasar.framework.container.customizer.CustomizerChain">

@@ -1,20 +1,21 @@
 package org.seasar.chronos.sastruts.example.action;
 
+import javax.annotation.Resource;
+
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.seasar.chronos.sastruts.example.dto.UserAuthDto;
+import org.seasar.chronos.sastruts.example.form.LoginForm;
+import org.seasar.struts.annotation.ActionForm;
 import org.seasar.struts.annotation.Execute;
-import org.seasar.struts.annotation.Required;
 
 public class LoginAction {
 
 	public UserAuthDto userAuthDto;
 
-	@Required
-	public String userId;
-
-	@Required
-	public String password;
+	@ActionForm
+	@Resource
+	protected LoginForm loginForm;
 
 	@Execute(validator = false)
 	public String index() {
@@ -28,8 +29,9 @@ public class LoginAction {
 
 	public ActionMessages validate() {
 		ActionMessages errors = new ActionMessages();
-		if ("admin".equals(userId) && "admin".equals(password)) {
-			this.userAuthDto.setUserId(userId);
+		if ("admin".equals(loginForm.userId)
+				&& "admin".equals(loginForm.password)) {
+			this.userAuthDto.setUserId(loginForm.userId);
 			this.userAuthDto.setAuthed(true);
 		} else {
 			errors.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(

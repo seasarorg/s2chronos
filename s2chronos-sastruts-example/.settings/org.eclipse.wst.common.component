@@ -45,6 +45,9 @@
     <dependent-module archiveName="geronimo-ejb_3.0_spec-1.0.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/org/apache/geronimo/specs/geronimo-ejb_3.0_spec/1.0/geronimo-ejb_3.0_spec-1.0.jar">
       <dependency-type>uses</dependency-type>
     </dependent-module>
+    <dependent-module archiveName="geronimo-interceptor_3.0_spec-1.0.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/org/apache/geronimo/specs/geronimo-interceptor_3.0_spec/1.0/geronimo-interceptor_3.0_spec-1.0.jar">
+      <dependency-type>uses</dependency-type>
+    </dependent-module>
     <dependent-module archiveName="geronimo-jpa_3.0_spec-1.0.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/org/apache/geronimo/specs/geronimo-jpa_3.0_spec/1.0/geronimo-jpa_3.0_spec-1.0.jar">
       <dependency-type>uses</dependency-type>
     </dependent-module>
@@ -111,7 +114,7 @@
     <dependent-module archiveName="s2chronos-extension-0.0.1-RC7-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/org/seasar/chronos/s2chronos-extension/0.0.1-RC7-SNAPSHOT/s2chronos-extension-0.0.1-RC7-SNAPSHOT.jar">
       <dependency-type>uses</dependency-type>
     </dependent-module>
-    <dependent-module archiveName="sa-struts-1.0.3-rc1.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/org/seasar/sastruts/sa-struts/1.0.3-rc1/sa-struts-1.0.3-rc1.jar">
+    <dependent-module archiveName="sa-struts-1.0.4-sp1.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/org/seasar/sastruts/sa-struts/1.0.4-sp1/sa-struts-1.0.4-sp1.jar">
       <dependency-type>uses</dependency-type>
     </dependent-module>
     <dependent-module archiveName="standard-1.1.1.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/taglibs/standard/1.1.1/standard-1.1.1.jar">

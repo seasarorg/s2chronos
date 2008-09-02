@@ -5,9 +5,9 @@
 		<html:errors/>
 	</m:with>
 	<m:echo m:id="userId">
-		<m:attribute name="value" value="${loginAction.userId}" />
+		<m:attribute name="value" value="${loginForm.userId}" />
 	</m:echo>
 	<m:echo m:id="password">
-		<m:attribute name="value" value="${loginAction.password}" />
+		<m:attribute name="value" value="${loginForm.password}" />
 	</m:echo>
 </m:mayaa>
