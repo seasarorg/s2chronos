@@ -31,4 +31,13 @@ public class Event {
 	/** eventTextプロパティ */
 	@Column(columnDefinition = "varchar(255)", nullable = true, unique = false)
 	public String eventText;
+
+	/** eventStatusプロパティ */
+	@Column(columnDefinition = "integer", nullable = true, unique = false)
+	public Integer eventStatus;
+
+	public static final Integer STATUS_NONE = Integer.valueOf(0);
+	public static final Integer STATUS_SCH = Integer.valueOf(1);
+	public static final Integer STATUS_ING = Integer.valueOf(2);
+	public static final Integer STATUS_DONE = Integer.valueOf(3);
 }

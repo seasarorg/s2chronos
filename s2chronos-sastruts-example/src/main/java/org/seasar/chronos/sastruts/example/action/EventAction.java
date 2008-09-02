@@ -28,9 +28,9 @@ public class EventAction {
 	public String index() {
 		List<Event> eventList = jdbcManager.from(Event.class)
 				.orderBy("eventId").getResultList();
-		for (Event e : eventList) {
-			BeanMap beanMap = Beans.createAndCopy(BeanMap.class, e).execute();
-			resultEventItems.add(beanMap);
+		for (Event entity : eventList) {
+			resultEventItems.add(Beans.createAndCopy(BeanMap.class, entity)
+					.execute());
 		}
 		return "index.html";
 	}
@@ -39,6 +39,7 @@ public class EventAction {
 	public String submit() {
 		Event event = Beans.createAndCopy(Event.class, eventForm)
 				.dateConverter(EventForm.DATE_PATTERN).execute();
+		event.eventStatus = Event.STATUS_NONE;
 		this.jdbcManager.insert(event).execute();
 		return "../event/?redirect=true";
 	}

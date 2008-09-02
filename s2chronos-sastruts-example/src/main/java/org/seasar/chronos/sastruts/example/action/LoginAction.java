@@ -24,7 +24,7 @@ public class LoginAction {
 
 	@Execute(validate = "validate", input = "index.html")
 	public String submit() {
-		return "../add/?redirect=true";
+		return "../event/?redirect=true";
 	}
 
 	public ActionMessages validate() {
