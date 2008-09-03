@@ -24,4 +24,5 @@
 	<m:if m:id="isStatusNone" test="${e.eventStatus == 0}"/>
 	<m:if m:id="isStatusIng" test="${e.eventStatus == 1}"/>
 	<m:if m:id="isStatusDone" test="${e.eventStatus == 2}"/>
+	<m:if m:id="isStatusErr" test="${e.eventStatus == 3}"/>
 </m:mayaa>
