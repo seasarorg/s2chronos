@@ -37,7 +37,7 @@ public class Event {
 	public Integer eventStatus;
 
 	public static final Integer STATUS_NONE = Integer.valueOf(0);
-	public static final Integer STATUS_SCH = Integer.valueOf(1);
-	public static final Integer STATUS_ING = Integer.valueOf(2);
-	public static final Integer STATUS_DONE = Integer.valueOf(3);
+	public static final Integer STATUS_ING = Integer.valueOf(1);
+	public static final Integer STATUS_DONE = Integer.valueOf(2);
+	public static final Integer STATUS_ERR = Integer.valueOf(3);
 }

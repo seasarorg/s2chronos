@@ -22,4 +22,12 @@ public class EventForm implements Serializable {
 	@Maxlength(maxlength = 255)
 	public String eventText;
 
+	public Long deleteEventId;
+
+	public void initialize() {
+		eventDate = null;
+		eventText = null;
+		deleteEventId = null;
+	}
+
 }

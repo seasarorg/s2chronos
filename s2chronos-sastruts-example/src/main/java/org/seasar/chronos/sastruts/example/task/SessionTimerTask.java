@@ -12,10 +12,11 @@ public class SessionTimerTask {
 
 	public JdbcManager jdbcManager;
 
-	public void execute() {
+	public void doExecute() {
 		jdbcManager.updateBySql("DELETE FROM S2SESSION WHERE LAST_ACCESS < ?",
 				Timestamp.class).params(
-				new Timestamp(System.currentTimeMillis() - 36000)).execute();
+				new Timestamp(System.currentTimeMillis() - 5 * 60 * 1000))
+				.execute();
 	}
 
 }
