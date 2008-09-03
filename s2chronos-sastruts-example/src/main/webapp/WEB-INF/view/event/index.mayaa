@@ -15,12 +15,13 @@
 	<m:echo m:id="line">
 		<m:attribute name="style" value="background-color:${eventIndex % 2 == 0 ? 'pink' : 'yellow'}" />
 	</m:echo>
-	<m:write m:id="resultEventNo" value="${eventIndex + 1}"/>
+	<m:write m:id="resultEventId" value="${e.eventId}"/>
 	<m:write m:id="resultEventDate" value="${e.eventDate}"/>
 	<m:write m:id="resultEventText" value="${e.eventText}"/>
-	<m:if m:id="isStatusNone" test="${e.eventStatus == 0}">
-		<m:write id="resultEventStatus" value="TEST"/>
-	</m:if>
+	<m:echo m:id="deleteEventId">
+		<m:attribute name="value" value="${e.eventId}" />
+	</m:echo>
+	<m:if m:id="isStatusNone" test="${e.eventStatus == 0}"/>
 	<m:if m:id="isStatusIng" test="${e.eventStatus == 1}"/>
 	<m:if m:id="isStatusDone" test="${e.eventStatus == 2}"/>
 </m:mayaa>
