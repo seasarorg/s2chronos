@@ -12,7 +12,7 @@ public class LoginInterceptor implements MethodInterceptor {
 		if (userAuthDto != null && userAuthDto.isAuthed()) {
 			return invocation.proceed();
 		}
-		return "../login/index.html";
+		return "../login/?redirect=true";
 	}
 
 }
