@@ -16,8 +16,6 @@
 package org.seasar.chronos.core.autodetector;
 
 import java.lang.annotation.Annotation;
-import java.net.URL;
-import java.util.Iterator;
 import java.util.List;
 
 import org.seasar.chronos.core.task.TaskValidator;
@@ -27,9 +25,10 @@ import org.seasar.framework.container.annotation.tiger.BindingType;
 import org.seasar.framework.container.annotation.tiger.Component;
 import org.seasar.framework.container.annotation.tiger.InitMethod;
 import org.seasar.framework.convention.NamingConvention;
-import org.seasar.framework.util.ClassLoaderUtil;
 import org.seasar.framework.util.ClassUtil;
+import org.seasar.framework.util.ResourcesUtil;
 import org.seasar.framework.util.ClassTraversal.ClassHandler;
+import org.seasar.framework.util.ResourcesUtil.Resources;
 import org.seasar.framework.util.tiger.CollectionsUtil;
 import org.seasar.framework.util.tiger.ReflectionUtil;
 
@@ -80,28 +79,28 @@ public class TaskClassAutoDetector extends AbstractClassAutoDetector {
 
 	@SuppressWarnings("unchecked")
 	public void detect(final ClassHandler handler) {
-		for (int i = 0; i < this.getTargetPackageNameSize(); i++) {
-			final String packageName = this.getTargetPackageName(i);
-			for (final Iterator<URL> it = ClassLoaderUtil
-					.getResources(packageName.replace('.', '/')); it.hasNext();) {
-				this.detect(handler, packageName, it.next());
-			}
-		}
-	}
+		for (int i = 0; i < getTargetPackageNameSize(); i++) {
+			final String packageName = getTargetPackageName(i);
+			for (final Resources resources : ResourcesUtil
+					.getResourcesTypes(packageName)) {
+				try {
+					resources.forEach(new ClassHandler() {
 
-	protected void detect(final ClassHandler handler,
-			final String taskPackageName, final URL url) {
-		final Strategy strategy = this.getStrategy(url.getProtocol());
-		strategy.detect(taskPackageName, url, new ClassHandler() {
-			public void processClass(final String packageName,
-					final String shortClassName) {
-				if (packageName.startsWith(taskPackageName)
-						&& TaskClassAutoDetector.this.isTask(packageName,
-								shortClassName)) {
-					handler.processClass(packageName, shortClassName);
+						public void processClass(final String packageName,
+								final String shortClassName) {
+							if (packageName.startsWith(packageName)
+									&& TaskClassAutoDetector.this.isTask(
+											packageName, shortClassName)) {
+								handler.processClass(packageName,
+										shortClassName);
+							}
+						}
+					});
+				} finally {
+					resources.close();
 				}
 			}
-		});
+		}
 	}
 
 	protected boolean isTask(final String packageName,
