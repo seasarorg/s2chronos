@@ -81,7 +81,7 @@ public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler 
 			}
 			try {
 				fireStartTaskEvent(taskExecutorService);
-				final String nextTaskName = taskExecutorService.initialize();
+				final String nextTaskName = taskExecutorService.start();
 				taskExecute(taskExecutorService, nextTaskName);
 			} catch (final Exception e) {
 				taskExecutorService.setException(e);
@@ -89,7 +89,7 @@ public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler 
 				fireExceptionTaskEvent(taskExecutorService, e);
 			} finally {
 				@SuppressWarnings("unused")
-				final String nextTaskName = taskExecutorService.destroy();
+				final String nextTaskName = taskExecutorService.finish();
 				// scheduleTask(taskExecutorService, nextTaskName);
 				log.log("DCHRONOS0123", new Object[] { taskName });
 				fireEndTaskEvent(taskExecutorService);
@@ -123,6 +123,11 @@ public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler 
 						// タスクの準備ができていないなら
 						if (!tes.isPrepared()) {
 							tes.prepare();
+							try {
+								tes.initialize();
+							} catch (InterruptedException e) {
+								;
+							}
 							tes.hotdeployStop();
 							return null;
 						}

@@ -52,8 +52,12 @@ public class TaskExecutorServiceImpl implements TaskExecutorService {
 		return this.taskExecuteContext.cancel();
 	}
 
-	public String destroy() throws InterruptedException {
-		return this.taskExecuteContext.destroy();
+	public void destroy() throws InterruptedException {
+		this.taskExecuteContext.destroy();
+	}
+
+	public String finish() throws InterruptedException {
+		return this.taskExecuteContext.finish();
 	}
 
 	public void execute(String startTaskName) throws InterruptedException {
@@ -117,8 +121,12 @@ public class TaskExecutorServiceImpl implements TaskExecutorService {
 		return this.taskExecuteContext.getTaskExecuteStrategy().getTrigger();
 	}
 
-	public String initialize() throws InterruptedException {
-		return this.taskExecuteContext.initialize();
+	public void initialize() throws InterruptedException {
+		this.taskExecuteContext.initialize();
+	}
+
+	public String start() throws InterruptedException {
+		return this.taskExecuteContext.start();
 	}
 
 	public boolean isExecuted() {
@@ -226,14 +234,17 @@ public class TaskExecutorServiceImpl implements TaskExecutorService {
 	}
 
 	public boolean isHotdeployDisabled() {
-		return this.taskExecuteContext.getTaskExecuteStrategy().isHotdeployDisabled();
+		return this.taskExecuteContext.getTaskExecuteStrategy()
+				.isHotdeployDisabled();
 	}
 
 	public void setHotdeployDisabled(boolean hotdeployDisabled) {
-		this.taskExecuteContext.getTaskExecuteStrategy().setHotdeployDisabled(hotdeployDisabled);
+		this.taskExecuteContext.getTaskExecuteStrategy().setHotdeployDisabled(
+				hotdeployDisabled);
 	}
 
 	public void catchException(Exception exception) {
-		this.taskExecuteContext.getTaskExecuteStrategy().catchException(exception);
+		this.taskExecuteContext.getTaskExecuteStrategy().catchException(
+				exception);
 	}
 }

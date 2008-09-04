@@ -24,7 +24,10 @@ public interface TaskExecuteState {
 
 	public TaskExecuteStrategy getTaskExecuteStrategy();
 
-	public String initialize(AbstractTaskExecuteContext context)
+	public void initialize(AbstractTaskExecuteContext context)
+			throws InterruptedException;
+
+	public String start(AbstractTaskExecuteContext context)
 			throws InterruptedException;
 
 	public void execute(TaskExecuteContext context, String startTaskName)
@@ -35,7 +38,10 @@ public interface TaskExecuteState {
 	public boolean await(TaskExecuteContext context, long time,
 			TimeUnit timeUnit) throws InterruptedException;
 
-	public String destroy(AbstractTaskExecuteContext context)
+	public String finish(AbstractTaskExecuteContext context)
+			throws InterruptedException;
+
+	public void destroy(AbstractTaskExecuteContext context)
 			throws InterruptedException;
 
 	public void waitOne() throws InterruptedException;

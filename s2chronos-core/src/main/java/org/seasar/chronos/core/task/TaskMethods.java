@@ -31,7 +31,9 @@ public interface TaskMethods {
 
 	public void unprepare();
 
-	public String initialize() throws InterruptedException;
+	public void initialize() throws InterruptedException;
+
+	public String start() throws InterruptedException;
 
 	public void execute(String startTaskName) throws InterruptedException;
 
@@ -42,13 +44,15 @@ public interface TaskMethods {
 	public boolean await(long time, TimeUnit timeUnit)
 			throws InterruptedException;
 
-	public String destroy() throws InterruptedException;
+	public String finish() throws InterruptedException;
+
+	public void destroy() throws InterruptedException;
 
 	public void setComponentDef(ComponentDef componentDef);
 
 	public TaskPropertyReader getTaskPropertyReader();
 
 	public TaskPropertyWriter getTaskPropertyWriter();
-	
+
 	public void catchException(Exception exception);
 }

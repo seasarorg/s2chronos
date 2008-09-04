@@ -31,38 +31,45 @@ public class TaskExecuteStateInitialized extends AbstractTaskExecuteState {
 	@Override
 	public boolean await(TaskExecuteContext context, long time,
 			TimeUnit timeUnit) throws InterruptedException {
-		return this.getTaskExecuteStrategy().await(time, timeUnit);
+		return false;
 	}
 
 	@Override
 	public void execute(TaskExecuteContext context, String startTaskName)
 			throws InterruptedException {
-		this.getTaskExecuteStrategy().execute(startTaskName);
 	}
 
 	@Override
 	public boolean cancel(TaskExecuteContext context) {
-		boolean result = this.getTaskExecuteStrategy().cancel();
-		return result;
+		return false;
 	}
 
 	@Override
-	public String destroy(AbstractTaskExecuteContext context)
-			throws InterruptedException {
-		String result = this.getTaskExecuteStrategy().destroy();
-		this.changeState(context, context.getTaskExecuteStateNonInitialize());
-		return result;
-	}
-
-	@Override
-	public String initialize(AbstractTaskExecuteContext context)
+	public String finish(AbstractTaskExecuteContext context)
 			throws InterruptedException {
 		return null;
 	}
 
 	@Override
+	public String start(AbstractTaskExecuteContext context)
+			throws InterruptedException {
+		String result = this.getTaskExecuteStrategy().start();
+		this.changeState(context, context.getTaskExecuteStateNonInitialized());
+		return result;
+	}
+
+	@Override
 	public void waitOne() throws InterruptedException {
-		this.getTaskExecuteStrategy().waitOne();
+
+	}
+
+	@Override
+	public void destroy(AbstractTaskExecuteContext context) {
+
+	}
+
+	@Override
+	public void initialize(AbstractTaskExecuteContext context) {
 
 	}
 

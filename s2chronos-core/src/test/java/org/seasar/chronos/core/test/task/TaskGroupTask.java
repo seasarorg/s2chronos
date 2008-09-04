@@ -19,8 +19,8 @@ public class TaskGroupTask {
 	}
 
 	@NextTask("groupA")
-	public void initialize() {
-		log.info("initialize");
+	public void start() {
+		log.info("start");
 	}
 
 	@NextTask("taskA")
@@ -44,11 +44,11 @@ public class TaskGroupTask {
 		log.info("endGroupA");
 	}
 
-	public void destroy() {
+	public void end() {
 		if (exception != null) {
 			exception.printStackTrace();
 		}
-		log.info("destroy");
+		log.info("end");
 	}
 
 	// public Exception getException() {

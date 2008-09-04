@@ -12,8 +12,8 @@ public abstract class AbstractCommonTask {
 
 	// タスクが実行されるときに最初に呼ばれる
 	@NextTask("taskA")
-	public synchronized void initialize() {
-		log.info(this.getClass().getName() + " : [[initializeを実行しました．]]");
+	public synchronized void start() {
+		log.info(this.getClass().getName() + " : [[startを実行しました．]]");
 	}
 
 	// タスクメソッドA 本体
@@ -43,7 +43,7 @@ public abstract class AbstractCommonTask {
 
 	// すべてのタスクが終了したら呼ばれる
 	// @NextTask("example")
-	public synchronized void destroy() {
-		log.info(this.getClass().getName() + " : [[destroyを実行しました．]]");
+	public synchronized void end() {
+		log.info(this.getClass().getName() + " : [[endを実行しました．]]");
 	}
 }

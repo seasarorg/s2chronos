@@ -39,11 +39,19 @@ public abstract class AbstractTaskExecuteContext implements TaskExecuteContext {
 
 	private final TaskExecuteState taskExecuteStateNonInitialized;
 
+	private final TaskExecuteState taskExecuteStateStarted;
+
+	private final TaskExecuteState taskExecuteStateFinished;
+
 	public AbstractTaskExecuteContext(TaskExecuteStrategy taskExecuteStrategy) {
 		this.taskExecuteStrategy = taskExecuteStrategy;
 		this.taskExecuteStateInitialized = new TaskExecuteStateInitialized(
 				taskExecuteStrategy);
 		this.taskExecuteStateNonInitialized = new TaskExecuteStateNonInitialized(
+				taskExecuteStrategy);
+		this.taskExecuteStateStarted = new TaskExecuteStateStarted(
+				taskExecuteStrategy);
+		this.taskExecuteStateFinished = new TaskExecuteStateFinished(
 				taskExecuteStrategy);
 		this.currentState = taskExecuteStateNonInitialized;
 	}
@@ -82,8 +90,8 @@ public abstract class AbstractTaskExecuteContext implements TaskExecuteContext {
 	 * 
 	 * @see org.seasar.chronos.core.task.state.impl.TaskExecuteContext#destroy()
 	 */
-	public String destroy() throws InterruptedException {
-		return this.currentState.destroy(this);
+	public String finish() throws InterruptedException {
+		return this.currentState.finish(this);
 	}
 
 	/*
@@ -107,8 +115,16 @@ public abstract class AbstractTaskExecuteContext implements TaskExecuteContext {
 		return taskExecuteStateInitialized;
 	}
 
-	public final TaskExecuteState getTaskExecuteStateNonInitialize() {
+	public final TaskExecuteState getTaskExecuteStateNonInitialized() {
 		return taskExecuteStateNonInitialized;
+	}
+
+	public final TaskExecuteState getTaskExecuteStateStarted() {
+		return taskExecuteStateStarted;
+	}
+
+	public final TaskExecuteState getTaskExecuteStateFinished() {
+		return taskExecuteStateFinished;
 	}
 
 	/*
@@ -125,8 +141,8 @@ public abstract class AbstractTaskExecuteContext implements TaskExecuteContext {
 	 * 
 	 * @see org.seasar.chronos.core.task.state.impl.TaskExecuteContext#initialize()
 	 */
-	public String initialize() throws InterruptedException {
-		return this.currentState.initialize(this);
+	public String start() throws InterruptedException {
+		return this.currentState.start(this);
 	}
 
 	/*
@@ -154,6 +170,19 @@ public abstract class AbstractTaskExecuteContext implements TaskExecuteContext {
 	 */
 	public void waitOne() throws InterruptedException {
 		this.currentState.waitOne();
+	}
+
+	/*
+	 * (非 Javadoc)
+	 * 
+	 * @see org.seasar.chronos.core.task.state.TaskExecuteContext#destroy()
+	 */
+	public void destroy() throws InterruptedException {
+		this.currentState.destroy(this);
+	}
+
+	public void initialize() throws InterruptedException {
+		this.currentState.initialize(this);
 	}
 
 }

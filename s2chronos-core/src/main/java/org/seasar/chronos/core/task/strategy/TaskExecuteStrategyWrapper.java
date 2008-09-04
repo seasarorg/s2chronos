@@ -48,8 +48,12 @@ public class TaskExecuteStrategyWrapper implements TaskExecuteStrategy {
 		return this.taskExecuteStrategy.checkMoveAnotherTask(nextTaskName);
 	}
 
-	public String destroy() throws InterruptedException {
-		return this.taskExecuteStrategy.destroy();
+	public void destroy() throws InterruptedException {
+		this.taskExecuteStrategy.destroy();
+	}
+
+	public String finish() throws InterruptedException {
+		return this.taskExecuteStrategy.finish();
 	}
 
 	public void execute(String startTaskName) throws InterruptedException {
@@ -112,8 +116,12 @@ public class TaskExecuteStrategyWrapper implements TaskExecuteStrategy {
 		this.taskExecuteStrategy.hotdeployStop();
 	}
 
-	public String initialize() throws InterruptedException {
-		return this.taskExecuteStrategy.initialize();
+	public void initialize() throws InterruptedException {
+		this.taskExecuteStrategy.initialize();
+	}
+
+	public String start() throws InterruptedException {
+		return this.taskExecuteStrategy.start();
 	}
 
 	public boolean isEndTask() {

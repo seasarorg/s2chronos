@@ -62,18 +62,20 @@ import org.seasar.framework.util.tiger.ReflectionUtil;
 
 public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 
-	private static final long serialVersionUID = -6091926808483360988L;
+	private static final long serialVersionUID = 1L;
 
 	@SuppressWarnings("unused")
 	private static Logger log = Logger.getLogger(TaskExecuteStrategyImpl.class);
 
 	private static final String METHOD_PREFIX_NAME_DO = "do";
 
-	private static final String[] METHOD_NAME_START = { "initialize", "start",
-			"begin" };
+	private static final String METHOD_NAME_INITIALIZE = "initialize";
 
-	private static final String[] METHOD_NAME_END = { "destroy", "finish",
-			"end" };
+	private static final String METHOD_NAME_DESTROY = "destroy";
+
+	private static final String[] METHOD_NAME_START = { "start", "begin" };
+
+	private static final String[] METHOD_NAME_END = { "finish", "end" };
 
 	private static final ThreadPoolType DEFAULT_THREADPOOL_TYPE = ThreadPoolType.CACHED;
 
@@ -156,7 +158,19 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 		return false;
 	}
 
-	public String destroy() throws InterruptedException {
+	public void initialize() throws InterruptedException {
+		if (this.taskMethodInvoker.hasMethod(METHOD_NAME_INITIALIZE)) {
+			this.taskMethodInvoker.beginInvoke(METHOD_NAME_INITIALIZE);
+		}
+	}
+
+	public void destroy() throws InterruptedException {
+		if (this.taskMethodInvoker.hasMethod(METHOD_NAME_DESTROY)) {
+			this.taskMethodInvoker.beginInvoke(METHOD_NAME_DESTROY);
+		}
+	}
+
+	public String finish() throws InterruptedException {
 		String nextTask = null;
 		for (String methodName : METHOD_NAME_END) {
 			if (this.taskMethodInvoker.hasMethod(methodName)) {
@@ -262,7 +276,7 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 		}
 	}
 
-	public String initialize() throws InterruptedException {
+	public String start() throws InterruptedException {
 		this.setExecuted(true);
 		for (String methodName : METHOD_NAME_START) {
 			if (this.taskMethodInvoker.hasMethod(methodName)) {
