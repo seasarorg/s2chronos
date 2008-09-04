@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<m:mayaa xmlns:m="http://mayaa.seasar.org"
+		xmlns:html="http://struts.apache.org/tags-html"
+		xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+	<m:with m:id="allMessages">
+		<html:errors/>
+	</m:with>
+	<m:forEach id="userItems" var="e" items="${memberAction.userItems}" index="userIndex" replace="false"/>
+	<m:echo m:id="line">
+		<m:attribute name="style" value="background-color:${userIndex % 2 == 0 ? 'pink' : 'yellow'}" />
+	</m:echo>
+	<m:write m:id="userId" value="${e.userId}"/>
+	<m:write m:id="userName" value="${e.userName}"/>
+	<m:write m:id="email" value="${e.email}"/>
+	<m:echo m:id="deleteUserId">
+		<m:attribute name="value" value="${e.userId}" />
+	</m:echo>
+	<m:if m:id="isStatusDisable" test="${e.userStatus == 0}"/>
+	<m:if m:id="isStatusEnable" test="${e.userStatus == 1}"/>
+	<m:if m:id="isStatusSuspend" test="${e.userStatus == 2}"/>
+</m:mayaa>

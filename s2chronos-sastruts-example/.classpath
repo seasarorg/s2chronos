@@ -38,9 +38,9 @@
   <classpathentry kind="var" path="M2_REPO/ognl/ognl/2.6.9-patch-20070908/ognl-2.6.9-patch-20070908.jar" sourcepath="M2_REPO/ognl/ognl/2.6.9-patch-20070908/ognl-2.6.9-patch-20070908-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/oro/oro/2.0.7/oro-2.0.7.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/apache/poi/poi/3.0-FINAL/poi-3.0-FINAL.jar" sourcepath="M2_REPO/org/apache/poi/poi/3.0-FINAL/poi-3.0-FINAL-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/seasar/container/s2-extension/2.4.24/s2-extension-2.4.24.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/seasar/container/s2-framework/2.4.24/s2-framework-2.4.24.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/seasar/container/s2-tiger/2.4.24/s2-tiger-2.4.24.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/seasar/container/s2-extension/2.4.28/s2-extension-2.4.28.jar" sourcepath="M2_REPO/org/seasar/container/s2-extension/2.4.28/s2-extension-2.4.28-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/seasar/container/s2-framework/2.4.28/s2-framework-2.4.28.jar" sourcepath="M2_REPO/org/seasar/container/s2-framework/2.4.28/s2-framework-2.4.28-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/seasar/container/s2-tiger/2.4.28/s2-tiger-2.4.28.jar" sourcepath="M2_REPO/org/seasar/container/s2-tiger/2.4.28/s2-tiger-2.4.28-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/seasar/chronos/s2chronos-core/0.0.1-RC7-SNAPSHOT/s2chronos-core-0.0.1-RC7-SNAPSHOT.jar" sourcepath="M2_REPO/org/seasar/chronos/s2chronos-core/0.0.1-RC7-SNAPSHOT/s2chronos-core-0.0.1-RC7-SNAPSHOT-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/seasar/chronos/s2chronos-extension/0.0.1-RC7-SNAPSHOT/s2chronos-extension-0.0.1-RC7-SNAPSHOT.jar" sourcepath="M2_REPO/org/seasar/chronos/s2chronos-extension/0.0.1-RC7-SNAPSHOT/s2chronos-extension-0.0.1-RC7-SNAPSHOT-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/seasar/sastruts/sa-struts/1.0.4-sp1/sa-struts-1.0.4-sp1.jar"/>

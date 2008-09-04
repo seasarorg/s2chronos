@@ -40,4 +40,5 @@ public class Event {
 	public static final Integer STATUS_ING = Integer.valueOf(1);
 	public static final Integer STATUS_DONE = Integer.valueOf(2);
 	public static final Integer STATUS_ERR = Integer.valueOf(3);
+
 }

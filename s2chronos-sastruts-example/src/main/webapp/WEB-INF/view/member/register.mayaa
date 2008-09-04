@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<m:mayaa xmlns:m="http://mayaa.seasar.org"
+		xmlns:html="http://struts.apache.org/tags-html"
+		xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+	<m:with m:id="allMessages">
+		<html:errors/>
+	</m:with>
+	<m:echo m:id="userName">
+		<m:attribute name="value" value="${memberForm.userName}" />
+	</m:echo>
+	<m:echo m:id="email">
+		<m:attribute name="value" value="${memberForm.email}" />
+	</m:echo>
+	<m:echo m:id="lastName">
+		<m:attribute name="value" value="${memberForm.lastName}" />
+	</m:echo>
+	<m:echo m:id="firstName">
+		<m:attribute name="value" value="${memberForm.firstName}" />
+	</m:echo>
+</m:mayaa>

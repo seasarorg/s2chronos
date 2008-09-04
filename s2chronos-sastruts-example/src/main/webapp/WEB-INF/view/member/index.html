@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>
+会員登録
+</title>
+</head>
+<body>
+	<span id="allMessages"/>
+	<form method="post">
+		<input type="submit" name="register" value="登録"/>
+	</form>
+	<table border="1">
+		<thead>
+			<tr>
+				<th>
+					ユーザID
+				</th>
+				<th>
+					ユーザ名
+				</th>
+				<th>
+					メールアドレス
+				</th>
+				<th>
+					ステータス
+				</th>
+			</tr>
+		</thead>
+		<tbody id="userItems">
+			<tr　id="line">
+				<td>
+					<span id="userId"></span>
+				</td>
+				<td>
+					<span id="userName"></span>
+				</td>
+				<td>
+					<span id="email"></span>
+				</td>
+				<td>
+					<div id="isStatusDisable">無効</div>
+					<div id="isStatusEnable">有効</div>
+					<div id="isStatusSuspend">一時停止</div>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</body>
+</html>
