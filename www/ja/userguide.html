@@ -77,17 +77,36 @@ urchinTracker();
           <h4>タスククラスの実装</h4>
           <p>
           <ul>
-            <li>基本的なタスククラスの実装方法<br />
-              最も簡単なタスククラスは以下です．<br/>
-              このクラスはS2のCreatorによってS2にSMART deploy対象として扱われます．ですので他のS2のコンポーネントと同様にDIやAOPの適用が可能になります．また，タスククラスはPOJOとして実装が可能です．<br />
-              <br/>
-              まず，クラス名はTaskというサフィックスをつけて，Taskアノテーションも付けます．<br/>
-              次にこのタスククラスを実行する条件をトリガーアノテーションで指定します．(ここではスケジューラに登録されると即時実行するNonDelayTriggerを指定します．時間指定する場合はCronTriggerなどを利用してください．)<br/>
-              実際にタスクの処理として，初期化処理，タスク処理，終了処理に対応するメソッドを定義していきます．<br/>
-              まず，初期化処理としてinitializeメソッドを定義して初期化処理を実装してください．NextTaskアノテーションを使って，次に呼び出されるタスク処理(以下，タスクメソッド)の名前を指定します．(タスクメソッド名からdoを除いた名前をキャメル式で指定します)
+            <li>基本なタスククラスの実装方法 その1<br/>
+            最も簡単なタスククラスは以下です．メソッド名はdoExecuteとしてください．<br/>
+このクラスはS2のCreatorによってS2にSMART deploy対象として扱われます．ですので他のS2のコンポーネントと同様にDIやAOPの適用が可能になります．また，タスククラスはPOJOとして実装が可能です．
+
+まず，クラス名はTaskというサフィックスをつけて，Taskアノテーションも付けます．
+次にこのタスククラスを実行する条件をトリガーアノテーションで指定します．(ここではスケジューラに登録されると即時実行するNonDelayTriggerを指定します．時間指定する場合はCronTriggerなどを利用してください．)
+<pre>
+@Task
+@NonDelayTrigger
+public class BasicTask {
+    
+    private static Logger log = Logger.getLogger(BasicTask.class);
+    
+    // タスク処理
+    public void doExecute() {
+        log.info(this.getClass().getSimpleName() + ":doExecute");
+    }
+
+}
+</pre>
+            </li>
+            <br/>
+            <li>基本なタスククラスの実装方法 その2<br />
+            <br/>
+              以下のように初期化処理や，終了処理のメソッドを定義することも可能です．<br/>
+              この場合は、初期化処理，タスク処理，終了処理に対応するメソッドを定義していきます．<br/>
+              まず，初期化処理としてinitializeメソッドを定義して初期化処理を実装してください．初期化メソッドは，initializeのほかにbegin, startが使えます．<br/>
+              NextTaskアノテーションを使って，次に呼び出されるタスク処理(以下，タスクメソッド)の名前を指定します．(タスクメソッド名からdoを除いた名前をキャメル式で指定します)
               タスクメソッドを実装します．
-              最後にdestoryメソッドを実装します．(destoryメソッドは任意で定義可能)
-              また，NextTaskアノテーションはタスクメソッドに対しても割り当て可能です．
+              最後に終了処理用にdestoryメソッドを実装します．終了処理メソッドはdestoryのほかにend, finishの名前が使えます．(destoryメソッドは任意で定義可能)　また，NextTaskアノテーションはタスクメソッドに対しても割り当て可能です．
               <pre>
 @Task
 @NonDelayTrigger
@@ -336,6 +355,44 @@ public class SimpleTask {
               タスクメソッドを並列実行する際は，CloneTaskアノテーションが使えます．上記のように10を指定した場合は，タスクに割り当てられたスレッドプール内で同時10個のタスクメソッドを処理しようとします． </li>
           </ul>
           </p>
+        </div>
+        <!-- section -->
+        <div class="section">
+        	<h4>例外のハンドリング</h4>
+            <p>
+            <ul>
+            <li>例外をスローした際の挙動<br/>
+            タスクメソッド内で例外をスローすると次に実行するタスクメソッドがあっても実行せずに終了処理メソッドを呼び出します。
+            </li>
+            <li>スローした例外を処理する方法<br/>
+            setterもしくは例外キャッチ用メソッドで例外を受けとり処理することができます。
+<pre>
+@Task
+@NonDelayTrigger
+public class BasicTask {
+    
+    private static Logger log = Logger.getLogger(BasicTask.class);
+    
+    // タスク処理
+    public void doExecute() {
+        thow new RuntimeException();
+    }
+    
+    public void setException(Exception ex){
+    	this.exception = ex;
+    }
+    
+    public void destory(){
+    	if ( this.exception != null ){
+        	// 例外処理
+        }
+    }
+
+}
+</pre>
+            </li>
+            </ul>
+            </p>
         </div>
         <!-- section -->
         <div class="section">
