@@ -11,7 +11,7 @@
 			<arg>"j2ee.requiredTx"</arg>
 		</initMethod>
 -->
-		<property name="pointcut">"do.*, initialize, destroy"</property>
+		<property name="pointcut">"do.*, start.*, finish.*, begin.*, end.*, initialize, destroy"</property>
 	</component>
 	<component name="taskCustomizer" class="org.seasar.framework.container.customizer.CustomizerChain">
 		<initMethod name="addCustomizer">
