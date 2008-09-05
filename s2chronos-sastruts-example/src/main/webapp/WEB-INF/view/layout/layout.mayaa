@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<m:mayaa xmlns:m="http://mayaa.seasar.org">
+	<!-- <m:insert m:id="pageTitle" name="title" replace="false"/> -->
+	<m:insert m:id="header" path="/WEB-INF/view/layout/header.html" replace="false"/>
+	<m:insert m:id="menu" path="/WEB-INF/view/layout/menu.html" />
+	<m:insert m:id="body" name="body" />
+	<m:insert m:id="footer" path="/WEB-INF/view/layout/footer.html" replace="false"/>
+</m:mayaa>
