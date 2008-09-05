@@ -33,8 +33,8 @@ public class SimpleFlowTask {
 	 * </p>
 	 */
 	@NextTask("taskA")
-	public void initialize() {
-		log.info("[[SimpleFlowTask::initialize]]");
+	public void start() {
+		log.info("[[SimpleFlowTask::start]]");
 	}
 
 	/**
@@ -79,8 +79,8 @@ public class SimpleFlowTask {
 	/**
 	 * すべてのタスクメソッドが終了したら呼ばれます．
 	 */
-	public synchronized void destroy() {
-		log.info("[[SimpleFlowTask::destroy]]");
+	public synchronized void finish() {
+		log.info("[[SimpleFlowTask::finish]]");
 	}
 
 }

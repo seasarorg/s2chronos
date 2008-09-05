@@ -22,11 +22,11 @@ public class TaskGroupTask {
 	private Logger log = Logger.getLogger(TaskGroupTask.class);
 
 	/**
-	 * 初期化メソッドです．
+	 * 開始メソッドです．
 	 */
 	@NextTask("groupA")
-	public void initialize() {
-		log.info("initialize");
+	public void start() {
+		log.info("start");
 	}
 
 	/**
@@ -62,10 +62,10 @@ public class TaskGroupTask {
 	}
 
 	/**
-	 * 破棄メソッドです．
+	 * 終了メソッドです．
 	 */
-	public void destroy() {
-		log.info("destroy");
+	public void finish() {
+		log.info("end");
 	}
 
 }

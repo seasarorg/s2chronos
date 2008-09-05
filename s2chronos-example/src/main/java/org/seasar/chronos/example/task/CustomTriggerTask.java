@@ -8,8 +8,9 @@ import org.seasar.chronos.example.annotation.CustomTrigger;
  * <p>
  * トリガーはExampleTriggerアノテーションで設定されます．対応するトリガークラスはCをつけたCExampleTriggerクラスです．
  * </p>
+ * 
  * @author junichi
- *
+ * 
  */
 @Task
 @CustomTrigger(div = 3)

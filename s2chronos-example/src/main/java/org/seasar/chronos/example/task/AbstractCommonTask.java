@@ -7,16 +7,24 @@ public abstract class AbstractCommonTask {
 
 	private static Logger log = Logger.getLogger(AbstractCommonTask.class);
 
-	@NextTask("taskA")
-	public synchronized void initialize() {
+	public void initialize() {
 		log.info("[[" + this.getClass().getSimpleName() + ":initialize]]");
+	}
+
+	@NextTask("taskA")
+	public synchronized void start() {
+		log.info("[[" + this.getClass().getSimpleName() + ":start]]");
 	}
 
 	public synchronized void doTaskA() {
 		log.info("[[" + this.getClass().getSimpleName() + ":doTaskA]]");
 	}
 
-	public synchronized void destroy() {
+	public synchronized void finish() {
+		log.info("[[" + this.getClass().getSimpleName() + ":finish]]");
+	}
+
+	public void destroy() {
 		log.info("[[" + this.getClass().getSimpleName() + ":destroy]]");
 	}
 
