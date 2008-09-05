@@ -11,6 +11,10 @@ public class CustomTriggerTask {
 
 	private final Logger log = Logger.getLogger(CustomTriggerTask.class);
 
+	public synchronized void initialize() {
+		log.debug("[CustomTriggerTask::initialize]");
+	}
+
 	@NextTask("taskA")
 	public void start() {
 		log.debug("[CustomTriggerTask::start]");
@@ -20,8 +24,12 @@ public class CustomTriggerTask {
 		log.debug("[CustomTriggerTask::doTaskA]");
 	}
 
-	public void end() {
+	public void finish() {
 		log.debug("[CustomTriggerTask::end]");
+	}
+
+	public void destroy() {
+		log.debug("[CustomTriggerTask::destroy]");
 	}
 
 }

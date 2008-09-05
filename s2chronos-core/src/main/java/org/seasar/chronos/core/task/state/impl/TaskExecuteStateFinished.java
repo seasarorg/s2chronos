@@ -23,8 +23,10 @@ public class TaskExecuteStateFinished extends AbstractTaskExecuteState {
 	}
 
 	@Override
-	public void destroy(AbstractTaskExecuteContext context) {
-
+	public void destroy(AbstractTaskExecuteContext context)
+			throws InterruptedException {
+		this.getTaskExecuteStrategy().destroy();
+		this.changeState(context, context.getTaskExecuteStateInitialized());
 	}
 
 	@Override
@@ -47,7 +49,9 @@ public class TaskExecuteStateFinished extends AbstractTaskExecuteState {
 	@Override
 	public String start(AbstractTaskExecuteContext context)
 			throws InterruptedException {
-		return null;
+		String result = this.getTaskExecuteStrategy().start();
+		this.changeState(context, context.getTaskExecuteStateStarted());
+		return result;
 	}
 
 	@Override

@@ -10,22 +10,48 @@ public abstract class AbstractCommonTask {
 
 	private transient static Logger log = Logger.getLogger(SimpleTask.class);
 
-	// タスクが実行されるときに最初に呼ばれる
+	/**
+	 * 初期化メソッドです。
+	 * <p>
+	 * タスククラスが初期化されるとき一度だけに呼ばれます。
+	 * </p>
+	 */
+	public synchronized void initialize() {
+		log.info(this.getClass().getName() + " : [[initializeを実行しました．]]");
+	}
+
+	/**
+	 * 開始メソッドです。
+	 * <p>
+	 * タスクメソッドが実行される前に呼ばれます。<br>
+	 * 開始メソッドが存在しない場合はdoExecuteを探してあれば実行します。
+	 * </p>
+	 */
 	@NextTask("taskA")
 	public synchronized void start() {
 		log.info(this.getClass().getName() + " : [[startを実行しました．]]");
 	}
 
-	// タスクメソッドA 本体
-	// 遷移先を静的に設定し，非同期で実行
+	/**
+	 * タスクメソッドAです。
+	 * <p>
+	 * 非同期に実行します。
+	 * </p>
+	 */
 	@NextTask("taskB")
 	@JoinTask(JoinType.NoWait)
 	public synchronized void doTaskA() {
 		log.info(this.getClass().getName() + " : [[doTaskAを実行しました．]]");
 	}
 
-	// タスクメソッドB 本体
-	// 同期で実行し遷移先を動的に指定する
+	/**
+	 * タスクメソッドBです。
+	 * <p>
+	 * 同期で実行します。
+	 * </p>
+	 * 
+	 * @return 次に遷移するタスク名
+	 */
 	@JoinTask(JoinType.Wait)
 	public synchronized String doTaskB() {
 		log.info(this.getClass().getName() + " : [[doTaskBを実行しました．]]");
@@ -33,17 +59,32 @@ public abstract class AbstractCommonTask {
 		return "taskC";
 	}
 
-	// タスクメソッドC 本体
-	// 非同期に10個タスクメソッドを生成して実行
+	/**
+	 * タスクCです。
+	 * <p>
+	 * 非同期に実行します。CloneTaskアノテーションで20同時並行処理を行います。
+	 * </p>
+	 */
 	@JoinTask(JoinType.NoWait)
 	@CloneTask(20)
 	public synchronized void doTaskC() {
 		log.info(this.getClass().getName() + " : [[doTaskCを実行しました．]]");
 	}
 
-	// すべてのタスクが終了したら呼ばれる
-	// @NextTask("example")
-	public synchronized void end() {
-		log.info(this.getClass().getName() + " : [[endを実行しました．]]");
+	/**
+	 * 終了メソッドです。
+	 */
+	public synchronized void finish() {
+		log.info(this.getClass().getName() + " : [[finishを実行しました．]]");
+	}
+
+	/**
+	 * 破棄メソッドです。
+	 * <p>
+	 * タスクが破棄されるときに実行されるメソッドです。ただし、isReScheduleTaskｔがtrueを返すタスクは呼ばれません
+	 * </p>
+	 */
+	public void destroy() {
+		log.info(this.getClass().getName() + " : [[destroyを実行しました．]]");
 	}
 }
