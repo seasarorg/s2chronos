@@ -9,10 +9,13 @@ public class MemberMailNoticeTaskTest {
 
 	private MemberMailNoticeTask memberMailNoticeTask;
 
-	@Test
-	public void testStart() {
+	public void postBindFields() {
 		memberMailNoticeTask.initialize();
 		memberMailNoticeTask.start();
+	}
+
+	@Test
+	public void testStart() {
 		memberMailNoticeTask.doRegisterMail();
 	}
 

@@ -4,6 +4,8 @@ import org.seasar.chronos.sastruts.example.dto.MailDto;
 
 public interface RegisterMai {
 
-	void sendMail(MailDto dto);
+	public void sendRegisterMail(MailDto dto);
+
+	public void sendUnregisterMail(MailDto dto);
 
 }

@@ -8,7 +8,7 @@
 	<m:with m:id="allMessages">
 		<html:errors/>
 	</m:with>
-	<m:forEach m:id="userStatusItems" var="userStatus" items="${memberForm.userStatusItems}" index="userStatusIndex"/>
+	<m:forEach m:id="userStatusItems" var="userStatus" items="${memberAction.userStatusItems}" index="userStatusIndex"/>
 	<m:echo m:id="userStatusOption">
 		<m:attribute name="value" value="${ userStatus.value }" />
 		<m:if test="${ userStatus.value == memberForm.userStatus }">

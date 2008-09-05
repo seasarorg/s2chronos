@@ -31,6 +31,7 @@ public class EventAction {
 				.orderBy("eventId").getResultList();
 		for (Event entity : eventList) {
 			resultEventItems.add(Beans.createAndCopy(BeanMap.class, entity)
+					.dateConverter(EventForm.DATE_PATTERN, "eventDate")
 					.execute());
 		}
 		return "index.html";

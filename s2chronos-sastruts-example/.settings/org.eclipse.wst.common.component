@@ -102,10 +102,13 @@
     <dependent-module archiveName="ognl-2.6.9-patch-20070908.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/ognl/ognl/2.6.9-patch-20070908/ognl-2.6.9-patch-20070908.jar">
       <dependency-type>uses</dependency-type>
     </dependent-module>
+    <dependent-module archiveName="opencsv-1.7.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/net/sf/opencsv/opencsv/1.7/opencsv-1.7.jar">
+      <dependency-type>uses</dependency-type>
+    </dependent-module>
     <dependent-module archiveName="oro-2.0.7.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/oro/oro/2.0.7/oro-2.0.7.jar">
       <dependency-type>uses</dependency-type>
     </dependent-module>
-    <dependent-module archiveName="ozacc-mail-1.2.1.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/ozacc-mail/ozacc-mail/1.2.1/ozacc-mail-1.2.1.jar">
+    <dependent-module archiveName="ozacc-mail-1.1.4.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/ozacc-mail/ozacc-mail/1.1.4/ozacc-mail-1.1.4.jar">
       <dependency-type>uses</dependency-type>
     </dependent-module>
     <dependent-module archiveName="poi-3.0-FINAL.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/org/apache/poi/poi/3.0-FINAL/poi-3.0-FINAL.jar">

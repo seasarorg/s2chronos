@@ -1,7 +1,6 @@
 package org.seasar.chronos.sastruts.example.entity;
 
 import java.sql.Timestamp;
-import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -26,9 +25,9 @@ public class Event {
 	public Long eventId;
 
 	/** eventDateプロパティ */
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(columnDefinition = "timestamp", nullable = true, unique = false)
-	public Date eventDate;
+	public Timestamp eventDate;
 
 	/** eventTextプロパティ */
 	@Column(columnDefinition = "varchar(255)", nullable = true, unique = false)

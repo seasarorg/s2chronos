@@ -5,18 +5,39 @@ import java.sql.Timestamp;
 import org.seasar.chronos.core.annotation.task.Task;
 import org.seasar.chronos.core.annotation.trigger.CronTrigger;
 import org.seasar.extension.jdbc.JdbcManager;
+import org.seasar.framework.log.Logger;
 
+/**
+ * 古くなったS2SESSION情報を削除します。
+ */
 @Task
 @CronTrigger(expression = "0 */1 * * * ?")
 public class SessionTimerTask {
 
+	/** Logger */
+	private final Logger log = Logger.getLogger(SessionTimerTask.class);
+
+	/** JdbcManager */
 	public JdbcManager jdbcManager;
 
+	/**
+	 * 5分前のセッション情報を削除します。
+	 */
 	public void doExecute() {
 		jdbcManager.updateBySql("DELETE FROM S2SESSION WHERE LAST_ACCESS < ?",
 				Timestamp.class).params(
 				new Timestamp(System.currentTimeMillis() - 5 * 60 * 1000))
 				.execute();
+	}
+
+	/**
+	 * 例外をキャッチします。
+	 * 
+	 * @param ex
+	 *            例外
+	 */
+	public void catchException(Exception ex) {
+		log.error(ex);
 	}
 
 }

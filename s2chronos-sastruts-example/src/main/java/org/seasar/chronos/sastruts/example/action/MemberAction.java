@@ -26,7 +26,7 @@ public class MemberAction {
 
 	public List<BeanMap> userStatusItems = CollectionsUtil.newArrayList();
 
-	@Execute(validator = false)
+	@Execute(validator = false, removeActionForm = true)
 	public String index() {
 		memberForm.initialize();
 		buildUserStatusItems();
@@ -40,11 +40,13 @@ public class MemberAction {
 
 	@Execute(validator = false)
 	public String register() {
+		buildUserStatusItems();
 		return "register.html";
 	}
 
 	@Execute(validator = false)
 	public String edit() {
+		buildUserStatusItems();
 		User user = this.jdbcManager.from(User.class).id(
 				this.memberForm.targetUserId).getSingleResult();
 		Beans.copy(user, memberForm).execute();
@@ -66,7 +68,7 @@ public class MemberAction {
 		userStatusItems.add(bm);
 	}
 
-	@Execute(input = "register.html")
+	@Execute(input = "register.html", removeActionForm = true)
 	public String submit() {
 		if (memberForm.userId == null) {
 			User user = Beans.createAndCopy(User.class, memberForm).execute();
@@ -80,7 +82,7 @@ public class MemberAction {
 		return "../member/?redirect=true";
 	}
 
-	@Execute(validator = false)
+	@Execute(validator = false, removeActionForm = true)
 	public String delete() {
 		this.jdbcManager.updateBySql("DELETE FROM USER WHERE USER_ID = ? ",
 				Long.class).params(this.memberForm.targetUserId).execute();
