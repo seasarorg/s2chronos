@@ -3,6 +3,7 @@
 		xmlns:html="http://struts.apache.org/tags-html"
 		xmlns:fn="http://java.sun.com/jsp/jstl/functions"
 		extends="/WEB-INF/view/layout/layout.html">
+	<m:doRender m:id="pageTitle" name="title" />
 	<m:doRender m:id="body" name="body" />
 	<m:with m:id="allMessages">
 		<html:errors/>
@@ -14,7 +15,7 @@
 	<m:write m:id="userId" value="${e.userId}"/>
 	<m:write m:id="userName" value="${e.userName}"/>
 	<m:write m:id="email" value="${e.email}"/>
-	<m:echo m:id="deleteUserId">
+	<m:echo m:id="targetUserId">
 		<m:attribute name="value" value="${e.userId}" />
 	</m:echo>
 	<m:if m:id="isStatusDisable" test="${e.userStatus == 0}"/>

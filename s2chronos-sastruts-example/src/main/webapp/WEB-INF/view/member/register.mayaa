@@ -3,10 +3,24 @@
 		xmlns:html="http://struts.apache.org/tags-html"
 		xmlns:fn="http://java.sun.com/jsp/jstl/functions"
 		extends="/WEB-INF/view/layout/layout.html">
+	<m:doRender m:id="pageTitle" name="title" />
 	<m:doRender m:id="body" name="body" />
 	<m:with m:id="allMessages">
 		<html:errors/>
 	</m:with>
+	<m:forEach m:id="userStatusItems" var="userStatus" items="${memberForm.userStatusItems}" index="userStatusIndex"/>
+	<m:echo m:id="userStatusOption">
+		<m:attribute name="value" value="${ userStatus.value }" />
+		<m:if test="${ userStatus.value == memberForm.userStatus }">
+			<m:attribute name="selected" value="selected" />
+		</m:if>
+		<m:doBody />
+	</m:echo>
+	<m:write m:id="userStatusLabel" value="${ userStatus.label }" />
+
+	<m:echo m:id="userId">
+		<m:attribute name="value" value="${memberForm.userId}" />
+	</m:echo>
 	<m:echo m:id="userName">
 		<m:attribute name="value" value="${memberForm.userName}" />
 	</m:echo>
@@ -19,4 +33,12 @@
 	<m:echo m:id="firstName">
 		<m:attribute name="value" value="${memberForm.firstName}" />
 	</m:echo>
+	<m:echo m:id="versionNo">
+		<m:attribute name="value" value="${memberForm.versionNo}" />
+	</m:echo>
+	<m:echo m:id="userStatus">
+		<m:attribute name="value" value="${memberForm.userStatus}" />
+	</m:echo>
+	<m:if m:id="isCreate" test="${memberForm.userId == null}"/>
+	<m:if m:id="isUpdate" test="${memberForm.userId != null}"/>
 </m:mayaa>

@@ -6,6 +6,8 @@ import org.seasar.struts.annotation.Required;
 
 public class MemberForm {
 
+	public Long userId;
+
 	@Required
 	@Maxlength(maxlength = 255)
 	public String userName;
@@ -20,14 +22,22 @@ public class MemberForm {
 	@Maxlength(maxlength = 255)
 	public String firstName;
 
-	public Long deleteUserId;
+	public Integer userStatus;
+
+	public Long versionNo;
+
+	public Long targetUserId;
 
 	public void initialize() {
+		userId = null;
 		userName = null;
 		email = null;
 		lastName = null;
 		firstName = null;
-		deleteUserId = null;
+		userStatus = null;
+		targetUserId = null;
+		versionNo = null;
+
 	}
 
 }

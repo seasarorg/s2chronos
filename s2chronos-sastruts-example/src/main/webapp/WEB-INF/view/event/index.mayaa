@@ -3,6 +3,7 @@
 		xmlns:html="http://struts.apache.org/tags-html"
 		xmlns:fn="http://java.sun.com/jsp/jstl/functions"
 		extends="/WEB-INF/view/layout/layout.html">
+	<m:doRender m:id="pageTitle" name="title" />
 	<m:doRender m:id="body" name="body" />
 	<m:with m:id="allMessages">
 		<html:errors/>

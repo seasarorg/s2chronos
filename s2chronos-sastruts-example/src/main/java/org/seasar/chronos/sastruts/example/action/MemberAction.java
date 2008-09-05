@@ -22,11 +22,14 @@ public class MemberAction {
 	@Resource
 	protected MemberForm memberForm;
 
-	public List<BeanMap> userItems = CollectionsUtil.newArrayList();;
+	public List<BeanMap> userItems = CollectionsUtil.newArrayList();
+
+	public List<BeanMap> userStatusItems = CollectionsUtil.newArrayList();
 
 	@Execute(validator = false)
 	public String index() {
 		memberForm.initialize();
+		buildUserStatusItems();
 		List<User> userList = this.jdbcManager.from(User.class).orderBy(
 				"userId").getResultList();
 		for (User user : userList) {
@@ -40,18 +43,47 @@ public class MemberAction {
 		return "register.html";
 	}
 
+	@Execute(validator = false)
+	public String edit() {
+		User user = this.jdbcManager.from(User.class).id(
+				this.memberForm.targetUserId).getSingleResult();
+		Beans.copy(user, memberForm).execute();
+		return "register.html";
+	}
+
+	private void buildUserStatusItems() {
+		BeanMap bm = new BeanMap();
+		bm.put("value", Integer.valueOf(0));
+		bm.put("label", "無効");
+		userStatusItems.add(bm);
+		bm = new BeanMap();
+		bm.put("value", Integer.valueOf(1));
+		bm.put("label", "有効");
+		userStatusItems.add(bm);
+		bm = new BeanMap();
+		bm.put("value", Integer.valueOf(2));
+		bm.put("label", "一時停止");
+		userStatusItems.add(bm);
+	}
+
 	@Execute(input = "register.html")
 	public String submit() {
-		User user = Beans.createAndCopy(User.class, memberForm).execute();
-		user.userStatus = User.STATUS_ENABLE;
-		jdbcManager.insert(user).execute();
+		if (memberForm.userId == null) {
+			User user = Beans.createAndCopy(User.class, memberForm).execute();
+			user.userStatus = User.STATUS_ENABLE;
+			user.versionNo = 0L;
+			jdbcManager.insert(user).execute();
+		} else {
+			User user = Beans.createAndCopy(User.class, memberForm).execute();
+			jdbcManager.update(user).excludesNull().execute();
+		}
 		return "../member/?redirect=true";
 	}
 
 	@Execute(validator = false)
 	public String delete() {
 		this.jdbcManager.updateBySql("DELETE FROM USER WHERE USER_ID = ? ",
-				Long.class).params(this.memberForm.deleteUserId).execute();
+				Long.class).params(this.memberForm.targetUserId).execute();
 		return "../member/?redirect=true";
 	}
 
