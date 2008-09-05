@@ -48,4 +48,11 @@ public class MemberAction {
 		return "../member/?redirect=true";
 	}
 
+	@Execute(validator = false)
+	public String delete() {
+		this.jdbcManager.updateBySql("DELETE FROM USER WHERE USER_ID = ? ",
+				Long.class).params(this.memberForm.deleteUserId).execute();
+		return "../member/?redirect=true";
+	}
+
 }

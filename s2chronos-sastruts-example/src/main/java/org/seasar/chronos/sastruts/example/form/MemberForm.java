@@ -20,11 +20,14 @@ public class MemberForm {
 	@Maxlength(maxlength = 255)
 	public String firstName;
 
+	public Long deleteUserId;
+
 	public void initialize() {
 		userName = null;
 		email = null;
 		lastName = null;
 		firstName = null;
+		deleteUserId = null;
 	}
 
 }

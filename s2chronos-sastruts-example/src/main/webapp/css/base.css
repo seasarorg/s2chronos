@@ -1,0 +1,147 @@
+@CHARSET "UTF-8";
+
+* {
+	
+	margin: 0;
+	padding: 0;
+}
+
+body{
+	font-family: Meiryo;
+	color: #333333;
+}
+
+input {
+	padding:3px 10px 3px 10px;
+	border: 1px solid gray;
+}
+
+select {
+	border: 1px solid gray;
+}
+
+#allMessages{
+	font-size: 0.9em;
+	width: auto;
+	list-style-type: disc;
+	margin: 1em;
+	padding-left: 2em;
+	text-align: left;
+	border: 1px solid;
+	border-color: #FF5500;
+	background-color: #FFCCCC;
+}
+
+/* ヘッダ */
+
+#header {
+	background: url(../images/BgHeader.gif) repeat-x;
+	margin: 0 0 0 0;
+}
+
+#header .Logo{
+	float:left;
+}
+
+#header #logoutMenu {
+	margin: 15px 10px 0 0;
+	float:right;
+}
+
+#header .LogoutButton input {
+	margin: 0 0 0 5px;
+}
+
+#header h1 {
+	margin: 0 250px 0 250px;
+	color: #FFFFFF;
+	padding: 13px 0 17px 0;
+	font-size: 20px;
+	white-space: nowrap;
+}
+
+/* footer */
+
+#footer {
+	border-top: 1px solid #203492;
+	margin: 100px 0 0 0;
+	padding: 3px;
+}
+
+#footer .CopyRight {
+	font-size: 0.8em;
+	text-align: right;
+}
+
+/* IME ON(自動) */
+.ime-auto {
+	ime-mode: auto;
+}
+
+/* IME ON(ひらがな) */
+.ime-active {
+	ime-mode: active;
+	}
+/* IME ON(英数字) */
+.ime-inactive {
+	ime-mode: inactive;
+}
+
+/* IME OFF */
+.ime-disabled {
+	ime-mode: disabled;
+}
+
+#primary {
+	display: block;
+	margin: 0 180px 0 180px;
+}
+
+#secondary {
+	display: block;
+	width: 160px;
+	margin: 0 0 50px 0;
+	text-align: left;
+	float: left;
+}
+
+#secondary h2{
+	width: 160px;
+	color: black;
+	font-size: 1.2em;
+	letter-spacing: 1px ;
+	margin: 5px 0 0 0;
+	padding: 5px 0 3px 5px;
+}
+
+#secondary a:link {
+	color: #08134A;
+	text-decoration:none;
+	display:block;
+	width: 159px;
+	padding: 5px 0 5px 5px;
+}
+
+#secondary a:visited {
+	color: black;
+	text-decoration:none;
+	display:block;
+	width: 159px;
+	padding: 5px 0 5px 5px;
+}
+
+#secondary a:hover{
+	color: black;
+	text-decoration:underline;
+	display:block;
+	width: 159px;
+	padding: 5px 0 5px 5px;
+}
+
+#secondary .On{
+	color: blue;
+	display:block;
+	width: 159px;
+	font-weight: bold;
+	padding: 5px 0 5px 5px;
+}

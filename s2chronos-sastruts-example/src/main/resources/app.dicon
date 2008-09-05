@@ -9,5 +9,6 @@
 	<include path="chronos-extension.dicon"/>
 	<include path="dbsession.dicon"/>
 	<include path="dxo.dicon"/>
+	<include path="s2mai.dicon"/>
 	<component name="actionMessagesThrowsInterceptor" class="org.seasar.struts.interceptor.ActionMessagesThrowsInterceptor"/>
 </components>

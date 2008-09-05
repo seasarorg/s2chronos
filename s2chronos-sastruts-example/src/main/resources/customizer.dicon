@@ -68,6 +68,21 @@
             </arg>
         </initMethod>
     </component>
+    
+    <component name="maiAspectCustomizer" class="org.seasar.framework.container.customizer.AspectCustomizer">
+    	<property name="interceptorName">"s2mai.s2MaiInterceptor"</property>
+	</component>
+	<component name="maiCustomizer" class="org.seasar.framework.container.customizer.CustomizerChain">
+		<!-- 
+	    <initMethod name="addCustomizer">
+	        <arg>traceInterceptor</arg>これは任意ですが、大概traceInterceptorになってると思います
+	    </initMethod>
+	    -->
+	    <initMethod name="addCustomizer">
+	        <arg>maiAspectCustomizer</arg>
+	    </initMethod>
+	</component>
+
 	<component name="taskSupportAspectCustomizer" class="org.seasar.framework.container.customizer.AspectCustomizer">
 		<initMethod name="addInterceptorName">
 			<arg>"aop.traceInterceptor"</arg>

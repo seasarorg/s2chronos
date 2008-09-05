@@ -7,11 +7,11 @@
 会員登録
 </title>
 </head>
-<body>
+<body id="body">
 	<span id="allMessages"/>
 	<form method="post">
 		<input type="submit" name="register" value="登録"/>
-	</form>
+	
 	<table border="1">
 		<thead>
 			<tr>
@@ -26,6 +26,9 @@
 				</th>
 				<th>
 					ステータス
+				</th>
+				<th>
+					アクション
 				</th>
 			</tr>
 		</thead>
@@ -45,8 +48,13 @@
 					<div id="isStatusEnable">有効</div>
 					<div id="isStatusSuspend">一時停止</div>
 				</td>
+				<td>
+					<input type="hidden" id="deleteUserId" name="deleteUserId"/>
+					<input type="submit" name="delete" value="削除"/>
+				</td>
 			</tr>
 		</tbody>
 	</table>
+	</form>
 </body>
 </html>

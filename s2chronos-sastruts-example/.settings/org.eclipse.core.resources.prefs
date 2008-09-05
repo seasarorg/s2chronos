@@ -1,0 +1,4 @@
+#Fri Sep 05 20:42:12 JST 2008
+eclipse.preferences.version=1
+encoding//src/main/resources/mailProperties.dicon=UTF-8
+encoding//src/main/resources/org/seasar/chronos/sastruts/example/mai/RegisterMai_sendMail.ftl=UTF-8

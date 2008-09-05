@@ -146,6 +146,16 @@
             <artifactId>mayaa</artifactId>
             <version>1.1.18</version>
         </dependency>
+       	<dependency>
+			<groupId>ozacc-mail</groupId>
+			<artifactId>ozacc-mail</artifactId>
+			<version>1.2.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.seasar.mai</groupId>
+			<artifactId>s2mai-tiger</artifactId>
+			<version>0.9.3</version>
+		</dependency>
 	</dependencies>
 	<distributionManagement>
 		<repository>

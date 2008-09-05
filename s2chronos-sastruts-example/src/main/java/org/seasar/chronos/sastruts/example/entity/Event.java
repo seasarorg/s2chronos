@@ -1,6 +1,7 @@
 package org.seasar.chronos.sastruts.example.entity;
 
 import java.sql.Timestamp;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Version;
 
 /**
  * Eventエンティティクラスです。
@@ -24,9 +26,9 @@ public class Event {
 	public Long eventId;
 
 	/** eventDateプロパティ */
-	@Temporal(TemporalType.TIMESTAMP)
+	@Temporal(TemporalType.DATE)
 	@Column(columnDefinition = "timestamp", nullable = true, unique = false)
-	public Timestamp eventDate;
+	public Date eventDate;
 
 	/** eventTextプロパティ */
 	@Column(columnDefinition = "varchar(255)", nullable = true, unique = false)
@@ -35,6 +37,21 @@ public class Event {
 	/** eventStatusプロパティ */
 	@Column(columnDefinition = "integer", nullable = true, unique = false)
 	public Integer eventStatus;
+
+	/** createDateプロパティ */
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(columnDefinition = "timestamp", nullable = true, unique = false)
+	public Timestamp createDate = new Timestamp(System.currentTimeMillis());
+
+	/** updateDateプロパティ */
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(columnDefinition = "timestamp", nullable = true, unique = false)
+	public Timestamp updateDate;
+
+	/** versionNoプロパティ */
+	@Version
+	@Column(columnDefinition = "bigint", nullable = true, unique = false)
+	public Long versionNo;
 
 	public static final Integer STATUS_NONE = Integer.valueOf(0);
 	public static final Integer STATUS_ING = Integer.valueOf(1);

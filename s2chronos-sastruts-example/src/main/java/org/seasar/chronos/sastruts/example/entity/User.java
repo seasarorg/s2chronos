@@ -1,9 +1,14 @@
 package org.seasar.chronos.sastruts.example.entity;
 
+import java.sql.Timestamp;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.Version;
 
 /**
  * Userエンティティクラスです。
@@ -38,6 +43,21 @@ public class User {
 	/** userStatusプロパティ */
 	@Column(columnDefinition = "integer", nullable = true, unique = false)
 	public Integer userStatus = STATUS_ENABLE;
+
+	/** createDateプロパティ */
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(columnDefinition = "timestamp", nullable = true, unique = false)
+	public Timestamp createDate = new Timestamp(System.currentTimeMillis());
+
+	/** updateDateプロパティ */
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(columnDefinition = "timestamp", nullable = true, unique = false)
+	public Timestamp updateDate = new Timestamp(System.currentTimeMillis());
+
+	/** versionNoプロパティ */
+	@Version
+	@Column(columnDefinition = "bigint", nullable = true, unique = false)
+	public Long versionNo;
 
 	public static final Integer STATUS_DISABLE = Integer.valueOf(0);
 	public static final Integer STATUS_ENABLE = Integer.valueOf(1);
