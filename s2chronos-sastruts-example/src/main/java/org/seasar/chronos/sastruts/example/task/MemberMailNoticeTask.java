@@ -60,6 +60,6 @@ public class MemberMailNoticeTask {
 	}
 
 	public void finish() {
-		// registerUserList.clear();
+		registerUserList.clear();
 	}
 }
