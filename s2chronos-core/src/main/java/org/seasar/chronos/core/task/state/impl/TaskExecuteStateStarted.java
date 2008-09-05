@@ -39,7 +39,7 @@ public class TaskExecuteStateStarted extends AbstractTaskExecuteState {
 	public String finish(AbstractTaskExecuteContext context)
 			throws InterruptedException {
 		String result = this.getTaskExecuteStrategy().finish();
-		this.changeState(context, context.getTaskExecuteStateNonInitialized());
+		this.changeState(context, context.getTaskExecuteStateFinished());
 		return result;
 	}
 
