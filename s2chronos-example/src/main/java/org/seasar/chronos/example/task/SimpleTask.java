@@ -13,4 +13,5 @@ public class SimpleTask {
 	public void doExecute() {
 		log.info("[[SimpleTask::doExecute]]");
 	}
+
 }
