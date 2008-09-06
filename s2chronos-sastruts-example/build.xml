@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <project name="s2chronos-sastruts-example" default="dist" basedir=".">
-  <property name="ver" value="0.0.1-RC6"/>
+  <property name="ver" value="1.0.0"/>
 
   <path id="s2chronos.classpath">
     <pathelement location="build/classes" />
