@@ -6,7 +6,7 @@
 	<groupId>org.seasar.chronos</groupId>
 	<artifactId>s2chronos-sastruts-example</artifactId>
 	<packaging>war</packaging>
-	<version>0.0.1-RC7-SNAPSHOT</version>
+	<version>1.0.0-SNAPSHOT</version>
 	<name>S2Chronos SAStruts Example</name>
 	<url>http://s2chronos.sandbox.seasar.org/</url>
 	<build>
