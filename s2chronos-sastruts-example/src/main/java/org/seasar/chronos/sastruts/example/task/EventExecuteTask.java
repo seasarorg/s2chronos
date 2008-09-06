@@ -12,7 +12,7 @@ import org.seasar.extension.jdbc.JdbcManager;
 import org.seasar.framework.log.Logger;
 
 /**
- * DBã‚É“o˜^‚³‚ê‚½ƒRƒ}ƒ“ƒh‚ğÀs‚·‚éƒ^ƒXƒNƒNƒ‰ƒX‚Å‚·B
+ * DBä¸Šã«ç™»éŒ²ã•ã‚ŒãŸã‚³ãƒãƒ³ãƒ‰ã‚’å®Ÿè¡Œã™ã‚‹ã‚¿ã‚¹ã‚¯ã‚¯ãƒ©ã‚¹ã§ã™ã€‚
  */
 @Task
 @CronTrigger(expression = "0 */1 * * * ?")
@@ -25,7 +25,7 @@ public class EventExecuteTask {
 	public JdbcManager jdbcManager;
 
 	/**
-	 * ƒRƒ}ƒ“ƒh‚ğÀs‚µ‚Ü‚·B
+	 * ã‚³ãƒãƒ³ãƒ‰ã‚’å®Ÿè¡Œã—ã¾ã™ã€‚
 	 */
 	public void doExecute() {
 		List<Event> eventList = jdbcManager.from(Event.class).where(
@@ -51,10 +51,10 @@ public class EventExecuteTask {
 	}
 
 	/**
-	 * —áŠO‚ğƒLƒƒƒbƒ`‚µ‚Ü‚·B
+	 * ä¾‹å¤–ã‚’ã‚­ãƒ£ãƒƒãƒã—ã¾ã™ã€‚
 	 * 
 	 * @param ex
-	 *            —áŠO
+	 *            ä¾‹å¤–
 	 */
 	public void catchException(Exception ex) {
 		log.error(ex);

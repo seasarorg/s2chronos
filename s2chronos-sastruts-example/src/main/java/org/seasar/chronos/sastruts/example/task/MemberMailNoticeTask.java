@@ -15,7 +15,7 @@ import org.seasar.framework.log.Logger;
 import org.seasar.framework.util.tiger.CollectionsUtil;
 
 /**
- * ƒ†[ƒU‚Éƒ[ƒ‹‚ğ’Ê’m‚·‚éƒ^ƒXƒNƒNƒ‰ƒX‚Å‚·B
+ * ãƒ¦ãƒ¼ã‚¶ã«ãƒ¡ãƒ¼ãƒ«ã‚’é€šçŸ¥ã™ã‚‹ã‚¿ã‚¹ã‚¯ã‚¯ãƒ©ã‚¹ã§ã™ã€‚
  */
 @Task
 @CronTrigger(expression = "0 */1 * * * ?")
@@ -30,27 +30,27 @@ public class MemberMailNoticeTask {
 	/** registerMai */
 	public RegisterMai regsiterMai;
 
-	/** ƒ†[ƒU“o˜^‚ÌÅIXV“ú */
+	/** ãƒ¦ãƒ¼ã‚¶ç™»éŒ²ã®æœ€çµ‚æ›´æ–°æ—¥æ™‚ */
 	private Timestamp registerLastUpdateDate;
 
-	/** ƒ†[ƒU‘Ş‰ï‚ÌÅIXV“ú */
+	/** ãƒ¦ãƒ¼ã‚¶é€€ä¼šã®æœ€çµ‚æ›´æ–°æ—¥æ™‚ */
 	private Timestamp unregisterLastUpdateDate;
 
-	/** “ü‰ï‚µ‚½ƒ†[ƒUˆê—— */
+	/** å…¥ä¼šã—ãŸãƒ¦ãƒ¼ã‚¶ä¸€è¦§ */
 	private List<User> registerUserList = CollectionsUtil.newArrayList();
 
-	/** ‘Ş‰ï‚µ‚½ƒ†[ƒUˆê—— */
+	/** é€€ä¼šã—ãŸãƒ¦ãƒ¼ã‚¶ä¸€è¦§ */
 	private List<User> unregisterUserList = CollectionsUtil.newArrayList();
 
 	/**
-	 * ‰Šú‰»ƒƒ\ƒbƒh‚Å‚·B
+	 * åˆæœŸåŒ–ãƒ¡ã‚½ãƒƒãƒ‰ã§ã™ã€‚
 	 */
 	public void initialize() {
 
 	}
 
 	/**
-	 * ŠJnƒƒ\ƒbƒh‚Å‚·B
+	 * é–‹å§‹ãƒ¡ã‚½ãƒƒãƒ‰ã§ã™ã€‚
 	 */
 	@NextTask("registerMail")
 	public void start() {
@@ -59,13 +59,13 @@ public class MemberMailNoticeTask {
 	}
 
 	/**
-	 * “ü‰ï‚µ‚½ƒ†[ƒUˆê——‚ğì¬‚µ‚Ü‚·B
+	 * å…¥ä¼šã—ãŸãƒ¦ãƒ¼ã‚¶ä¸€è¦§ã‚’ä½œæˆã—ã¾ã™ã€‚
 	 */
 	private void buildRegisterUserList() {
 		BeanMap beanMap = jdbcManager
 				.selectBySql(
 						BeanMap.class,
-						"SELECT MAX(UPDATE_DATE) AS LAST_UPDATE_DATE FROM USER@WHERE@USER_STATUS != ?",
+						"SELECT MAX(UPDATE_DATE) AS LAST_UPDATE_DATE FROM USERã€€WHEREã€€USER_STATUS != ?",
 						User.STATUS_DISABLE).getSingleResult();
 		registerLastUpdateDate = (Timestamp) beanMap.get("lastUpdateDate");
 		if (registerLastUpdateDate != null) {
@@ -77,13 +77,13 @@ public class MemberMailNoticeTask {
 	}
 
 	/**
-	 * ‘Ş‰ï‚µ‚½ƒ†[ƒUˆê——‚ğì¬‚µ‚Ü‚·B
+	 * é€€ä¼šã—ãŸãƒ¦ãƒ¼ã‚¶ä¸€è¦§ã‚’ä½œæˆã—ã¾ã™ã€‚
 	 */
 	private void buildUnregisterUserList() {
 		BeanMap beanMap = jdbcManager
 				.selectBySql(
 						BeanMap.class,
-						"SELECT MAX(UPDATE_DATE) AS LAST_UPDATE_DATE FROM USER@WHERE@USER_STATUS = ?",
+						"SELECT MAX(UPDATE_DATE) AS LAST_UPDATE_DATE FROM USERã€€WHEREã€€USER_STATUS = ?",
 						User.STATUS_DISABLE).getSingleResult();
 		unregisterLastUpdateDate = (Timestamp) beanMap.get("lastUpdateDate");
 		if (unregisterLastUpdateDate != null) {
@@ -95,7 +95,7 @@ public class MemberMailNoticeTask {
 	}
 
 	/**
-	 * “ü‰ï‚µ‚½ƒ†[ƒU‚Éƒ[ƒ‹‚ğ‘—M‚µ‚Ü‚·B
+	 * å…¥ä¼šã—ãŸãƒ¦ãƒ¼ã‚¶ã«ãƒ¡ãƒ¼ãƒ«ã‚’é€ä¿¡ã—ã¾ã™ã€‚
 	 */
 	@NextTask("unregisterMail")
 	public void doRegisterMail() {
@@ -109,7 +109,7 @@ public class MemberMailNoticeTask {
 	}
 
 	/**
-	 * ‘Ş‰ï‚µ‚½ƒ†[ƒU‚Éƒ[ƒ‹‚ğ‘—M‚µ‚Ü‚·B
+	 * é€€ä¼šã—ãŸãƒ¦ãƒ¼ã‚¶ã«ãƒ¡ãƒ¼ãƒ«ã‚’é€ä¿¡ã—ã¾ã™ã€‚
 	 */
 	public void doUnregisterMail() {
 		for (User user : unregisterUserList) {
@@ -122,7 +122,7 @@ public class MemberMailNoticeTask {
 	}
 
 	/**
-	 * I—¹ƒƒ\ƒbƒh‚Å‚·B
+	 * çµ‚äº†ãƒ¡ã‚½ãƒƒãƒ‰ã§ã™ã€‚
 	 */
 	public void finish() {
 		registerUserList.clear();
@@ -130,10 +130,10 @@ public class MemberMailNoticeTask {
 	}
 
 	/**
-	 * —áŠO‚ğƒLƒƒƒbƒ`‚µ‚Ü‚·B
+	 * ä¾‹å¤–ã‚’ã‚­ãƒ£ãƒƒãƒã—ã¾ã™ã€‚
 	 * 
 	 * @param ex
-	 *            —áŠO
+	 *            ä¾‹å¤–
 	 */
 	public void catchException(Exception ex) {
 		log.error(ex);

@@ -14,7 +14,7 @@ import org.seasar.framework.log.Logger;
 import au.com.bytecode.opencsv.CSVWriter;
 
 /**
- * “ü‰ï’†‚Ìƒ†[ƒUˆê——‚ğCSV‚Åo—Í‚·‚éB
+ * å…¥ä¼šä¸­ã®ãƒ¦ãƒ¼ã‚¶ä¸€è¦§ã‚’CSVã§å‡ºåŠ›ã™ã‚‹ã€‚
  */
 @Task
 @CronTrigger(expression = "0 */5 * * * ?")
@@ -27,14 +27,14 @@ public class ExportActiveMemberTask {
 	public JdbcManager jdbcManager;
 
 	/**
-	 * ‰Šú‰»ƒƒ\ƒbƒh‚Å‚·B
+	 * åˆæœŸåŒ–ãƒ¡ã‚½ãƒƒãƒ‰ã§ã™ã€‚
 	 */
 	public void initialize() {
 
 	}
 
 	/**
-	 * ŠJnƒƒ\ƒbƒh‚Å‚·B
+	 * é–‹å§‹ãƒ¡ã‚½ãƒƒãƒ‰ã§ã™ã€‚
 	 */
 	@NextTask("exportCsv")
 	public void start() {
@@ -60,17 +60,17 @@ public class ExportActiveMemberTask {
 	}
 
 	/**
-	 * I—¹ƒƒ\ƒbƒh‚Å‚·B
+	 * çµ‚äº†ãƒ¡ã‚½ãƒƒãƒ‰ã§ã™ã€‚
 	 */
 	public void finish() {
 
 	}
 
 	/**
-	 * —áŠO‚ğƒLƒƒƒbƒ`‚µ‚Ü‚·B
+	 * ä¾‹å¤–ã‚’ã‚­ãƒ£ãƒƒãƒã—ã¾ã™ã€‚
 	 * 
 	 * @param ex
-	 *            —áŠO
+	 *            ä¾‹å¤–
 	 */
 	public void catchException(Exception ex) {
 		log.error(ex);

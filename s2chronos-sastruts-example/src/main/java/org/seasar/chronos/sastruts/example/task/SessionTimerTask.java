@@ -8,7 +8,7 @@ import org.seasar.extension.jdbc.JdbcManager;
 import org.seasar.framework.log.Logger;
 
 /**
- * ŒÃ‚­‚È‚Á‚½S2SESSIONî•ñ‚ğíœ‚µ‚Ü‚·B
+ * å¤ããªã£ãŸS2SESSIONæƒ…å ±ã‚’å‰Šé™¤ã—ã¾ã™ã€‚
  */
 @Task
 @CronTrigger(expression = "0 */1 * * * ?")
@@ -21,7 +21,7 @@ public class SessionTimerTask {
 	public JdbcManager jdbcManager;
 
 	/**
-	 * 5•ª‘O‚ÌƒZƒbƒVƒ‡ƒ“î•ñ‚ğíœ‚µ‚Ü‚·B
+	 * 5åˆ†å‰ã®ã‚»ãƒƒã‚·ãƒ§ãƒ³æƒ…å ±ã‚’å‰Šé™¤ã—ã¾ã™ã€‚
 	 */
 	public void doExecute() {
 		jdbcManager.updateBySql("DELETE FROM S2SESSION WHERE LAST_ACCESS < ?",
@@ -31,10 +31,10 @@ public class SessionTimerTask {
 	}
 
 	/**
-	 * —áŠO‚ğƒLƒƒƒbƒ`‚µ‚Ü‚·B
+	 * ä¾‹å¤–ã‚’ã‚­ãƒ£ãƒƒãƒã—ã¾ã™ã€‚
 	 * 
 	 * @param ex
-	 *            —áŠO
+	 *            ä¾‹å¤–
 	 */
 	public void catchException(Exception ex) {
 		log.error(ex);
