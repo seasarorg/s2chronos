@@ -218,12 +218,12 @@ public class TaskExecuteStrategyWrapper implements TaskExecuteStrategy {
 		this.taskExecuteStrategy.setException(exception);
 	}
 
-	public boolean isHotdeployDisabled() {
-		return this.taskExecuteStrategy.isHotdeployDisabled();
+	public boolean isHotdeployDisable() {
+		return this.taskExecuteStrategy.isHotdeployDisable();
 	}
 
-	public void setHotdeployDisabled(boolean hotdeployDisabled) {
-		this.taskExecuteStrategy.setHotdeployDisabled(hotdeployDisabled);
+	public void setHotdeployDisable(boolean hotdeployDisable) {
+		this.taskExecuteStrategy.setHotdeployDisable(hotdeployDisable);
 	}
 
 	public void catchException(Exception exception) {

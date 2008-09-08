@@ -54,13 +54,20 @@ public class TaskIsStartTaskPropertyReadHandlerImpl extends
 					methodInvocation).getTaskClass());
 			taskTrigger = taskAnnotationReader
 					.getTriggerAnnotationClass(new TriggerAnnotationHandler() {
-						public TaskTrigger process(Annotation annotaion,
+						public TaskTrigger process(Annotation annotation,
 								Class<?> triggerAnnotationClass) {
 							if (triggerAnnotationClass != null) {
 								try {
 									TaskTrigger taskTrigger = (TaskTrigger) ReflectionUtil
 											.newInstance(triggerAnnotationClass);
-									build(taskTrigger, annotaion,
+									Method m = triggerAnnotationClass
+											.getMethod("cache",
+													new Class<?>[] {});
+									if (m != null) {
+										Boolean cache = (Boolean) m.invoke(
+												annotation, new Object[] {});
+									}
+									build(taskTrigger, annotation,
 											triggerAnnotationClass);
 									return taskTrigger;
 								} catch (Exception e) {
@@ -114,6 +121,7 @@ public class TaskIsStartTaskPropertyReadHandlerImpl extends
 							}
 						}
 					});
+			// PropertyWriterに書き込むことによってキャッシュを保持できるようにする．
 			taskPropertyWriter.setup(this.getTaskPropertyReader(
 					methodInvocation).getTask(), this.getTaskPropertyReader(
 					methodInvocation).getBeanDesc());

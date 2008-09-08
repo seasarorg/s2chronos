@@ -233,14 +233,14 @@ public class TaskExecutorServiceImpl implements TaskExecutorService {
 				.setException(exception);
 	}
 
-	public boolean isHotdeployDisabled() {
+	public boolean isHotdeployDisable() {
 		return this.taskExecuteContext.getTaskExecuteStrategy()
-				.isHotdeployDisabled();
+				.isHotdeployDisable();
 	}
 
-	public void setHotdeployDisabled(boolean hotdeployDisabled) {
-		this.taskExecuteContext.getTaskExecuteStrategy().setHotdeployDisabled(
-				hotdeployDisabled);
+	public void setHotdeployDisable(boolean hotdeployDisable) {
+		this.taskExecuteContext.getTaskExecuteStrategy().setHotdeployDisable(
+				hotdeployDisable);
 	}
 
 	public void catchException(Exception exception) {

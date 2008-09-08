@@ -79,8 +79,8 @@ public interface TaskProperties {
 	public void setException(Exception exception);
 
 	public Exception getException();
-	
-	public void setHotdeployDisabled(boolean hotdeployDisabled);
-	
-	public boolean isHotdeployDisabled();
+
+	public void setHotdeployDisable(boolean hotdeployDisable);
+
+	public boolean isHotdeployDisable();
 }

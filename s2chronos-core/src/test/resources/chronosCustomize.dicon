@@ -3,7 +3,7 @@
 	"http://www.seasar.org/dtd/components24.dtd">
 <components>
 	<component name="schedulerConfiguration" class="org.seasar.chronos.core.SchedulerConfiguration">
-		<property name="hotdeployDisabled">true</property>
+		<property name="hotdeployDisable">true</property>
 		<property name="daemon">false</property>
 		<property name="autoFinish">true</property>
 		<property name="autoFinishTimeLimit">2000L</property>
