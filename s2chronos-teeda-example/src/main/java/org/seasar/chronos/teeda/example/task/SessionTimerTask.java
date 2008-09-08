@@ -12,7 +12,7 @@ public class SessionTimerTask {
 
 	public S2SessionDao s2SessionDao;
 
-	public void execute() {
+	public void doExecute() {
 		s2SessionDao.deleteOldSession(new Timestamp(
 				System.currentTimeMillis() - 36000));
 	}
