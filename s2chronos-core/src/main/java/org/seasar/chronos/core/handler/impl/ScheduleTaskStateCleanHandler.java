@@ -52,12 +52,13 @@ public class ScheduleTaskStateCleanHandler extends
 							}
 						});
 		if (taskScheduleEntry != null) {
+			// destroyメソッドを実行します．
 			taskScheduleEntry.getTaskExecutorService().destroy();
 			taskScheduleEntryManager.removeTaskScheduleEntry(taskScheduleEntry);
 			PropertyCache propertyCache = PropertyCache
 					.getInstance(taskScheduleEntry.getTask());
 			propertyCache.clear();
-			log.debug("UNSCHEDULEDなタスクを削除しました "
+			log.debug("スケジューリングが終了したタスクを削除しました "
 					+ taskScheduleEntry.getTaskExecutorService().getTaskName());
 		}
 
