@@ -60,13 +60,6 @@ public class TaskIsStartTaskPropertyReadHandlerImpl extends
 								try {
 									TaskTrigger taskTrigger = (TaskTrigger) ReflectionUtil
 											.newInstance(triggerAnnotationClass);
-									Method m = triggerAnnotationClass
-											.getMethod("cache",
-													new Class<?>[] {});
-									if (m != null) {
-										Boolean cache = (Boolean) m.invoke(
-												annotation, new Object[] {});
-									}
 									build(taskTrigger, annotation,
 											triggerAnnotationClass);
 									return taskTrigger;
@@ -121,6 +114,7 @@ public class TaskIsStartTaskPropertyReadHandlerImpl extends
 							}
 						}
 					});
+
 			// PropertyWriterに書き込むことによってキャッシュを保持できるようにする．
 			taskPropertyWriter.setup(this.getTaskPropertyReader(
 					methodInvocation).getTask(), this.getTaskPropertyReader(
