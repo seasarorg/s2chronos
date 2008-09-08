@@ -20,8 +20,8 @@ public abstract class AbstractCommonTask {
 		log.info("[[" + this.getClass().getSimpleName() + ":doTaskA]]");
 	}
 
-	public synchronized void finish() {
-		log.info("[[" + this.getClass().getSimpleName() + ":finish]]");
+	public synchronized void end() {
+		log.info("[[" + this.getClass().getSimpleName() + ":end]]");
 	}
 
 	public void destroy() {

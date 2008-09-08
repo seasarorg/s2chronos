@@ -64,7 +64,7 @@ public class TaskGroupTask {
 	/**
 	 * 終了メソッドです．
 	 */
-	public void finish() {
+	public void end() {
 		log.info("end");
 	}
 

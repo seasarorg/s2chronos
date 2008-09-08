@@ -79,8 +79,8 @@ public class SimpleFlowTask {
 	/**
 	 * すべてのタスクメソッドが終了したら呼ばれます．
 	 */
-	public synchronized void finish() {
-		log.info("[[SimpleFlowTask::finish]]");
+	public synchronized void end() {
+		log.info("[[SimpleFlowTask::end]]");
 	}
 
 }

@@ -19,7 +19,7 @@
   <classpathentry kind="var" path="M2_REPO/org/seasar/container/s2-extension/2.4.28/s2-extension-2.4.28.jar" sourcepath="M2_REPO/org/seasar/container/s2-extension/2.4.28/s2-extension-2.4.28-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/seasar/container/s2-framework/2.4.28/s2-framework-2.4.28.jar" sourcepath="M2_REPO/org/seasar/container/s2-framework/2.4.28/s2-framework-2.4.28-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/seasar/container/s2-tiger/2.4.28/s2-tiger-2.4.28.jar" sourcepath="M2_REPO/org/seasar/container/s2-tiger/2.4.28/s2-tiger-2.4.28-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/seasar/chronos/s2chronos-core/0.0.1-RC7-SNAPSHOT/s2chronos-core-0.0.1-RC7-SNAPSHOT.jar" sourcepath="M2_REPO/org/seasar/chronos/s2chronos-core/0.0.1-RC7-SNAPSHOT/s2chronos-core-0.0.1-RC7-SNAPSHOT-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/seasar/chronos/s2chronos-core/1.0.0/s2chronos-core-1.0.0.jar" sourcepath="M2_REPO/org/seasar/chronos/s2chronos-core/1.0.0/s2chronos-core-1.0.0-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/xerces/xercesImpl/2.6.2/xercesImpl-2.6.2.jar" sourcepath="M2_REPO/xerces/xercesImpl/2.6.2/xercesImpl-2.6.2-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/xerces/xmlParserAPIs/2.6.2/xmlParserAPIs-2.6.2.jar"/>
 </classpath>
