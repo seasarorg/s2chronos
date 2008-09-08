@@ -32,6 +32,7 @@ import org.seasar.chronos.core.TaskThreadPool;
 import org.seasar.chronos.core.TaskTrigger;
 import org.seasar.chronos.core.ThreadPoolType;
 import org.seasar.chronos.core.annotation.task.Task;
+import org.seasar.chronos.core.delegate.AsyncResult;
 import org.seasar.chronos.core.delegate.MethodInvoker;
 import org.seasar.chronos.core.executor.ExecutorServiceFactory;
 import org.seasar.chronos.core.schedule.TaskScheduleEntryManager;
@@ -76,6 +77,10 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 	private static final String[] METHOD_NAME_START = { "start", "begin" };
 
 	private static final String[] METHOD_NAME_END = { "finish", "end" };
+
+	private static final String METHOD_NAME_DEFAULT_TASK_NAME = "execute";
+
+	private static final String METHOD_NAME_DEFAULT_TASK_METHOD_NAME = "doExecute";
 
 	private static final ThreadPoolType DEFAULT_THREADPOOL_TYPE = ThreadPoolType.CACHED;
 
@@ -166,7 +171,9 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 
 	public void destroy() throws InterruptedException {
 		if (this.taskMethodInvoker.hasMethod(METHOD_NAME_DESTROY)) {
-			this.taskMethodInvoker.beginInvoke(METHOD_NAME_DESTROY);
+			AsyncResult ar = this.taskMethodInvoker
+					.beginInvoke(METHOD_NAME_DESTROY);
+			this.taskMethodInvoker.endInvoke(ar);
 		}
 	}
 
@@ -174,7 +181,8 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 		String nextTask = null;
 		for (String methodName : METHOD_NAME_END) {
 			if (this.taskMethodInvoker.hasMethod(methodName)) {
-				this.taskMethodInvoker.beginInvoke(methodName);
+				AsyncResult ar = this.taskMethodInvoker.beginInvoke(methodName);
+				this.taskMethodInvoker.endInvoke(ar);
 				TaskMethodMetaData md = new TaskMethodMetaData(this.beanDesc,
 						methodName);
 				nextTask = md.getNextTask();
@@ -187,10 +195,6 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 	}
 
 	public void execute(String startTaskName) throws InterruptedException {
-		if (startTaskName == null
-				&& this.taskMethodInvoker.hasMethod("doExecute")) {
-			startTaskName = "execute";
-		}
 		TaskType type = this.isGroupMethod(startTaskName) ? TaskType.JOBGROUP
 				: TaskType.JOB;
 		String nextTaskName = startTaskName;
@@ -280,12 +284,23 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 		this.setExecuted(true);
 		for (String methodName : METHOD_NAME_START) {
 			if (this.taskMethodInvoker.hasMethod(methodName)) {
-				this.taskMethodInvoker.beginInvoke(methodName);
+				AsyncResult ar = this.taskMethodInvoker.beginInvoke(methodName);
+				this.taskMethodInvoker.endInvoke(ar);
 				TaskMethodMetaData md = new TaskMethodMetaData(this.beanDesc,
 						methodName);
 				this.notifyGetterSignal();
-				return md.getNextTask();
+				String nextTaskName = md.getNextTask();
+				if (nextTaskName == null
+						&& this.taskMethodInvoker
+								.hasMethod(METHOD_NAME_DEFAULT_TASK_METHOD_NAME)) {
+					return METHOD_NAME_DEFAULT_TASK_NAME;
+				}
+				return nextTaskName;
 			}
+		}
+		if (this.taskMethodInvoker
+				.hasMethod(METHOD_NAME_DEFAULT_TASK_METHOD_NAME)) {
+			return METHOD_NAME_DEFAULT_TASK_NAME;
 		}
 		return null;
 	}
