@@ -38,7 +38,7 @@ public class TaskExecuteStateStarted extends AbstractTaskExecuteState {
 	@Override
 	public String finish(AbstractTaskExecuteContext context)
 			throws InterruptedException {
-		String result = this.getTaskExecuteStrategy().finish();
+		String result = this.getTaskExecuteStrategy().end();
 		this.changeState(context, context.getTaskExecuteStateFinished());
 		return result;
 	}

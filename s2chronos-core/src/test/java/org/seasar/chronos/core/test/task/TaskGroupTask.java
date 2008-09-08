@@ -44,7 +44,7 @@ public class TaskGroupTask {
 		log.info("endGroupA");
 	}
 
-	public void finish() {
+	public void end() {
 		if (exception != null) {
 			exception.printStackTrace();
 		}

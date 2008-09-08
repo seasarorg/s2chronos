@@ -26,4 +26,6 @@ public @interface CronTrigger {
 
 	String expression();
 
+	boolean cache() default true;
+
 }

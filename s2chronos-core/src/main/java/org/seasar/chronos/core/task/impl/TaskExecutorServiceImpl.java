@@ -56,7 +56,7 @@ public class TaskExecutorServiceImpl implements TaskExecutorService {
 		this.taskExecuteContext.destroy();
 	}
 
-	public String finish() throws InterruptedException {
+	public String end() throws InterruptedException {
 		return this.taskExecuteContext.finish();
 	}
 

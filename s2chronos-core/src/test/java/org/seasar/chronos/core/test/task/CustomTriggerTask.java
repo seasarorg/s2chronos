@@ -24,7 +24,7 @@ public class CustomTriggerTask {
 		log.debug("[CustomTriggerTask::doTaskA]");
 	}
 
-	public void finish() {
+	public void end() {
 		log.debug("[CustomTriggerTask::end]");
 	}
 

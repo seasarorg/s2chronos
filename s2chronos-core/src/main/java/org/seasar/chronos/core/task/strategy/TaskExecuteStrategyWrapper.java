@@ -52,8 +52,8 @@ public class TaskExecuteStrategyWrapper implements TaskExecuteStrategy {
 		this.taskExecuteStrategy.destroy();
 	}
 
-	public String finish() throws InterruptedException {
-		return this.taskExecuteStrategy.finish();
+	public String end() throws InterruptedException {
+		return this.taskExecuteStrategy.end();
 	}
 
 	public void execute(String startTaskName) throws InterruptedException {

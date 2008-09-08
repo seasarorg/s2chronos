@@ -76,7 +76,7 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 
 	private static final String[] METHOD_NAME_START = { "start", "begin" };
 
-	private static final String[] METHOD_NAME_END = { "finish", "end" };
+	private static final String[] METHOD_NAME_END = { "end", "finish" };
 
 	private static final String METHOD_NAME_DEFAULT_TASK_NAME = "execute";
 
@@ -177,7 +177,7 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 		}
 	}
 
-	public String finish() throws InterruptedException {
+	public String end() throws InterruptedException {
 		String nextTask = null;
 		for (String methodName : METHOD_NAME_END) {
 			if (this.taskMethodInvoker.hasMethod(methodName)) {

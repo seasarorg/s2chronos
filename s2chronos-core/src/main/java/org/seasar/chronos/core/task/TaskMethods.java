@@ -44,7 +44,7 @@ public interface TaskMethods {
 	public boolean await(long time, TimeUnit timeUnit)
 			throws InterruptedException;
 
-	public String finish() throws InterruptedException;
+	public String end() throws InterruptedException;
 
 	public void destroy() throws InterruptedException;
 

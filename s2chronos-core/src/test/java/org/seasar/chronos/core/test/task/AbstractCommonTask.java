@@ -74,8 +74,8 @@ public abstract class AbstractCommonTask {
 	/**
 	 * 終了メソッドです。
 	 */
-	public synchronized void finish() {
-		log.info(this.getClass().getName() + " : [[finishを実行しました．]]");
+	public synchronized void end() {
+		log.info(this.getClass().getName() + " : [[endを実行しました．]]");
 	}
 
 	/**

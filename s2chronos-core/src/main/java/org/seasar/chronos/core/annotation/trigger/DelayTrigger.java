@@ -26,4 +26,5 @@ public @interface DelayTrigger {
 
 	long delay();
 
+	boolean cache() default true;
 }
