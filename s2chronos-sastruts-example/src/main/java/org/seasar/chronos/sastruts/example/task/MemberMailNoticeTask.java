@@ -124,7 +124,7 @@ public class MemberMailNoticeTask {
 	/**
 	 * 終了メソッドです。
 	 */
-	public void finish() {
+	public void end() {
 		registerUserList.clear();
 		unregisterUserList.clear();
 	}
