@@ -76,7 +76,33 @@ urchinTracker();
 <h2>変更履歴</h2>
 <p>変更履歴は以下です．</p>
 <p>バグ報告などのトラッキングは<a href="https://www.seasar.org/issues/browse/CHRONOS" target="_blank">こちら</a>です．</p>
-</div><!-- section -->
+</div>
+<!-- section -->
+<div class="section">
+<h3>2008-09-08</h3>
+<p>
+<ul>
+	<li><a href="download.html">1.0.0をリリースしました．</a></li>
+</ul>
+<pre>
+*New Feature
+[CHRONOS-20] TaskTriggerにshutdownTaskプロパティを追加しました
+[CHRONOS-22] Taskクラスをpublicフィールドに対応しました
+[CHRONOS-21] Taskクラス内でスローしたExceptionをexceptionプロパティにDIするようにしました
+[CHRONOS-27] トリガーの有効期間を指定できるScopedTimeTriggerを新規に追加しました
+[CHRONOS-28] トリガーを複数格納できるTriggerChainトリガーを新規に実装しました
+[CHRONOS-29] S2ChronosのHOT deployを無効化できるオプションを実装しました
+[CHRONOS-30] タスクが初期されるときと破棄されるときに1度だけ呼び出されるメソッドを新規に実装しました
+
+
+*Improvement
+[CHRONOS-24] initializeメソッドとdestroyメソッドをstartメソッドとendメソッドに改名しました      
+[CHRONOS-25] startメソッドがない場合もしくはstartメソッドにNextTaskアノテーションがない場合にでも，doExecuteがあれば実行されるようにしました      
+[CHRONOS-26] タスククラスのisReScheduleをisReScheduleTaskに改名し，TaskTriggerにもisReScheduleTaskを保持するようにしました   
+</pre>
+</p>
+</div>
+<!-- section -->
 <div class="section">
 <h3>2008-07-05</h3>
 <p>
