@@ -156,8 +156,8 @@ public class BasicTask {
     }
     
     // 終了処理
-    public void finish(){
-    	log.info(this.getClass().getSimpleName() + ":finish");
+    public void end(){
+    	log.info(this.getClass().getSimpleName() + ":end");
     }
     
     // 破棄処理
@@ -192,8 +192,8 @@ public class BasicTask {
     }
     
     // 終了処理
-    public void finish(){
-    	log.info(this.getClass().getSimpleName() + ":finish");
+    public void end(){
+    	log.info(this.getClass().getSimpleName() + ":end");
     }
     
     // 破棄処理
@@ -429,7 +429,7 @@ public class SimpleTask {
 	 */ 
 	@NextTask("taskA")
 	public void start() {
-		log.info("[[SimpleTask::initialize]]");
+		log.info("[[SimpleTask::start]]");
 	}
 
 	/**
@@ -476,8 +476,8 @@ public class SimpleTask {
 	/**
 	 * すべてのタスクメソッドが終了したら呼ばれます．
 	 */
-	public void finish() {
-		log.info("[[SimpleTask::destroy]]");
+	public void end() {
+		log.info("[[SimpleTask::end]]");
 	}
 
 }
