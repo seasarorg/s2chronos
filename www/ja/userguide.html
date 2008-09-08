@@ -60,7 +60,7 @@ urchinTracker();
       <div class="section">
         <h3>S2Chronosとは？</h3>
         <div class="section">
-          <h4>主なクラス構成</h4>
+          <h4>主に使うクラス</h4>
           <p>
           <ul>
             <li>タスククラス<br />
@@ -68,7 +68,7 @@ urchinTracker();
             <li>トリガークラス<br />
               タスククラスの開始，一時停止，終了などの定義したクラス．</li>
             <li>スケジューラクラス<br />
-              スケジューリングによってタスクを実行するクラス．S2Chronosの根幹をなす機能を提供する．</li>
+              スケジューリングによってタスクを実行するクラス．S2Chronosの根幹をなす機能を提供する．ほぼ意識しないで実装可能．</li>
           </ul>
           </p>
         </div>
@@ -77,13 +77,13 @@ urchinTracker();
           <h4>タスククラスの実装</h4>
           <p>
           <ul>
-            <li>基本なタスククラスの実装方法 その1<br/>
-            最も簡単なタスククラスは以下です．メソッド名はdoExecuteとしてください．<br/>
-このクラスはS2のCreatorによってS2にSMART deploy対象として扱われます．ですので他のS2のコンポーネントと同様にDIやAOPの適用が可能になります．また，タスククラスはPOJOとして実装が可能です．
-
-まず，クラス名はTaskというサフィックスをつけて，Taskアノテーションも付けます．
-次にこのタスククラスを実行する条件をトリガーアノテーションで指定します．(ここではスケジューラに登録されると即時実行するNonDelayTriggerを指定します．時間指定する場合はCronTriggerなどを利用してください．)
-<pre>
+            <li>基本なタスククラスの実装方法<br/>
+              最も簡単なタスククラスは以下です．メソッド名はdoExecuteとしてください．<br/>
+              このクラスはS2のCreatorによってS2にSMART deploy対象として扱われます．ですので他のS2のコンポーネントと同様にDIやAOPの適用が可能になります．また，タスククラスはPOJOとして実装が可能です．
+              
+              まず，クラス名はTaskというサフィックスをつけて，Taskアノテーションも付けます．
+              次にこのタスククラスを実行する条件をトリガーアノテーションで指定します．(ここではスケジューラに登録されると即時実行するNonDelayTriggerを指定します．時間指定する場合はCronTriggerなどを利用してください．)
+              <pre>
 @Task
 @NonDelayTrigger
 public class BasicTask {
@@ -99,14 +99,13 @@ public class BasicTask {
 </pre>
             </li>
             <br/>
-            <li>基本なタスククラスの実装方法 その2<br />
-            <br/>
-              以下のように初期化処理や，終了処理のメソッドを定義することも可能です．<br/>
-              この場合は、初期化処理，タスク処理，終了処理に対応するメソッドを定義していきます．<br/>
-              まず，初期化処理としてinitializeメソッドを定義して初期化処理を実装してください．初期化メソッドは，initializeのほかにbegin, startが使えます．<br/>
-              NextTaskアノテーションを使って，次に呼び出されるタスク処理(以下，タスクメソッド)の名前を指定します．(タスクメソッド名からdoを除いた名前をキャメル式で指定します)
-              タスクメソッドを実装します．
-              最後に終了処理用にdestoryメソッドを実装します．終了処理メソッドはdestoryのほかにend, finishの名前が使えます．(destoryメソッドは任意で定義可能)　また，NextTaskアノテーションはタスクメソッドに対しても割り当て可能です．
+            <li>初期化と破棄処理<br />
+              <br/>
+              以下のように初期化処理や，破棄処理のメソッドを定義することも可能です．<br/>
+              この場合は、初期化処理，タスク処理，破棄処理に対応するメソッドを定義していきます．<br/>
+              まず，初期化処理としてinitializeメソッドを定義して初期化処理を実装してください．初期化処理はスケジューラによってタスクが初期化されるときに一度だけ呼び出されます．<br/>
+              破棄処理の場合はdestoryメソッドを実装します.
+              破棄処理はスケジューラによってタスクが破棄されるときに一度だけ呼び出されます．ここでいう破棄とはVMのGCとは異なります．ただし，isReScheduleTaskがtrueを返すタスクの場合は破棄処理は実行されません．
               <pre>
 @Task
 @NonDelayTrigger
@@ -115,9 +114,76 @@ public class BasicTask {
     private static Logger log = Logger.getLogger(BasicTask.class);
     
     // 初期化処理
-    @NextTask("taskA")
     public void initialize() {
         log.info(this.getClass().getSimpleName() + ":initialize");
+    }
+    
+    // タスク処理
+    public void doExecute() {
+        log.info(this.getClass().getSimpleName() + ":doExecute");
+    }
+    
+    // 破棄処理
+    public void destroy() {
+        log.info(this.getClass().getSimpleName() + ":destroy");
+    }
+
+}</pre>
+            </li>
+            <li>開始処理と終了処理<br />
+              <br/>
+              タスクが開始されるときに呼びだされるstartメソッドと，タスクが終了するときに呼び出されるfinishメソッドを定義できます．
+<pre>
+@Task
+@NonDelayTrigger
+public class BasicTask {
+    
+    private static Logger log = Logger.getLogger(BasicTask.class);
+    
+    // 初期化処理
+    public void initialize() {
+        log.info(this.getClass().getSimpleName() + ":initialize");
+    }
+    
+    // 開始処理
+    public void start(){
+    	log.info(this.getClass().getSimpleName() + ":start");
+    }
+    
+    // タスク処理
+    public void doExecute() {
+        log.info(this.getClass().getSimpleName() + ":doExecute");
+    }
+    
+    // 終了処理
+    public void finish(){
+    	log.info(this.getClass().getSimpleName() + ":finish");
+    }
+    
+    // 破棄処理
+    public void destroy() {
+        log.info(this.getClass().getSimpleName() + ":destroy");
+    }
+
+}
+</pre>
+doから始まるタスクメソッドの名前を自由に設定したい場合は，startメソッドを用意しそのメソッドに@NextTaskアノテーションで次に実行するタスクメソッド名を付与してください．
+<pre>
+@Task
+@NonDelayTrigger
+public class BasicTask {
+    
+    private static Logger log = Logger.getLogger(BasicTask.class);
+    
+    // 初期化処理
+    public void initialize() {
+        log.info(this.getClass().getSimpleName() + ":initialize");
+    }
+    
+    // 開始処理
+    @NextTask("taskA")
+    public void start(){
+    	log.info(this.getClass().getSimpleName() + ":start");
     }
     
     // タスク処理
@@ -126,11 +192,17 @@ public class BasicTask {
     }
     
     // 終了処理
+    public void finish(){
+    	log.info(this.getClass().getSimpleName() + ":finish");
+    }
+    
+    // 破棄処理
     public void destroy() {
         log.info(this.getClass().getSimpleName() + ":destroy");
     }
 
-}</pre>
+}
+</pre>
             </li>
             <li>タスクの起動条件である
               トリガーを設定する <br />
@@ -264,6 +336,66 @@ public class ExampleTriggerTask extends AbstractCommonTask {
         </div>
         <!-- section -->
         <div class="section">
+        	<h4>スレッドプールについて</h4>
+             <p>
+             <ul><li>タスククラスのスレッドプール<br />
+             タスククラスにスレッドプールを以下の方法で指定することができます．スレッドプールのタイプはJava5のconcurrentパッケージに準拠します．FIXED/CACHED/SINGLE/SCHEDULEDが使えます．スレッドプールタイプを指定しない場合はCACHEDで動作します．
+             <pre>
+@Task
+@NonDelayTrigger
+public class BasicTask {
+    
+    private static Logger log = Logger.getLogger(BasicTask.class);
+    
+    // スレッドプールタイプを返します．
+    public ThreadPoolType getThreadPoolType(){
+    	return ThreadPoolType.FIXED;
+    }
+    
+    // スレッドプールのサイズを返します．
+    public Integer getThreadPoolSize(){
+    	return 10;
+    }
+
+    // タスク処理
+    public void doExecute() {
+        log.info(this.getClass().getSimpleName() + ":doExecute");
+    }
+
+}
+             </pre>
+             TaskThreadPoolを使っても同様に設定可能です．また，TaskThreadPoolを複数のタスククラスで共有することでスレッドプールを共有することが可能になります．
+             <pre>
+@Task
+@NonDelayTrigger
+public class BasicTask {
+    
+    private static Logger log = Logger.getLogger(BasicTask.class);
+    
+    private TaskThreadPool threadPool = new ThreadPool();
+    
+    public void initialize(){
+    	threadPool.setThreadPoolType(ThreadPoolType.FIXED);
+        threadPool.setThreadPoolSize(10);
+    }
+    
+    // スレッドプールタイプを返します．
+    public TaskThreadPool getThreadPool(){
+    	return threadPool;
+    }
+
+    // タスク処理
+    public void doExecute() {
+        log.info(this.getClass().getSimpleName() + ":doExecute");
+    }
+
+}
+             </pre>
+             </li></ul>
+             </p>
+        </div>
+        <!-- section -->
+        <div class="section">
           <h4>タスクのフロー制御</h4>
           <p>
           <ul>
@@ -288,14 +420,15 @@ public class SimpleTask {
 	 */
 	private static Logger log = Logger.getLogger(SimpleTask.class);
 
+
 	/**
-	 * タスクが実行されるときに最初に呼ばれます．
+	 * タスクが開始されるときに最初に呼ばれます．
 	 * <p>
 	 * 次のタスクはdoTaskAメソッドになります．
 	 * </p>
 	 */ 
 	@NextTask("taskA")
-	public void initialize() {
+	public void start() {
 		log.info("[[SimpleTask::initialize]]");
 	}
 
@@ -343,7 +476,7 @@ public class SimpleTask {
 	/**
 	 * すべてのタスクメソッドが終了したら呼ばれます．
 	 */
-	public void destroy() {
+	public void finish() {
 		log.info("[[SimpleTask::destroy]]");
 	}
 
@@ -358,15 +491,15 @@ public class SimpleTask {
         </div>
         <!-- section -->
         <div class="section">
-        	<h4>例外のハンドリング</h4>
-            <p>
-            <ul>
+          <h4>例外のハンドリング</h4>
+          <p>
+          <ul>
             <li>例外をスローした際の挙動<br/>
-            タスクメソッド内で例外をスローすると次に実行するタスクメソッドがあっても実行せずに終了処理メソッドを呼び出します。
-            </li>
+              タスクメソッド内で例外をスローすると次に実行するタスクメソッドがあっても実行せずに終了処理メソッドを呼び出します。 </li>
             <li>スローした例外を処理する方法<br/>
-            setterもしくは例外キャッチ用メソッドで例外を受けとり処理することができます。
-<pre>
+              setterもしくは例外キャッチ用メソッドで例外を受けとり処理することができます。
+              <h5>setterで受け取る方法</h5>
+              <pre>
 @Task
 @NonDelayTrigger
 public class BasicTask {
@@ -390,9 +523,28 @@ public class BasicTask {
 
 }
 </pre>
+<h5>catchExceptionメソッドで受け取る方法</h5>
+<pre>
+@Task
+@NonDelayTrigger
+public class BasicTask {
+    
+    private static Logger log = Logger.getLogger(BasicTask.class);
+    
+    // タスク処理
+    public void doExecute() {
+        thow new RuntimeException();
+    }
+    
+    public void catchException(Exception ex){
+    	this.exception = ex;
+    }
+
+}
+</pre>
             </li>
-            </ul>
-            </p>
+          </ul>
+          </p>
         </div>
         <!-- section -->
         <div class="section">
