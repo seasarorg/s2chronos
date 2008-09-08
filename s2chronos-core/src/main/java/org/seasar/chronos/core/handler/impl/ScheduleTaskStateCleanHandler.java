@@ -58,8 +58,6 @@ public class ScheduleTaskStateCleanHandler extends
 			PropertyCache propertyCache = PropertyCache
 					.getInstance(taskScheduleEntry.getTask());
 			propertyCache.clear();
-			log.debug("スケジューリングが終了したタスクを削除しました "
-					+ taskScheduleEntry.getTaskExecutorService().getTaskName());
 		}
 
 	}
