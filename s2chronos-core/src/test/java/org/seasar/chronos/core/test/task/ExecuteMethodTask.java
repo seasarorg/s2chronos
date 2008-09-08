@@ -1,7 +1,6 @@
 package org.seasar.chronos.core.test.task;
 
 import org.seasar.chronos.core.annotation.task.Task;
-import org.seasar.chronos.core.annotation.task.method.CloneTask;
 import org.seasar.chronos.core.annotation.trigger.NonDelayTrigger;
 import org.seasar.framework.log.Logger;
 
@@ -13,7 +12,6 @@ public class ExecuteMethodTask {
 
 	private static int count = 1;
 
-	@CloneTask(10)
 	public void doExecute() {
 		log.debug("[ExecuteMethodTask::doExecute:" + count++ + "]");
 	}
