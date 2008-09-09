@@ -7,6 +7,8 @@ import org.seasar.chronos.core.TaskTrigger;
 @SuppressWarnings("serial")
 public class ScopedTimeTrigger extends TriggerWrapper {
 
+	private CCronTrigger scopedStartCronTrigger;
+	private CCronTrigger scopedEndCronTrigger;
 	private Date scopedStartTime;
 	private Date scopedEndTime;
 
@@ -17,6 +19,10 @@ public class ScopedTimeTrigger extends TriggerWrapper {
 			endScopedTimeCheck = (System.currentTimeMillis() <= scopedEndTime
 					.getTime());
 		}
+		if (scopedEndCronTrigger != null) {
+			endScopedTimeCheck = endScopedTimeCheck
+					|| scopedEndCronTrigger.isStartTask();
+		}
 		return endScopedTimeCheck && super.isEndTask();
 	}
 
@@ -26,6 +32,10 @@ public class ScopedTimeTrigger extends TriggerWrapper {
 		if (scopedStartTime != null) {
 			startScopedTimeCheck = (System.currentTimeMillis() >= scopedStartTime
 					.getTime());
+		}
+		if (scopedStartCronTrigger != null) {
+			startScopedTimeCheck = startScopedTimeCheck
+					|| scopedStartCronTrigger.isStartTask();
 		}
 		return startScopedTimeCheck && super.isStartTask();
 	}
@@ -48,6 +58,22 @@ public class ScopedTimeTrigger extends TriggerWrapper {
 
 	public void setScopedEndTime(Date scopedEndTime) {
 		this.scopedEndTime = (Date) scopedEndTime.clone();
+	}
+
+	public CCronTrigger getScopedStartCronTrigger() {
+		return scopedStartCronTrigger;
+	}
+
+	public void setScopedStartCronTrigger(CCronTrigger scopedStartCronTrigger) {
+		this.scopedStartCronTrigger = scopedStartCronTrigger;
+	}
+
+	public CCronTrigger getScopedEndCronTrigger() {
+		return scopedEndCronTrigger;
+	}
+
+	public void setScopedEndCronTrigger(CCronTrigger scopedEndCronTrigger) {
+		this.scopedEndCronTrigger = scopedEndCronTrigger;
 	}
 
 }
