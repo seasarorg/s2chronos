@@ -240,6 +240,33 @@ public class BasicTask {
 public class BasicTask {  
 </pre>
                 </li>
+                <li>ScopedTimeTrigger<br />
+                  トリガーの有効期間を指定できるトリガーです．こちらについてはアノテーションは対応していません．
+                  <pre>
+@Task
+public class BasicTask {
+
+	private ScopedTimeTrigger trigger = new ScopedTimeTrigger(new CCronTrigger("0 */1 * * * ?"));
+    
+    public void initialize(){
+    	// Date型で範囲を指定する場合
+		Date date = DateFormat.getDateInstance().parse("2008/12/12 12:12:12");
+		trigger.setScopedStartTime(date);
+		date = DateFormat.getDateInstance().parse("2008/12/13 12:12:12");
+		trigger.setScopedEndTime(date);
+        
+        // CCronTriggerで範囲を指定する場合 CROND形式の時刻条件がマッチする際にトリガーが有効となります
+        trigger.setScopedStartCronTrigger(new CCronTrigger("0 0 4 * * ?"));
+        trigger.setScopedEndCronTrigger(new CCronTrigger("0 0 5 * * ?"));
+    }
+    
+	public TaskTrigger getTrigger(){
+    	return trigger;
+    }
+    
+}  
+</pre>
+                </li>
               </ul>
             </li>
           </ul>
