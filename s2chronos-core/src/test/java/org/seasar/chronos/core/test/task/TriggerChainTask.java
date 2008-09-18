@@ -40,6 +40,8 @@ public class TriggerChainTask {
 		trigger.addTrigger(b);
 
 		trigger.setReScheduleTask(true);
+
+		System.out.println("initialize()が実行されました");
 	}
 
 	public void doExecute() {
@@ -47,10 +49,11 @@ public class TriggerChainTask {
 	}
 
 	public void end() {
+		// すべてのトリガーが終了するとisExecutedがtrueを返すのでそのNot値を設定して，destroy可能なタスクに変更する．
 		trigger.setReScheduleTask(!trigger.isExecuted());
 	}
 
 	public void destroy() {
-
+		System.out.println("destroy()が実行されました");
 	}
 }
