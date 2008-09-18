@@ -145,6 +145,12 @@ public class TriggerChain implements TaskTrigger {
 	}
 
 	public void setExecuted(boolean executed) {
-		executedCounts.add(executed);
+		if (executed) {
+			executedCounts.add(executed);
+		} else {
+			if (executedCounts.size() > 0) {
+				executedCounts.remove(0);
+			}
+		}
 	}
 }
