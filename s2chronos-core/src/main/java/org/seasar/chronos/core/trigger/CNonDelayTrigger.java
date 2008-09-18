@@ -36,6 +36,9 @@ public class CNonDelayTrigger extends AbstractTrigger {
 	}
 
 	public boolean isStartTask() {
+		if (this.isExecuting() || this.isExecuted()) {
+			return false;
+		}
 		return true;
 	}
 

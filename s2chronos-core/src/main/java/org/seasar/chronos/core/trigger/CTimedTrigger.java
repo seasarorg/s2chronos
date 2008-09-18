@@ -53,7 +53,7 @@ public class CTimedTrigger extends AbstractTrigger {
 	}
 
 	public boolean isStartTask() {
-		if (this.isExecute()) {
+		if (this.isExecuting() || this.isExecuted()) {
 			return false;
 		}
 		boolean startTimeCheck = false;

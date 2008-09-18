@@ -128,6 +128,10 @@ public class TaskExecuteStrategyWrapper implements TaskExecuteStrategy {
 		return this.taskExecuteStrategy.isEndTask();
 	}
 
+	public boolean isExecuting() {
+		return this.taskExecuteStrategy.isExecuting();
+	}
+
 	public boolean isExecuted() {
 		return this.taskExecuteStrategy.isExecuted();
 	}
@@ -158,6 +162,10 @@ public class TaskExecuteStrategyWrapper implements TaskExecuteStrategy {
 
 	public void setEndTask(boolean endTask) {
 		this.taskExecuteStrategy.setEndTask(endTask);
+	}
+
+	public void setExecuting(boolean executing) {
+		this.taskExecuteStrategy.setExecuting(executing);
 	}
 
 	public void setExecuted(boolean executed) {

@@ -51,7 +51,7 @@ public class CDelayTrigger extends AbstractTrigger {
 	}
 
 	public boolean isStartTask() {
-		if (this.isExecute()) {
+		if (this.isExecuting()) {
 			return false;
 		}
 

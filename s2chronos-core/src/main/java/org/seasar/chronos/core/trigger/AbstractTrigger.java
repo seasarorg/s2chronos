@@ -30,7 +30,9 @@ public abstract class AbstractTrigger implements TaskTrigger {
 
 	private String description;
 
-	private boolean execute;
+	private boolean executed;
+
+	private boolean executing;
 
 	private boolean reScheduleTask;
 
@@ -61,7 +63,7 @@ public abstract class AbstractTrigger implements TaskTrigger {
 			if (this.description != null) {
 				result = result & this.description.equals(src.description);
 			}
-			result = result & this.execute == src.execute;
+			result = result & this.executing == src.executing;
 			return result;
 		} else {
 			return super.equals(obj);
@@ -92,8 +94,8 @@ public abstract class AbstractTrigger implements TaskTrigger {
 		return this.triggerId;
 	}
 
-	public boolean isExecute() {
-		return this.execute;
+	public boolean isExecuting() {
+		return this.executing;
 	}
 
 	public void load() {
@@ -108,8 +110,8 @@ public abstract class AbstractTrigger implements TaskTrigger {
 		this.description = description;
 	}
 
-	public void setExecute(boolean executed) {
-		this.execute = executed;
+	public void setExecuting(boolean executing) {
+		this.executing = executing;
 	}
 
 	public void setName(String name) {
@@ -138,6 +140,14 @@ public abstract class AbstractTrigger implements TaskTrigger {
 
 	public void setShutdownTask(boolean shutdownTask) {
 		this.shutdownTask = shutdownTask;
+	}
+
+	public boolean isExecuted() {
+		return executed;
+	}
+
+	public void setExecuted(boolean executed) {
+		this.executed = executed;
 	}
 
 }

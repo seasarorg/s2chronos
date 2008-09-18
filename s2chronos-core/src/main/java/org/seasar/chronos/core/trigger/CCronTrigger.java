@@ -72,6 +72,9 @@ public class CCronTrigger extends AbstractTrigger {
 	}
 
 	public boolean isStartTask() {
+		if (this.isExecuting()) {
+			return false;
+		}
 		long nowTime = System.currentTimeMillis();
 		Date nextValidTime = this.expression.getNextValidTimeAfter(buildTime);
 		// log.debug("nextValidTime = " + nextValidTime);
@@ -98,11 +101,6 @@ public class CCronTrigger extends AbstractTrigger {
 	}
 
 	public void setEndTask(boolean endTask) {
-
-	}
-
-	@Override
-	public void setExecute(boolean executed) {
 
 	}
 

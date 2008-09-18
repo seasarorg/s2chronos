@@ -16,14 +16,14 @@ public class ScopedTimeTrigger extends TriggerWrapper {
 	public boolean isEndTask() {
 		boolean endScopedTimeCheck = false;
 		if (scopedEndTime != null) {
-			endScopedTimeCheck = (System.currentTimeMillis() <= scopedEndTime
+			endScopedTimeCheck = (System.currentTimeMillis() >= scopedEndTime
 					.getTime());
 		}
 		if (scopedEndCronTrigger != null) {
 			endScopedTimeCheck = endScopedTimeCheck
 					|| scopedEndCronTrigger.isStartTask();
 		}
-		return endScopedTimeCheck && super.isEndTask();
+		return endScopedTimeCheck || super.isEndTask();
 	}
 
 	@Override
@@ -37,7 +37,17 @@ public class ScopedTimeTrigger extends TriggerWrapper {
 			startScopedTimeCheck = startScopedTimeCheck
 					|| scopedStartCronTrigger.isStartTask();
 		}
-		return startScopedTimeCheck && super.isStartTask();
+		boolean endScopedTimeCheck = false;
+		if (scopedEndTime != null) {
+			endScopedTimeCheck = (System.currentTimeMillis() < scopedEndTime
+					.getTime());
+		}
+		if (scopedEndCronTrigger != null) {
+			endScopedTimeCheck = endScopedTimeCheck
+					|| !scopedEndCronTrigger.isStartTask();
+		}
+		return startScopedTimeCheck && endScopedTimeCheck
+				&& super.isStartTask();
 	}
 
 	public ScopedTimeTrigger(TaskTrigger taskTrigger) {

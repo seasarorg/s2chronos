@@ -29,6 +29,19 @@ public class ThreadPool implements TaskThreadPool {
 
 	private Integer threadPoolSize;
 
+	public ThreadPool(ThreadPoolType threadPoolType, Integer threadPoolSize) {
+		this.setThreadPoolType(threadPoolType);
+		this.setThreadPoolSize(threadPoolSize);
+	}
+
+	public ThreadPool(ThreadPoolType threadPoolType) {
+		this(threadPoolType, null);
+	}
+
+	public ThreadPool() {
+		this(null, null);
+	}
+
 	public Long getThreadPoolId() {
 		if (id == null) {
 			id = ObjectUtil.generateObjectId();

@@ -17,6 +17,7 @@ package org.seasar.chronos.core.schedule;
 
 import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -47,11 +48,11 @@ public class TaskScheduleEntryManager {
 		return instance;
 	}
 
-	private final ConcurrentHashMap<TaskStateType, CopyOnWriteArrayList<TaskScheduleEntry>> taskScheduleEntryMap = new ConcurrentHashMap<TaskStateType, CopyOnWriteArrayList<TaskScheduleEntry>>();
+	private final Map<TaskStateType, CopyOnWriteArrayList<TaskScheduleEntry>> taskScheduleEntryMap = new ConcurrentHashMap<TaskStateType, CopyOnWriteArrayList<TaskScheduleEntry>>();
 
 	private final CopyOnWriteArrayList<TaskScheduleEntry> allTaskList = new CopyOnWriteArrayList<TaskScheduleEntry>();
 
-	private final ConcurrentHashMap<Class<?>, TaskScheduleEntry> taskScheduleEntryClassMap = new ConcurrentHashMap<Class<?>, TaskScheduleEntry>();
+	private final Map<Class<?>, TaskScheduleEntry> taskScheduleEntryClassMap = new ConcurrentHashMap<Class<?>, TaskScheduleEntry>();
 
 	private TaskScheduleEntryManager() {
 

@@ -23,10 +23,8 @@ public class TaskSetEndTaskPropertyWriteHandlerImpl extends
 		AbstractTaskPropertyWriteHandler {
 
 	public Object execute(MethodInvocation methodInvocation) throws Throwable {
-		this.getTaskPropertyReader(methodInvocation).setup(
-				methodInvocation.getThis(), methodInvocation.getClass());
-		TaskTrigger trigger = this.getTaskPropertyReader(methodInvocation)
-				.getTrigger(null);
+		TaskTrigger trigger = this.getTaskPropertyWriter(methodInvocation)
+				.getTaskPropertyReader().getTrigger(null);
 		if (trigger != null) {
 			trigger.setEndTask((Boolean) methodInvocation.getArguments()[0]);
 			return null;

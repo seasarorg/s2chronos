@@ -14,7 +14,7 @@ import org.seasar.framework.util.tiger.CollectionsUtil;
 public class TriggerChain implements TaskTrigger {
 
 	private static final long serialVersionUID = -1L;
-	
+
 	private Long triggerId;
 
 	private String name;
@@ -23,7 +23,11 @@ public class TriggerChain implements TaskTrigger {
 
 	private String description;
 
+	private boolean reScheduleTask;
+
 	private List<TaskTrigger> triggerList = CollectionsUtil.newArrayList();
+
+	private List<Boolean> executedCounts = CollectionsUtil.newArrayList();
 
 	public void addTrigger(TaskTrigger trigger) {
 		triggerList.add(trigger);
@@ -54,9 +58,9 @@ public class TriggerChain implements TaskTrigger {
 		return false;
 	}
 
-	public boolean isExecute() {
+	public boolean isExecuting() {
 		for (TaskTrigger trigger : triggerList) {
-			if (trigger.isExecute()) {
+			if (trigger.isExecuting()) {
 				return true;
 			}
 		}
@@ -64,12 +68,7 @@ public class TriggerChain implements TaskTrigger {
 	}
 
 	public boolean isReScheduleTask() {
-		for (TaskTrigger trigger : triggerList) {
-			if (trigger.isReScheduleTask()) {
-				return true;
-			}
-		}
-		return false;
+		return reScheduleTask;
 	}
 
 	public boolean isShutdownTask() {
@@ -82,6 +81,9 @@ public class TriggerChain implements TaskTrigger {
 	}
 
 	public boolean isStartTask() {
+		if (this.isExecuting() || this.isExecuted()) {
+			return false;
+		}
 		for (TaskTrigger trigger : triggerList) {
 			if (trigger.isStartTask()) {
 				return true;
@@ -104,9 +106,9 @@ public class TriggerChain implements TaskTrigger {
 		}
 	}
 
-	public void setExecute(boolean execute) {
+	public void setExecuting(boolean executing) {
 		for (TaskTrigger trigger : triggerList) {
-			trigger.setExecute(execute);
+			trigger.setExecuting(executing);
 		}
 	}
 
@@ -115,9 +117,7 @@ public class TriggerChain implements TaskTrigger {
 	}
 
 	public void setReScheduleTask(boolean reScheduleTask) {
-		for (TaskTrigger trigger : triggerList) {
-			trigger.setReScheduleTask(reScheduleTask);
-		}	
+		this.reScheduleTask = reScheduleTask;
 	}
 
 	public void setShutdownTask(boolean shutdownTask) {
@@ -128,7 +128,7 @@ public class TriggerChain implements TaskTrigger {
 
 	public void setStartTask(boolean startTask) {
 		for (TaskTrigger trigger : triggerList) {
-			trigger.setEndTask(startTask);
+			trigger.setStartTask(startTask);
 		}
 	}
 
@@ -138,5 +138,13 @@ public class TriggerChain implements TaskTrigger {
 
 	public void setTriggerId(Long triggerId) {
 		this.triggerId = triggerId;
+	}
+
+	public boolean isExecuted() {
+		return executedCounts.size() == this.triggerList.size();
+	}
+
+	public void setExecuted(boolean executed) {
+		executedCounts.add(executed);
 	}
 }

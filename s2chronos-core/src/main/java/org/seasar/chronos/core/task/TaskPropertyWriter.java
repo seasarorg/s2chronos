@@ -22,6 +22,8 @@ import org.seasar.framework.beans.BeanDesc;
 
 public interface TaskPropertyWriter {
 
+	public TaskPropertyReader getTaskPropertyReader();
+
 	public Object getTask();
 
 	public Class<?> getTaskClass();
@@ -39,6 +41,8 @@ public interface TaskPropertyWriter {
 	public boolean hasEndTask();
 
 	public boolean hasShutdownTask();
+
+	public boolean hasExecuting();
 
 	public boolean hasExecuted();
 
@@ -65,6 +69,8 @@ public interface TaskPropertyWriter {
 	public void setEndTask(boolean value);
 
 	public void setShutdownTask(boolean value);
+
+	public void setExecuting(boolean value);
 
 	public void setExecuted(boolean value);
 

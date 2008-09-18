@@ -36,13 +36,17 @@ public interface TaskTrigger extends Serializable {
 
 	public Object getTask();
 
-	public boolean isExecute();
+	public boolean isExecuted();
+
+	public boolean isExecuting();
 
 	public void setDescription(String description);
 
 	public void setEndTask(boolean endTask);
 
-	public void setExecute(boolean execute);
+	public void setExecuting(boolean executing);
+
+	public void setExecuted(boolean executed);
 
 	public void setTriggerId(Long id);
 

@@ -129,12 +129,21 @@ public class TaskExecutorServiceImpl implements TaskExecutorService {
 		return this.taskExecuteContext.start();
 	}
 
+	public boolean isExecuting() {
+		return this.taskExecuteContext.getTaskExecuteStrategy().isExecuting();
+	}
+
 	public boolean isExecuted() {
 		return this.taskExecuteContext.getTaskExecuteStrategy().isExecuted();
 	}
 
 	public void setEndTask(boolean endTask) {
 		this.taskExecuteContext.getTaskExecuteStrategy().setEndTask(endTask);
+	}
+
+	public void setExecuting(boolean executing) {
+		this.taskExecuteContext.getTaskExecuteStrategy()
+				.setExecuting(executing);
 	}
 
 	public void setExecuted(boolean executed) {

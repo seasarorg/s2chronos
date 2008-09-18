@@ -159,6 +159,18 @@ public class TaskPropertyReaderImpl implements TaskPropertyReader {
 		return false;
 	}
 
+	public boolean hasExecuting() {
+		boolean result = this.beanDesc
+				.hasPropertyDesc(TaskConstant.PROPERTY_NAME_EXECUTING);
+		if (result) {
+			PropertyDesc pd = this.beanDesc
+					.getPropertyDesc(TaskConstant.PROPERTY_NAME_EXECUTING);
+			result = pd.isReadable();
+			return result;
+		}
+		return result;
+	}
+
 	public boolean hasExecuted() {
 		boolean result = this.beanDesc
 				.hasPropertyDesc(TaskConstant.PROPERTY_NAME_EXECUTED);
@@ -284,6 +296,16 @@ public class TaskPropertyReaderImpl implements TaskPropertyReader {
 		if (this.hasEndTask()) {
 			PropertyDesc pd = this.beanDesc
 					.getPropertyDesc(TaskConstant.PROPERTY_NAME_END_TASK);
+			result = Boolean.TRUE.equals(pd.getValue(this.task));
+		}
+		return result;
+	}
+
+	public boolean isExecuting(boolean defaultValue) {
+		boolean result = defaultValue;
+		if (this.hasExecuting()) {
+			PropertyDesc pd = this.beanDesc
+					.getPropertyDesc(TaskConstant.PROPERTY_NAME_EXECUTING);
 			result = Boolean.TRUE.equals(pd.getValue(this.task));
 		}
 		return result;

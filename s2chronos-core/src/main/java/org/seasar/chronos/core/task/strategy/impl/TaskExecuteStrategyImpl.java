@@ -165,7 +165,9 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 
 	public void initialize() throws InterruptedException {
 		if (this.taskMethodInvoker.hasMethod(METHOD_NAME_INITIALIZE)) {
-			this.taskMethodInvoker.beginInvoke(METHOD_NAME_INITIALIZE);
+			AsyncResult ar = this.taskMethodInvoker
+					.beginInvoke(METHOD_NAME_INITIALIZE);
+			this.taskMethodInvoker.endInvoke(ar);
 		}
 	}
 
@@ -189,7 +191,7 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 				break;
 			}
 		}
-		this.setExecuted(false);
+		this.setExecuting(false);
 		this.notifyGetterSignal();
 		return nextTask;
 	}
@@ -282,6 +284,7 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 
 	public String start() throws InterruptedException {
 		this.setExecuted(true);
+		this.setExecuting(true);
 		for (String methodName : METHOD_NAME_START) {
 			if (this.taskMethodInvoker.hasMethod(methodName)) {
 				AsyncResult ar = this.taskMethodInvoker.beginInvoke(methodName);
@@ -307,6 +310,10 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 
 	public boolean isEndTask() {
 		return this.taskPropertyReader.isEndTask(false);
+	}
+
+	public boolean isExecuting() {
+		return this.taskPropertyReader.isExecuting(false);
 	}
 
 	public boolean isExecuted() {
@@ -410,6 +417,10 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 
 	public void setEndTask(boolean endTask) {
 		this.taskPropertyWriter.setEndTask(endTask);
+	}
+
+	public void setExecuting(boolean executing) {
+		this.taskPropertyWriter.setExecuting(executing);
 	}
 
 	public void setExecuted(boolean executed) {

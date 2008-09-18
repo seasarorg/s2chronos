@@ -58,6 +58,8 @@ public class ScheduleTaskStateCleanHandler extends
 			PropertyCache propertyCache = PropertyCache
 					.getInstance(taskScheduleEntry.getTask());
 			propertyCache.clear();
+			propertyCache = null;
+			taskScheduleEntry = null;
 		}
 
 	}

@@ -99,6 +99,12 @@ public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler 
 			// 定期スケジュール以外ならアンスケジュールドリストに登録する
 			if (!taskExecutorService.getTaskPropertyReader().isReScheduleTask(
 					false)) {
+				// タスク実行中にisReScheduleTaskが変更される場合があるので，その場合は再度SCHEDULEDを確認して存在すれば削除する．
+				if (taskScheduleEntryManager.contains(TaskStateType.SCHEDULED,
+						taskScheduleEntry)) {
+					taskScheduleEntryManager.removeTaskScheduleEntry(
+							TaskStateType.SCHEDULED, taskScheduleEntry);
+				}
 				taskScheduleEntryManager.addTaskScheduleEntry(
 						TaskStateType.UNSCHEDULED, taskScheduleEntry);
 			}
@@ -131,7 +137,7 @@ public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler 
 							tes.hotdeployStop();
 							return null;
 						}
-						if (!tes.isExecuted()
+						if (!tes.isExecuting()
 								&& tes.getTaskPropertyReader().isStartTask(
 										false)) {
 							Object task = tes.getTask();

@@ -22,7 +22,7 @@ import org.seasar.framework.util.tiger.CollectionsUtil;
 public final class PropertyCache {
 
 	private static Map<Object, PropertyCache> propertyCacheInstanceMap = CollectionsUtil
-			.newConcurrentHashMap();
+			.newWeakHashMap();
 
 	private final Map<String, Object> propertyCache = CollectionsUtil
 			.newConcurrentHashMap();
@@ -54,15 +54,11 @@ public final class PropertyCache {
 	 * @param key
 	 * @return
 	 */
-	public static PropertyCache getInstance(Object key) {
+	public synchronized static PropertyCache getInstance(Object key) {
 		PropertyCache propertyCacheInstance = propertyCacheInstanceMap.get(key);
 		if (propertyCacheInstance == null) {
-			synchronized (PropertyCache.class) {
-				if (propertyCacheInstance == null) {
-					propertyCacheInstance = new PropertyCache(key);
-					propertyCacheInstanceMap.put(key, propertyCacheInstance);
-				}
-			}
+			propertyCacheInstance = new PropertyCache(key);
+			propertyCacheInstanceMap.put(key, propertyCacheInstance);
 		}
 		return propertyCacheInstance;
 	}
@@ -90,10 +86,18 @@ public final class PropertyCache {
 		this.propertyCache.put(key, value);
 	}
 
+	/**
+	 * 
+	 * @param key
+	 * @return
+	 */
 	public boolean remove(String key) {
 		return this.propertyCache.remove(key) == null ? false : true;
 	}
 
+	/**
+	 * 
+	 */
 	public void clear() {
 		this.propertyCache.clear();
 	}

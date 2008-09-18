@@ -44,6 +44,8 @@ public interface TaskProperties {
 
 	public boolean isEndTask();
 
+	public boolean isExecuting();
+
 	public boolean isExecuted();
 
 	public boolean isPrepared();
@@ -55,6 +57,8 @@ public interface TaskProperties {
 	public boolean isStartTask();
 
 	public void setEndTask(boolean endTask);
+
+	public void setExecuting(boolean executing);
 
 	public void setExecuted(boolean executed);
 

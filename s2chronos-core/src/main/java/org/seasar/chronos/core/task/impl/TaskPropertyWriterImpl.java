@@ -19,6 +19,7 @@ import org.seasar.chronos.core.TaskThreadPool;
 import org.seasar.chronos.core.TaskTrigger;
 import org.seasar.chronos.core.ThreadPoolType;
 import org.seasar.chronos.core.task.TaskConstant;
+import org.seasar.chronos.core.task.TaskPropertyReader;
 import org.seasar.chronos.core.task.TaskPropertyWriter;
 import org.seasar.framework.beans.BeanDesc;
 import org.seasar.framework.beans.PropertyDesc;
@@ -27,6 +28,8 @@ import org.seasar.framework.container.annotation.tiger.Binding;
 import org.seasar.framework.container.annotation.tiger.BindingType;
 
 public class TaskPropertyWriterImpl implements TaskPropertyWriter {
+
+	private TaskPropertyReader taskPropertyReader;
 
 	public Object getTask() {
 		return this.task;
@@ -46,11 +49,13 @@ public class TaskPropertyWriterImpl implements TaskPropertyWriter {
 	public void setup(Object task, Class<?> taskClass) {
 		this.task = task;
 		this.beanDesc = BeanDescFactory.getBeanDesc(taskClass);
+		taskPropertyReader.setup(task, beanDesc);
 	}
 
 	public void setup(Object task, BeanDesc beanDesc) {
 		this.task = task;
 		this.beanDesc = beanDesc;
+		taskPropertyReader.setup(task, beanDesc);
 	}
 
 	public void setThreadPoolType(ThreadPoolType value) {
@@ -73,6 +78,14 @@ public class TaskPropertyWriterImpl implements TaskPropertyWriter {
 		if (this.hasEndTask()) {
 			PropertyDesc pd = this.beanDesc
 					.getPropertyDesc(TaskConstant.PROPERTY_NAME_END_TASK);
+			pd.setValue(this.task, value);
+		}
+	}
+
+	public void setExecuting(boolean value) {
+		if (this.hasExecuting()) {
+			PropertyDesc pd = this.beanDesc
+					.getPropertyDesc(TaskConstant.PROPERTY_NAME_EXECUTING);
 			pd.setValue(this.task, value);
 		}
 	}
@@ -169,6 +182,18 @@ public class TaskPropertyWriterImpl implements TaskPropertyWriter {
 		if (result) {
 			PropertyDesc pd = this.beanDesc
 					.getPropertyDesc(TaskConstant.PROPERTY_NAME_END_TASK);
+			result = pd.isWritable();
+			return result;
+		}
+		return result;
+	}
+
+	public boolean hasExecuting() {
+		boolean result = this.beanDesc
+				.hasPropertyDesc(TaskConstant.PROPERTY_NAME_EXECUTING);
+		if (result) {
+			PropertyDesc pd = this.beanDesc
+					.getPropertyDesc(TaskConstant.PROPERTY_NAME_EXECUTING);
 			result = pd.isWritable();
 			return result;
 		}
@@ -314,4 +339,13 @@ public class TaskPropertyWriterImpl implements TaskPropertyWriter {
 			pd.setValue(this.task, value);
 		}
 	}
+
+	public TaskPropertyReader getTaskPropertyReader() {
+		return taskPropertyReader;
+	}
+
+	public void setTaskPropertyReader(TaskPropertyReader taskPropertyReader) {
+		this.taskPropertyReader = taskPropertyReader;
+	}
+
 }

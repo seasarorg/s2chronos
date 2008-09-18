@@ -44,6 +44,8 @@ public interface TaskPropertyReader {
 
 	public boolean hasShutdownTask();
 
+	public boolean hasExecuting();
+
 	public boolean hasExecuted();
 
 	public boolean hasReScheduleTask();
@@ -69,6 +71,8 @@ public interface TaskPropertyReader {
 	public boolean isEndTask(boolean defaultValue);
 
 	public boolean isShutdownTask(boolean defaultValue);
+
+	public boolean isExecuting(boolean defaultValue);
 
 	public boolean isExecuted(boolean defaultValue);
 
