@@ -86,6 +86,7 @@ public class TriggerChain implements TaskTrigger {
 		}
 		for (TaskTrigger trigger : triggerList) {
 			if (trigger.isStartTask()) {
+				trigger.setExecuted(true);
 				return true;
 			}
 		}
