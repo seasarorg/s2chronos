@@ -87,6 +87,11 @@ public class TaskExecutorServiceImpl implements TaskExecutorService {
 		return this.taskExecuteContext.getTaskExecuteStrategy().isStartTask();
 	}
 
+	public boolean isForceUnScheduleTask() {
+		return this.taskExecuteContext.getTaskExecuteStrategy()
+				.isForceUnScheduleTask();
+	}
+
 	public Object getTask() {
 		return this.taskExecuteContext.getTaskExecuteStrategy().getTask();
 	}
@@ -168,6 +173,11 @@ public class TaskExecutorServiceImpl implements TaskExecutorService {
 	public void setStartTask(boolean startTask) {
 		this.taskExecuteContext.getTaskExecuteStrategy()
 				.setStartTask(startTask);
+	}
+
+	public void setForceUnScheduleTask(boolean unScheduleTask) {
+		this.taskExecuteContext.getTaskExecuteStrategy().setForceUnScheduleTask(
+				unScheduleTask);
 	}
 
 	public void setTask(Object task) {
@@ -256,4 +266,5 @@ public class TaskExecutorServiceImpl implements TaskExecutorService {
 		this.taskExecuteContext.getTaskExecuteStrategy().catchException(
 				exception);
 	}
+
 }

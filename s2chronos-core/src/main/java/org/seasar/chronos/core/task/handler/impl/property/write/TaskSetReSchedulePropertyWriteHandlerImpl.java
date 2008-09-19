@@ -23,21 +23,17 @@ import org.seasar.chronos.core.task.handler.impl.AbstractTaskPropertyHandler;
 public class TaskSetReSchedulePropertyWriteHandlerImpl extends
 		AbstractTaskPropertyHandler {
 
-	private TaskPropertyReader taskPropertyReader;
-
 	public Object execute(MethodInvocation methodInvocation) throws Throwable {
-		taskPropertyReader.setup(methodInvocation.getThis(),
-				methodInvocation.getClass());
+		TaskPropertyReader taskPropertyReader = this.getTaskPropertyWriter(
+				methodInvocation).getTaskPropertyReader();
 		TaskTrigger trigger = taskPropertyReader.getTrigger(null);
 		if (trigger != null) {
-			trigger.setReScheduleTask((Boolean) methodInvocation.getArguments()[0]);
+			trigger
+					.setReScheduleTask((Boolean) methodInvocation
+							.getArguments()[0]);
 			return null;
 		}
 		return methodInvocation.proceed();
-	}
-
-	public void setTaskPropertyReader(TaskPropertyReader taskPropertyReader) {
-		this.taskPropertyReader = taskPropertyReader;
 	}
 
 }

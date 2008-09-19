@@ -139,6 +139,13 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 		return true;
 	}
 
+	public void catchException(Exception exception) {
+		if (this.beanDesc.hasMethod("catchException")) {
+			this.beanDesc.invoke(this.task, "catchException",
+					new Object[] { exception });
+		}
+	}
+
 	public boolean checkMoveAnotherTask(final String nextTaskName) {
 		TaskScheduleEntryManager tcsm = TaskScheduleEntryManager.getInstance();
 		Object result = tcsm
@@ -163,12 +170,21 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 		return false;
 	}
 
-	public void initialize() throws InterruptedException {
-		if (this.taskMethodInvoker.hasMethod(METHOD_NAME_INITIALIZE)) {
-			AsyncResult ar = this.taskMethodInvoker
-					.beginInvoke(METHOD_NAME_INITIALIZE);
-			this.taskMethodInvoker.endInvoke(ar);
-		}
+	private ExecutorService createJobMethodExecutorService(Object target) {
+		ExecutorService result = executorServiceFactory.create(this
+				.getThreadPoolType(target), this.getThreadPoolSize(target));
+		return result;
+	}
+
+	protected TaskExecuteHandler createTaskGroupMethodExecuteHandler(
+			TaskExecuteHandler taskMethdoExecuteHandler) {
+		TaskGroupMethodExecuteHandlerImpl result = new TaskGroupMethodExecuteHandlerImpl();
+		result.setTaskMethodExecuteHandler(this.taskMethodExecuteHandler);
+		return result;
+	}
+
+	protected TaskExecuteHandler createTaskMethodExecuteHandler() {
+		return new TaskMethodExecuteHandlerImpl();
 	}
 
 	public void destroy() throws InterruptedException {
@@ -212,8 +228,55 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 		}
 	}
 
+	/**
+	 * TaskThreadPoolに対応するExecutorServiceを返します．
+	 * 
+	 * @param taskThreadPool
+	 *            スレッドプール
+	 * @return
+	 */
+	private ExecutorService getCacheExecutorsService(
+			TaskThreadPool taskThreadPool) {
+		ExecutorService executorService = threadPoolExecutorServiceMap
+				.get(taskThreadPool);
+		if (executorService == null) {
+			executorService = this
+					.createJobMethodExecutorService(taskThreadPool);
+			threadPoolExecutorServiceMap.put(taskThreadPool, executorService);
+		}
+		return executorService;
+	}
+
 	public String getDescription() {
 		return this.taskPropertyReader.getDescription(null);
+	}
+
+	public Exception getException() {
+		return this.taskPropertyReader.getException(null);
+	}
+
+	/**
+	 * ExecutorServiceを返します．
+	 * <p>
+	 * TaskにTaskThreadPoolが存在する場合はキャッシュから対応するExecutorServiceを返します．<br>
+	 * 存在しない場合はTaskのThreadTypeとThreadPoolSizeから作成して返します．<br>
+	 * 複数のタスク間でスレッドプールを共有したければTaskThreadPoolを利用すること．
+	 * </p>
+	 * 
+	 * @return
+	 */
+	private ExecutorService getExecutorService() {
+		TaskThreadPool taskThreadPool = this.getThreadPool();
+		ExecutorService jobMethodExecutorService = null;
+		if (taskThreadPool == null) {
+			jobMethodExecutorService = this
+					.createJobMethodExecutorService(this.task);
+		} else {
+			jobMethodExecutorService = this
+					.getCacheExecutorsService(taskThreadPool);
+		}
+
+		return jobMethodExecutorService;
 	}
 
 	public Scheduler getScheduler() {
@@ -226,6 +289,11 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 
 	public Class<?> getTaskClass() {
 		return this.taskClass;
+	}
+
+	private TaskExecuteHandler getTaskExecuteHandler(TaskType type) {
+		return type == TaskType.JOB ? this.taskMethodExecuteHandler
+				: this.taskGroupMethodExecuteHandler;
 	}
 
 	public long getTaskId() {
@@ -256,12 +324,30 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 		return this.getThreadPoolSize(this.task);
 	}
 
+	private int getThreadPoolSize(Object target) {
+		return this.taskPropertyReader
+				.getThreadPoolSize(DEFAULT_THREAD_POOLSIZE);
+	}
+
 	public ThreadPoolType getThreadPoolType() {
 		return this.getThreadPoolType(this.task);
 	}
 
+	private ThreadPoolType getThreadPoolType(Object target) {
+		return this.taskPropertyReader
+				.getThreadPoolType(DEFAULT_THREADPOOL_TYPE);
+	}
+
 	public TaskTrigger getTrigger() {
 		return this.taskPropertyReader.getTrigger(null);
+	}
+
+	private Transition handleRequest(TaskExecuteHandler taskExecuteHandler,
+			String startTaskName) throws InterruptedException {
+		taskExecuteHandler.setTaskExecuteStrategy(this);
+		taskExecuteHandler.setMethodInvoker(this.taskMethodInvoker);
+		taskExecuteHandler.setMethodGroupMap(this.taskMethodManager);
+		return taskExecuteHandler.handleRequest(startTaskName);
 	}
 
 	public synchronized void hotdeployStart() {
@@ -282,42 +368,32 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 		}
 	}
 
-	public String start() throws InterruptedException {
-		this.setExecuted(true);
-		this.setExecuting(true);
-		for (String methodName : METHOD_NAME_START) {
-			if (this.taskMethodInvoker.hasMethod(methodName)) {
-				AsyncResult ar = this.taskMethodInvoker.beginInvoke(methodName);
-				this.taskMethodInvoker.endInvoke(ar);
-				TaskMethodMetaData md = new TaskMethodMetaData(this.beanDesc,
-						methodName);
-				this.notifyGetterSignal();
-				String nextTaskName = md.getNextTask();
-				if (nextTaskName == null
-						&& this.taskMethodInvoker
-								.hasMethod(METHOD_NAME_DEFAULT_TASK_METHOD_NAME)) {
-					return METHOD_NAME_DEFAULT_TASK_NAME;
-				}
-				return nextTaskName;
-			}
+	public void initialize() throws InterruptedException {
+		if (this.taskMethodInvoker.hasMethod(METHOD_NAME_INITIALIZE)) {
+			AsyncResult ar = this.taskMethodInvoker
+					.beginInvoke(METHOD_NAME_INITIALIZE);
+			this.taskMethodInvoker.endInvoke(ar);
 		}
-		if (this.taskMethodInvoker
-				.hasMethod(METHOD_NAME_DEFAULT_TASK_METHOD_NAME)) {
-			return METHOD_NAME_DEFAULT_TASK_NAME;
-		}
-		return null;
 	}
 
 	public boolean isEndTask() {
 		return this.taskPropertyReader.isEndTask(false);
 	}
 
+	public boolean isExecuted() {
+		return this.taskPropertyReader.isExecuted(false);
+	}
+
 	public boolean isExecuting() {
 		return this.taskPropertyReader.isExecuting(false);
 	}
 
-	public boolean isExecuted() {
-		return this.taskPropertyReader.isExecuted(false);
+	private boolean isGroupMethod(String groupName) {
+		return this.taskMethodManager.existGroup(groupName);
+	}
+
+	public boolean isHotdeployDisable() {
+		return hotdeployDisable;
 	}
 
 	public boolean isPrepared() {
@@ -334,6 +410,10 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 
 	public boolean isStartTask() {
 		return this.taskPropertyReader.isStartTask(false);
+	}
+
+	public boolean isForceUnScheduleTask() {
+		return this.taskPropertyReader.isForceUnScheduleTask(false);
 	}
 
 	public void load() {
@@ -366,6 +446,12 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 			PropertyDesc pd = this.beanDesc.getPropertyDesc(i);
 			Object value = pd.getValue(this.task);
 			taskProperties.put(pd.getPropertyName(), value);
+		}
+	}
+
+	private void notifyGetterSignal() {
+		synchronized (this.getterSignal) {
+			this.getterSignal.notify();
 		}
 	}
 
@@ -419,12 +505,16 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 		this.taskPropertyWriter.setEndTask(endTask);
 	}
 
-	public void setExecuting(boolean executing) {
-		this.taskPropertyWriter.setExecuting(executing);
+	public void setException(Exception exception) {
+		this.taskPropertyWriter.setException(exception);
 	}
 
 	public void setExecuted(boolean executed) {
 		this.taskPropertyWriter.setExecuted(executed);
+	}
+
+	public void setExecuting(boolean executing) {
+		this.taskPropertyWriter.setExecuting(executing);
 	}
 
 	public void setExecutorServiceFactory(
@@ -434,6 +524,10 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 
 	public void setGetterSignal(Object getterSignal) {
 		this.getterSignal = getterSignal;
+	}
+
+	public void setHotdeployDisable(boolean hotdeployDisable) {
+		this.hotdeployDisable = hotdeployDisable;
 	}
 
 	public void setS2Container(S2Container container) {
@@ -478,6 +572,36 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 		this.taskPropertyWriter.setTrigger(taskTrigger);
 	}
 
+	public void setForceUnScheduleTask(boolean unScheduleTask) {
+		this.taskPropertyWriter.setForceUnScheduleTask(unScheduleTask);
+	}
+
+	public String start() throws InterruptedException {
+		this.setExecuted(true);
+		this.setExecuting(true);
+		for (String methodName : METHOD_NAME_START) {
+			if (this.taskMethodInvoker.hasMethod(methodName)) {
+				AsyncResult ar = this.taskMethodInvoker.beginInvoke(methodName);
+				this.taskMethodInvoker.endInvoke(ar);
+				TaskMethodMetaData md = new TaskMethodMetaData(this.beanDesc,
+						methodName);
+				this.notifyGetterSignal();
+				String nextTaskName = md.getNextTask();
+				if (nextTaskName == null
+						&& this.taskMethodInvoker
+								.hasMethod(METHOD_NAME_DEFAULT_TASK_METHOD_NAME)) {
+					return METHOD_NAME_DEFAULT_TASK_NAME;
+				}
+				return nextTaskName;
+			}
+		}
+		if (this.taskMethodInvoker
+				.hasMethod(METHOD_NAME_DEFAULT_TASK_METHOD_NAME)) {
+			return METHOD_NAME_DEFAULT_TASK_NAME;
+		}
+		return null;
+	}
+
 	public void unprepare() {
 		prepared = false;
 		taskGroupMethodExecuteHandler = null;
@@ -485,122 +609,6 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 
 	public void waitOne() throws InterruptedException {
 		this.taskMethodInvoker.waitInvokes();
-	}
-
-	private ExecutorService createJobMethodExecutorService(Object target) {
-		ExecutorService result = executorServiceFactory.create(this
-				.getThreadPoolType(target), this.getThreadPoolSize(target));
-		return result;
-	}
-
-	/**
-	 * TaskThreadPoolに対応するExecutorServiceを返します．
-	 * 
-	 * @param taskThreadPool
-	 *            スレッドプール
-	 * @return
-	 */
-	private ExecutorService getCacheExecutorsService(
-			TaskThreadPool taskThreadPool) {
-		ExecutorService executorService = threadPoolExecutorServiceMap
-				.get(taskThreadPool);
-		if (executorService == null) {
-			executorService = this
-					.createJobMethodExecutorService(taskThreadPool);
-			threadPoolExecutorServiceMap.put(taskThreadPool, executorService);
-		}
-		return executorService;
-	}
-
-	/**
-	 * ExecutorServiceを返します．
-	 * <p>
-	 * TaskにTaskThreadPoolが存在する場合はキャッシュから対応するExecutorServiceを返します．<br>
-	 * 存在しない場合はTaskのThreadTypeとThreadPoolSizeから作成して返します．<br>
-	 * 複数のタスク間でスレッドプールを共有したければTaskThreadPoolを利用すること．
-	 * </p>
-	 * 
-	 * @return
-	 */
-	private ExecutorService getExecutorService() {
-		TaskThreadPool taskThreadPool = this.getThreadPool();
-		ExecutorService jobMethodExecutorService = null;
-		if (taskThreadPool == null) {
-			jobMethodExecutorService = this
-					.createJobMethodExecutorService(this.task);
-		} else {
-			jobMethodExecutorService = this
-					.getCacheExecutorsService(taskThreadPool);
-		}
-
-		return jobMethodExecutorService;
-	}
-
-	private TaskExecuteHandler getTaskExecuteHandler(TaskType type) {
-		return type == TaskType.JOB ? this.taskMethodExecuteHandler
-				: this.taskGroupMethodExecuteHandler;
-	}
-
-	private int getThreadPoolSize(Object target) {
-		return this.taskPropertyReader
-				.getThreadPoolSize(DEFAULT_THREAD_POOLSIZE);
-	}
-
-	private ThreadPoolType getThreadPoolType(Object target) {
-		return this.taskPropertyReader
-				.getThreadPoolType(DEFAULT_THREADPOOL_TYPE);
-	}
-
-	private Transition handleRequest(TaskExecuteHandler taskExecuteHandler,
-			String startTaskName) throws InterruptedException {
-		taskExecuteHandler.setTaskExecuteStrategy(this);
-		taskExecuteHandler.setMethodInvoker(this.taskMethodInvoker);
-		taskExecuteHandler.setMethodGroupMap(this.taskMethodManager);
-		return taskExecuteHandler.handleRequest(startTaskName);
-	}
-
-	private boolean isGroupMethod(String groupName) {
-		return this.taskMethodManager.existGroup(groupName);
-	}
-
-	private void notifyGetterSignal() {
-		synchronized (this.getterSignal) {
-			this.getterSignal.notify();
-		}
-	}
-
-	protected TaskExecuteHandler createTaskGroupMethodExecuteHandler(
-			TaskExecuteHandler taskMethdoExecuteHandler) {
-		TaskGroupMethodExecuteHandlerImpl result = new TaskGroupMethodExecuteHandlerImpl();
-		result.setTaskMethodExecuteHandler(this.taskMethodExecuteHandler);
-		return result;
-	}
-
-	protected TaskExecuteHandler createTaskMethodExecuteHandler() {
-		return new TaskMethodExecuteHandlerImpl();
-	}
-
-	public Exception getException() {
-		return this.taskPropertyReader.getException(null);
-	}
-
-	public void setException(Exception exception) {
-		this.taskPropertyWriter.setException(exception);
-	}
-
-	public boolean isHotdeployDisable() {
-		return hotdeployDisable;
-	}
-
-	public void setHotdeployDisable(boolean hotdeployDisable) {
-		this.hotdeployDisable = hotdeployDisable;
-	}
-
-	public void catchException(Exception exception) {
-		if (this.beanDesc.hasMethod("catchException")) {
-			this.beanDesc.invoke(this.task, "catchException",
-					new Object[] { exception });
-		}
 	}
 
 }

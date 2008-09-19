@@ -29,6 +29,14 @@ public class TriggerChain implements TaskTrigger {
 
 	private List<Boolean> executedCounts = CollectionsUtil.newArrayList();
 
+	public boolean isForceUnScheduleTask() {
+		return false;
+	}
+
+	public void setForceUnScheduleTask(boolean forceUnScheduleTask) {
+
+	}
+
 	public void addTrigger(TaskTrigger trigger) {
 		triggerList.add(trigger);
 	}
@@ -154,4 +162,5 @@ public class TriggerChain implements TaskTrigger {
 			}
 		}
 	}
+
 }

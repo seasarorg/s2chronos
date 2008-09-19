@@ -50,6 +50,8 @@ public interface TaskPropertyReader {
 
 	public boolean hasReScheduleTask();
 
+	public boolean hasForceUnScheduleTask();
+
 	public boolean hasTrigger();
 
 	public boolean hasThreadPool();
@@ -77,6 +79,8 @@ public interface TaskPropertyReader {
 	public boolean isExecuted(boolean defaultValue);
 
 	public boolean isReScheduleTask(boolean defaultValue);
+
+	public boolean isForceUnScheduleTask(boolean defaultValue);
 
 	public TaskTrigger getTrigger(TaskTrigger defaultValue);
 

@@ -19,6 +19,7 @@ import org.seasar.chronos.core.SchedulerConfiguration;
 import org.seasar.chronos.core.TaskScheduleEntry;
 import org.seasar.chronos.core.impl.TaskStateType;
 import org.seasar.chronos.core.schedule.TaskScheduleEntryManager.TaskScheduleEntryHanlder;
+import org.seasar.chronos.core.task.TaskExecutorService;
 import org.seasar.chronos.core.task.handler.impl.property.PropertyCache;
 
 /**
@@ -33,6 +34,24 @@ public class ScheduleTaskStateCleanHandler extends
 
 	@Override
 	public void handleRequest() throws InterruptedException {
+		this.taskScheduleEntryManager.forEach(TaskStateType.SCHEDULED,
+				new TaskScheduleEntryHanlder() {
+					public Object processTaskScheduleEntry(
+							TaskScheduleEntry scheduleEntry) {
+						TaskExecutorService tes = scheduleEntry
+								.getTaskExecutorService();
+						if (!tes.getTaskPropertyReader().isExecuting(false)
+								&& tes.getTaskPropertyReader()
+										.isForceUnScheduleTask(false)) {
+							taskScheduleEntryManager.removeTaskScheduleEntry(
+									TaskStateType.SCHEDULED, scheduleEntry);
+							taskScheduleEntryManager.addTaskScheduleEntry(
+									TaskStateType.UNSCHEDULED, scheduleEntry);
+						}
+						return null;
+					}
+				});
+
 		TaskScheduleEntry taskScheduleEntry = (TaskScheduleEntry) this.taskScheduleEntryManager
 				.forEach(TaskStateType.UNSCHEDULED,
 						new TaskScheduleEntryHanlder() {

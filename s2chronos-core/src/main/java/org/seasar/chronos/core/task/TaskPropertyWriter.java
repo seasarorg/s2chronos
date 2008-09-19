@@ -90,4 +90,8 @@ public interface TaskPropertyWriter {
 
 	public void setException(Exception exception);
 
+	public void setForceUnScheduleTask(boolean forceUnScheduleTask);
+
+	public boolean hasForceUnScheduleTask();
+
 }

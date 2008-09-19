@@ -23,11 +23,9 @@ import org.seasar.chronos.core.task.handler.impl.AbstractTaskPropertyHandler;
 public class TaskSetStartTaskPropertyWriteHandlerImpl extends
 		AbstractTaskPropertyHandler {
 
-	private TaskPropertyReader taskPropertyReader;
-
 	public Object execute(MethodInvocation methodInvocation) throws Throwable {
-		taskPropertyReader.setup(methodInvocation.getThis(),
-				methodInvocation.getClass());
+		TaskPropertyReader taskPropertyReader = this.getTaskPropertyWriter(
+				methodInvocation).getTaskPropertyReader();
 		TaskTrigger taskTrigger = taskPropertyReader.getTrigger(null);
 		if (taskTrigger == null) {
 			methodInvocation.proceed();
@@ -36,10 +34,6 @@ public class TaskSetStartTaskPropertyWriteHandlerImpl extends
 					.setStartTask((Boolean) methodInvocation.getArguments()[0]);
 		}
 		return null;
-	}
-
-	public void setTaskPropertyReader(TaskPropertyReader taskPropertyReader) {
-		this.taskPropertyReader = taskPropertyReader;
 	}
 
 }

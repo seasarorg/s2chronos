@@ -26,6 +26,7 @@
 	<component name="taskIsExecutingPropertyReadHandler" class="org.seasar.chronos.core.task.handler.impl.property.read.TaskIsExecutingPropertyReadHandlerImpl" instance="prototype"/>
 	<component name="taskIsExecutedPropertyReadHandler" class="org.seasar.chronos.core.task.handler.impl.property.read.TaskIsExecutedPropertyReadHandlerImpl" instance="prototype"/>
 	<component name="taskIsShutdownTaskPropertyReadHandler" class="org.seasar.chronos.core.task.handler.impl.property.read.TaskIsExecutedPropertyReadHandlerImpl" instance="prototype"/>
+	<component name="taskIsForceUnScheduleTaskPropertyReadHandler" class="org.seasar.chronos.core.task.handler.impl.property.read.TaskIsForceUnScheduleTaskPropertyReadHandlerImpl" instance="prototype"/>
 	
 	<!-- タスクのプロパティに書き込むためのコマンド群 -->
 	<component name="taskSetTaskNamePropertyWriteHandler" class="org.seasar.chronos.core.task.handler.impl.property.write.TaskSetTaskNamePropertyWriteHandlerImpl" instance="prototype"/>
@@ -37,6 +38,7 @@
 	<component name="taskSetTriggerPropertyWriteHandler" class="org.seasar.chronos.core.task.handler.impl.property.write.TaskSetTriggerTaskPropertyWriteHandlerImpl" instance="prototype"/>
 	<component name="taskSetExecutingPropertyWriteHandler" class="org.seasar.chronos.core.task.handler.impl.property.write.TaskSetExecutingPropertyWriteHandlerImpl" instance="prototype"/>
 	<component name="taskSetExecutedPropertyWriteHandler" class="org.seasar.chronos.core.task.handler.impl.property.write.TaskSetExecutedPropertyWriteHandlerImpl" instance="prototype"/>
+	<component name="taskSetForceUnScheduleTaskPropertyWriteHandler" class="org.seasar.chronos.core.task.handler.impl.property.write.TaskSetForceUnScheduleTaskPropertyWriteHandlerImpl" instance="prototype"/>
 	
 	<!-- タスクのプロパティを読み込むコマンドのファクトリ -->
 	<component name="taskPropertyReadHandlerFactory" class="org.seasar.chronos.core.task.handler.impl.property.factory.TaskPropertyReadHandlerFactoryImpl">
@@ -84,6 +86,10 @@
 			<arg>@org.seasar.chronos.core.task.TaskConstant@METHOD_NAME_IS_EXECUTED</arg>
 			<arg>"taskIsExecutedPropertyReadHandler"</arg>
 		</initMethod>
+		<initMethod name="putTaskPropertyHandler">
+			<arg>@org.seasar.chronos.core.task.TaskConstant@METHOD_NAME_IS_FORCE_UN_SCHEDULE_TASK</arg>
+			<arg>"taskIsForceUnScheduleTaskPropertyReadHandler"</arg>
+		</initMethod>
 	</component>
 	<component name="taskPropertyWriteHandlerFactory" class="org.seasar.chronos.core.task.handler.impl.property.factory.TaskPropertyWriteHandlerFactoryImpl">
 		<initMethod name="putTaskPropertyHandler">
@@ -126,6 +132,10 @@
 			<arg>@org.seasar.chronos.core.task.TaskConstant@METHOD_NAME_SET_EXECUTED</arg>
 			<arg>"taskSetExecutedPropertyWriteHandler"</arg>
 		</initMethod>
+		<initMethod name="putTaskPropertyHandler">
+			<arg>@org.seasar.chronos.core.task.TaskConstant@METHOD_NAME_SET_FORCE_UN_SCHEDULE_TASK</arg>
+			<arg>"taskSetForceUnScheduleTaskPropertyWriteHandler"</arg>
+		</initMethod>
 	</component>
 	
 	<!-- タスクのプロパティリードインターセプタ -->
@@ -139,13 +149,13 @@
  	
 	<!-- タスクのプロパティリーダー -->
 	<component class="org.seasar.chronos.core.task.impl.TaskPropertyReaderImpl" instance="prototype">
-	    <aspect pointcut="getTrigger,getTaskName,isEndTask,isStartTask,isReScheduleTask,getThreadPoolType,getThreadPoolSize,isExecuting,isExecuted">
+	    <aspect pointcut="getTrigger,getTaskName,isEndTask,isStartTask,isReScheduleTask,getThreadPoolType,getThreadPoolSize,isExecuting,isExecuted,isForceUnScheduleTask">
 			triggerPropertyReadInterceptor
 	    </aspect>
 	</component>
 	<!-- タスクのプロパティライター -->
 	<component class="org.seasar.chronos.core.task.impl.TaskPropertyWriterImpl" instance="prototype">
-	    <aspect pointcut="setTrigger, setTaskName,setEndTask,setStartTask,setReScheduleTask,setThreadPoolType,setThreadPoolSize,setExecuting,setExecuted">
+	    <aspect pointcut="setTrigger, setTaskName,setEndTask,setStartTask,setReScheduleTask,setThreadPoolType,setThreadPoolSize,setExecuting,setExecuted,setForceUnScheduleTask">
 			triggerPropertyWriteInterceptor
 	    </aspect>
 	</component>

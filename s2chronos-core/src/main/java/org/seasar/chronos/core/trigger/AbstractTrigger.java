@@ -36,6 +36,8 @@ public abstract class AbstractTrigger implements TaskTrigger {
 
 	private boolean reScheduleTask;
 
+	private boolean forceUnScheduleTask;
+
 	private boolean shutdownTask;
 
 	public AbstractTrigger() {
@@ -148,6 +150,14 @@ public abstract class AbstractTrigger implements TaskTrigger {
 
 	public void setExecuted(boolean executed) {
 		this.executed = executed;
+	}
+
+	public boolean isForceUnScheduleTask() {
+		return forceUnScheduleTask;
+	}
+
+	public void setForceUnScheduleTask(boolean forceUnScheduleTask) {
+		this.forceUnScheduleTask = forceUnScheduleTask;
 	}
 
 }

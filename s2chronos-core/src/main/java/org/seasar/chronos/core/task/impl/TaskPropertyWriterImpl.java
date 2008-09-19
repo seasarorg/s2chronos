@@ -101,7 +101,7 @@ public class TaskPropertyWriterImpl implements TaskPropertyWriter {
 	public void setReSchedule(boolean value) {
 		if (this.hasReSchedule()) {
 			PropertyDesc pd = this.beanDesc
-					.getPropertyDesc(TaskConstant.PROPERTY_NAME_RESCHEDULE_TASK);
+					.getPropertyDesc(TaskConstant.PROPERTY_NAME_RE_SCHEDULE_TASK);
 			pd.setValue(this.task, value);
 		}
 	}
@@ -118,6 +118,14 @@ public class TaskPropertyWriterImpl implements TaskPropertyWriter {
 		if (this.hasStartTask()) {
 			PropertyDesc pd = this.beanDesc
 					.getPropertyDesc(TaskConstant.PROPERTY_NAME_START_TASK);
+			pd.setValue(this.task, value);
+		}
+	}
+
+	public void setForceUnScheduleTask(boolean value) {
+		if (this.hasForceUnScheduleTask()) {
+			PropertyDesc pd = this.beanDesc
+					.getPropertyDesc(TaskConstant.PROPERTY_NAME_FORCE_UN_SCHEDULE_TASK);
 			pd.setValue(this.task, value);
 		}
 	}
@@ -200,6 +208,18 @@ public class TaskPropertyWriterImpl implements TaskPropertyWriter {
 		return result;
 	}
 
+	public boolean hasForceUnScheduleTask() {
+		boolean result = this.beanDesc
+				.hasPropertyDesc(TaskConstant.PROPERTY_NAME_FORCE_UN_SCHEDULE_TASK);
+		if (result) {
+			PropertyDesc pd = this.beanDesc
+					.getPropertyDesc(TaskConstant.PROPERTY_NAME_FORCE_UN_SCHEDULE_TASK);
+			result = pd.isWritable();
+			return result;
+		}
+		return result;
+	}
+
 	public boolean hasExecuted() {
 		boolean result = this.beanDesc
 				.hasPropertyDesc(TaskConstant.PROPERTY_NAME_EXECUTED);
@@ -214,10 +234,10 @@ public class TaskPropertyWriterImpl implements TaskPropertyWriter {
 
 	public boolean hasReSchedule() {
 		boolean result = this.beanDesc
-				.hasPropertyDesc(TaskConstant.PROPERTY_NAME_RESCHEDULE_TASK);
+				.hasPropertyDesc(TaskConstant.PROPERTY_NAME_RE_SCHEDULE_TASK);
 		if (result) {
 			PropertyDesc pd = this.beanDesc
-					.getPropertyDesc(TaskConstant.PROPERTY_NAME_RESCHEDULE_TASK);
+					.getPropertyDesc(TaskConstant.PROPERTY_NAME_RE_SCHEDULE_TASK);
 			result = pd.isWritable();
 			return result;
 		}

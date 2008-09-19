@@ -9,7 +9,7 @@ import org.seasar.chronos.core.annotation.task.Task;
 import org.seasar.chronos.core.trigger.CTimedTrigger;
 import org.seasar.chronos.core.trigger.TriggerChain;
 
-@Task
+@Task(autoSchedule = false)
 public class TriggerChainTask {
 
 	private TriggerChain trigger = new TriggerChain();

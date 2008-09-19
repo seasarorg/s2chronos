@@ -25,8 +25,9 @@ public final class TaskConstant {
 	public static final String PROPERTY_NAME_TRIGGER = "trigger";
 	public static final String PROPERTY_NAME_START_TASK = "startTask";
 	public static final String PROPERTY_NAME_END_TASK = "endTask";
-	public static final String PROPERTY_NAME_RESCHEDULE_TASK = "reScheduleTask";
+	public static final String PROPERTY_NAME_RE_SCHEDULE_TASK = "reScheduleTask";
 	public static final String PROPERTY_NAME_SHUTDOWN_TASK = "shutdownTask";
+	public static final String PROPERTY_NAME_FORCE_UN_SCHEDULE_TASK = "forceUnScheduleTask";
 	public static final String PROPERTY_NAME_EXECUTING = "executing";
 	public static final String PROPERTY_NAME_EXECUTED = "executed";
 	public static final String PROPERTY_NAME_THREADPOOL = "threadPool";
@@ -38,6 +39,7 @@ public final class TaskConstant {
 	public static final String METHOD_NAME_IS_END_TASK = "isEndTask";
 	public static final String METHOD_NAME_IS_RE_SCHEDULE_TASK = "isReScheduleTask";
 	public static final String METHOD_NAME_IS_SHUTDOWN_TASK = "isShutdownTask";
+	public static final String METHOD_NAME_IS_FORCE_UN_SCHEDULE_TASK = "isForceUnScheduleTask";
 	public static final String METHOD_NAME_GET_TASK_NAME = "getTaskName";
 	public static final String METHOD_NAME_GET_THREAD_POOL_TYPE = "getThreadPoolType";
 	public static final String METHOD_NAME_GET_THREAD_POOL_SIZE = "getThreadPoolSize";
@@ -48,6 +50,7 @@ public final class TaskConstant {
 	public static final String METHOD_NAME_SET_TASK_NAME = "setTaskName";
 	public static final String METHOD_NAME_SET_RE_SCHEDULE_TASK = "setReScheduleTask";
 	public static final String METHOD_NAME_SET_SHUTDOWN_TASK = "setShutdownTask";
+	public static final String METHOD_NAME_SET_FORCE_UN_SCHEDULE_TASK = "setForceUnScheduleTask";
 	public static final String METHOD_NAME_SET_THREAD_POOL_TYPE = "setThreadPoolType";
 	public static final String METHOD_NAME_SET_THREAD_POOL_SIZE = "setThreadPoolSize";
 	public static final String METHOD_NAME_SET_START_TASK = "setStartTask";

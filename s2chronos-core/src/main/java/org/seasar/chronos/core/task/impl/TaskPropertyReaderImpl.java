@@ -185,10 +185,10 @@ public class TaskPropertyReaderImpl implements TaskPropertyReader {
 
 	public boolean hasReScheduleTask() {
 		boolean result = this.beanDesc
-				.hasPropertyDesc(TaskConstant.PROPERTY_NAME_RESCHEDULE_TASK);
+				.hasPropertyDesc(TaskConstant.PROPERTY_NAME_RE_SCHEDULE_TASK);
 		if (result) {
 			PropertyDesc pd = this.beanDesc
-					.getPropertyDesc(TaskConstant.PROPERTY_NAME_RESCHEDULE_TASK);
+					.getPropertyDesc(TaskConstant.PROPERTY_NAME_RE_SCHEDULE_TASK);
 			result = pd.isReadable();
 			return result;
 		}
@@ -291,6 +291,18 @@ public class TaskPropertyReaderImpl implements TaskPropertyReader {
 		return result;
 	}
 
+	public boolean hasForceUnScheduleTask() {
+		boolean result = this.beanDesc
+				.hasPropertyDesc(TaskConstant.PROPERTY_NAME_FORCE_UN_SCHEDULE_TASK);
+		if (result) {
+			PropertyDesc pd = this.beanDesc
+					.getPropertyDesc(TaskConstant.PROPERTY_NAME_FORCE_UN_SCHEDULE_TASK);
+			result = pd.isReadable();
+			return result;
+		}
+		return result;
+	}
+
 	public boolean isEndTask(boolean defaultValue) {
 		boolean result = defaultValue;
 		if (this.hasEndTask()) {
@@ -325,7 +337,7 @@ public class TaskPropertyReaderImpl implements TaskPropertyReader {
 		boolean result = defaultValue;
 		if (this.hasReScheduleTask()) {
 			PropertyDesc pd = this.beanDesc
-					.getPropertyDesc(TaskConstant.PROPERTY_NAME_RESCHEDULE_TASK);
+					.getPropertyDesc(TaskConstant.PROPERTY_NAME_RE_SCHEDULE_TASK);
 			result = Boolean.TRUE.equals(pd.getValue(this.task));
 		}
 		return result;
@@ -336,6 +348,16 @@ public class TaskPropertyReaderImpl implements TaskPropertyReader {
 		if (this.hasShutdownTask()) {
 			PropertyDesc pd = this.beanDesc
 					.getPropertyDesc(TaskConstant.PROPERTY_NAME_SHUTDOWN_TASK);
+			result = Boolean.TRUE.equals(pd.getValue(this.task));
+		}
+		return result;
+	}
+
+	public boolean isForceUnScheduleTask(boolean defaultValue) {
+		boolean result = defaultValue;
+		if (this.hasForceUnScheduleTask()) {
+			PropertyDesc pd = this.beanDesc
+					.getPropertyDesc(TaskConstant.PROPERTY_NAME_FORCE_UN_SCHEDULE_TASK);
 			result = Boolean.TRUE.equals(pd.getValue(this.task));
 		}
 		return result;

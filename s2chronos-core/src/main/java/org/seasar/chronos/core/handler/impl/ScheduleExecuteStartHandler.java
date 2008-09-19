@@ -68,6 +68,7 @@ public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler 
 		}
 
 		public TaskExecutorService call() throws Exception {
+
 			final String taskName = taskExecutorService.getTaskPropertyReader()
 					.getTaskName(null);
 			log.log("DCHRONOS0122", new Object[] { taskName });
@@ -111,6 +112,7 @@ public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler 
 			taskExecutorService.unprepare();
 			log.log("DCHRONOS0124", new Object[] { taskName });
 			taskExecutorService.hotdeployStop();
+
 			return taskExecutorService;
 		}
 

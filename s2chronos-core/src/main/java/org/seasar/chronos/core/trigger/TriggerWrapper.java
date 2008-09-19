@@ -19,7 +19,7 @@ package org.seasar.chronos.core.trigger;
 
 import org.seasar.chronos.core.TaskTrigger;
 
-public class TriggerWrapper extends AbstractTrigger {
+public class TriggerWrapper implements TaskTrigger {
 
 	private static final long serialVersionUID = 1L;
 
@@ -48,6 +48,78 @@ public class TriggerWrapper extends AbstractTrigger {
 
 	public void setStartTask(boolean startTask) {
 		taskTrigger.setStartTask(startTask);
+	}
+
+	public String getDescription() {
+		return taskTrigger.getDescription();
+	}
+
+	public String getName() {
+		return taskTrigger.getName();
+	}
+
+	public Object getTask() {
+		return taskTrigger.getTask();
+	}
+
+	public Long getTriggerId() {
+		return taskTrigger.getTriggerId();
+	}
+
+	public boolean isExecuted() {
+		return taskTrigger.isExecuted();
+	}
+
+	public boolean isExecuting() {
+		return taskTrigger.isExecuting();
+	}
+
+	public boolean isReScheduleTask() {
+		return taskTrigger.isReScheduleTask();
+	}
+
+	public boolean isShutdownTask() {
+		return taskTrigger.isShutdownTask();
+	}
+
+	public void setDescription(String description) {
+		taskTrigger.setDescription(description);
+	}
+
+	public void setExecuted(boolean executed) {
+		taskTrigger.setExecuted(executed);
+	}
+
+	public void setExecuting(boolean executing) {
+		taskTrigger.setExecuting(executing);
+	}
+
+	public void setName(String name) {
+		taskTrigger.setName(name);
+	}
+
+	public void setReScheduleTask(boolean reScheduleTask) {
+		taskTrigger.setReScheduleTask(reScheduleTask);
+	}
+
+	public void setShutdownTask(boolean shutdownTask) {
+		taskTrigger.setShutdownTask(shutdownTask);
+	}
+
+	public void setTask(Object task) {
+		taskTrigger.setTask(task);
+	}
+
+	public void setTriggerId(Long id) {
+		taskTrigger.setTriggerId(id);
+	}
+
+	public boolean isForceUnScheduleTask() {
+		return taskTrigger.isForceUnScheduleTask();
+	}
+
+	public void setForceUnScheduleTask(boolean forceUnScheduleTask) {
+		taskTrigger.setForceUnScheduleTask(forceUnScheduleTask);
 	}
 
 }

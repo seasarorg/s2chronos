@@ -56,6 +56,8 @@ public interface TaskProperties {
 
 	public boolean isStartTask();
 
+	public boolean isForceUnScheduleTask();
+
 	public void setEndTask(boolean endTask);
 
 	public void setExecuting(boolean executing);
@@ -81,6 +83,8 @@ public interface TaskProperties {
 	public void setTrigger(TaskTrigger taskTrigger);
 
 	public void setException(Exception exception);
+
+	public void setForceUnScheduleTask(boolean forceUnScheduleTask);
 
 	public Exception getException();
 

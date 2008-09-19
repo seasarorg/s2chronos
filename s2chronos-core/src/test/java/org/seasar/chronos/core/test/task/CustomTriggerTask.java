@@ -5,7 +5,7 @@ import org.seasar.chronos.core.annotation.task.method.NextTask;
 import org.seasar.chronos.core.annotation.trigger.NonDelayTrigger;
 import org.seasar.framework.log.Logger;
 
-@Task
+@Task(autoSchedule = false)
 @NonDelayTrigger
 public class CustomTriggerTask {
 

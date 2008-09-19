@@ -26,41 +26,45 @@ public interface TaskTrigger extends Serializable {
 
 	public String getDescription();
 
-	public boolean isEndTask();
+	public String getName();
+
+	public Object getTask();
 
 	public Long getTriggerId();
 
-	public String getName();
-
-	public boolean isStartTask();
-
-	public Object getTask();
+	public boolean isEndTask();
 
 	public boolean isExecuted();
 
 	public boolean isExecuting();
 
+	public boolean isForceUnScheduleTask();
+
+	public boolean isReScheduleTask();
+
+	public boolean isShutdownTask();
+
+	public boolean isStartTask();
+
 	public void setDescription(String description);
 
 	public void setEndTask(boolean endTask);
 
-	public void setExecuting(boolean executing);
-
 	public void setExecuted(boolean executed);
 
-	public void setTriggerId(Long id);
+	public void setExecuting(boolean executing);
+
+	public void setForceUnScheduleTask(boolean forceUnScheduleTask);
 
 	public void setName(String name);
-
-	public void setStartTask(boolean startTask);
-
-	public void setTask(Object task);
-
-	public boolean isReScheduleTask();
 
 	public void setReScheduleTask(boolean reScheduleTask);
 
 	public void setShutdownTask(boolean shutdownTask);
 
-	public boolean isShutdownTask();
+	public void setStartTask(boolean startTask);
+
+	public void setTask(Object task);
+
+	public void setTriggerId(Long id);
 }

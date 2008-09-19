@@ -238,4 +238,12 @@ public class TaskExecuteStrategyWrapper implements TaskExecuteStrategy {
 		this.taskExecuteStrategy.catchException(exception);
 	}
 
+	public boolean isForceUnScheduleTask() {
+		return this.taskExecuteStrategy.isForceUnScheduleTask();
+	}
+
+	public void setForceUnScheduleTask(boolean unScheduleTask) {
+		this.taskExecuteStrategy.setForceUnScheduleTask(unScheduleTask);
+	}
+
 }
