@@ -46,10 +46,10 @@ public class ScopedTimeTriggerTask {
 	}
 
 	public void end() {
-
+		System.out.println("ScopedTimeTriggerTask#end()が実行されました");
 	}
 
 	public void destroy() {
-
+		System.out.println("ScopedTimeTriggerTask#destroy()が実行されました");
 	}
 }
