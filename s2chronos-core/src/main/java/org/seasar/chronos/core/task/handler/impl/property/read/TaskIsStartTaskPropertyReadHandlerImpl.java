@@ -114,12 +114,13 @@ public class TaskIsStartTaskPropertyReadHandlerImpl extends
 							}
 						}
 					});
-
-			// PropertyWriterに書き込むことによってキャッシュを保持できるようにする．
-			taskPropertyWriter.setup(this.getTaskPropertyReader(
-					methodInvocation).getTask(), this.getTaskPropertyReader(
-					methodInvocation).getBeanDesc());
-			taskPropertyWriter.setTrigger(taskTrigger);
+			if (taskTrigger != null) {
+				// PropertyWriterに書き込むことによってキャッシュを保持できるようにする．
+				taskPropertyWriter.setup(this.getTaskPropertyReader(
+						methodInvocation).getTask(), this
+						.getTaskPropertyReader(methodInvocation).getBeanDesc());
+				taskPropertyWriter.setTrigger(taskTrigger);
+			}
 		}
 		if (taskTrigger != null) {
 			start = start || taskTrigger.isStartTask();
