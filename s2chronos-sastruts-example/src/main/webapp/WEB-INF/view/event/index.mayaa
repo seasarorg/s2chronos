@@ -2,18 +2,17 @@
 <m:mayaa xmlns:m="http://mayaa.seasar.org"
 		xmlns:html="http://struts.apache.org/tags-html"
 		xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+		xmlns:s="http://sastruts.seasar.org"
 		extends="/WEB-INF/view/layout/layout.html">
 	<m:doRender m:id="pageTitle" name="title" />
 	<m:doRender m:id="body" name="body" />
 	<m:with m:id="allMessages">
 		<html:errors/>
 	</m:with>
-	<m:echo m:id="eventDate">
-		<m:attribute name="value" value="${eventForm.eventDate}"/>
-	</m:echo>
-	<m:echo m:id="eventText">
-		<m:attribute name="value" value="${eventForm.eventText}"/>
-	</m:echo>
+	<s:form m:id="eventForm"/>
+	<html:text m:id="eventDate" property="eventDate"/>
+	<html:text m:id="eventText" property="eventText"/>
+
 	<m:forEach id="resultEventItems" var="e" items="${eventAction.resultEventItems}" index="eventIndex"/>
 	<m:echo m:id="line">
 		<m:attribute name="style" value="background-color:${eventIndex % 2 == 0 ? 'pink' : 'yellow'}" />

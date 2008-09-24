@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <m:mayaa xmlns:m="http://mayaa.seasar.org"
-		xmlns:html="http://struts.apache.org/tags-html">
+		xmlns:html="http://struts.apache.org/tags-html"
+		xmlns:s="http://sastruts.seasar.org">
 	<m:with m:id="allMessages">
 		<html:errors/>
 	</m:with>
-	<m:echo m:id="userId">
-		<m:attribute name="value" value="${loginForm.userId}" />
-	</m:echo>
-	<m:echo m:id="password">
-		<m:attribute name="value" value="${loginForm.password}" />
-	</m:echo>
+	<s:form m:id="loginForm"/>
+	<html:text m:id="userId" property="userId" />
+	<html:password m:id="password" property="password"/>
 </m:mayaa>
