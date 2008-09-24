@@ -34,7 +34,7 @@ public class CDelayTrigger extends AbstractTrigger {
 
 	public CDelayTrigger(long delay) {
 		this();
-		this.delay = delay;
+		this.setDelay(delay);
 	}
 
 	@Override
