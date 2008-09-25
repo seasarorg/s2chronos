@@ -20,7 +20,12 @@ package org.seasar.chronos.core.task.strategy.impl;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
@@ -32,6 +37,10 @@ import org.seasar.chronos.core.TaskThreadPool;
 import org.seasar.chronos.core.TaskTrigger;
 import org.seasar.chronos.core.ThreadPoolType;
 import org.seasar.chronos.core.annotation.task.Task;
+import org.seasar.chronos.core.annotation.task.method.Destroy;
+import org.seasar.chronos.core.annotation.task.method.End;
+import org.seasar.chronos.core.annotation.task.method.Initialize;
+import org.seasar.chronos.core.annotation.task.method.Start;
 import org.seasar.chronos.core.delegate.AsyncResult;
 import org.seasar.chronos.core.delegate.MethodInvoker;
 import org.seasar.chronos.core.executor.ExecutorServiceFactory;
@@ -188,16 +197,25 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 	}
 
 	public void destroy() throws InterruptedException {
-		if (this.taskMethodInvoker.hasMethod(METHOD_NAME_DESTROY)) {
-			AsyncResult ar = this.taskMethodInvoker
-					.beginInvoke(METHOD_NAME_DESTROY);
+		String methodNameByAnnotation = getMethodNameByAnnotationClass(Destroy.class);
+		String methodName = methodNameByAnnotation != null ? methodNameByAnnotation
+				: METHOD_NAME_DESTROY;
+		if (this.taskMethodInvoker.hasMethod(methodName)) {
+			AsyncResult ar = this.taskMethodInvoker.beginInvoke(methodName);
 			this.taskMethodInvoker.endInvoke(ar);
+			return;
 		}
 	}
 
 	public String end() throws InterruptedException {
 		String nextTask = null;
-		for (String methodName : METHOD_NAME_END) {
+		String methodNameByAnnotation = getMethodNameByAnnotationClass(End.class);
+		List<String> methodNameList = new ArrayList<String>();
+		if (methodNameByAnnotation != null) {
+			methodNameList.add(methodNameByAnnotation);
+		}
+		methodNameList.addAll(Arrays.asList(METHOD_NAME_END));
+		for (String methodName : methodNameList) {
 			if (this.taskMethodInvoker.hasMethod(methodName)) {
 				AsyncResult ar = this.taskMethodInvoker.beginInvoke(methodName);
 				this.taskMethodInvoker.endInvoke(ar);
@@ -369,11 +387,26 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 	}
 
 	public void initialize() throws InterruptedException {
-		if (this.taskMethodInvoker.hasMethod(METHOD_NAME_INITIALIZE)) {
-			AsyncResult ar = this.taskMethodInvoker
-					.beginInvoke(METHOD_NAME_INITIALIZE);
+		String methodNameByAnnotation = getMethodNameByAnnotationClass(Initialize.class);
+		String methodName = methodNameByAnnotation != null ? methodNameByAnnotation
+				: METHOD_NAME_INITIALIZE;
+		if (this.taskMethodInvoker.hasMethod(methodName)) {
+			AsyncResult ar = this.taskMethodInvoker.beginInvoke(methodName);
 			this.taskMethodInvoker.endInvoke(ar);
+			return;
 		}
+	}
+
+	private <T extends Annotation> String getMethodNameByAnnotationClass(
+			Class<T> annotationClass) throws InterruptedException {
+		Method[] mis = this.taskClass.getMethods();
+		for (Method mi : mis) {
+			if (mi.getAnnotation(annotationClass) != null) {
+				String methodName = mi.getName();
+				return methodName;
+			}
+		}
+		return null;
 	}
 
 	public boolean isEndTask() {
@@ -579,7 +612,13 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 	public String start() throws InterruptedException {
 		this.setExecuted(true);
 		this.setExecuting(true);
-		for (String methodName : METHOD_NAME_START) {
+		String methodNameByAnnotation = getMethodNameByAnnotationClass(Start.class);
+		List<String> methodNameList = new ArrayList<String>();
+		if (methodNameByAnnotation != null) {
+			methodNameList.add(methodNameByAnnotation);
+		}
+		methodNameList.addAll(Arrays.asList(METHOD_NAME_START));
+		for (String methodName : methodNameList) {
 			if (this.taskMethodInvoker.hasMethod(methodName)) {
 				AsyncResult ar = this.taskMethodInvoker.beginInvoke(methodName);
 				this.taskMethodInvoker.endInvoke(ar);
@@ -599,6 +638,7 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 				.hasMethod(METHOD_NAME_DEFAULT_TASK_METHOD_NAME)) {
 			return METHOD_NAME_DEFAULT_TASK_NAME;
 		}
+
 		return null;
 	}
 
