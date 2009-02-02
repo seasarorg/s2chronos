@@ -1,8 +1,8 @@
 package org.seasar.chronos.core.util;
 
-import org.seasar.chronos.core.TaskTrigger;
-import org.seasar.chronos.core.ThreadPoolType;
 import org.seasar.chronos.core.annotation.task.Task;
+import org.seasar.chronos.core.model.TaskTrigger;
+import org.seasar.chronos.core.model.ThreadPoolType;
 
 @Task(name = "taskName")
 public class NormalATask {

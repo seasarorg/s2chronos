@@ -13,13 +13,12 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.chronos.core;
+package org.seasar.chronos.core.model;
 
 import java.io.Serializable;
 import java.util.Date;
 import java.util.concurrent.Future;
 
-import org.seasar.chronos.core.impl.TaskStateType;
 import org.seasar.chronos.core.task.TaskExecutorService;
 import org.seasar.framework.container.ComponentDef;
 

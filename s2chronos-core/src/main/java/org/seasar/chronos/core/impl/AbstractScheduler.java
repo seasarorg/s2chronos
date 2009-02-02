@@ -16,10 +16,10 @@
 package org.seasar.chronos.core.impl;
 
 import org.seasar.chronos.core.Scheduler;
-import org.seasar.chronos.core.TaskScheduleEntry;
 import org.seasar.chronos.core.annotation.task.Task;
 import org.seasar.chronos.core.autodetector.TaskClassAutoDetector;
-import org.seasar.chronos.core.schedule.TaskScheduleEntryManager;
+import org.seasar.chronos.core.model.TaskScheduleEntry;
+import org.seasar.chronos.core.model.schedule.TaskScheduleEntryManager;
 import org.seasar.chronos.core.task.TaskExecutorService;
 import org.seasar.chronos.core.task.TaskValidator;
 import org.seasar.framework.container.ComponentDef;

@@ -22,10 +22,10 @@ import java.util.concurrent.Future;
 
 import org.seasar.chronos.core.Scheduler;
 import org.seasar.chronos.core.SchedulerEventListener;
-import org.seasar.chronos.core.TaskScheduleEntry;
-import org.seasar.chronos.core.ThreadPoolType;
 import org.seasar.chronos.core.executor.ExecutorServiceFactory;
-import org.seasar.chronos.core.impl.TaskStateType;
+import org.seasar.chronos.core.model.TaskScheduleEntry;
+import org.seasar.chronos.core.model.TaskStateType;
+import org.seasar.chronos.core.model.ThreadPoolType;
 import org.seasar.framework.log.Logger;
 import org.seasar.framework.util.tiger.CollectionsUtil;
 

@@ -1,10 +1,10 @@
 package org.seasar.chronos.core.test.task;
 
-import org.seasar.chronos.core.TaskTrigger;
 import org.seasar.chronos.core.annotation.task.Task;
 import org.seasar.chronos.core.annotation.task.method.NextTask;
 import org.seasar.chronos.core.annotation.task.method.TaskGroup;
-import org.seasar.chronos.core.trigger.CNonDelayTrigger;
+import org.seasar.chronos.core.model.TaskTrigger;
+import org.seasar.chronos.core.model.trigger.CNonDelayTrigger;
 import org.seasar.framework.log.Logger;
 
 @Task(autoSchedule = false)

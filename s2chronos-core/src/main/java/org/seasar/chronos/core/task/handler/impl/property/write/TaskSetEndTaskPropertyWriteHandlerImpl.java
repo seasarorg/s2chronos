@@ -16,7 +16,7 @@
 package org.seasar.chronos.core.task.handler.impl.property.write;
 
 import org.aopalliance.intercept.MethodInvocation;
-import org.seasar.chronos.core.TaskTrigger;
+import org.seasar.chronos.core.model.TaskTrigger;
 import org.seasar.chronos.core.task.handler.impl.AbstractTaskPropertyWriteHandler;
 
 public class TaskSetEndTaskPropertyWriteHandlerImpl extends

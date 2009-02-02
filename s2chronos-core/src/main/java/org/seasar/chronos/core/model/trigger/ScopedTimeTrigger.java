@@ -1,8 +1,8 @@
-package org.seasar.chronos.core.trigger;
+package org.seasar.chronos.core.model.trigger;
 
 import java.util.Date;
 
-import org.seasar.chronos.core.TaskTrigger;
+import org.seasar.chronos.core.model.TaskTrigger;
 
 @SuppressWarnings("serial")
 public class ScopedTimeTrigger extends TriggerWrapper {

@@ -15,16 +15,15 @@
  */
 package org.seasar.chronos.core;
 
-import org.seasar.chronos.core.impl.TaskStateType;
+import org.seasar.chronos.core.model.TaskScheduleEntry;
+import org.seasar.chronos.core.model.TaskStateType;
 
 /**
  * スケジューライベントリスナークラスです．
  * 
  * @author j5ik2o
- * 
  */
 public interface SchedulerEventListener {
-
 	public void addTaskScheduleEntry(Scheduler scheduler,
 			TaskStateType taskStateType, TaskScheduleEntry taskScheduleEntry);
 
@@ -52,5 +51,4 @@ public interface SchedulerEventListener {
 	public void startTask(Scheduler scheduler, Object task);
 
 	public void exceptionTask(Scheduler scheduler, Object task, Exception e);
-
 }

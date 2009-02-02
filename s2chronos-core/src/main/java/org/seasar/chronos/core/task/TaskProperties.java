@@ -16,9 +16,9 @@
 package org.seasar.chronos.core.task;
 
 import org.seasar.chronos.core.Scheduler;
-import org.seasar.chronos.core.TaskThreadPool;
-import org.seasar.chronos.core.TaskTrigger;
-import org.seasar.chronos.core.ThreadPoolType;
+import org.seasar.chronos.core.model.TaskThreadPool;
+import org.seasar.chronos.core.model.TaskTrigger;
+import org.seasar.chronos.core.model.ThreadPoolType;
 
 public interface TaskProperties {
 

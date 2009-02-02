@@ -5,11 +5,11 @@ import java.util.concurrent.ExecutorService;
 import org.junit.runner.RunWith;
 import org.seasar.chronos.core.Scheduler;
 import org.seasar.chronos.core.SchedulerEventListener;
-import org.seasar.chronos.core.TaskScheduleEntry;
 import org.seasar.chronos.core.executor.ExecutorServiceFactory;
 import org.seasar.chronos.core.impl.SchedulerImpl;
-import org.seasar.chronos.core.impl.TaskStateType;
-import org.seasar.chronos.core.schedule.ScheduleEntry;
+import org.seasar.chronos.core.model.TaskScheduleEntry;
+import org.seasar.chronos.core.model.TaskStateType;
+import org.seasar.chronos.core.model.schedule.ScheduleEntry;
 import org.seasar.framework.unit.Seasar2;
 
 @RunWith(Seasar2.class)

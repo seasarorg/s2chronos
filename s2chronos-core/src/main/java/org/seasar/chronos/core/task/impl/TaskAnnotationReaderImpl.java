@@ -18,8 +18,8 @@ package org.seasar.chronos.core.task.impl;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
-import org.seasar.chronos.core.TaskTrigger;
 import org.seasar.chronos.core.annotation.task.Task;
+import org.seasar.chronos.core.model.TaskTrigger;
 import org.seasar.chronos.core.task.TaskAnnotationReader;
 import org.seasar.chronos.core.task.TaskConstant;
 import org.seasar.chronos.core.task.TaskTriggerFinder;
@@ -27,11 +27,12 @@ import org.seasar.framework.exception.NoSuchMethodRuntimeException;
 import org.seasar.framework.util.tiger.ReflectionUtil;
 
 public class TaskAnnotationReaderImpl implements TaskAnnotationReader {
-
 	private static final String METHOD_NAME_GET_TRIGGER = "getTrigger";
+
 	private Class<?> taskClass;
+
 	private TaskTriggerFinder taskTriggerFinder;
-	
+
 	public void setup(Class<?> taskClass) {
 		this.taskClass = taskClass;
 	}
@@ -50,7 +51,8 @@ public class TaskAnnotationReaderImpl implements TaskAnnotationReader {
 			Class<?> annotaionClass = annotaion.annotationType();
 			String annotationName = annotaionClass.getSimpleName();
 			// サフィックスがTriggerなアノテーションを検索する
-			if (annotationName.endsWith(TaskConstant.NAME_SPACE_TRIGGER_ANNOTATION_SUFFIX)) {
+			if (annotationName
+				.endsWith(TaskConstant.NAME_SPACE_TRIGGER_ANNOTATION_SUFFIX)) {
 				return true;
 			}
 		}
@@ -59,8 +61,11 @@ public class TaskAnnotationReaderImpl implements TaskAnnotationReader {
 
 	public boolean hasTriggerProperty() {
 		try {
-			Method method = ReflectionUtil.getMethod(this.taskClass,
-					METHOD_NAME_GET_TRIGGER, new Class[0]);
+			Method method =
+				ReflectionUtil.getMethod(
+					this.taskClass,
+					METHOD_NAME_GET_TRIGGER,
+					new Class[0]);
 			return method != null;
 		} catch (NoSuchMethodRuntimeException ex) {
 			;
@@ -73,21 +78,21 @@ public class TaskAnnotationReaderImpl implements TaskAnnotationReader {
 		return task;
 	}
 
-
-	
-	
-	
 	public TaskTrigger getTriggerAnnotationClass(
 			TriggerAnnotationHandler triggerAnnotationHandler) {
 		Annotation[] annotations = this.taskClass.getAnnotations();
-		TaskTrigger taskTrigger =taskTriggerFinder.find(annotations, triggerAnnotationHandler);
+		TaskTrigger taskTrigger =
+			taskTriggerFinder.find(annotations, triggerAnnotationHandler);
 		return taskTrigger;
 	}
 
+	/**
+	 * {@link TaskTriggerFinder}を設定します。
+	 * 
+	 * @param taskTriggerFinder
+	 *            {@link TaskTriggerFinder}
+	 */
 	public void setTaskTriggerFinder(TaskTriggerFinder taskTriggerFinder) {
 		this.taskTriggerFinder = taskTriggerFinder;
 	}
-
-
-
 }

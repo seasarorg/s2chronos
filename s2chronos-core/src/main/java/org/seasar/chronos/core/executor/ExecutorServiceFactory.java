@@ -17,11 +17,11 @@ package org.seasar.chronos.core.executor;
 
 import java.util.concurrent.ExecutorService;
 
-import org.seasar.chronos.core.ThreadPoolType;
-import org.seasar.chronos.core.threadpool.ThreadPool;
+import org.seasar.chronos.core.model.ThreadPoolType;
+import org.seasar.chronos.core.model.threadpool.ThreadPool;
 
 /**
- * ExecutorServiceのファクトリクラスです．
+ * {@link ExecutorService}のファクトリクラスです。
  * 
  * @author j5ik2o
  * 
@@ -29,11 +29,11 @@ import org.seasar.chronos.core.threadpool.ThreadPool;
 public interface ExecutorServiceFactory {
 
 	/**
-	 * ExecutorServiceを生成します．
+	 * {@link ExecutorService}を生成します。
 	 * 
 	 * @param type
 	 * @param threadPoolSize
-	 * @return
+	 * @return {@link ExecutorService}
 	 */
 	public ExecutorService create(ThreadPoolType type, Integer threadPoolSize);
 

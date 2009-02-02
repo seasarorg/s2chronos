@@ -15,9 +15,9 @@
  * 
  */
 
-package org.seasar.chronos.core.trigger;
+package org.seasar.chronos.core.model.trigger;
 
-public class CMonthlyTrigger extends CCronTrigger {
+public class CNonDelayTrigger extends AbstractTrigger {
 
 	private static final long serialVersionUID = 1L;
 
@@ -26,8 +26,32 @@ public class CMonthlyTrigger extends CCronTrigger {
 		return super.hashCode();
 	}
 
-	public CMonthlyTrigger() {
-		setExpression("59 59 23 L * ?");
+	public CNonDelayTrigger() {
+		super("nonDelayTrigger");
+	}
+
+	@Override
+	public boolean isReScheduleTask() {
+		return false;
+	}
+
+	public boolean isStartTask() {
+		if (this.isExecuting() || this.isExecuted()) {
+			return false;
+		}
+		return true;
+	}
+
+	public boolean isEndTask() {
+		return false;
+	}
+
+	public void setStartTask(boolean startTask) {
+
+	}
+
+	public void setEndTask(boolean endTask) {
+
 	}
 
 }

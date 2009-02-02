@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.chronos.core.schedule;
+package org.seasar.chronos.core.model.schedule;
 
 import java.util.Calendar;
 import java.util.List;
@@ -21,20 +21,39 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import org.seasar.chronos.core.TaskScheduleEntry;
-import org.seasar.chronos.core.impl.TaskStateType;
+import org.seasar.chronos.core.model.TaskScheduleEntry;
+import org.seasar.chronos.core.model.TaskStateType;
 import org.seasar.framework.log.Logger;
 
+/**
+ * タスクのスケジュール情報を管理するクラスです。
+ * 
+ * @author j5ik2o
+ */
 public class TaskScheduleEntryManager {
-
+	/**
+	 * タスクのスケジュール情報を読むためのハンドラーです。
+	 * 
+	 * @author j5ik2o
+	 */
 	public interface TaskScheduleEntryHanlder {
+		/**
+		 * ハンドラーです。
+		 * 
+		 * @param scheduleEntry
+		 *            タスクのスケジュール情報
+		 * @return オブジェクト。null以外を返すと呼び出し元のプロセスが終了する。
+		 */
 		public Object processTaskScheduleEntry(TaskScheduleEntry scheduleEntry);
 	}
 
 	@SuppressWarnings("unused")
-	private static Logger log = Logger
-			.getLogger(TaskScheduleEntryManager.class);
+	private static Logger log =
+		Logger.getLogger(TaskScheduleEntryManager.class);
 
+	/**
+	 * シングルトンな{@link TaskScheduleEntryManager}のインスタンスです。
+	 */
 	private static TaskScheduleEntryManager instance;
 
 	public static TaskScheduleEntryManager getInstance() {
@@ -48,14 +67,16 @@ public class TaskScheduleEntryManager {
 		return instance;
 	}
 
-	private final Map<TaskStateType, CopyOnWriteArrayList<TaskScheduleEntry>> taskScheduleEntryMap = new ConcurrentHashMap<TaskStateType, CopyOnWriteArrayList<TaskScheduleEntry>>();
+	private final Map<TaskStateType, CopyOnWriteArrayList<TaskScheduleEntry>> taskScheduleEntryMap =
+		new ConcurrentHashMap<TaskStateType, CopyOnWriteArrayList<TaskScheduleEntry>>();
 
-	private final CopyOnWriteArrayList<TaskScheduleEntry> allTaskList = new CopyOnWriteArrayList<TaskScheduleEntry>();
+	private final CopyOnWriteArrayList<TaskScheduleEntry> allTaskList =
+		new CopyOnWriteArrayList<TaskScheduleEntry>();
 
-	private final Map<Class<?>, TaskScheduleEntry> taskScheduleEntryClassMap = new ConcurrentHashMap<Class<?>, TaskScheduleEntry>();
+	private final Map<Class<?>, TaskScheduleEntry> taskScheduleEntryClassMap =
+		new ConcurrentHashMap<Class<?>, TaskScheduleEntry>();
 
 	private TaskScheduleEntryManager() {
-
 	}
 
 	public boolean addTaskScheduleEntry(TaskStateType key,
@@ -66,14 +87,16 @@ public class TaskScheduleEntryManager {
 			result = result && this.allTaskList.addIfAbsent(taskScheduleEntry);
 			Class<?> taskComponentClass = taskScheduleEntry.getTaskClass();
 			if (!this.taskScheduleEntryClassMap.containsKey(taskComponentClass)) {
-				this.taskScheduleEntryClassMap.put(taskComponentClass,
-						taskScheduleEntry);
+				this.taskScheduleEntryClassMap.put(
+					taskComponentClass,
+					taskScheduleEntry);
 			} else {
 				result = false;
 			}
 		} else if (key == TaskStateType.UNSCHEDULED) {
-			taskScheduleEntry.setUnScheduledDate(Calendar.getInstance()
-					.getTime());
+			taskScheduleEntry.setUnScheduledDate(Calendar
+				.getInstance()
+				.getTime());
 		}
 		return result;
 	}
@@ -90,8 +113,8 @@ public class TaskScheduleEntryManager {
 	}
 
 	public boolean contains(TaskStateType key, TaskScheduleEntry taskContena) {
-		CopyOnWriteArrayList<TaskScheduleEntry> result = taskScheduleEntryMap
-				.get(key);
+		CopyOnWriteArrayList<TaskScheduleEntry> result =
+			taskScheduleEntryMap.get(key);
 		if (result != null) {
 			return result.contains(taskContena);
 		}
@@ -109,7 +132,8 @@ public class TaskScheduleEntryManager {
 	}
 
 	public Object forEach(TaskStateType key, TaskScheduleEntryHanlder handler) {
-		CopyOnWriteArrayList<TaskScheduleEntry> scheduleEntryList = getScheduleEntryList(key);
+		CopyOnWriteArrayList<TaskScheduleEntry> scheduleEntryList =
+			getScheduleEntryList(key);
 		for (TaskScheduleEntry tse : scheduleEntryList) {
 			Object result = handler.processTaskScheduleEntry(tse);
 			if (result != null) {
@@ -121,8 +145,8 @@ public class TaskScheduleEntryManager {
 
 	private CopyOnWriteArrayList<TaskScheduleEntry> getScheduleEntryList(
 			TaskStateType key) {
-		CopyOnWriteArrayList<TaskScheduleEntry> result = this.taskScheduleEntryMap
-				.get(key);
+		CopyOnWriteArrayList<TaskScheduleEntry> result =
+			this.taskScheduleEntryMap.get(key);
 		if (result == null) {
 			result = new CopyOnWriteArrayList<TaskScheduleEntry>();
 			this.taskScheduleEntryMap.put(key, result);
@@ -138,8 +162,8 @@ public class TaskScheduleEntryManager {
 		boolean result = allTaskList.remove(taskScheduleEntry);
 		if (result) {
 			for (TaskStateType key : taskScheduleEntryMap.keySet()) {
-				CopyOnWriteArrayList<TaskScheduleEntry> taskScheduleEntryList = taskScheduleEntryMap
-						.get(key);
+				CopyOnWriteArrayList<TaskScheduleEntry> taskScheduleEntryList =
+					taskScheduleEntryMap.get(key);
 				if (taskScheduleEntryList != null) {
 					result = taskScheduleEntryList.remove(taskScheduleEntry);
 				}
@@ -158,9 +182,11 @@ public class TaskScheduleEntryManager {
 		result = this.getScheduleEntryList(key).remove(taskScheduleEntry);
 		if (key == TaskStateType.UNSCHEDULED) {
 			result = result & this.allTaskList.remove(taskScheduleEntry);
-			result = result
+			result =
+				result
 					& this.taskScheduleEntryClassMap.remove(taskScheduleEntry
-							.getComponentDef().getComponentClass()) != null;
+						.getComponentDef()
+						.getComponentClass()) != null;
 		}
 		taskScheduleEntry = null;
 		return result;
@@ -177,5 +203,4 @@ public class TaskScheduleEntryManager {
 		}
 		return list.size();
 	}
-
 }

@@ -21,9 +21,9 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
-import org.seasar.chronos.core.ThreadPoolType;
 import org.seasar.chronos.core.executor.ExecutorServiceFactory;
-import org.seasar.chronos.core.threadpool.ThreadPool;
+import org.seasar.chronos.core.model.ThreadPoolType;
+import org.seasar.chronos.core.model.threadpool.ThreadPool;
 import org.seasar.framework.log.Logger;
 
 public class ExecutorServiceFactoryImpl implements ExecutorServiceFactory {

@@ -16,7 +16,7 @@
 package org.seasar.chronos.core.task.handler.impl.property.read;
 
 import org.aopalliance.intercept.MethodInvocation;
-import org.seasar.chronos.core.TaskThreadPool;
+import org.seasar.chronos.core.model.TaskThreadPool;
 import org.seasar.chronos.core.task.handler.impl.AbstractTaskPropertyHandler;
 
 public class TaskGetThreadPoolSizePropertyReadHandlerImpl extends

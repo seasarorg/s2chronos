@@ -13,8 +13,24 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.chronos.core.impl;
+package org.seasar.chronos.core.model.schedule;
 
-public enum TaskStateType {
-	SCHEDULED, RUNNING, CANCELING, UNSCHEDULED;
+import org.seasar.chronos.core.model.TaskScheduleEntry;
+import org.seasar.chronos.core.util.ObjectUtil;
+
+public abstract class AbstractScheduleEntry implements TaskScheduleEntry {
+
+	private Long scheduleId;
+
+	public Long getScheduleId() {
+		if (this.scheduleId == null) {
+			this.scheduleId = ObjectUtil.generateObjectId();
+		}
+		return this.scheduleId;
+	}
+
+	public void setScheduleId(Long scheduleId) {
+		this.scheduleId = scheduleId;
+	}
+
 }

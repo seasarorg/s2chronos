@@ -5,8 +5,8 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.seasar.chronos.core.TaskTrigger;
-import org.seasar.chronos.core.ThreadPoolType;
+import org.seasar.chronos.core.model.TaskTrigger;
+import org.seasar.chronos.core.model.ThreadPoolType;
 import org.seasar.chronos.core.task.TaskPropertyReader;
 import org.seasar.chronos.core.util.NormalATask;
 import org.seasar.framework.unit.Seasar2;

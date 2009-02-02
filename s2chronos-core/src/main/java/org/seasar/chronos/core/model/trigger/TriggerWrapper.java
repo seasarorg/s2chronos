@@ -15,9 +15,9 @@
  * 
  */
 
-package org.seasar.chronos.core.trigger;
+package org.seasar.chronos.core.model.trigger;
 
-import org.seasar.chronos.core.TaskTrigger;
+import org.seasar.chronos.core.model.TaskTrigger;
 
 public class TriggerWrapper implements TaskTrigger {
 

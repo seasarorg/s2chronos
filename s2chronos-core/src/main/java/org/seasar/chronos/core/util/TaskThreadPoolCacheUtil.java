@@ -2,7 +2,7 @@ package org.seasar.chronos.core.util;
 
 import java.util.Map;
 
-import org.seasar.chronos.core.TaskThreadPool;
+import org.seasar.chronos.core.model.TaskThreadPool;
 import org.seasar.framework.util.tiger.CollectionsUtil;
 
 public final class TaskThreadPoolCacheUtil {

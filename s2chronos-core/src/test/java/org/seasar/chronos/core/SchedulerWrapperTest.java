@@ -2,6 +2,7 @@ package org.seasar.chronos.core;
 
 import org.junit.runner.RunWith;
 import org.seasar.chronos.core.impl.SchedulerImpl;
+import org.seasar.chronos.core.model.SchedulerConfiguration;
 import org.seasar.framework.unit.Seasar2;
 import static org.junit.Assert.*;
 

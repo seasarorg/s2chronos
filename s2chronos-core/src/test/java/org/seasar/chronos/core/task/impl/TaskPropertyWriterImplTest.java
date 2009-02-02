@@ -5,9 +5,9 @@ import static org.junit.Assert.fail;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.seasar.chronos.core.ThreadPoolType;
+import org.seasar.chronos.core.model.ThreadPoolType;
+import org.seasar.chronos.core.model.trigger.CNonDelayTrigger;
 import org.seasar.chronos.core.task.TaskPropertyWriter;
-import org.seasar.chronos.core.trigger.CNonDelayTrigger;
 import org.seasar.chronos.core.util.NormalATask;
 import org.seasar.framework.unit.Seasar2;
 

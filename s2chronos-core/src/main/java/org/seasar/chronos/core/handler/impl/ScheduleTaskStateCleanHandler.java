@@ -15,23 +15,34 @@
  */
 package org.seasar.chronos.core.handler.impl;
 
-import org.seasar.chronos.core.SchedulerConfiguration;
-import org.seasar.chronos.core.TaskScheduleEntry;
-import org.seasar.chronos.core.impl.TaskStateType;
-import org.seasar.chronos.core.schedule.TaskScheduleEntryManager.TaskScheduleEntryHanlder;
+import org.seasar.chronos.core.model.SchedulerConfiguration;
+import org.seasar.chronos.core.model.TaskScheduleEntry;
+import org.seasar.chronos.core.model.TaskStateType;
+import org.seasar.chronos.core.model.schedule.TaskScheduleEntryManager.TaskScheduleEntryHanlder;
 import org.seasar.chronos.core.task.TaskExecutorService;
 import org.seasar.chronos.core.task.handler.impl.property.PropertyCache;
 
 /**
+ * スケジュールされタスク状態をクリーンナップするハンドラーです。
  * 
  * @author j5ik2o
- * 
  */
 public class ScheduleTaskStateCleanHandler extends
 		AbstractScheduleExecuteHandler {
 
+	/**
+	 * {@link SchedulerConfiguration}です。
+	 */
 	private SchedulerConfiguration schedulerConfiguration;
 
+	/**
+	 * 実行中でなく強制アンスケジュール状態のタスクをスケジュール状態からアンスケジュール状態に遷移させます。
+	 * さらに、アンスケジュール状態からタスククリーンナップ時間を経過したタスクをアンスケジュール状態から削除します。
+	 * タスクを削除する前に、destroyメソッドをコールします。その後スケジュール情報から削除されます。
+	 * 
+	 * @see org.seasar.chronos.core.handler.impl.AbstractScheduleExecuteHandler#
+	 *      handleRequest ()
+	 */
 	@Override
 	public void handleRequest() throws InterruptedException {
 		this.taskScheduleEntryManager.forEach(TaskStateType.SCHEDULED,
@@ -40,6 +51,7 @@ public class ScheduleTaskStateCleanHandler extends
 							TaskScheduleEntry scheduleEntry) {
 						TaskExecutorService tes = scheduleEntry
 								.getTaskExecutorService();
+						// 実行中ではなく強制アンスケジュールが有効であれば
 						if (!tes.getTaskPropertyReader().isExecuting(false)
 								&& tes.getTaskPropertyReader()
 										.isForceUnScheduleTask(false)) {
@@ -83,6 +95,12 @@ public class ScheduleTaskStateCleanHandler extends
 
 	}
 
+	/**
+	 * {@link SchedulerConfiguration}を設定します。
+	 * 
+	 * @param schedulerConfiguration
+	 *            {@link SchedulerConfiguration}
+	 */
 	public void setSchedulerConfiguration(
 			SchedulerConfiguration schedulerConfiguration) {
 		this.schedulerConfiguration = schedulerConfiguration;

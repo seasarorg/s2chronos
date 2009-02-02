@@ -4,10 +4,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.seasar.chronos.core.TaskTrigger;
 import org.seasar.chronos.core.annotation.task.Task;
-import org.seasar.chronos.core.trigger.CTimedTrigger;
-import org.seasar.chronos.core.trigger.TriggerChain;
+import org.seasar.chronos.core.model.TaskTrigger;
+import org.seasar.chronos.core.model.trigger.CTimedTrigger;
+import org.seasar.chronos.core.model.trigger.TriggerChain;
 
 @Task(autoSchedule = false)
 public class TriggerChainTask {

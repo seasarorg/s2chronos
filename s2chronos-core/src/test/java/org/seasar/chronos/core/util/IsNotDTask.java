@@ -1,6 +1,6 @@
 package org.seasar.chronos.core.util;
 
-import org.seasar.chronos.core.TaskTrigger;
+import org.seasar.chronos.core.model.TaskTrigger;
 
 public class IsNotDTask {
 

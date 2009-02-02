@@ -16,7 +16,7 @@
 package org.seasar.chronos.core.task.handler.impl.property.read;
 
 import org.aopalliance.intercept.MethodInvocation;
-import org.seasar.chronos.core.TaskTrigger;
+import org.seasar.chronos.core.model.TaskTrigger;
 import org.seasar.chronos.core.task.handler.impl.AbstractTaskPropertyHandler;
 import org.seasar.framework.log.Logger;
 

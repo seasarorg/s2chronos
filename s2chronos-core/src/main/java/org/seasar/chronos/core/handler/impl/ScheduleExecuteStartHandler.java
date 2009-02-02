@@ -19,9 +19,9 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
 import java.util.concurrent.RejectedExecutionException;
 
-import org.seasar.chronos.core.TaskScheduleEntry;
-import org.seasar.chronos.core.impl.TaskStateType;
-import org.seasar.chronos.core.schedule.TaskScheduleEntryManager.TaskScheduleEntryHanlder;
+import org.seasar.chronos.core.model.TaskScheduleEntry;
+import org.seasar.chronos.core.model.TaskStateType;
+import org.seasar.chronos.core.model.schedule.TaskScheduleEntryManager.TaskScheduleEntryHanlder;
 import org.seasar.chronos.core.task.TaskExecutorService;
 
 public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler {

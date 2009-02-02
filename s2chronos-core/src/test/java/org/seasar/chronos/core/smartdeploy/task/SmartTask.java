@@ -1,11 +1,11 @@
 package org.seasar.chronos.core.smartdeploy.task;
 
-import org.seasar.chronos.core.TaskTrigger;
 import org.seasar.chronos.core.annotation.task.Task;
 import org.seasar.chronos.core.annotation.task.method.CloneTask;
 import org.seasar.chronos.core.annotation.task.method.JoinTask;
 import org.seasar.chronos.core.annotation.task.method.NextTask;
 import org.seasar.chronos.core.annotation.type.JoinType;
+import org.seasar.chronos.core.model.TaskTrigger;
 import org.seasar.framework.log.Logger;
 
 @Task(autoSchedule = false, name = "smart")

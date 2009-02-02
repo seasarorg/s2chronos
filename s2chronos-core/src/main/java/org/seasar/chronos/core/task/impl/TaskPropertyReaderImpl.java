@@ -15,9 +15,9 @@
  */
 package org.seasar.chronos.core.task.impl;
 
-import org.seasar.chronos.core.TaskThreadPool;
-import org.seasar.chronos.core.TaskTrigger;
-import org.seasar.chronos.core.ThreadPoolType;
+import org.seasar.chronos.core.model.TaskThreadPool;
+import org.seasar.chronos.core.model.TaskTrigger;
+import org.seasar.chronos.core.model.ThreadPoolType;
 import org.seasar.chronos.core.task.TaskConstant;
 import org.seasar.chronos.core.task.TaskPropertyReader;
 import org.seasar.framework.beans.BeanDesc;

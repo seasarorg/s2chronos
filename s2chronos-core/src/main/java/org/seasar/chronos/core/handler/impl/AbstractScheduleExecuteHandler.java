@@ -20,7 +20,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.seasar.chronos.core.event.SchedulerEventHandler;
 import org.seasar.chronos.core.handler.ScheduleExecuteHandler;
-import org.seasar.chronos.core.schedule.TaskScheduleEntryManager;
+import org.seasar.chronos.core.model.schedule.TaskScheduleEntryManager;
 import org.seasar.framework.container.annotation.tiger.Binding;
 import org.seasar.framework.container.annotation.tiger.BindingType;
 import org.seasar.framework.log.Logger;

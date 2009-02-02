@@ -15,8 +15,8 @@
  */
 package org.seasar.chronos.core.task.handler.impl;
 
-import org.seasar.chronos.core.TaskTrigger;
 import org.seasar.chronos.core.delegate.MethodInvoker;
+import org.seasar.chronos.core.model.TaskTrigger;
 import org.seasar.chronos.core.task.Transition;
 import org.seasar.chronos.core.task.handler.TaskExecuteHandler;
 import org.seasar.chronos.core.task.impl.TaskMethodManager;

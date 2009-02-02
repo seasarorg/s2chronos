@@ -4,10 +4,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.seasar.chronos.core.TaskTrigger;
 import org.seasar.chronos.core.annotation.task.Task;
-import org.seasar.chronos.core.trigger.CCronTrigger;
-import org.seasar.chronos.core.trigger.ScopedTimeTrigger;
+import org.seasar.chronos.core.model.TaskTrigger;
+import org.seasar.chronos.core.model.trigger.CCronTrigger;
+import org.seasar.chronos.core.model.trigger.ScopedTimeTrigger;
 
 @Task
 public class ScopedTimeTriggerTask {

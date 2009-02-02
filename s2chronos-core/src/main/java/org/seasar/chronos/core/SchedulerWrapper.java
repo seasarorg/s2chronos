@@ -16,14 +16,12 @@
 package org.seasar.chronos.core;
 
 import org.seasar.chronos.core.impl.AbstractScheduler;
+import org.seasar.chronos.core.model.SchedulerConfiguration;
 
 /**
- * 
  * @author j5ik2o
- * 
  */
 public abstract class SchedulerWrapper extends AbstractScheduler {
-
 	private final Scheduler scheduler;
 
 	public SchedulerWrapper(Scheduler scheduler) {
@@ -37,7 +35,6 @@ public abstract class SchedulerWrapper extends AbstractScheduler {
 	// public boolean addTask(String taskName) {
 	// return scheduler.addTask(taskName);
 	// }
-
 	public boolean addTask(Class<?> taskClass) {
 		return scheduler.addTask(taskClass);
 	}

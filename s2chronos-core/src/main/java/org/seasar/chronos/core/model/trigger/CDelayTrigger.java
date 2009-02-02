@@ -15,20 +15,26 @@
  * 
  */
 
-package org.seasar.chronos.core.trigger;
+package org.seasar.chronos.core.model.trigger;
 
-import java.util.Date;
-
-public class CTimedTrigger extends AbstractTrigger {
+public class CDelayTrigger extends AbstractTrigger {
 
 	private static final long serialVersionUID = 1L;
 
-	private Date startTime;
+	private long delay = 0;
 
-	private Date endTime;
+	@Override
+	public int hashCode() {
+		return super.hashCode();
+	}
 
-	public CTimedTrigger() {
-		super("timedTrigger");
+	public CDelayTrigger() {
+		super("delayTrigger");
+	}
+
+	public CDelayTrigger(long delay) {
+		this();
+		this.setDelay(delay);
 	}
 
 	@Override
@@ -36,41 +42,29 @@ public class CTimedTrigger extends AbstractTrigger {
 		return false;
 	}
 
-	public void setStartTime(Date startDate) {
-		this.startTime = (Date) startDate.clone();
+	public void setDelay(long delay) {
+		this.delay = System.currentTimeMillis() + delay;
 	}
 
-	public Date getStartTime() {
-		return (Date) startTime.clone();
-	}
-
-	public void setEndTime(Date endDate) {
-		this.endTime = (Date) endDate.clone();
-	}
-
-	public Date getEndTime() {
-		return (Date) endTime.clone();
+	public long getDelay() {
+		return delay;
 	}
 
 	public boolean isStartTask() {
-		if (this.isExecuting() || this.isExecuted()) {
+		if (this.isExecuting()) {
 			return false;
 		}
+
 		boolean startTimeCheck = false;
+
 		// 開始時刻の確認
-		if (startTime != null) {
-			startTimeCheck = (System.currentTimeMillis() >= startTime.getTime());
-		}
+		startTimeCheck = (System.currentTimeMillis() >= delay);
+
 		return startTimeCheck;
 	}
 
 	public boolean isEndTask() {
-		boolean endTimeCheck = false;
-		// 終了時刻の確認
-		if (endTime != null) {
-			endTimeCheck = (System.currentTimeMillis() >= endTime.getTime());
-		}
-		return endTimeCheck;
+		return false;
 	}
 
 	public void setStartTask(boolean startTask) {

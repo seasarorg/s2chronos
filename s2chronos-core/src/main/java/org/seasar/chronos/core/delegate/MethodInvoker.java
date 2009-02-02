@@ -23,9 +23,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
-import org.seasar.chronos.core.ThreadPoolType;
 import org.seasar.chronos.core.exception.ExecutionRuntimeException;
 import org.seasar.chronos.core.executor.ExecutorServiceFactory;
+import org.seasar.chronos.core.model.ThreadPoolType;
 import org.seasar.framework.beans.BeanDesc;
 import org.seasar.framework.beans.factory.BeanDescFactory;
 import org.seasar.framework.container.ComponentDef;

@@ -15,7 +15,7 @@
  */
 package org.seasar.chronos.core.handler.impl;
 
-import org.seasar.chronos.core.impl.TaskStateType;
+import org.seasar.chronos.core.model.TaskStateType;
 
 public class ScheduleExecuteWaitHandler extends AbstractScheduleExecuteHandler {
 

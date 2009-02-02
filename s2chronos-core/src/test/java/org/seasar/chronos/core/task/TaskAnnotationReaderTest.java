@@ -6,9 +6,9 @@ import java.lang.annotation.Annotation;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.seasar.chronos.core.TaskTrigger;
 import org.seasar.chronos.core.annotation.task.Task;
 import org.seasar.chronos.core.annotation.trigger.NonDelayTrigger;
+import org.seasar.chronos.core.model.TaskTrigger;
 import org.seasar.chronos.core.task.TaskAnnotationReader.TriggerAnnotationHandler;
 import org.seasar.framework.unit.Seasar2;
 import org.seasar.framework.util.tiger.ReflectionUtil;

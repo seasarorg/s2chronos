@@ -13,10 +13,10 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.chronos.core.threadpool;
+package org.seasar.chronos.core.model.threadpool;
 
-import org.seasar.chronos.core.TaskThreadPool;
-import org.seasar.chronos.core.ThreadPoolType;
+import org.seasar.chronos.core.model.TaskThreadPool;
+import org.seasar.chronos.core.model.ThreadPoolType;
 
 public class ThreadPoolWrapper implements TaskThreadPool {
 

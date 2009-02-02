@@ -13,24 +13,27 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.chronos.core.schedule;
+package org.seasar.chronos.core.model;
 
-import org.seasar.chronos.core.TaskScheduleEntry;
-import org.seasar.chronos.core.util.ObjectUtil;
+/**
+ * 
+ * @author j5ik2o
+ *
+ */
+public enum ThreadPoolType {
 
-public abstract class AbstractScheduleEntry implements TaskScheduleEntry {
+	FIXED, CACHED, SINGLE, SCHEDULED;
 
-	private Long scheduleId;
-
-	public Long getScheduleId() {
-		if (this.scheduleId == null) {
-			this.scheduleId = ObjectUtil.generateObjectId();
+	public static ThreadPoolType toEnum(int value) {
+		if (value == FIXED.ordinal()) {
+			return FIXED;
+		} else if (value == CACHED.ordinal()) {
+			return CACHED;
+		} else if (value == SINGLE.ordinal()) {
+			return SINGLE;
+		} else if (value == SCHEDULED.ordinal()) {
+			return SCHEDULED;
 		}
-		return this.scheduleId;
+		return null;
 	}
-
-	public void setScheduleId(Long scheduleId) {
-		this.scheduleId = scheduleId;
-	}
-
 }

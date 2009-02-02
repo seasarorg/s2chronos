@@ -13,27 +13,8 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.chronos.core;
+package org.seasar.chronos.core.model;
 
-/**
- * 
- * @author j5ik2o
- *
- */
-public enum ThreadPoolType {
-
-	FIXED, CACHED, SINGLE, SCHEDULED;
-
-	public static ThreadPoolType toEnum(int value) {
-		if (value == FIXED.ordinal()) {
-			return FIXED;
-		} else if (value == CACHED.ordinal()) {
-			return CACHED;
-		} else if (value == SINGLE.ordinal()) {
-			return SINGLE;
-		} else if (value == SCHEDULED.ordinal()) {
-			return SCHEDULED;
-		}
-		return null;
-	}
+public enum TaskStateType {
+	SCHEDULED, RUNNING, CANCELING, UNSCHEDULED;
 }
