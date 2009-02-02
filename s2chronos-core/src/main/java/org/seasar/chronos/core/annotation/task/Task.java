@@ -20,16 +20,37 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * タスク用アノテーションです。
+ * 
+ * @author j5ik2o
+ */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface Task {
-
+	/**
+	 * タスク名用NULL文字列定数です。
+	 */
 	public static final String TASK_NAME_NULL = "";
 
+	/**
+	 * タスク名です。
+	 * 
+	 * @return タスク名
+	 */
 	String name() default TASK_NAME_NULL;
 
+	/**
+	 * 自動スケジュールです。
+	 * 
+	 * @return 自動スケジュールするならtrue、しないならfalse
+	 */
 	boolean autoSchedule() default true;
 
+	/**
+	 * クローンタスクです。
+	 * 
+	 * @return クローンするタスク数
+	 */
 	long cloneTask() default 1L;
-
 }
