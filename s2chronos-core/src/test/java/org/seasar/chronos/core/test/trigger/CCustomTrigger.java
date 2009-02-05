@@ -1,9 +1,8 @@
-package org.seasar.chronos.core.trigger;
+package org.seasar.chronos.core.test.trigger;
 
 import org.seasar.chronos.core.model.trigger.AbstractTrigger;
 
 public class CCustomTrigger extends AbstractTrigger {
-
 	private static final long serialVersionUID = 1L;
 
 	private int div;
@@ -18,15 +17,17 @@ public class CCustomTrigger extends AbstractTrigger {
 	}
 
 	public boolean isStartTask() {
-		return System.currentTimeMillis() % div == 0;
+		long mill = System.currentTimeMillis();
+		long mod = mill % div;
+		System.out.println("mill = " + mill);
+		System.out.println("mod = " + mod);
+		return mod == 0;
 	}
 
 	public void setEndTask(boolean endTask) {
-
 	}
 
 	public void setStartTask(boolean startTask) {
-
 	}
 
 	@Override
@@ -41,5 +42,4 @@ public class CCustomTrigger extends AbstractTrigger {
 	public void setDiv(int div) {
 		this.div = div;
 	}
-
 }

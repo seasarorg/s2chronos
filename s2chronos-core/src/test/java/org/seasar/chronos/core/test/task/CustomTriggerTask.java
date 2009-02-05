@@ -1,14 +1,13 @@
 package org.seasar.chronos.core.test.task;
 
+import org.seasar.chronos.core.annotation.CustomTrigger;
 import org.seasar.chronos.core.annotation.task.Task;
 import org.seasar.chronos.core.annotation.task.method.NextTask;
-import org.seasar.chronos.core.annotation.trigger.NonDelayTrigger;
 import org.seasar.framework.log.Logger;
 
-@Task(autoSchedule = false)
-@NonDelayTrigger
+@Task(autoSchedule = true)
+@CustomTrigger
 public class CustomTriggerTask {
-
 	private final Logger log = Logger.getLogger(CustomTriggerTask.class);
 
 	public synchronized void initialize() {
@@ -31,5 +30,4 @@ public class CustomTriggerTask {
 	public void destroy() {
 		log.debug("[CustomTriggerTask::destroy]");
 	}
-
 }

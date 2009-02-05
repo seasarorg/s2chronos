@@ -9,11 +9,10 @@ import org.seasar.chronos.core.model.TaskTrigger;
 import org.seasar.chronos.core.model.trigger.CCronTrigger;
 import org.seasar.chronos.core.model.trigger.ScopedTimeTrigger;
 
-@Task
+@Task(autoSchedule = false)
 public class ScopedTimeTriggerTask {
-
-	private ScopedTimeTrigger trigger = new ScopedTimeTrigger(new CCronTrigger(
-			"0 */1 * * * ?"));
+	private final ScopedTimeTrigger trigger =
+		new ScopedTimeTrigger(new CCronTrigger("0 */1 * * * ?"));
 
 	public TaskTrigger getTrigger() {
 		return this.trigger;
@@ -34,10 +33,8 @@ public class ScopedTimeTriggerTask {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-
 		this.trigger.setScopedStartTime(scopedStartTime);
 		this.trigger.setScopedEndTime(scopedEndTime);
-
 		this.trigger.setReScheduleTask(true);
 	}
 
