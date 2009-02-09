@@ -20,7 +20,7 @@ package org.seasar.chronos.core.model.trigger;
 import java.text.ParseException;
 import java.util.Date;
 
-import org.seasar.chronos.core.trigger.cron.CronExpression;
+import org.seasar.chronos.core.model.trigger.cron.CronExpression;
 import org.seasar.framework.exception.ParseRuntimeException;
 import org.seasar.framework.log.Logger;
 
