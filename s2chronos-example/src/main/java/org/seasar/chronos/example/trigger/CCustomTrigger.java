@@ -1,6 +1,6 @@
 package org.seasar.chronos.example.trigger;
 
-import org.seasar.chronos.core.trigger.AbstractTrigger;
+import org.seasar.chronos.core.model.trigger.AbstractTrigger;
 
 public class CCustomTrigger extends AbstractTrigger {
 
