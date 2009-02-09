@@ -50,13 +50,13 @@ public class SchedulerImpl extends AbstractScheduler {
 	public static final int SHUTDOWN_AWAIT_TIME = 10;
 
 	public static final TimeUnit SHUTDOWN_AWAIT_TIMEUNIT =
-			TimeUnit.MILLISECONDS;
+		TimeUnit.MILLISECONDS;
 
 	private static final SchedulerConfiguration defaultConfiguration =
-			new SchedulerConfiguration();
+		new SchedulerConfiguration();
 
 	private final SchedulerEventHandler schedulerEventHandler =
-			new SchedulerEventHandler();
+		new SchedulerEventHandler();
 
 	private final AtomicBoolean pause = new AtomicBoolean();
 
@@ -65,12 +65,12 @@ public class SchedulerImpl extends AbstractScheduler {
 	private Future<Void> schedulerTaskFuture;
 
 	private final TaskScheduleEntryManager taskScheduleEntryManager =
-			TaskScheduleEntryManager.getInstance();
+		TaskScheduleEntryManager.getInstance();
 
 	private SchedulerConfiguration configuration = defaultConfiguration;
 
 	private final List<ScheduleExecuteHandler> scheduleExecuteHandlerList =
-			CollectionsUtil.newArrayList();
+		CollectionsUtil.newArrayList();
 
 	private ExecutorServiceFactory executorServiceFactory;
 
@@ -78,54 +78,68 @@ public class SchedulerImpl extends AbstractScheduler {
 
 	private boolean initialized;
 
+	/**
+	 * コンストラクタです。
+	 */
 	public SchedulerImpl() {
 		schedulerEventHandler.setScheduler(this);
 	}
 
+	/**
+	 * {@link ScheduleExecuteHandler}を追加します。
+	 * 
+	 * @param scheduleExecuteHandler
+	 *            {@link ScheduleExecuteHandler}
+	 */
 	public void addScheduleExecuteHandler(
 			ScheduleExecuteHandler scheduleExecuteHandler) {
-		this.scheduleExecuteHandlerList.add(scheduleExecuteHandler);
-	}
-
-	private synchronized void initialize() {
-		if (this.initialized) {
-			return;
-		}
-		executorService =
-				executorServiceFactory.create(this.configuration
-						.getThreadPoolType(), this.configuration
-						.getThreadPoolSize(), this.configuration.isDaemon());
-		schedulerEventHandler.setExecutorServiceFacotry(executorServiceFactory);
-		this.initialized = true;
+		scheduleExecuteHandlerList.add(scheduleExecuteHandler);
 	}
 
 	/**
-	 * リスナーを追加します．
+	 * スケジューラを初期化します。
+	 */
+	private synchronized void initialize() {
+		if (initialized) {
+			return;
+		}
+		executorService =
+			executorServiceFactory.create(
+				configuration.getThreadPoolType(),
+				configuration.getThreadPoolSize(),
+				configuration.isDaemon());
+		schedulerEventHandler.setExecutorServiceFacotry(executorServiceFactory);
+		initialized = true;
+	}
+
+	/**
+	 * {@link SchedulerEventListener}を追加します．
 	 * 
 	 * @param listener
-	 *            リスナー
+	 *            {@link SchedulerEventListener}
 	 */
 	public boolean addListener(SchedulerEventListener listener) {
 		return this.schedulerEventHandler.add(listener);
 	}
 
 	/**
-	 * タスクを追加します．
+	 * タスクコンポーネントのクラスを追加します．
 	 * 
 	 * @param taskComponentClass
-	 *            タスクコンポーネント
+	 *            タスクコンポーネントのクラス
 	 */
 	public synchronized boolean addTask(Class<?> taskComponentClass) {
 		S2Container rootS2Container = this.s2container.getRoot();
 		boolean result = false;
 		result =
-				this.registerChildTaskComponentByTarget(rootS2Container,
-						taskComponentClass);
+			this.registerChildTaskComponentByTarget(
+				rootS2Container,
+				taskComponentClass);
 		result =
-				result
-						|| this
-								.registerTaskFromS2ContainerOnSmartDeployByTarget(
-										rootS2Container, taskComponentClass);
+			result
+				|| this.registerTaskFromS2ContainerOnSmartDeployByTarget(
+					rootS2Container,
+					taskComponentClass);
 		return result;
 	}
 
@@ -145,21 +159,21 @@ public class SchedulerImpl extends AbstractScheduler {
 	 */
 	private boolean getSchedulerFinish() {
 		if (this.finishStartTime != 0
-				&& this.taskScheduleEntryManager.size(TaskStateType.SCHEDULED) > 0) {
+			&& this.taskScheduleEntryManager.size(TaskStateType.SCHEDULED) > 0) {
 			this.finishStartTime = 0;
 			return false;
 		}
 		if (this.finishStartTime != 0
-				&& System.currentTimeMillis() - this.finishStartTime >= this.configuration
-						.getAutoFinishTimeLimit()) {
+			&& System.currentTimeMillis() - this.finishStartTime >= this.configuration
+				.getAutoFinishTimeLimit()) {
 			this.finishStartTime = 0;
 			return true;
 		}
 		if (this.schedulerTaskFuture != null
-				&& this.taskScheduleEntryManager.size(TaskStateType.SCHEDULED) == 0
-				&& this.taskScheduleEntryManager.size(TaskStateType.RUNNING) == 0
-				&& this.configuration.isAutoFinish()
-				&& this.finishStartTime == 0) {
+			&& this.taskScheduleEntryManager.size(TaskStateType.SCHEDULED) == 0
+			&& this.taskScheduleEntryManager.size(TaskStateType.RUNNING) == 0
+			&& this.configuration.isAutoFinish()
+			&& this.finishStartTime == 0) {
 			this.finishStartTime = System.currentTimeMillis();
 		}
 		return false;
@@ -243,24 +257,24 @@ public class SchedulerImpl extends AbstractScheduler {
 	 */
 	public synchronized boolean removeTask(Class<?> taskClass) {
 		TaskScheduleEntry taskScheduleEntry =
-				this.taskScheduleEntryManager.getTaskScheduleEntry(taskClass);
+			this.taskScheduleEntryManager.getTaskScheduleEntry(taskClass);
 		return taskScheduleEntryManager
-				.removeTaskScheduleEntry(taskScheduleEntry);
+			.removeTaskScheduleEntry(taskScheduleEntry);
 	}
 
 	protected TaskScheduleEntry unscheduleTask(final ComponentDef componentDef) {
 		TaskScheduleEntry target =
-				(TaskScheduleEntry) this.taskScheduleEntryManager
-						.forEach(new TaskScheduleEntryHanlder() {
-							public Object processTaskScheduleEntry(
-									TaskScheduleEntry scheduleEntry) {
-								if (componentDef.equals(scheduleEntry
-										.getComponentDef())) {
-									return scheduleEntry;
-								}
-								return null;
-							}
-						});
+			(TaskScheduleEntry) this.taskScheduleEntryManager
+				.forEach(new TaskScheduleEntryHanlder() {
+					public Object processTaskScheduleEntry(
+							TaskScheduleEntry scheduleEntry) {
+						if (componentDef
+							.equals(scheduleEntry.getComponentDef())) {
+							return scheduleEntry;
+						}
+						return null;
+					}
+				});
 		if (this.taskScheduleEntryManager.removeTaskScheduleEntry(target)) {
 			return target;
 		}
@@ -269,9 +283,9 @@ public class SchedulerImpl extends AbstractScheduler {
 
 	/*
 	 * (非 Javadoc)
-	 * @see
-	 * org.seasar.chronos.core.impl.AbstractScheduler#scheduleTask(org.seasar
-	 * .framework.container.ComponentDef)
+	 * 
+	 * @see org.seasar.chronos.core.impl.AbstractScheduler#scheduleTask(org.seasar
+	 *      .framework.container.ComponentDef)
 	 */
 	@Override
 	protected TaskScheduleEntry scheduleTask(ComponentDef taskComponentDef) {
@@ -280,28 +294,30 @@ public class SchedulerImpl extends AbstractScheduler {
 
 	/*
 	 * (非 Javadoc)
-	 * @see
-	 * org.seasar.chronos.core.impl.AbstractScheduler#scheduleTask(org.seasar
-	 * .framework.container.ComponentDef, boolean)
+	 * 
+	 * @see org.seasar.chronos.core.impl.AbstractScheduler#scheduleTask(org.seasar
+	 *      .framework.container.ComponentDef, boolean)
 	 */
 	@Override
 	protected TaskScheduleEntry scheduleTask(ComponentDef taskComponentDef,
 			boolean force) {
 		boolean contains =
-				this.taskScheduleEntryManager.contains(taskComponentDef
-						.getComponentClass());
+			this.taskScheduleEntryManager.contains(taskComponentDef
+				.getComponentClass());
 		if (contains) {
 			return null;
 		}
 		TaskScheduleEntry taskScheduleEntry =
-				super.scheduleTask(taskComponentDef, force);
+			super.scheduleTask(taskComponentDef, force);
 		if (taskScheduleEntry == null) {
 			return null;
 		}
 		this.taskScheduleEntryManager.addTaskScheduleEntry(
-				TaskStateType.SCHEDULED, taskScheduleEntry);
+			TaskStateType.SCHEDULED,
+			taskScheduleEntry);
 		this.schedulerEventHandler.fireAddTaskScheduleEntry(
-				TaskStateType.SCHEDULED, taskScheduleEntry);
+			TaskStateType.SCHEDULED,
+			taskScheduleEntry);
 		return taskScheduleEntry;
 	}
 
@@ -326,69 +342,72 @@ public class SchedulerImpl extends AbstractScheduler {
 
 	/*
 	 * (非 Javadoc)
+	 * 
 	 * @see org.seasar.chronos.core.Scheduler#shutdown()
 	 */
 	public void shutdown() {
 		log.log("DCHRONOS0013", null);
-		this.taskScheduleEntryManager.forEach(TaskStateType.RUNNING,
-				new TaskScheduleEntryManager.TaskScheduleEntryHanlder() {
-					public Object processTaskScheduleEntry(
-							TaskScheduleEntry taskScheduleEntry) {
-						taskScheduleEntry.getTaskExecutorService().cancel();
-						try {
-							while (!taskScheduleEntry.getTaskExecutorService()
-									.await(SHUTDOWN_AWAIT_TIME,
-											SHUTDOWN_AWAIT_TIMEUNIT)) {
-								String taskName =
-										taskScheduleEntry
-												.getTaskExecutorService()
-												.getTaskPropertyReader()
-												.getTaskName(null);
-								log.log("DCHRONOS0014",
-										new Object[] { taskName });
-							}
-						} catch (InterruptedException e) {
-							throw new InterruptedRuntimeException(e);
+		this.taskScheduleEntryManager.forEach(
+			TaskStateType.RUNNING,
+			new TaskScheduleEntryManager.TaskScheduleEntryHanlder() {
+				public Object processTaskScheduleEntry(
+						TaskScheduleEntry taskScheduleEntry) {
+					taskScheduleEntry.getTaskExecutorService().cancel();
+					try {
+						while (!taskScheduleEntry
+							.getTaskExecutorService()
+							.await(SHUTDOWN_AWAIT_TIME, SHUTDOWN_AWAIT_TIMEUNIT)) {
+							String taskName =
+								taskScheduleEntry
+									.getTaskExecutorService()
+									.getTaskPropertyReader()
+									.getTaskName(null);
+							log.log("DCHRONOS0014", new Object[] { taskName });
 						}
-						return null;
+					} catch (InterruptedException e) {
+						throw new InterruptedRuntimeException(e);
 					}
-				});
-		this.schedulerTaskFuture.cancel(true);
-		this.schedulerEventHandler.fireShutdownScheduler();
+					return null;
+				}
+			});
+		schedulerTaskFuture.cancel(true);
+		schedulerEventHandler.fireShutdownScheduler();
 		log.log("DCHRONOS0015", null);
 	}
 
 	/*
 	 * (非 Javadoc)
+	 * 
 	 * @see org.seasar.chronos.core.Scheduler#start()
 	 */
 	public void start() {
-		this.initialize();
+		initialize();
 		log.log("DCHRONOS0011", null);
-		this.schedulerEventHandler.fireRegisterTaskBeforeScheduler();
-		this.registerTaskFromS2Container();
-		this.setupHandler();
-		this.schedulerEventHandler.fireRegisterTaskAfterScheduler();
-		this.schedulerTaskFuture =
-				this.executorService.submit(new Callable<Void>() {
-					public Void call() throws InterruptedException {
-						do {
-							for (ScheduleExecuteHandler seh : scheduleExecuteHandlerList) {
-								seh.handleRequest();
-							}
-							Thread.sleep(SchedulerImpl.this.configuration
-									.getTaskScanIntervalTime());
-						} while (!SchedulerImpl.this.getSchedulerFinish());
-						return null;
+		schedulerEventHandler.fireRegisterTaskBeforeScheduler();
+		registerTaskFromS2Container();
+		setupHandler();
+		schedulerEventHandler.fireRegisterTaskAfterScheduler();
+		schedulerTaskFuture = executorService.submit(new Callable<Void>() {
+			public Void call() throws InterruptedException {
+				do {
+					for (ScheduleExecuteHandler seh : scheduleExecuteHandlerList) {
+						seh.handleRequest();
 					}
-				});
+					Thread.sleep(SchedulerImpl.this.configuration
+						.getTaskScanIntervalTime());
+				} while (!SchedulerImpl.this.getSchedulerFinish());
+				return null;
+			}
+		});
 		this.schedulerEventHandler.fireStartScheduler();
 		log.log("DCHRONOS0012", null);
 	}
 
 	/**
 	 * executorServiceFactoryを設定します。
-	 * @param executorServiceFactory executorServiceFactory
+	 * 
+	 * @param executorServiceFactory
+	 *            executorServiceFactory
 	 */
 	public void setExecutorServiceFactory(
 			ExecutorServiceFactory executorServiceFactory) {
@@ -397,6 +416,7 @@ public class SchedulerImpl extends AbstractScheduler {
 
 	/*
 	 * (非 Javadoc)
+	 * 
 	 * @see org.seasar.chronos.core.Scheduler#process()
 	 */
 	public void process() {

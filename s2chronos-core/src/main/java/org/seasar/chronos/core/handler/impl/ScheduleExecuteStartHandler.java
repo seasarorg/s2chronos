@@ -25,7 +25,6 @@ import org.seasar.chronos.core.model.schedule.TaskScheduleEntryManager.TaskSched
 import org.seasar.chronos.core.task.TaskExecutorService;
 
 public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler {
-
 	private void fireExceptionTaskEvent(TaskExecutorService tes, Exception e) {
 		if (schedulerEventHandler != null) {
 			schedulerEventHandler.fireExceptionTask(tes.getTask(), e);
@@ -45,16 +44,20 @@ public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler 
 	}
 
 	/**
-	 * タスク実行サービス用のCallableです．
+	 * タスク実行サービス用の{@code Callable}です．
 	 * 
-	 * @author junichi
-	 * 
+	 * @author j5ik2o
 	 */
 	private class TaskExecutorServiceCallable implements
 			Callable<TaskExecutorService> {
-
 		private TaskExecutorService taskExecutorService;
 
+		/**
+		 * {@link TaskExecutorService}を設定します。
+		 * 
+		 * @param taskExecutorService
+		 *            {@link TaskExecutorService}
+		 */
 		public void setTaskExecutorService(
 				final TaskExecutorService taskExecutorService) {
 			this.taskExecutorService = taskExecutorService;
@@ -68,17 +71,18 @@ public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler 
 		}
 
 		public TaskExecutorService call() throws Exception {
-
-			final String taskName = taskExecutorService.getTaskPropertyReader()
-					.getTaskName(null);
+			final String taskName =
+				taskExecutorService.getTaskPropertyReader().getTaskName(null);
 			log.log("DCHRONOS0122", new Object[] { taskName });
 			taskScheduleEntryManager.addTaskScheduleEntry(
-					TaskStateType.RUNNING, taskScheduleEntry);
+				TaskStateType.RUNNING,
+				taskScheduleEntry);
 			// 定期スケジュール以外ならスケジュールドリストから削除する
 			if (!taskExecutorService.getTaskPropertyReader().isReScheduleTask(
-					false)) {
+				false)) {
 				taskScheduleEntryManager.removeTaskScheduleEntry(
-						TaskStateType.SCHEDULED, taskScheduleEntry);
+					TaskStateType.SCHEDULED,
+					taskScheduleEntry);
 			}
 			try {
 				fireStartTaskEvent(taskExecutorService);
@@ -96,73 +100,92 @@ public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler 
 				fireEndTaskEvent(taskExecutorService);
 			}
 			taskScheduleEntryManager.removeTaskScheduleEntry(
-					TaskStateType.RUNNING, taskScheduleEntry);
+				TaskStateType.RUNNING,
+				taskScheduleEntry);
 			// 定期スケジュール以外ならアンスケジュールドリストに登録する
 			if (!taskExecutorService.getTaskPropertyReader().isReScheduleTask(
-					false)) {
+				false)) {
 				// タスク実行中にisReScheduleTaskが変更される場合があるので，その場合は再度SCHEDULEDを確認して存在すれば削除する．
-				if (taskScheduleEntryManager.contains(TaskStateType.SCHEDULED,
-						taskScheduleEntry)) {
+				if (taskScheduleEntryManager.contains(
+					TaskStateType.SCHEDULED,
+					taskScheduleEntry)) {
 					taskScheduleEntryManager.removeTaskScheduleEntry(
-							TaskStateType.SCHEDULED, taskScheduleEntry);
+						TaskStateType.SCHEDULED,
+						taskScheduleEntry);
 				}
 				taskScheduleEntryManager.addTaskScheduleEntry(
-						TaskStateType.UNSCHEDULED, taskScheduleEntry);
+					TaskStateType.UNSCHEDULED,
+					taskScheduleEntry);
 			}
 			taskExecutorService.unprepare();
 			log.log("DCHRONOS0124", new Object[] { taskName });
 			taskExecutorService.hotdeployStop();
-
 			return taskExecutorService;
 		}
-
 	}
 
 	@Override
 	public void handleRequest() throws InterruptedException {
-		this.taskScheduleEntryManager.forEach(TaskStateType.SCHEDULED,
-				new TaskScheduleEntryHanlder() {
-					public Object processTaskScheduleEntry(
-							final TaskScheduleEntry taskScheduleEntry) {
-						final TaskExecutorService tes = taskScheduleEntry
-								.getTaskExecutorService();
-						// HOT deploy 開始
-						tes.hotdeployStart();
-						// タスクの準備ができていないなら
-						if (!tes.isPrepared()) {
-							tes.prepare();
-							try {
-								tes.initialize();
-							} catch (InterruptedException e) {
-								;
-							}
-							tes.hotdeployStop();
-							return null;
+		this.taskScheduleEntryManager.forEach(
+			TaskStateType.SCHEDULED,
+			new TaskScheduleEntryHanlder() {
+				public Object processTaskScheduleEntry(
+						final TaskScheduleEntry taskScheduleEntry) {
+					final TaskExecutorService tes =
+						taskScheduleEntry.getTaskExecutorService();
+					// HOT deploy 開始
+					tes.hotdeployStart();
+					// タスクの準備ができていないなら
+					if (!tes.isPrepared()) {
+						tes.prepare();
+						try {
+							tes.initialize();
+						} catch (InterruptedException e) {
+							;
 						}
-						if (!tes.isExecuting()
-								&& tes.getTaskPropertyReader().isStartTask(
-										false)) {
-							Object task = tes.getTask();
-							Class<?> taskClass = tes.getTaskClass();
-							taskScheduleEntry.setTask(task);
-							taskScheduleEntry.setTaskClass(taskClass);
-							log.log("DCHRONOS0121",
-									new Object[] { tes.getTaskPropertyReader()
-											.getTaskName(null) });
-							TaskExecutorServiceCallable tesc = new TaskExecutorServiceCallable();
-							tesc.setTaskExecutorService(tes);
-							tesc.setTaskScheduleEntry(taskScheduleEntry);
-							Future<TaskExecutorService> taskStaterFuture = executorService
-									.submit(tesc);
-							taskScheduleEntry
-									.setTaskStaterFuture(taskStaterFuture);
-						} else {
-							// HOT deploy 終了
-							tes.hotdeployStop();
-						}
+						tes.hotdeployStop();
 						return null;
 					}
-				});
+					// log.debug("tes=" + tes);
+					// log.debug(tes.getTaskClass() + "=" + tes.getTask());
+					// BeanDesc bd =
+					// BeanDescFactory.getBeanDesc(tes.getTaskClass());
+					// for (int i = 0; i < bd.getPropertyDescSize(); i++) {
+					// PropertyDesc pd = bd.getPropertyDesc(i);
+					// if (pd.isReadable()) {
+					// log.debug("scheduler scan : "
+					// + tes.getTaskName()
+					// + ":"
+					// + pd.getPropertyName()
+					// + "="
+					// + pd.getValue(tes.getTask()));
+					// // propertyCache.put(pd.getPropertyName(), pd
+					// // .getValue(tes.getTask()));
+					// }
+					// }
+					if (!tes.isExecuting()
+						&& tes.getTaskPropertyReader().isStartTask(false)) {
+						Object task = tes.getTask();
+						Class<?> taskClass = tes.getTaskClass();
+						taskScheduleEntry.setTask(task);
+						taskScheduleEntry.setTaskClass(taskClass);
+						log.log("DCHRONOS0121", new Object[] { tes
+							.getTaskPropertyReader()
+							.getTaskName(null) });
+						TaskExecutorServiceCallable tesc =
+							new TaskExecutorServiceCallable();
+						tesc.setTaskExecutorService(tes);
+						tesc.setTaskScheduleEntry(taskScheduleEntry);
+						Future<TaskExecutorService> taskStaterFuture =
+							executorService.submit(tesc);
+						taskScheduleEntry.setTaskStaterFuture(taskStaterFuture);
+					} else {
+						// HOT deploy 終了
+						tes.hotdeployStop();
+					}
+					return null;
+				}
+			});
 	}
 
 	private void taskExecute(TaskExecutorService tes, String nextTaskName)
@@ -171,11 +194,9 @@ public class ScheduleExecuteStartHandler extends AbstractScheduleExecuteHandler 
 			tes.execute(nextTaskName);
 			tes.waitOne();
 		} catch (RejectedExecutionException ex) {
-			final String taskName = tes.getTaskPropertyReader().getTaskName(
-					null);
+			final String taskName =
+				tes.getTaskPropertyReader().getTaskName(null);
 			log.log("ECHRONOS0002", new Object[] { taskName }, ex);
 		}
-
 	}
-
 }
