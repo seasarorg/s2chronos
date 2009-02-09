@@ -6,15 +6,17 @@ import javax.annotation.Resource;
 
 import org.seasar.chronos.sastruts.example.entity.User;
 import org.seasar.chronos.sastruts.example.form.MemberForm;
+import org.seasar.chronos.sastruts.example.task.SessionTimerTask;
 import org.seasar.extension.jdbc.JdbcManager;
 import org.seasar.framework.beans.util.BeanMap;
 import org.seasar.framework.beans.util.Beans;
+import org.seasar.framework.log.Logger;
 import org.seasar.framework.util.tiger.CollectionsUtil;
 import org.seasar.struts.annotation.ActionForm;
 import org.seasar.struts.annotation.Execute;
 
 public class MemberAction {
-
+	private final Logger LOG = Logger.getLogger(MemberAction.class);
 	@Resource
 	protected JdbcManager jdbcManager;
 
@@ -67,8 +69,10 @@ public class MemberAction {
 		bm.put("label", "一時停止");
 		userStatusItems.add(bm);
 	}
+	
+	public SessionTimerTask sessionTimerTask;
 
-	@Execute(input = "register.html", removeActionForm = true)
+	@Execute(input = "register.html", removeActionForm = true, redirect=true)
 	public String submit() {
 		if (memberForm.userId == null) {
 			User user = Beans.createAndCopy(User.class, memberForm).execute();
@@ -79,14 +83,16 @@ public class MemberAction {
 			User user = Beans.createAndCopy(User.class, memberForm).execute();
 			jdbcManager.update(user).excludesNull().execute();
 		}
-		return "../member/?redirect=true";
+		sessionTimerTask.testName = "xyz";
+		LOG.debug(">>>>testName = xyz!!!, class="+sessionTimerTask);
+		return "../member/";
 	}
 
-	@Execute(validator = false, removeActionForm = true)
+	@Execute(validator = false, removeActionForm = true, redirect=true)
 	public String delete() {
 		this.jdbcManager.updateBySql("DELETE FROM USER WHERE USER_ID = ? ",
 				Long.class).params(this.memberForm.targetUserId).execute();
-		return "../member/?redirect=true";
+		return "../member/";
 	}
 
 }

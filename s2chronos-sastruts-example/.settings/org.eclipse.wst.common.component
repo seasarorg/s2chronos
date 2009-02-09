@@ -123,10 +123,10 @@
     <dependent-module archiveName="s2-tiger-2.4.28.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/org/seasar/container/s2-tiger/2.4.28/s2-tiger-2.4.28.jar">
       <dependency-type>uses</dependency-type>
     </dependent-module>
-    <dependent-module archiveName="s2chronos-core-1.0.0.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/org/seasar/chronos/s2chronos-core/1.0.0/s2chronos-core-1.0.0.jar">
+    <dependent-module archiveName="s2chronos-core-1.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/org/seasar/chronos/s2chronos-core/1.0.1-SNAPSHOT/s2chronos-core-1.0.1-SNAPSHOT.jar">
       <dependency-type>uses</dependency-type>
     </dependent-module>
-    <dependent-module archiveName="s2chronos-extension-1.0.0.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/org/seasar/chronos/s2chronos-extension/1.0.0/s2chronos-extension-1.0.0.jar">
+    <dependent-module archiveName="s2chronos-extension-1.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/org/seasar/chronos/s2chronos-extension/1.0.1-SNAPSHOT/s2chronos-extension-1.0.1-SNAPSHOT.jar">
       <dependency-type>uses</dependency-type>
     </dependent-module>
     <dependent-module archiveName="s2mai-0.9.3.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/org/seasar/mai/s2mai/0.9.3/s2mai-0.9.3.jar">

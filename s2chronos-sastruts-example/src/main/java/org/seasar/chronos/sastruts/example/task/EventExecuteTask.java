@@ -14,7 +14,7 @@ import org.seasar.framework.log.Logger;
 /**
  * DB上に登録されたコマンドを実行するタスククラスです。
  */
-@Task
+@Task(autoSchedule=false)
 @CronTrigger(expression = "0 */1 * * * ?")
 public class EventExecuteTask {
 

@@ -37,20 +37,20 @@ public class EventAction {
 		return "index.html";
 	}
 
-	@Execute(input = "index.html")
+	@Execute(input = "index.html", redirect=true)
 	public String submit() {
 		Event event = Beans.createAndCopy(Event.class, eventForm)
 				.dateConverter(EventForm.DATE_PATTERN, "eventDate").execute();
 		event.eventStatus = Event.STATUS_NONE;
 		this.jdbcManager.insert(event).execute();
-		return "../event/?redirect=true";
+		return "../event/";
 	}
 
-	@Execute(validator = false)
+	@Execute(validator = false, redirect= true)
 	public String delete() {
 		this.jdbcManager.updateBySql("DELETE FROM EVENT WHERE EVENT_ID = ? ",
 				Long.class).params(this.eventForm.deleteEventId).execute();
-		return "../event/?redirect=true";
+		return "../event/";
 	}
 
 }

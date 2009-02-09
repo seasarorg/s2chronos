@@ -40,7 +40,7 @@ public class ExportActiveMemberTask {
 	public void start() {
 
 	}
-
+	
 	public void doExportCsv() throws IOException {
 		List<User> userList = jdbcManager.from(User.class).where(
 				"USER_STATUS  != ?", User.STATUS_DISABLE).getResultList();

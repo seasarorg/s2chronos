@@ -10,9 +10,11 @@ import org.seasar.framework.log.Logger;
 /**
  * 古くなったS2SESSION情報を削除します。
  */
-@Task
+@Task(autoSchedule=false)
 @CronTrigger(expression = "0 */1 * * * ?")
 public class SessionTimerTask {
+	
+	public String testName;
 
 	/** Logger */
 	private final Logger log = Logger.getLogger(SessionTimerTask.class);
@@ -20,10 +22,15 @@ public class SessionTimerTask {
 	/** JdbcManager */
 	public JdbcManager jdbcManager;
 
+	public SessionTimerTask(){
+		testName = "abc";
+	}
+	
 	/**
 	 * 5分前のセッション情報を削除します。
 	 */
 	public void doExecute() {
+		log.debug(">>>>>> testName="+testName+","+this);
 		jdbcManager.updateBySql("DELETE FROM S2SESSION WHERE LAST_ACCESS < ?",
 				Timestamp.class).params(
 				new Timestamp(System.currentTimeMillis() - 5 * 60 * 1000))
