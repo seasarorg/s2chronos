@@ -15,7 +15,8 @@
  */
 package org.seasar.chronos.core.task;
 
-
+/**
+ * @author kato
+ */
 public interface TaskExecutorService extends TaskMethods, TaskProperties {
-
 }

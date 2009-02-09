@@ -14,7 +14,6 @@
  * under the License.
  * 
  */
-
 package org.seasar.chronos.core.task.strategy.impl;
 
 import java.io.File;
@@ -71,7 +70,6 @@ import org.seasar.framework.util.tiger.CollectionsUtil;
 import org.seasar.framework.util.tiger.ReflectionUtil;
 
 public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
-
 	private static final long serialVersionUID = 1L;
 
 	@SuppressWarnings("unused")
@@ -89,14 +87,16 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 
 	private static final String METHOD_NAME_DEFAULT_TASK_NAME = "execute";
 
-	private static final String METHOD_NAME_DEFAULT_TASK_METHOD_NAME = "doExecute";
+	private static final String METHOD_NAME_DEFAULT_TASK_METHOD_NAME =
+		"doExecute";
 
-	private static final ThreadPoolType DEFAULT_THREADPOOL_TYPE = ThreadPoolType.CACHED;
+	private static final ThreadPoolType DEFAULT_THREADPOOL_TYPE =
+		ThreadPoolType.CACHED;
 
 	private static final int DEFAULT_THREAD_POOLSIZE = 1;
 
-	private static ConcurrentHashMap<TaskThreadPool, ExecutorService> threadPoolExecutorServiceMap = CollectionsUtil
-			.newConcurrentHashMap();
+	private static ConcurrentHashMap<TaskThreadPool, ExecutorService> threadPoolExecutorServiceMap =
+		CollectionsUtil.newConcurrentHashMap();
 
 	private S2Container s2Container;
 
@@ -134,8 +134,10 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 
 	private boolean hotdeployDisable;
 
+	/**
+	 * コンストラクタです。
+	 */
 	public TaskExecuteStrategyImpl() {
-
 	}
 
 	public boolean await(long time, TimeUnit timeUnit)
@@ -150,14 +152,17 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 
 	public void catchException(Exception exception) {
 		if (this.beanDesc.hasMethod("catchException")) {
-			this.beanDesc.invoke(this.task, "catchException",
-					new Object[] { exception });
+			this.beanDesc.invoke(
+				this.task,
+				"catchException",
+				new Object[] { exception });
 		}
 	}
 
 	public boolean checkMoveAnotherTask(final String nextTaskName) {
 		TaskScheduleEntryManager tcsm = TaskScheduleEntryManager.getInstance();
-		Object result = tcsm
+		Object result =
+			tcsm
 				.forEach(new TaskScheduleEntryManager.TaskScheduleEntryHanlder() {
 					public Object processTaskScheduleEntry(
 							TaskScheduleEntry taskScheduleEntry) {
@@ -180,14 +185,16 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 	}
 
 	private ExecutorService createJobMethodExecutorService(Object target) {
-		ExecutorService result = executorServiceFactory.create(this
-				.getThreadPoolType(target), this.getThreadPoolSize(target));
+		ExecutorService result =
+			executorServiceFactory.create(this.getThreadPoolType(target), this
+				.getThreadPoolSize(target));
 		return result;
 	}
 
 	protected TaskExecuteHandler createTaskGroupMethodExecuteHandler(
 			TaskExecuteHandler taskMethdoExecuteHandler) {
-		TaskGroupMethodExecuteHandlerImpl result = new TaskGroupMethodExecuteHandlerImpl();
+		TaskGroupMethodExecuteHandlerImpl result =
+			new TaskGroupMethodExecuteHandlerImpl();
 		result.setTaskMethodExecuteHandler(this.taskMethodExecuteHandler);
 		return result;
 	}
@@ -197,8 +204,11 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 	}
 
 	public void destroy() throws InterruptedException {
-		String methodNameByAnnotation = getMethodNameByAnnotationClass(Destroy.class);
-		String methodName = methodNameByAnnotation != null ? methodNameByAnnotation
+		String methodNameByAnnotation =
+			getMethodNameByAnnotationClass(Destroy.class);
+		String methodName =
+			methodNameByAnnotation != null
+				? methodNameByAnnotation
 				: METHOD_NAME_DESTROY;
 		if (this.taskMethodInvoker.hasMethod(methodName)) {
 			AsyncResult ar = this.taskMethodInvoker.beginInvoke(methodName);
@@ -209,7 +219,8 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 
 	public String end() throws InterruptedException {
 		String nextTask = null;
-		String methodNameByAnnotation = getMethodNameByAnnotationClass(End.class);
+		String methodNameByAnnotation =
+			getMethodNameByAnnotationClass(End.class);
 		List<String> methodNameList = new ArrayList<String>();
 		if (methodNameByAnnotation != null) {
 			methodNameList.add(methodNameByAnnotation);
@@ -219,8 +230,8 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 			if (this.taskMethodInvoker.hasMethod(methodName)) {
 				AsyncResult ar = this.taskMethodInvoker.beginInvoke(methodName);
 				this.taskMethodInvoker.endInvoke(ar);
-				TaskMethodMetaData md = new TaskMethodMetaData(this.beanDesc,
-						methodName);
+				TaskMethodMetaData md =
+					new TaskMethodMetaData(this.beanDesc, methodName);
 				nextTask = md.getNextTask();
 				break;
 			}
@@ -231,7 +242,9 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 	}
 
 	public void execute(String startTaskName) throws InterruptedException {
-		TaskType type = this.isGroupMethod(startTaskName) ? TaskType.JOBGROUP
+		TaskType type =
+			this.isGroupMethod(startTaskName)
+				? TaskType.JOBGROUP
 				: TaskType.JOB;
 		String nextTaskName = startTaskName;
 		while (true) {
@@ -255,11 +268,11 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 	 */
 	private ExecutorService getCacheExecutorsService(
 			TaskThreadPool taskThreadPool) {
-		ExecutorService executorService = threadPoolExecutorServiceMap
-				.get(taskThreadPool);
+		ExecutorService executorService =
+			threadPoolExecutorServiceMap.get(taskThreadPool);
 		if (executorService == null) {
-			executorService = this
-					.createJobMethodExecutorService(taskThreadPool);
+			executorService =
+				this.createJobMethodExecutorService(taskThreadPool);
 			threadPoolExecutorServiceMap.put(taskThreadPool, executorService);
 		}
 		return executorService;
@@ -287,13 +300,12 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 		TaskThreadPool taskThreadPool = this.getThreadPool();
 		ExecutorService jobMethodExecutorService = null;
 		if (taskThreadPool == null) {
-			jobMethodExecutorService = this
-					.createJobMethodExecutorService(this.task);
+			jobMethodExecutorService =
+				this.createJobMethodExecutorService(this.task);
 		} else {
-			jobMethodExecutorService = this
-					.getCacheExecutorsService(taskThreadPool);
+			jobMethodExecutorService =
+				this.getCacheExecutorsService(taskThreadPool);
 		}
-
 		return jobMethodExecutorService;
 	}
 
@@ -310,8 +322,9 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 	}
 
 	private TaskExecuteHandler getTaskExecuteHandler(TaskType type) {
-		return type == TaskType.JOB ? this.taskMethodExecuteHandler
-				: this.taskGroupMethodExecuteHandler;
+		return type == TaskType.JOB
+			? this.taskMethodExecuteHandler
+			: this.taskGroupMethodExecuteHandler;
 	}
 
 	public long getTaskId() {
@@ -344,7 +357,7 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 
 	private int getThreadPoolSize(Object target) {
 		return this.taskPropertyReader
-				.getThreadPoolSize(DEFAULT_THREAD_POOLSIZE);
+			.getThreadPoolSize(DEFAULT_THREAD_POOLSIZE);
 	}
 
 	public ThreadPoolType getThreadPoolType() {
@@ -353,7 +366,7 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 
 	private ThreadPoolType getThreadPoolType(Object target) {
 		return this.taskPropertyReader
-				.getThreadPoolType(DEFAULT_THREADPOOL_TYPE);
+			.getThreadPoolType(DEFAULT_THREADPOOL_TYPE);
 	}
 
 	public TaskTrigger getTrigger() {
@@ -387,8 +400,11 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 	}
 
 	public void initialize() throws InterruptedException {
-		String methodNameByAnnotation = getMethodNameByAnnotationClass(Initialize.class);
-		String methodName = methodNameByAnnotation != null ? methodNameByAnnotation
+		String methodNameByAnnotation =
+			getMethodNameByAnnotationClass(Initialize.class);
+		String methodName =
+			methodNameByAnnotation != null
+				? methodNameByAnnotation
 				: METHOD_NAME_INITIALIZE;
 		if (this.taskMethodInvoker.hasMethod(methodName)) {
 			AsyncResult ar = this.taskMethodInvoker.beginInvoke(methodName);
@@ -452,8 +468,8 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 	public void load() {
 		FileInputStream fis = null;
 		try {
-			File targetFile = new File("C:\\temp\\", this.getTaskClass()
-					.getCanonicalName());
+			File targetFile =
+				new File("C:\\temp\\", this.getTaskClass().getCanonicalName());
 			if (targetFile.exists()) {
 				fis = new FileInputStream(targetFile);
 				int size = fis.read();
@@ -472,7 +488,6 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 				}
 			}
 		}
-
 		Map<String, Object> taskProperties = new HashMap<String, Object>();
 		int size = this.beanDesc.getPropertyDescSize();
 		for (int i = 0; i < size; i++) {
@@ -488,46 +503,46 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 		}
 	}
 
+	/*
+	 * (非 Javadoc)
+	 * 
+	 * @see org.seasar.chronos.core.task.TaskMethods#prepare()
+	 */
 	public void prepare() {
-
-		this.task = this.componentDef.getComponent();
-		this.taskClass = this.componentDef.getComponentClass();
-
-		this.taskMethodExecuteHandler = this.createTaskMethodExecuteHandler();
-		this.taskGroupMethodExecuteHandler = this
-				.createTaskGroupMethodExecuteHandler(this.taskMethodExecuteHandler);
-
-		this.taskMethodExecuteHandler.setTaskExecuteStrategy(this);
-		this.taskGroupMethodExecuteHandler.setTaskExecuteStrategy(this);
-
-		this.beanDesc = BeanDescFactory.getBeanDesc(this.taskClass);
-
-		this.taskPropertyReader = (TaskPropertyReader) this.s2Container
-				.getComponent(TaskPropertyReader.class);
-		this.taskPropertyWriter = (TaskPropertyWriter) this.s2Container
-				.getComponent(TaskPropertyWriter.class);
-
-		this.taskPropertyReader.setup(task, beanDesc);
-		this.taskPropertyWriter.setup(task, beanDesc);
-
-		this.taskMethodManager = new TaskMethodManager(this.taskClass,
-				METHOD_PREFIX_NAME_DO);
-
-		if (this.taskMethodInvoker == null) {
-			ExecutorService jobMethodExecutorService = this
-					.getExecutorService();
-			this.taskMethodInvoker = new MethodInvoker(
-					jobMethodExecutorService, this.task, this.beanDesc);
-			this.taskMethodInvoker
-					.setExecutorServiceFactory(this.executorServiceFactory);
+		synchronized (getClass()) {
+			// <<重要>>DIの実行
+			task = componentDef.getComponent();
+			taskClass = componentDef.getComponentClass();
+			taskMethodExecuteHandler = createTaskMethodExecuteHandler();
+			taskGroupMethodExecuteHandler =
+				createTaskGroupMethodExecuteHandler(this.taskMethodExecuteHandler);
+			taskMethodExecuteHandler.setTaskExecuteStrategy(this);
+			taskGroupMethodExecuteHandler.setTaskExecuteStrategy(this);
+			beanDesc = BeanDescFactory.getBeanDesc(this.taskClass);
+			taskPropertyReader =
+				(TaskPropertyReader) this.s2Container
+					.getComponent(TaskPropertyReader.class);
+			taskPropertyWriter =
+				(TaskPropertyWriter) this.s2Container
+					.getComponent(TaskPropertyWriter.class);
+			taskPropertyReader.setup(task, beanDesc);
+			taskPropertyWriter.setup(task, beanDesc);
+			taskMethodManager =
+				new TaskMethodManager(taskClass, METHOD_PREFIX_NAME_DO);
+			if (taskMethodInvoker == null) {
+				ExecutorService jobMethodExecutorService = getExecutorService();
+				taskMethodInvoker =
+					new MethodInvoker(jobMethodExecutorService, task, beanDesc);
+				taskMethodInvoker
+					.setExecutorServiceFactory(executorServiceFactory);
+			}
+			prepared = true;
+			save();
+			load();
 		}
-		this.prepared = true;
-		this.save();
-		this.load();
 	}
 
 	public void save() {
-
 	}
 
 	public void setComponentDef(ComponentDef componentDef) {
@@ -612,7 +627,8 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 	public String start() throws InterruptedException {
 		this.setExecuted(true);
 		this.setExecuting(true);
-		String methodNameByAnnotation = getMethodNameByAnnotationClass(Start.class);
+		String methodNameByAnnotation =
+			getMethodNameByAnnotationClass(Start.class);
 		List<String> methodNameList = new ArrayList<String>();
 		if (methodNameByAnnotation != null) {
 			methodNameList.add(methodNameByAnnotation);
@@ -622,23 +638,22 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 			if (this.taskMethodInvoker.hasMethod(methodName)) {
 				AsyncResult ar = this.taskMethodInvoker.beginInvoke(methodName);
 				this.taskMethodInvoker.endInvoke(ar);
-				TaskMethodMetaData md = new TaskMethodMetaData(this.beanDesc,
-						methodName);
+				TaskMethodMetaData md =
+					new TaskMethodMetaData(this.beanDesc, methodName);
 				this.notifyGetterSignal();
 				String nextTaskName = md.getNextTask();
 				if (nextTaskName == null
-						&& this.taskMethodInvoker
-								.hasMethod(METHOD_NAME_DEFAULT_TASK_METHOD_NAME)) {
+					&& this.taskMethodInvoker
+						.hasMethod(METHOD_NAME_DEFAULT_TASK_METHOD_NAME)) {
 					return METHOD_NAME_DEFAULT_TASK_NAME;
 				}
 				return nextTaskName;
 			}
 		}
 		if (this.taskMethodInvoker
-				.hasMethod(METHOD_NAME_DEFAULT_TASK_METHOD_NAME)) {
+			.hasMethod(METHOD_NAME_DEFAULT_TASK_METHOD_NAME)) {
 			return METHOD_NAME_DEFAULT_TASK_NAME;
 		}
-
 		return null;
 	}
 
@@ -650,5 +665,4 @@ public class TaskExecuteStrategyImpl implements TaskExecuteStrategy {
 	public void waitOne() throws InterruptedException {
 		this.taskMethodInvoker.waitInvokes();
 	}
-
 }

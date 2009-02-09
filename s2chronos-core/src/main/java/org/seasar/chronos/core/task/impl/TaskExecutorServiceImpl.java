@@ -30,11 +30,15 @@ import org.seasar.framework.container.annotation.tiger.Binding;
 import org.seasar.framework.container.annotation.tiger.BindingType;
 
 public class TaskExecutorServiceImpl implements TaskExecutorService {
-
 	private static final long serialVersionUID = 1L;
 
 	private final TaskExecuteContext taskExecuteContext;
 
+	/**
+	 * コンストラクタです。
+	 * 
+	 * @param taskExecuteContext
+	 */
 	public TaskExecutorServiceImpl(TaskExecuteContext taskExecuteContext) {
 		this.taskExecuteContext = taskExecuteContext;
 	}
@@ -65,8 +69,8 @@ public class TaskExecutorServiceImpl implements TaskExecutorService {
 	}
 
 	public String getDescription() {
-		String result = this.taskExecuteContext.getTaskExecuteStrategy()
-				.getDescription();
+		String result =
+			this.taskExecuteContext.getTaskExecuteStrategy().getDescription();
 		return result;
 	}
 
@@ -79,8 +83,9 @@ public class TaskExecutorServiceImpl implements TaskExecutorService {
 	}
 
 	public boolean isShutdownTask() {
-		return this.taskExecuteContext.getTaskExecuteStrategy()
-				.isShutdownTask();
+		return this.taskExecuteContext
+			.getTaskExecuteStrategy()
+			.isShutdownTask();
 	}
 
 	public boolean isStartTask() {
@@ -88,8 +93,9 @@ public class TaskExecutorServiceImpl implements TaskExecutorService {
 	}
 
 	public boolean isForceUnScheduleTask() {
-		return this.taskExecuteContext.getTaskExecuteStrategy()
-				.isForceUnScheduleTask();
+		return this.taskExecuteContext
+			.getTaskExecuteStrategy()
+			.isForceUnScheduleTask();
 	}
 
 	public Object getTask() {
@@ -113,13 +119,15 @@ public class TaskExecutorServiceImpl implements TaskExecutorService {
 	}
 
 	public int getThreadPoolSize() {
-		return this.taskExecuteContext.getTaskExecuteStrategy()
-				.getThreadPoolSize();
+		return this.taskExecuteContext
+			.getTaskExecuteStrategy()
+			.getThreadPoolSize();
 	}
 
 	public ThreadPoolType getThreadPoolType() {
-		return this.taskExecuteContext.getTaskExecuteStrategy()
-				.getThreadPoolType();
+		return this.taskExecuteContext
+			.getTaskExecuteStrategy()
+			.getThreadPoolType();
 	}
 
 	public TaskTrigger getTrigger() {
@@ -147,8 +155,9 @@ public class TaskExecutorServiceImpl implements TaskExecutorService {
 	}
 
 	public void setExecuting(boolean executing) {
-		this.taskExecuteContext.getTaskExecuteStrategy()
-				.setExecuting(executing);
+		this.taskExecuteContext
+			.getTaskExecuteStrategy()
+			.setExecuting(executing);
 	}
 
 	public void setExecuted(boolean executed) {
@@ -161,23 +170,26 @@ public class TaskExecutorServiceImpl implements TaskExecutorService {
 	}
 
 	public void setScheduler(Scheduler scheduler) {
-		this.taskExecuteContext.getTaskExecuteStrategy()
-				.setScheduler(scheduler);
+		this.taskExecuteContext
+			.getTaskExecuteStrategy()
+			.setScheduler(scheduler);
 	}
 
 	public void setShutdownTask(boolean shutdownTask) {
 		this.taskExecuteContext.getTaskExecuteStrategy().setShutdownTask(
-				shutdownTask);
+			shutdownTask);
 	}
 
 	public void setStartTask(boolean startTask) {
-		this.taskExecuteContext.getTaskExecuteStrategy()
-				.setStartTask(startTask);
+		this.taskExecuteContext
+			.getTaskExecuteStrategy()
+			.setStartTask(startTask);
 	}
 
 	public void setForceUnScheduleTask(boolean unScheduleTask) {
-		this.taskExecuteContext.getTaskExecuteStrategy().setForceUnScheduleTask(
-				unScheduleTask);
+		this.taskExecuteContext
+			.getTaskExecuteStrategy()
+			.setForceUnScheduleTask(unScheduleTask);
 	}
 
 	public void setTask(Object task) {
@@ -185,8 +197,9 @@ public class TaskExecutorServiceImpl implements TaskExecutorService {
 	}
 
 	public void setTaskClass(Class<?> taskClass) {
-		this.taskExecuteContext.getTaskExecuteStrategy()
-				.setTaskClass(taskClass);
+		this.taskExecuteContext
+			.getTaskExecuteStrategy()
+			.setTaskClass(taskClass);
 	}
 
 	public void setTaskId(long taskId) {
@@ -195,13 +208,14 @@ public class TaskExecutorServiceImpl implements TaskExecutorService {
 
 	public void setThreadPool(TaskThreadPool taskThreadPool) {
 		this.taskExecuteContext.getTaskExecuteStrategy().setThreadPool(
-				taskThreadPool);
+			taskThreadPool);
 	}
 
 	@Binding(bindingType = BindingType.NONE)
 	public void setTrigger(TaskTrigger taskTrigger) {
-		this.taskExecuteContext.getTaskExecuteStrategy()
-				.setTrigger(taskTrigger);
+		this.taskExecuteContext
+			.getTaskExecuteStrategy()
+			.setTrigger(taskTrigger);
 	}
 
 	public void waitOne() throws InterruptedException {
@@ -210,7 +224,7 @@ public class TaskExecutorServiceImpl implements TaskExecutorService {
 
 	public void setComponentDef(ComponentDef componentDef) {
 		this.taskExecuteContext.getTaskExecuteStrategy().setComponentDef(
-				componentDef);
+			componentDef);
 	}
 
 	public boolean isPrepared() {
@@ -226,13 +240,15 @@ public class TaskExecutorServiceImpl implements TaskExecutorService {
 	}
 
 	public TaskPropertyReader getTaskPropertyReader() {
-		return this.taskExecuteContext.getTaskExecuteStrategy()
-				.getTaskPropertyReader();
+		return this.taskExecuteContext
+			.getTaskExecuteStrategy()
+			.getTaskPropertyReader();
 	}
 
 	public TaskPropertyWriter getTaskPropertyWriter() {
-		return this.taskExecuteContext.getTaskExecuteStrategy()
-				.getTaskPropertyWriter();
+		return this.taskExecuteContext
+			.getTaskExecuteStrategy()
+			.getTaskPropertyWriter();
 	}
 
 	public void hotdeployStart() {
@@ -248,23 +264,24 @@ public class TaskExecutorServiceImpl implements TaskExecutorService {
 	}
 
 	public void setException(Exception exception) {
-		this.taskExecuteContext.getTaskExecuteStrategy()
-				.setException(exception);
+		this.taskExecuteContext
+			.getTaskExecuteStrategy()
+			.setException(exception);
 	}
 
 	public boolean isHotdeployDisable() {
-		return this.taskExecuteContext.getTaskExecuteStrategy()
-				.isHotdeployDisable();
+		return this.taskExecuteContext
+			.getTaskExecuteStrategy()
+			.isHotdeployDisable();
 	}
 
 	public void setHotdeployDisable(boolean hotdeployDisable) {
 		this.taskExecuteContext.getTaskExecuteStrategy().setHotdeployDisable(
-				hotdeployDisable);
+			hotdeployDisable);
 	}
 
 	public void catchException(Exception exception) {
 		this.taskExecuteContext.getTaskExecuteStrategy().catchException(
-				exception);
+			exception);
 	}
-
 }
