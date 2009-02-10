@@ -21,10 +21,8 @@ import org.seasar.chronos.core.model.SchedulerConfiguration;
  * スケジューラのインターフェイスです。
  * 
  * @author j5ik2o
- * 
  */
 public interface Scheduler {
-
 	/**
 	 * スケジューラ設定を返します。
 	 * 
@@ -68,6 +66,9 @@ public interface Scheduler {
 	 */
 	public void join();
 
+	/**
+	 * スケジューラの起動と待機を行います。
+	 */
 	public void process();
 
 	/**
@@ -108,5 +109,4 @@ public interface Scheduler {
 	 * @return 削除に成功した場合はtrue、 失敗した場合はfalse
 	 */
 	public boolean removeListener(SchedulerEventListener listener);
-
 }

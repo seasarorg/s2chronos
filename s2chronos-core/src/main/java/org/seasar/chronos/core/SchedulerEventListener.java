@@ -24,9 +24,18 @@ import org.seasar.chronos.core.model.TaskStateType;
  * @author j5ik2o
  */
 public interface SchedulerEventListener {
+	/**
+	 * @param scheduler
+	 * @param taskStateType
+	 * @param taskScheduleEntry
+	 */
 	public void addTaskScheduleEntry(Scheduler scheduler,
 			TaskStateType taskStateType, TaskScheduleEntry taskScheduleEntry);
 
+	/**
+	 * @param scheduler
+	 * @param task
+	 */
 	public void cancelTask(Scheduler scheduler, Object task);
 
 	public void endScheduler(Scheduler scheduler);
