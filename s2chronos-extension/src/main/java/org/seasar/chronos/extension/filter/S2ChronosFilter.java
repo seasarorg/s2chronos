@@ -30,24 +30,29 @@ import javax.servlet.http.HttpSession;
 
 import org.seasar.chronos.core.annotation.task.Task;
 import org.seasar.chronos.core.autodetector.TaskClassAutoDetector;
-import org.seasar.chronos.core.model.schedule.TaskScheduleEntryManager;
 import org.seasar.framework.beans.BeanDesc;
 import org.seasar.framework.beans.PropertyDesc;
 import org.seasar.framework.beans.factory.BeanDescFactory;
 import org.seasar.framework.container.S2Container;
 import org.seasar.framework.container.hotdeploy.HotdeployUtil;
 import org.seasar.framework.container.servlet.S2ContainerServlet;
+import org.seasar.framework.container.util.SmartDeployUtil;
 import org.seasar.framework.log.Logger;
 import org.seasar.framework.util.ClassUtil;
 import org.seasar.framework.util.ClassTraversal.ClassHandler;
 import org.seasar.framework.util.tiger.CollectionsUtil;
 import org.seasar.framework.util.tiger.ReflectionUtil;
 
+/**
+ * S2Chronos用のフィルターです。
+ * 
+ * @author j5ik2o
+ */
 public class S2ChronosFilter implements Filter {
+	/**
+	 * ロガーです。
+	 */
 	private static final Logger LOG = Logger.getLogger(S2ChronosFilter.class);
-
-	protected TaskScheduleEntryManager taskScheduleEntryManager =
-		TaskScheduleEntryManager.getInstance();
 
 	@SuppressWarnings("serial")
 	static class SessionPropertyCache implements Serializable {
@@ -71,15 +76,18 @@ public class S2ChronosFilter implements Filter {
 		 * @param selfKey
 		 *            セルフキー
 		 */
-		public SessionPropertyCache(Object key) {
-			selfKey = key;
+		public SessionPropertyCache(Object selfKey) {
+			this.selfKey = selfKey;
 		}
 
 		/**
 		 * キーに応じたプロパティキャッシュを返します．
 		 * 
+		 * @param session
+		 *            {@link HttpSession}
 		 * @param key
-		 * @return
+		 *            プロパティキャッシュのキー
+		 * @return {@link SessionPropertyCache}
 		 */
 		public synchronized static SessionPropertyCache getInstance(
 				HttpSession session, String key) {
@@ -209,9 +217,20 @@ public class S2ChronosFilter implements Filter {
 		}
 	}
 
+	/*
+	 * (非 Javadoc)
+	 * 
+	 * @see javax.servlet.Filter#destroy()
+	 */
 	public void destroy() {
 	}
 
+	/*
+	 * (非 Javadoc)
+	 * 
+	 * @see javax.servlet.Filter#doFilter(javax.servlet.ServletRequest,
+	 *      javax.servlet.ServletResponse, javax.servlet.FilterChain)
+	 */
 	public void doFilter(ServletRequest request, ServletResponse response,
 			FilterChain chain) throws IOException, ServletException {
 		LOG.debug(">>>Chronos-Filter start");
@@ -226,14 +245,16 @@ public class S2ChronosFilter implements Filter {
 		final S2Container s2Container =
 			S2ContainerServlet.getContainer().getRoot();
 		TaskClassAutoDetector detector = null;
-		if (HotdeployUtil.isHotdeploy()) {
+		if (SmartDeployUtil.isSmartdeployMode(s2Container)
+			&& HotdeployUtil.isHotdeploy()) {
 			detector =
 				(TaskClassAutoDetector) s2Container
 					.getComponent(TaskClassAutoDetector.class);
 			detector.detect(new BeforeClassHandler(s2Container, session));
 		}
 		chain.doFilter(request, response);
-		if (HotdeployUtil.isHotdeploy()) {
+		if (SmartDeployUtil.isSmartdeployMode(s2Container)
+			&& HotdeployUtil.isHotdeploy()) {
 			detector.detect(new AfterClassHandler(s2Container, session));
 		}
 		LOG.debug("<<<Chronos-Filter end");
