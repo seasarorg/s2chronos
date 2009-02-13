@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project-modules id="moduleCoreId" project-version="1.5.0">
   <wb-module deploy-name="s2chronos-teeda-example">
     <property name="context-root" value="s2chronos-teeda-example"/>
@@ -105,8 +106,19 @@
     <dependent-module archiveName="xmlParserAPIs-2.6.2.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/xerces/xmlParserAPIs/2.6.2/xmlParserAPIs-2.6.2.jar">
       <dependency-type>uses</dependency-type>
     </dependent-module>
+<dependent-module deploy-path="/WEB-INF/lib" handle="module:/resource/s2chronos-core/s2chronos-core">
+<dependency-type>uses</dependency-type>
+</dependent-module>
+<dependent-module deploy-path="/WEB-INF/lib" handle="module:/resource/s2chronos-extension/s2chronos-extension">
+<dependency-type>uses</dependency-type>
+</dependent-module>
     <wb-resource deploy-path="/WEB-INF/classes" source-path="src/main/java"/>
     <wb-resource deploy-path="/WEB-INF/classes" source-path="src/main/resources"/>
     <wb-resource deploy-path="/WEB-INF/classes" source-path="src/main/webapp/view"/>
+<wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
+<wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/webapp/view"/>
+<wb-resource deploy-path="/WEB-INF/classes" source-path="/src/test/java"/>
+<wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
+<wb-resource deploy-path="/WEB-INF/classes" source-path="/src/test/resources"/>
   </wb-module>
 </project-modules>
