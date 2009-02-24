@@ -14,14 +14,18 @@
  * under the License.
  * 
  */
-
 package org.seasar.chronos.core.model.trigger;
 
 import org.seasar.chronos.core.model.TaskTrigger;
 import org.seasar.chronos.core.util.ObjectUtil;
 
+/**
+ * 抽象トリガークラスです．
+ * 
+ * @author kato
+ */
+@SuppressWarnings("serial")
 public abstract class AbstractTrigger implements TaskTrigger {
-
 	private Long triggerId;
 
 	private String name;
@@ -41,7 +45,6 @@ public abstract class AbstractTrigger implements TaskTrigger {
 	private boolean shutdownTask;
 
 	public AbstractTrigger() {
-
 	}
 
 	public AbstractTrigger(String name) {
@@ -101,11 +104,9 @@ public abstract class AbstractTrigger implements TaskTrigger {
 	}
 
 	public void load() {
-
 	}
 
 	public void save() {
-
 	}
 
 	public void setDescription(String description) {
@@ -159,5 +160,4 @@ public abstract class AbstractTrigger implements TaskTrigger {
 	public void setForceUnScheduleTask(boolean forceUnScheduleTask) {
 		this.forceUnScheduleTask = forceUnScheduleTask;
 	}
-
 }
