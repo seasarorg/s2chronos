@@ -18,11 +18,18 @@ package org.seasar.chronos.core.model.schedule;
 import org.seasar.chronos.core.model.TaskScheduleEntry;
 import org.seasar.chronos.core.util.ObjectUtil;
 
+/**
+ * 抽象タスクスケジュールエントリクラスです．
+ * 
+ * @author j5ik2o
+ */
+@SuppressWarnings("serial")
 public abstract class AbstractTaskScheduleEntry implements TaskScheduleEntry {
 	private Long scheduleId;
 
-	/**
-	 * スケジュールIDを返します．
+	/*
+	 * (非 Javadoc)
+	 * @see org.seasar.chronos.core.model.TaskScheduleEntry#getScheduleId()
 	 */
 	public Long getScheduleId() {
 		if (this.scheduleId == null) {
@@ -31,6 +38,12 @@ public abstract class AbstractTaskScheduleEntry implements TaskScheduleEntry {
 		return this.scheduleId;
 	}
 
+	/*
+	 * (非 Javadoc)
+	 * @see
+	 * org.seasar.chronos.core.model.TaskScheduleEntry#setScheduleId(java.lang
+	 * .Long)
+	 */
 	public void setScheduleId(Long scheduleId) {
 		this.scheduleId = scheduleId;
 	}

@@ -22,9 +22,13 @@ import org.seasar.chronos.core.model.TaskStateType;
 import org.seasar.chronos.core.task.TaskExecutorService;
 import org.seasar.framework.container.ComponentDef;
 
+/**
+ * タスクスケジュールエントリの実装クラスです．
+ * 
+ * @author j5ik2o
+ */
+@SuppressWarnings("serial")
 public class TaskScheduleEntryImpl extends AbstractTaskScheduleEntry {
-	private static final long serialVersionUID = -5656680297381222017L;
-
 	private transient ComponentDef componentDef;
 
 	private Object task;
@@ -37,69 +41,140 @@ public class TaskScheduleEntryImpl extends AbstractTaskScheduleEntry {
 
 	private transient Future<TaskExecutorService> future;
 
+	private Date unScheduledDate;
+
 	/**
 	 * コンストラクタです．
 	 */
 	public TaskScheduleEntryImpl() {
 	}
 
+	/*
+	 * (非 Javadoc)
+	 * @see org.seasar.chronos.core.model.TaskScheduleEntry#getComponentDef()
+	 */
 	public ComponentDef getComponentDef() {
 		return componentDef;
 	}
 
+	/*
+	 * (非 Javadoc)
+	 * @see org.seasar.chronos.core.model.TaskScheduleEntry#getTask()
+	 */
 	public Object getTask() {
 		return task;
 	}
 
+	/*
+	 * (非 Javadoc)
+	 * @see org.seasar.chronos.core.model.TaskScheduleEntry#getTaskClass()
+	 */
 	public Class<?> getTaskClass() {
 		return taskClass;
 	}
 
+	/*
+	 * (非 Javadoc)
+	 * @see
+	 * org.seasar.chronos.core.model.TaskScheduleEntry#getTaskExecutorService()
+	 */
 	public TaskExecutorService getTaskExecutorService() {
 		return taskExecutorService;
 	}
 
+	/*
+	 * (非 Javadoc)
+	 * @see
+	 * org.seasar.chronos.core.model.TaskScheduleEntry#getTaskStaterFuture()
+	 */
 	public Future<TaskExecutorService> getTaskStaterFuture() {
 		return future;
 	}
 
+	/*
+	 * (非 Javadoc)
+	 * @see org.seasar.chronos.core.model.TaskScheduleEntry#getTaskStateType()
+	 */
 	public TaskStateType getTaskStateType() {
 		return taskStateType;
 	}
 
+	/*
+	 * (非 Javadoc)
+	 * @see org.seasar.chronos.core.model.TaskScheduleEntry#getUnScheduledDate()
+	 */
+	public Date getUnScheduledDate() {
+		return (Date) unScheduledDate.clone();
+	}
+
+	/*
+	 * (非 Javadoc)
+	 * @see
+	 * org.seasar.chronos.core.model.TaskScheduleEntry#setComponentDef(org.seasar
+	 * .framework.container.ComponentDef)
+	 */
 	public void setComponentDef(ComponentDef componentDef) {
 		this.componentDef = componentDef;
 		// this.setTask(componentDef.getComponent());
 		this.setTaskClass(componentDef.getComponentClass());
 	}
 
+	/*
+	 * (非 Javadoc)
+	 * @see
+	 * org.seasar.chronos.core.model.TaskScheduleEntry#setTask(java.lang.Object)
+	 */
 	public void setTask(Object target) {
 		this.task = target;
 	}
 
+	/*
+	 * (非 Javadoc)
+	 * @see
+	 * org.seasar.chronos.core.model.TaskScheduleEntry#setTaskClass(java.lang
+	 * .Class)
+	 */
 	public void setTaskClass(Class<?> targetClass) {
 		this.taskClass = targetClass;
 	}
 
+	/*
+	 * (非 Javadoc)
+	 * @see
+	 * org.seasar.chronos.core.model.TaskScheduleEntry#setTaskExecutorService
+	 * (org.seasar.chronos.core.task.TaskExecutorService)
+	 */
 	public void setTaskExecutorService(TaskExecutorService taskExecutorService) {
 		this.taskExecutorService = taskExecutorService;
 	}
 
+	/*
+	 * (非 Javadoc)
+	 * @see
+	 * org.seasar.chronos.core.model.TaskScheduleEntry#setTaskStaterFuture(java
+	 * .util.concurrent.Future)
+	 */
 	public void setTaskStaterFuture(Future<TaskExecutorService> future) {
 		this.future = future;
 	}
 
+	/*
+	 * (非 Javadoc)
+	 * @see
+	 * org.seasar.chronos.core.model.TaskScheduleEntry#setTaskStateType(org.
+	 * seasar.chronos.core.model.TaskStateType)
+	 */
 	public void setTaskStateType(TaskStateType taskStateType) {
 		this.taskStateType = taskStateType;
 	}
 
-	private Date unScheduledDate;
-
-	public Date getUnScheduledDate() {
-		return unScheduledDate;
-	}
-
+	/*
+	 * (非 Javadoc)
+	 * @see
+	 * org.seasar.chronos.core.model.TaskScheduleEntry#setUnScheduledDate(java
+	 * .util.Date)
+	 */
 	public void setUnScheduledDate(Date date) {
-		unScheduledDate = date;
+		unScheduledDate = (Date) date.clone();
 	}
 }
