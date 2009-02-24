@@ -106,7 +106,7 @@ public class TaskScheduleEntryManager {
 	}
 
 	public boolean contains(Object key) {
-		if (key instanceof ScheduleEntry) {
+		if (key instanceof TaskScheduleEntryImpl) {
 			return this.allTaskList.contains(key);
 		}
 		return this.taskScheduleEntryClassMap.containsKey(key);
