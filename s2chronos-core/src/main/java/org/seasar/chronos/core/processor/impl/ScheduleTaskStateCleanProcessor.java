@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.chronos.core.handler.impl;
+package org.seasar.chronos.core.processor.impl;
 
 import org.seasar.chronos.core.model.SchedulerConfiguration;
 import org.seasar.chronos.core.model.TaskScheduleEntry;
@@ -23,13 +23,12 @@ import org.seasar.chronos.core.task.TaskExecutorService;
 import org.seasar.chronos.core.task.handler.impl.property.PropertyCache;
 
 /**
- * スケジュールされタスク状態をクリーンナップするハンドラーです。
+ * スケジュールされタスク状態をクリーンナップするハンドラークラスです。
  * 
  * @author j5ik2o
  */
-public class ScheduleTaskStateCleanHandler extends
-		AbstractScheduleExecuteHandler {
-
+public class ScheduleTaskStateCleanProcessor extends
+        AbstractScheduleExecuteProcessor {
 	/**
 	 * {@link SchedulerConfiguration}です。
 	 */
@@ -40,59 +39,59 @@ public class ScheduleTaskStateCleanHandler extends
 	 * さらに、アンスケジュール状態からタスククリーンナップ時間を経過したタスクをアンスケジュール状態から削除します。
 	 * タスクを削除する前に、destroyメソッドをコールします。その後スケジュール情報から削除されます。
 	 * 
-	 * @see org.seasar.chronos.core.handler.impl.AbstractScheduleExecuteHandler#
-	 *      handleRequest ()
+	 * @see org.seasar.chronos.core.processor.impl.AbstractScheduleExecuteProcessor#
+	 *      doProcess()
 	 */
 	@Override
-	public void handleRequest() throws InterruptedException {
-		this.taskScheduleEntryManager.forEach(TaskStateType.SCHEDULED,
-				new TaskScheduleEntryHanlder() {
-					public Object processTaskScheduleEntry(
-							TaskScheduleEntry scheduleEntry) {
-						TaskExecutorService tes = scheduleEntry
-								.getTaskExecutorService();
-						// 実行中ではなく強制アンスケジュールが有効であれば
-						if (!tes.getTaskPropertyReader().isExecuting(false)
-								&& tes.getTaskPropertyReader()
-										.isForceUnScheduleTask(false)) {
-							taskScheduleEntryManager.removeTaskScheduleEntry(
-									TaskStateType.SCHEDULED, scheduleEntry);
-							taskScheduleEntryManager.addTaskScheduleEntry(
-									TaskStateType.UNSCHEDULED, scheduleEntry);
-						}
-						return null;
-					}
-				});
-
-		TaskScheduleEntry taskScheduleEntry = (TaskScheduleEntry) this.taskScheduleEntryManager
-				.forEach(TaskStateType.UNSCHEDULED,
-						new TaskScheduleEntryHanlder() {
-							public Object processTaskScheduleEntry(
-									TaskScheduleEntry scheduleEntry) {
-								long now = System.currentTimeMillis();
-								if (scheduleEntry.getUnScheduledDate() != null) {
-									if (now > schedulerConfiguration
-											.getTaskStateCleanupTime()
-											+ scheduleEntry
-													.getUnScheduledDate()
-													.getTime()) {
-										return scheduleEntry;
-									}
-								}
-								return null;
-							}
-						});
+	public void doProcess() throws InterruptedException {
+		this.taskScheduleEntryManager.forEach(
+		    TaskStateType.SCHEDULED,
+		    new TaskScheduleEntryHanlder<Void>() {
+			    public Void processTaskScheduleEntry(
+			            TaskScheduleEntry scheduleEntry) {
+				    TaskExecutorService tes =
+				        scheduleEntry.getTaskExecutorService();
+				    // 実行中ではなく強制アンスケジュールが有効であれば
+				    if (!tes.getTaskPropertyReader().isExecuting(false)
+				        && tes.getTaskPropertyReader().isForceUnScheduleTask(
+				            false)) {
+					    taskScheduleEntryManager.removeTaskScheduleEntry(
+					        TaskStateType.SCHEDULED,
+					        scheduleEntry);
+					    taskScheduleEntryManager.addTaskScheduleEntry(
+					        TaskStateType.UNSCHEDULED,
+					        scheduleEntry);
+				    }
+				    return null;
+			    }
+		    });
+		TaskScheduleEntry taskScheduleEntry =
+		    this.taskScheduleEntryManager.forEach(
+		        TaskStateType.UNSCHEDULED,
+		        new TaskScheduleEntryHanlder<TaskScheduleEntry>() {
+			        public TaskScheduleEntry processTaskScheduleEntry(
+			                TaskScheduleEntry scheduleEntry) {
+				        long now = System.currentTimeMillis();
+				        if (scheduleEntry.getUnScheduledDate() != null) {
+					        if (now > schedulerConfiguration
+					            .getTaskStateCleanupTime()
+					            + scheduleEntry.getUnScheduledDate().getTime()) {
+						        return scheduleEntry;
+					        }
+				        }
+				        return null;
+			        }
+		        });
 		if (taskScheduleEntry != null) {
 			// destroyメソッドを実行します．
 			taskScheduleEntry.getTaskExecutorService().destroy();
 			taskScheduleEntryManager.removeTaskScheduleEntry(taskScheduleEntry);
-			PropertyCache propertyCache = PropertyCache
-					.getInstance(taskScheduleEntry.getTask());
+			PropertyCache propertyCache =
+			    PropertyCache.getInstance(taskScheduleEntry.getTask());
 			propertyCache.clear();
 			propertyCache = null;
 			taskScheduleEntry = null;
 		}
-
 	}
 
 	/**
@@ -102,7 +101,7 @@ public class ScheduleTaskStateCleanHandler extends
 	 *            {@link SchedulerConfiguration}
 	 */
 	public void setSchedulerConfiguration(
-			SchedulerConfiguration schedulerConfiguration) {
+	        SchedulerConfiguration schedulerConfiguration) {
 		this.schedulerConfiguration = schedulerConfiguration;
 	}
 }

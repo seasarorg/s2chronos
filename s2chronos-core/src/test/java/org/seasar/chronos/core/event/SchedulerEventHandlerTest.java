@@ -9,7 +9,7 @@ import org.seasar.chronos.core.executor.ExecutorServiceFactory;
 import org.seasar.chronos.core.impl.SchedulerImpl;
 import org.seasar.chronos.core.model.TaskScheduleEntry;
 import org.seasar.chronos.core.model.TaskStateType;
-import org.seasar.chronos.core.model.schedule.ScheduleEntry;
+import org.seasar.chronos.core.model.schedule.TaskScheduleEntryImpl;
 import org.seasar.framework.unit.Seasar2;
 
 @RunWith(Seasar2.class)
@@ -82,7 +82,7 @@ public class SchedulerEventHandlerTest implements
 	}
 
 	public void testFireAddTask() {
-		TaskScheduleEntry taskScheduleEntry = new ScheduleEntry();
+		TaskScheduleEntry taskScheduleEntry = new TaskScheduleEntryImpl();
 		schedulerEventHandler.fireAddTaskScheduleEntry(TaskStateType.SCHEDULED, taskScheduleEntry);
 		try {
 			Thread.sleep(2000);

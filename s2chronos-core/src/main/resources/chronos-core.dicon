@@ -4,29 +4,29 @@
 <components>
 	<include path="chronos-base.dicon"/>
 	
-	<component name="scheduleExecuteShutdownHandler" class="org.seasar.chronos.core.handler.impl.ScheduleExecuteShutdownHandler" />
-	<component name="scheduleExecuteStartHandler" class="org.seasar.chronos.core.handler.impl.ScheduleExecuteStartHandler" />
-	<component name="scheduleExecuteWaitHandler" class="org.seasar.chronos.core.handler.impl.ScheduleExecuteWaitHandler">
+	<component name="scheduleExecuteShutdownProcessor" class="org.seasar.chronos.core.processor.impl.ScheduleExecuteShutdownProcessor" />
+	<component name="scheduleExecuteStartProcessor" class="org.seasar.chronos.core.processor.impl.ScheduleExecuteStartProcessor" />
+	<component name="scheduleExecuteWaitProcessor" class="org.seasar.chronos.core.processor.impl.ScheduleExecuteWaitProcessor">
 		<property name="pauseLock">scheduler</property>
 		<property name="pauseLockWaitInterval">schedulerConfiguration.taskScanIntervalTime</property>
 	</component>
-	<component name="scheduleTaskStateCleanHandler" class="org.seasar.chronos.core.handler.impl.ScheduleTaskStateCleanHandler" />
+	<component name="scheduleTaskStateCleanProcessor" class="org.seasar.chronos.core.processor.impl.ScheduleTaskStateCleanProcessor" />
 
-	<component name="scheduleEntry" class="org.seasar.chronos.core.model.schedule.ScheduleEntry" instance="prototype" autoBinding="none"/>
+	<component name="scheduleEntry" class="org.seasar.chronos.core.model.schedule.TaskScheduleEntryImpl" instance="prototype" autoBinding="none"/>
 
 	<component name="scheduler" class="org.seasar.chronos.core.impl.SchedulerImpl">
 		<aspect>aop.traceInterceptor</aspect>
-		<initMethod name="addScheduleExecuteHandler">
-			<arg>scheduleExecuteShutdownHandler</arg>
+		<initMethod name="addScheduleExecuteProcessor">
+			<arg>scheduleExecuteShutdownProcessor</arg>
 		</initMethod>
-		<initMethod name="addScheduleExecuteHandler">
-			<arg>scheduleExecuteStartHandler</arg>
+		<initMethod name="addScheduleExecuteProcessor">
+			<arg>scheduleExecuteStartProcessor</arg>
 		</initMethod>
-		<initMethod name="addScheduleExecuteHandler">
-			<arg>scheduleExecuteWaitHandler</arg>
+		<initMethod name="addScheduleExecuteProcessor">
+			<arg>scheduleExecuteWaitProcessor</arg>
 		</initMethod>
-		<initMethod name="addScheduleExecuteHandler">
-			<arg>scheduleTaskStateCleanHandler</arg>
+		<initMethod name="addScheduleExecuteProcessor">
+			<arg>scheduleTaskStateCleanProcessor</arg>
 		</initMethod>
 	</component>
 	

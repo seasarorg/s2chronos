@@ -23,7 +23,7 @@ import org.seasar.chronos.core.task.TaskExecutorService;
 import org.seasar.framework.container.ComponentDef;
 
 /**
- * スケジュールエントリクラスです．
+ * タスクスケジュールエントリクラスです．
  * 
  * @author j5ik2o
  */

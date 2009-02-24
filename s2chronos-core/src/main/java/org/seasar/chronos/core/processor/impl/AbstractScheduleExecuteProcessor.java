@@ -13,23 +13,23 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.chronos.core.handler.impl;
+package org.seasar.chronos.core.processor.impl;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.seasar.chronos.core.event.SchedulerEventHandler;
-import org.seasar.chronos.core.handler.ScheduleExecuteHandler;
 import org.seasar.chronos.core.model.schedule.TaskScheduleEntryManager;
+import org.seasar.chronos.core.processor.ScheduleExecuteProcessor;
 import org.seasar.framework.container.annotation.tiger.Binding;
 import org.seasar.framework.container.annotation.tiger.BindingType;
 import org.seasar.framework.log.Logger;
 
-public abstract class AbstractScheduleExecuteHandler implements
-		ScheduleExecuteHandler {
+public abstract class AbstractScheduleExecuteProcessor implements
+		ScheduleExecuteProcessor {
 
 	protected static final Logger log = Logger
-			.getLogger(AbstractScheduleExecuteHandler.class);
+			.getLogger(AbstractScheduleExecuteProcessor.class);
 
 	protected TaskScheduleEntryManager taskScheduleEntryManager = TaskScheduleEntryManager
 			.getInstance();
@@ -42,7 +42,7 @@ public abstract class AbstractScheduleExecuteHandler implements
 
 	protected AtomicBoolean paused;
 
-	public abstract void handleRequest() throws InterruptedException;
+	public abstract void doProcess() throws InterruptedException;
 
 	@Binding(bindingType = BindingType.NONE)
 	public void setExecutorService(ExecutorService executorService) {

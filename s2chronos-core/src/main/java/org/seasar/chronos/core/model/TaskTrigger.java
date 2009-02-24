@@ -18,38 +18,110 @@ package org.seasar.chronos.core.model;
 import java.io.Serializable;
 
 /**
+ * トリガーインターフェイスです．
  * 
  * @author j5ik2o
- * 
  */
 public interface TaskTrigger extends Serializable {
-
+	/**
+	 * 概要を返します．
+	 * 
+	 * @return 概要
+	 */
 	public String getDescription();
 
+	/**
+	 * 名前を返します．
+	 * 
+	 * @return 名前
+	 */
 	public String getName();
 
+	/**
+	 * タスクのインスタンスを返します．
+	 * 
+	 * @return タスクのインスタンス
+	 */
 	public Object getTask();
 
+	/**
+	 * トリガーIDを返します．
+	 * 
+	 * @return トリガーID
+	 */
 	public Long getTriggerId();
 
+	/**
+	 * タスク終了フラグを返します．
+	 * 
+	 * @return タスク終了フラグ(true=終了する, false=終了しない)
+	 */
 	public boolean isEndTask();
 
+	/**
+	 * タスク実行済フラグを返します．
+	 * 
+	 * @return タスク実行済フラグ(true=実行済, false=まだ実行されていない)
+	 */
 	public boolean isExecuted();
 
+	/**
+	 * タスク実行中フラグを返します．
+	 * 
+	 * @return タスク実行中フラグ(true=タスクが実行中, false=タスクが実行中でない)
+	 */
 	public boolean isExecuting();
 
+	/**
+	 * 強制アンスケジュールフラグを返します．
+	 * 
+	 * @return 強制アンスケジュールフラグ(true=強制的にアンスケジュールする, false=強制的にアンスケジュールしない)
+	 */
 	public boolean isForceUnScheduleTask();
 
+	/**
+	 * 再スケジュールフラグを返します．
+	 * 
+	 * @return 再スケジュールフラグ (true=タスク実行後に再度スケジュールされる, false=再度スケジュールされない)
+	 */
 	public boolean isReScheduleTask();
 
+	/**
+	 * シャットダウンフラグを返します．
+	 * 
+	 * @return シャットダウンフラグ
+	 */
 	public boolean isShutdownTask();
 
+	/**
+	 * タスク開始フラグを返します．
+	 * 
+	 * @return タスク開始フラグ(true=タスクを開始する, false=タスクを開始しない)
+	 */
 	public boolean isStartTask();
 
+	/**
+	 * 概要を設定します．
+	 * 
+	 * @param description
+	 *            概要
+	 */
 	public void setDescription(String description);
 
+	/**
+	 * タスク終了フラグを設定します．
+	 * 
+	 * @param endTask
+	 *            タスク終了フラグ
+	 */
 	public void setEndTask(boolean endTask);
 
+	/**
+	 * タスク実行済フラグを設定します．
+	 * 
+	 * @param executed
+	 *            タスク実行済フラグ
+	 */
 	public void setExecuted(boolean executed);
 
 	public void setExecuting(boolean executing);

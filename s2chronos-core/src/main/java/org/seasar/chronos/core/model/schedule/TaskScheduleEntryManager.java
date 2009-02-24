@@ -26,7 +26,7 @@ import org.seasar.chronos.core.model.TaskStateType;
 import org.seasar.framework.log.Logger;
 
 /**
- * タスクのスケジュール情報を管理するクラスです。
+ * タスクのスケジュールエントリを管理するクラスです。
  * 
  * @author j5ik2o
  */
@@ -36,7 +36,7 @@ public class TaskScheduleEntryManager {
 	 * 
 	 * @author j5ik2o
 	 */
-	public interface TaskScheduleEntryHanlder {
+	public interface TaskScheduleEntryHanlder<T> {
 		/**
 		 * ハンドラーです。
 		 * 
@@ -44,18 +44,23 @@ public class TaskScheduleEntryManager {
 		 *            タスクのスケジュール情報
 		 * @return オブジェクト。null以外を返すと呼び出し元のプロセスが終了する。
 		 */
-		public Object processTaskScheduleEntry(TaskScheduleEntry scheduleEntry);
+		public T processTaskScheduleEntry(TaskScheduleEntry scheduleEntry);
 	}
 
 	@SuppressWarnings("unused")
 	private static Logger log =
-		Logger.getLogger(TaskScheduleEntryManager.class);
+	    Logger.getLogger(TaskScheduleEntryManager.class);
 
 	/**
 	 * シングルトンな{@link TaskScheduleEntryManager}のインスタンスです。
 	 */
 	private static TaskScheduleEntryManager instance;
 
+	/**
+	 * シングルトンインスタンスを返します．
+	 * 
+	 * @return {@link TaskScheduleEntryManager}
+	 */
 	public static TaskScheduleEntryManager getInstance() {
 		if (instance == null) {
 			synchronized (TaskScheduleEntryManager.class) {
@@ -68,19 +73,34 @@ public class TaskScheduleEntryManager {
 	}
 
 	private final Map<TaskStateType, CopyOnWriteArrayList<TaskScheduleEntry>> taskScheduleEntryMap =
-		new ConcurrentHashMap<TaskStateType, CopyOnWriteArrayList<TaskScheduleEntry>>();
+	    new ConcurrentHashMap<TaskStateType, CopyOnWriteArrayList<TaskScheduleEntry>>();
 
 	private final CopyOnWriteArrayList<TaskScheduleEntry> allTaskList =
-		new CopyOnWriteArrayList<TaskScheduleEntry>();
+	    new CopyOnWriteArrayList<TaskScheduleEntry>();
 
+	/**
+	 * コンポーネントクラスからタスクスケジュールエントリを検索するための{@link Map}です．
+	 */
 	private final Map<Class<?>, TaskScheduleEntry> taskScheduleEntryClassMap =
-		new ConcurrentHashMap<Class<?>, TaskScheduleEntry>();
+	    new ConcurrentHashMap<Class<?>, TaskScheduleEntry>();
 
+	/**
+	 * コンストラクタです．
+	 */
 	private TaskScheduleEntryManager() {
 	}
 
+	/**
+	 * タスクスケジュールエントリを追加します．
+	 * 
+	 * @param key
+	 *            {@link TaskStateType}
+	 * @param taskScheduleEntry
+	 *            {@link TaskScheduleEntry}
+	 * @return 追加成功 = true, 追加失敗 = false
+	 */
 	public boolean addTaskScheduleEntry(TaskStateType key,
-			TaskScheduleEntry taskScheduleEntry) {
+	        TaskScheduleEntry taskScheduleEntry) {
 		taskScheduleEntry.setTaskStateType(key);
 		boolean result = this.getScheduleEntryList(key).add(taskScheduleEntry);
 		if (key == TaskStateType.SCHEDULED) {
@@ -88,42 +108,76 @@ public class TaskScheduleEntryManager {
 			Class<?> taskComponentClass = taskScheduleEntry.getTaskClass();
 			if (!this.taskScheduleEntryClassMap.containsKey(taskComponentClass)) {
 				this.taskScheduleEntryClassMap.put(
-					taskComponentClass,
-					taskScheduleEntry);
+				    taskComponentClass,
+				    taskScheduleEntry);
 			} else {
 				result = false;
 			}
 		} else if (key == TaskStateType.UNSCHEDULED) {
 			taskScheduleEntry.setUnScheduledDate(Calendar
-				.getInstance()
-				.getTime());
+			    .getInstance()
+			    .getTime());
 		}
 		return result;
 	}
 
+	/**
+	 * 指定したタスク状態のタスクスケジュールエントリをすべて削除します．
+	 * 
+	 * @param key
+	 *            {@link TaskStateType}
+	 */
 	public void allRemove(TaskStateType key) {
 		this.getScheduleEntryList(key).clear();
 	}
 
+	/**
+	 * 指定したキーのタスクスケジュールエントリが存在するかどうかを返します．
+	 * 
+	 * @param key
+	 *            {@link TaskScheduleEntry}もしくはコンポーネントクラス
+	 * @return 存在する場合はtrue, しない場合はfalse
+	 */
 	public boolean contains(Object key) {
-		if (key instanceof TaskScheduleEntryImpl) {
+		// TODO メソッドを分割したほうがよい
+		if (key instanceof TaskScheduleEntry) {
 			return this.allTaskList.contains(key);
 		}
 		return this.taskScheduleEntryClassMap.containsKey(key);
 	}
 
-	public boolean contains(TaskStateType key, TaskScheduleEntry taskContena) {
+	/**
+	 * 指定したタスク状態にタスクスケジュールエントリが含まれるかどうかを返します．
+	 * 
+	 * @param key
+	 *            {@link TaskStateType}
+	 * @param taskScheduleEntry
+	 *            {@link TaskScheduleEntry}
+	 * @return 存在する場合はtrue, しない場合はfalse
+	 */
+	public boolean contains(TaskStateType key,
+	        TaskScheduleEntry taskScheduleEntry) {
+		// TODO メソッドを分割したほうがよい
 		CopyOnWriteArrayList<TaskScheduleEntry> result =
-			taskScheduleEntryMap.get(key);
+		    taskScheduleEntryMap.get(key);
 		if (result != null) {
-			return result.contains(taskContena);
+			return result.contains(taskScheduleEntry);
 		}
 		return false;
 	}
 
-	public Object forEach(TaskScheduleEntryHanlder handler) {
+	/**
+	 * タスクスケジュールエントリをハンドラを使って順番に処理します．
+	 * 
+	 * @param <T>
+	 *            ハンダラの戻り値の型
+	 * @param handler
+	 *            　{@link TaskScheduleEntryHanlder}
+	 * @return ハンドラからの戻り値
+	 */
+	public <T> T forEach(TaskScheduleEntryHanlder<T> handler) {
 		for (TaskScheduleEntry tse : allTaskList) {
-			Object result = handler.processTaskScheduleEntry(tse);
+			T result = handler.processTaskScheduleEntry(tse);
 			if (result != null) {
 				return result;
 			}
@@ -131,11 +185,22 @@ public class TaskScheduleEntryManager {
 		return null;
 	}
 
-	public Object forEach(TaskStateType key, TaskScheduleEntryHanlder handler) {
+	/**
+	 * 　指定したタスク状態の，タスクスケジュールエントリをハンドラを使って順番に処理します．
+	 * 
+	 * @param <T>
+	 *            ハンダラの戻り値の型
+	 * @param key
+	 *            {@link TaskStateType}
+	 * @param handler
+	 *            {@link TaskScheduleEntryHanlder}
+	 * @return ハンドラからの戻り値
+	 */
+	public <T> T forEach(TaskStateType key, TaskScheduleEntryHanlder<T> handler) {
 		CopyOnWriteArrayList<TaskScheduleEntry> scheduleEntryList =
-			getScheduleEntryList(key);
+		    getScheduleEntryList(key);
 		for (TaskScheduleEntry tse : scheduleEntryList) {
-			Object result = handler.processTaskScheduleEntry(tse);
+			T result = handler.processTaskScheduleEntry(tse);
 			if (result != null) {
 				return result;
 			}
@@ -144,9 +209,9 @@ public class TaskScheduleEntryManager {
 	}
 
 	private CopyOnWriteArrayList<TaskScheduleEntry> getScheduleEntryList(
-			TaskStateType key) {
+	        TaskStateType key) {
 		CopyOnWriteArrayList<TaskScheduleEntry> result =
-			this.taskScheduleEntryMap.get(key);
+		    this.taskScheduleEntryMap.get(key);
 		if (result == null) {
 			result = new CopyOnWriteArrayList<TaskScheduleEntry>();
 			this.taskScheduleEntryMap.put(key, result);
@@ -154,16 +219,27 @@ public class TaskScheduleEntryManager {
 		return result;
 	}
 
-	public TaskScheduleEntry getTaskScheduleEntry(Object key) {
-		return this.taskScheduleEntryClassMap.get(key);
+	/**
+	 * タスクスケジュールエントリを返します．
+	 * 
+	 * @param componentClass
+	 *            コンポーネントキー
+	 * @return {@link TaskScheduleEntry}
+	 */
+	public TaskScheduleEntry getTaskScheduleEntry(Class<?> componentClass) {
+		return this.taskScheduleEntryClassMap.get(componentClass);
 	}
 
+	/**
+	 * @param taskScheduleEntry
+	 * @return
+	 */
 	public boolean removeTaskScheduleEntry(TaskScheduleEntry taskScheduleEntry) {
 		boolean result = allTaskList.remove(taskScheduleEntry);
 		if (result) {
 			for (TaskStateType key : taskScheduleEntryMap.keySet()) {
 				CopyOnWriteArrayList<TaskScheduleEntry> taskScheduleEntryList =
-					taskScheduleEntryMap.get(key);
+				    taskScheduleEntryMap.get(key);
 				if (taskScheduleEntryList != null) {
 					result = taskScheduleEntryList.remove(taskScheduleEntry);
 				}
@@ -176,26 +252,43 @@ public class TaskScheduleEntryManager {
 		return result;
 	}
 
+	/**
+	 * @param key
+	 * @param taskScheduleEntry
+	 * @return
+	 */
 	public boolean removeTaskScheduleEntry(TaskStateType key,
-			TaskScheduleEntry taskScheduleEntry) {
+	        TaskScheduleEntry taskScheduleEntry) {
 		boolean result = false;
 		result = this.getScheduleEntryList(key).remove(taskScheduleEntry);
 		if (key == TaskStateType.UNSCHEDULED) {
 			result = result & this.allTaskList.remove(taskScheduleEntry);
 			result =
-				result
-					& this.taskScheduleEntryClassMap.remove(taskScheduleEntry
-						.getComponentDef()
-						.getComponentClass()) != null;
+			    result
+			        & this.taskScheduleEntryClassMap.remove(taskScheduleEntry
+			            .getComponentDef()
+			            .getComponentClass()) != null;
 		}
 		taskScheduleEntry = null;
 		return result;
 	}
 
+	/**
+	 * タスクスケジュールエントリのサイズを返します．
+	 * 
+	 * @return タスクスケジュールエントリのサイズ
+	 */
 	public int size() {
 		return this.allTaskList.size();
 	}
 
+	/**
+	 * 指定されたタスク状態のタスクスケジュールエントリのサイズを返します．
+	 * 
+	 * @param key
+	 *            {@link TaskStateType}
+	 * @return 指定されたタスク状態のタスクスケジュールエントリのサイズ
+	 */
 	public int size(TaskStateType key) {
 		List<?> list = taskScheduleEntryMap.get(key);
 		if (list == null) {

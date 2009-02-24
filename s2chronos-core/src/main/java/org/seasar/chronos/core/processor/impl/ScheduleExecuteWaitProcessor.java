@@ -13,22 +13,32 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.chronos.core.handler.impl;
+package org.seasar.chronos.core.processor.impl;
 
 import org.seasar.chronos.core.model.TaskStateType;
 
-public class ScheduleExecuteWaitHandler extends AbstractScheduleExecuteHandler {
-
+/**
+ * タスクを一時停止にするためのプロセッサクラスです．
+ * 
+ * @author j5ik2o
+ */
+public class ScheduleExecuteWaitProcessor extends
+        AbstractScheduleExecuteProcessor {
 	private Object pauseLock;
 
 	private long waitInterval = 1000L;
 
+	/*
+	 * (非 Javadoc)
+	 * @seeorg.seasar.chronos.core.handler.impl.AbstractScheduleExecuteHandler#
+	 * doProcess()
+	 */
 	@Override
-	public void handleRequest() throws InterruptedException {
+	public void doProcess() throws InterruptedException {
 		// 一時停止命令があるか，スケジュールおよび実行中のタスクがなければ
 		if (this.pause.get()
-				|| taskScheduleEntryManager.size(TaskStateType.SCHEDULED) == 0
-				&& taskScheduleEntryManager.size(TaskStateType.RUNNING) == 0) {
+		    || taskScheduleEntryManager.size(TaskStateType.SCHEDULED) == 0
+		    && taskScheduleEntryManager.size(TaskStateType.RUNNING) == 0) {
 			synchronized (pauseLock) {
 				try {
 					do {
@@ -43,8 +53,8 @@ public class ScheduleExecuteWaitHandler extends AbstractScheduleExecuteHandler {
 						}
 						pauseLock.wait(waitInterval);
 					} while (this.pause.get()
-							&& !(taskScheduleEntryManager
-									.size(TaskStateType.SCHEDULED) == 0));
+					    && !(taskScheduleEntryManager
+					        .size(TaskStateType.SCHEDULED) == 0));
 				} catch (InterruptedException e) {
 					throw e;
 				} finally {
@@ -60,12 +70,23 @@ public class ScheduleExecuteWaitHandler extends AbstractScheduleExecuteHandler {
 		}
 	}
 
+	/**
+	 * 一時停止用オブジェクトを設定します．
+	 * 
+	 * @param pauseLock
+	 *            一時停止用オブジェクト
+	 */
 	public void setPauseLock(Object pauseLock) {
 		this.pauseLock = pauseLock;
 	}
 
+	/**
+	 * 一時停止間隔を設定します．
+	 * 
+	 * @param waitInterval
+	 *            一時停止間隔(msec)
+	 */
 	public void setPauseLockWaitInterval(long waitInterval) {
 		this.waitInterval = waitInterval;
 	}
-
 }

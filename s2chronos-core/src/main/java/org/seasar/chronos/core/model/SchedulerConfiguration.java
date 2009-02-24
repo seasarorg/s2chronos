@@ -15,7 +15,6 @@
  */
 package org.seasar.chronos.core.model;
 
-
 /**
  * スケジューラ設定クラスです．
  * 
@@ -39,40 +38,38 @@ public final class SchedulerConfiguration {
 	private boolean hotdeployDisable;
 
 	/**
-	 * autoFinishを取得します。
-	 * <p>
-	 * </p>
+	 * スケジューラ自動停止フラグを返します．
 	 * 
-	 * @return autoFinish
+	 * @return スケジューラ自動停止フラグ (true=自動停止する, false=自動停止しない)
 	 */
 	public boolean isAutoFinish() {
 		return autoFinish;
 	}
 
 	/**
-	 * autoFinishを設定します。
+	 * スケジューラ自動停止フラグを設定します．
 	 * 
 	 * @param autoFinish
-	 *            autoFinish
+	 *            スケジューラ自動停止フラグ (true=自動停止する, false=自動停止しない)
 	 */
 	public void setAutoFinish(boolean autoFinish) {
 		this.autoFinish = autoFinish;
 	}
 
 	/**
-	 * autoFinishTimeLimitを取得します。
+	 * スケジューラ自動停止制限時間を返します．
 	 * 
-	 * @return autoFinishTimeLimit
+	 * @return スケジューラ自動停止制限時間(msec)
 	 */
 	public long getAutoFinishTimeLimit() {
 		return autoFinishTimeLimit;
 	}
 
 	/**
-	 * autoFinishTimeLimitを設定します。
+	 * スケジューラ自動停止制限時間を設定します.
 	 * 
 	 * @param autoFinishTimeLimit
-	 *            autoFinishTimeLimit
+	 *            スケジューラ自動停止制限時間(msec)
 	 */
 	public void setAutoFinishTimeLimit(long autoFinishTimeLimit) {
 		this.autoFinishTimeLimit = autoFinishTimeLimit;

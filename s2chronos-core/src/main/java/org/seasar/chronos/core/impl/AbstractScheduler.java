@@ -35,12 +35,10 @@ import org.seasar.framework.util.tiger.ReflectionUtil;
  * 抽象スケジューラクラスです。
  * 
  * @author j5ik2o
- *
  */
 public abstract class AbstractScheduler implements Scheduler {
-
-	protected static final Logger log = Logger
-			.getLogger(AbstractScheduler.class);
+	protected static final Logger log =
+	    Logger.getLogger(AbstractScheduler.class);
 
 	protected S2Container s2container;
 
@@ -61,22 +59,23 @@ public abstract class AbstractScheduler implements Scheduler {
 	 */
 	protected ComponentDef findTaskComponentDefByTaskName(final String taskName) {
 		TaskScheduleEntryManager tcsm = TaskScheduleEntryManager.getInstance();
-		Object componentDef = tcsm
-				.forEach(new TaskScheduleEntryManager.TaskScheduleEntryHanlder() {
-					public Object processTaskScheduleEntry(
-							TaskScheduleEntry taskScheduleEntry) {
-						TaskExecutorService tes = taskScheduleEntry
-								.getTaskExecutorService();
-						String _taskName = tes.getTaskPropertyReader()
-								.getTaskName(null);
-						if (taskName.equals(_taskName)) {
-							return taskScheduleEntry.getComponentDef();
-						}
-						return null;
-					}
-				});
+		ComponentDef componentDef =
+		    tcsm
+		        .forEach(new TaskScheduleEntryManager.TaskScheduleEntryHanlder<ComponentDef>() {
+			        public ComponentDef processTaskScheduleEntry(
+			                TaskScheduleEntry taskScheduleEntry) {
+				        TaskExecutorService tes =
+				            taskScheduleEntry.getTaskExecutorService();
+				        String _taskName =
+				            tes.getTaskPropertyReader().getTaskName(null);
+				        if (taskName.equals(_taskName)) {
+					        return taskScheduleEntry.getComponentDef();
+				        }
+				        return null;
+			        }
+		        });
 		if (componentDef != null) {
-			return (ComponentDef) componentDef;
+			return componentDef;
 		}
 		return null;
 	}
@@ -92,34 +91,36 @@ public abstract class AbstractScheduler implements Scheduler {
 	}
 
 	protected boolean registerChildTaskComponentByTarget(
-			S2Container s2Container, final Class<?> targetTaskComponentClass) {
-		return this.registerChildTaskComponent(s2Container,
-				targetTaskComponentClass);
+	        S2Container s2Container, final Class<?> targetTaskComponentClass) {
+		return this.registerChildTaskComponent(
+		    s2Container,
+		    targetTaskComponentClass);
 	}
 
 	private boolean registerChildTaskComponent(S2Container s2Container,
-			final Class<?> targetTaskComponentClass) {
-		Object result = Traversal.forEachComponent(s2Container,
-				new Traversal.ComponentDefHandler() {
-					public Object processComponent(ComponentDef componentDef) {
-						Class<?> clazz = componentDef.getComponentClass();
-						if (clazz != null) {
-							if (taskValidator.isValid(clazz)) {
-								if (targetTaskComponentClass == null) {
-									AbstractScheduler.this
-											.scheduleTask(componentDef);
-								} else if (targetTaskComponentClass
-										.equals(componentDef
-												.getComponentClass())) {
-									return AbstractScheduler.this.scheduleTask(
-											componentDef, true);
-								}
-							}
-						}
-						return null;
-					}
-
-				});
+	        final Class<?> targetTaskComponentClass) {
+		Object result =
+		    Traversal.forEachComponent(
+		        s2Container,
+		        new Traversal.ComponentDefHandler() {
+			        public Object processComponent(ComponentDef componentDef) {
+				        Class<?> clazz = componentDef.getComponentClass();
+				        if (clazz != null) {
+					        if (taskValidator.isValid(clazz)) {
+						        if (targetTaskComponentClass == null) {
+							        AbstractScheduler.this
+							            .scheduleTask(componentDef);
+						        } else if (targetTaskComponentClass
+						            .equals(componentDef.getComponentClass())) {
+							        return AbstractScheduler.this.scheduleTask(
+							            componentDef,
+							            true);
+						        }
+					        }
+				        }
+				        return null;
+			        }
+		        });
 		return result != null;
 	}
 
@@ -132,15 +133,16 @@ public abstract class AbstractScheduler implements Scheduler {
 	 *            S2コンテナ
 	 */
 	protected boolean registerTaskFromS2ContainerOnSmartDeploy(
-			final S2Container s2Container) {
+	        final S2Container s2Container) {
 		return this.registerTaskFromS2ContainerOnSmartDeploy(s2Container, null);
 	}
 
 	protected boolean registerTaskFromS2ContainerOnSmartDeployByTarget(
-			final S2Container s2Container,
-			final Class<?> targetTaskComponentClass) {
-		return this.registerTaskFromS2ContainerOnSmartDeploy(s2Container,
-				targetTaskComponentClass);
+	        final S2Container s2Container,
+	        final Class<?> targetTaskComponentClass) {
+		return this.registerTaskFromS2ContainerOnSmartDeploy(
+		    s2Container,
+		    targetTaskComponentClass);
 	}
 
 	protected boolean registerJavascriptTaskComponent() {
@@ -151,31 +153,34 @@ public abstract class AbstractScheduler implements Scheduler {
 	private boolean detectResult = false;
 
 	private boolean registerTaskFromS2ContainerOnSmartDeploy(
-			final S2Container s2Container,
-			final Class<?> targetTaskComponentClass) {
+	        final S2Container s2Container,
+	        final Class<?> targetTaskComponentClass) {
 		this.detectResult = false;
 		if (SmartDeployUtil.isSmartdeployMode(s2Container)) {
 			this.taskClassAutoDetector
-					.detect(new ClassTraversal.ClassHandler() {
-						public void processClass(String packageName,
-								String shortClassName) {
-							String name = ClassUtil.concatName(packageName,
-									shortClassName);
-							Class<?> clazz = ReflectionUtil
-									.forNameNoException(name);
-							if (targetTaskComponentClass == null) {
-								if (null != AbstractScheduler.this
-										.scheduleTask(s2Container, clazz)) {
-									AbstractScheduler.this.detectResult = true;
-								}
-							} else if (targetTaskComponentClass.equals(clazz)) {
-								if (null != AbstractScheduler.this
-										.scheduleTask(s2Container, clazz, true)) {
-									AbstractScheduler.this.detectResult = true;
-								}
-							}
-						}
-					});
+			    .detect(new ClassTraversal.ClassHandler() {
+				    public void processClass(String packageName,
+				            String shortClassName) {
+					    String name =
+					        ClassUtil.concatName(packageName, shortClassName);
+					    Class<?> clazz =
+					        ReflectionUtil.forNameNoException(name);
+					    if (targetTaskComponentClass == null) {
+						    if (null != AbstractScheduler.this.scheduleTask(
+						        s2Container,
+						        clazz)) {
+							    AbstractScheduler.this.detectResult = true;
+						    }
+					    } else if (targetTaskComponentClass.equals(clazz)) {
+						    if (null != AbstractScheduler.this.scheduleTask(
+						        s2Container,
+						        clazz,
+						        true)) {
+							    AbstractScheduler.this.detectResult = true;
+						    }
+					    }
+				    }
+			    });
 		}
 		return this.detectResult;
 	}
@@ -185,20 +190,20 @@ public abstract class AbstractScheduler implements Scheduler {
 	}
 
 	protected TaskScheduleEntry scheduleTask(ComponentDef taskComponentDef,
-			boolean force) {
+	        boolean force) {
 		Class<?> clazz = taskComponentDef.getComponentClass();
 		Task task = clazz.getAnnotation(Task.class);
 		if (!task.autoSchedule() && !force) {
 			return null;
 		}
-		TaskScheduleEntry taskScheduleEntry = (TaskScheduleEntry) this.s2container
-				.getComponent(TaskScheduleEntry.class);
+		TaskScheduleEntry taskScheduleEntry =
+		    (TaskScheduleEntry) this.s2container
+		        .getComponent(TaskScheduleEntry.class);
 		taskScheduleEntry.setComponentDef(taskComponentDef);
-
-		final TaskExecutorService tes = (TaskExecutorService) this.s2container
-				.getComponent(TaskExecutorService.class);
+		final TaskExecutorService tes =
+		    (TaskExecutorService) this.s2container
+		        .getComponent(TaskExecutorService.class);
 		taskScheduleEntry.setTaskExecutorService(tes);
-
 		tes.setComponentDef(taskComponentDef);
 		tes.setGetterSignal(this);
 		tes.setScheduler(this);
@@ -207,13 +212,13 @@ public abstract class AbstractScheduler implements Scheduler {
 	}
 
 	protected TaskScheduleEntry scheduleTask(final S2Container s2Container,
-			final Class<?> taskClass, boolean force) {
+	        final Class<?> taskClass, boolean force) {
 		ComponentDef componentDef = s2Container.getComponentDef(taskClass);
 		return this.scheduleTask(componentDef, force);
 	}
 
 	protected TaskScheduleEntry scheduleTask(final S2Container s2Container,
-			final Class<?> taskClass) {
+	        final Class<?> taskClass) {
 		ComponentDef componentDef = s2Container.getComponentDef(taskClass);
 		return this.scheduleTask(componentDef);
 	}
@@ -223,7 +228,7 @@ public abstract class AbstractScheduler implements Scheduler {
 	}
 
 	public void setTaskClassAutoDetector(
-			TaskClassAutoDetector taskClassAutoDetector) {
+	        TaskClassAutoDetector taskClassAutoDetector) {
 		this.taskClassAutoDetector = taskClassAutoDetector;
 	}
 
