@@ -16,14 +16,31 @@
 package org.seasar.chronos.core.model;
 
 /**
- * 
  * @author j5ik2o
- *
  */
 public enum ThreadPoolType {
-
-	FIXED, CACHED, SINGLE, SCHEDULED;
-
+	/**
+	 * 固定型
+	 */
+	FIXED,
+	/**
+	 * キャッシュ型
+	 */
+	CACHED,
+	/**
+	 * シングル型
+	 */
+	SINGLE,
+	/**
+	 * スケジュール型
+	 */
+	SCHEDULED;
+	/**
+	 * 整数型を列挙型に変換します．
+	 * 
+	 * @param value
+	 * @return {@link ThreadPoolType}
+	 */
 	public static ThreadPoolType toEnum(int value) {
 		if (value == FIXED.ordinal()) {
 			return FIXED;

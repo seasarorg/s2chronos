@@ -15,6 +15,26 @@
  */
 package org.seasar.chronos.core.model;
 
+/**
+ * タスク状態です．
+ * 
+ * @author j5ik2o
+ */
 public enum TaskStateType {
-	SCHEDULED, RUNNING, CANCELING, UNSCHEDULED;
+	/**
+	 * スケジュールに登録された状態
+	 */
+	SCHEDULED,
+	/**
+	 * 実行中の状態
+	 */
+	RUNNING,
+	/**
+	 * キャンセル中の状態
+	 */
+	CANCELING,
+	/**
+	 * スケジュールから除外された状態
+	 */
+	UNSCHEDULED;
 }

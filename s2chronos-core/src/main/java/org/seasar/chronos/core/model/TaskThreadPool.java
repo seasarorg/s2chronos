@@ -17,24 +17,54 @@ package org.seasar.chronos.core.model;
 
 import java.io.Serializable;
 
-
 /**
+ * スレッドプールのインターフェイスです．
  * 
  * @author j5ik2o
- *
  */
 public interface TaskThreadPool extends Serializable {
-
+	/**
+	 * スレッドプールIDを返します．
+	 * 
+	 * @return スレッドプールID
+	 */
 	public Long getThreadPoolId();
 
+	/**
+	 * スレッドプールサイズを返します．
+	 * 
+	 * @return スレッドプールサイズ
+	 */
 	public Integer getThreadPoolSize();
 
+	/**
+	 * スレッドプールタイプを返します．
+	 * 
+	 * @return {@link ThreadPoolType}
+	 */
 	public ThreadPoolType getThreadPoolType();
 
+	/**
+	 * スレッドプールIDを設定します．
+	 * 
+	 * @param id
+	 *            　スレッドプールID
+	 */
 	public void setThreadPoolId(Long id);
 
+	/**
+	 * スレッドプールサイズを設定します．
+	 * 
+	 * @param threadPoolSize
+	 *            スレッドプールサイズ
+	 */
 	public void setThreadPoolSize(Integer threadPoolSize);
 
+	/**
+	 * スレッドプールタイプを設定します．
+	 * 
+	 * @param threadPoolType
+	 *            {@link ThreadPoolType}
+	 */
 	public void setThreadPoolType(ThreadPoolType threadPoolType);
-
 }
