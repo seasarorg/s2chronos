@@ -14,11 +14,9 @@
  * under the License.
  * 
  */
-
 package org.seasar.chronos.core.model.trigger;
 
 public class CMonthlyTrigger extends CCronTrigger {
-
 	private static final long serialVersionUID = 1L;
 
 	@Override
@@ -27,7 +25,6 @@ public class CMonthlyTrigger extends CCronTrigger {
 	}
 
 	public CMonthlyTrigger() {
-		setExpression("59 59 23 L * ?");
+		setCronExpression("59 59 23 L * ?");
 	}
-
 }

@@ -14,7 +14,6 @@
  * under the License.
  * 
  */
-
 package org.seasar.chronos.core.model.trigger;
 
 import java.text.ParseException;
@@ -24,30 +23,53 @@ import org.seasar.chronos.core.model.trigger.cron.CronExpression;
 import org.seasar.framework.exception.ParseRuntimeException;
 import org.seasar.framework.log.Logger;
 
+/**
+ * CRON形式に対応したトリガークラスです．
+ * 
+ * @author j5ik2o
+ */
+@SuppressWarnings("serial")
 public class CCronTrigger extends AbstractTrigger {
-
 	private static Logger log = Logger.getLogger(CCronTrigger.class);
-
-	private static final long serialVersionUID = 1L;
 
 	private CronExpression expression;
 
 	private Date buildTime = new Date(System.currentTimeMillis());
 
+	/**
+	 * デフォルトコンストラクタです．
+	 */
 	public CCronTrigger() {
 		super("cronTrigger");
 	}
 
+	/**
+	 * コンストラクタです．
+	 * 
+	 * @param cronExpression
+	 *            CROND形式文字列
+	 */
 	public CCronTrigger(String cronExpression) {
 		super("cronTrigger");
-		this.setExpression(cronExpression);
+		this.setCronExpression(cronExpression);
 	}
 
+	/*
+	 * (非 Javadoc)
+	 * @see
+	 * org.seasar.chronos.core.model.trigger.AbstractTrigger#isReScheduleTask()
+	 */
 	@Override
 	public boolean isReScheduleTask() {
 		return true;
 	}
 
+	/*
+	 * (非 Javadoc)
+	 * @see
+	 * org.seasar.chronos.core.model.trigger.AbstractTrigger#equals(java.lang
+	 * .Object)
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		boolean result = super.equals(obj);
@@ -58,19 +80,51 @@ public class CCronTrigger extends AbstractTrigger {
 		return result;
 	}
 
+	/*
+	 * (非 Javadoc)
+	 * @see org.seasar.chronos.core.model.trigger.AbstractTrigger#hashCode()
+	 */
 	@Override
 	public int hashCode() {
 		return super.hashCode();
 	}
 
+	/**
+	 * CROND形式文字列を設定します．
+	 * 
+	 * @param cronExpression
+	 *            CROND形式文字列
+	 */
+	public void setCronExpression(String cronExpression) {
+		try {
+			this.expression = new CronExpression(cronExpression);
+		} catch (ParseException e) {
+			log.log("ECHRONOS0200", null);
+			throw new ParseRuntimeException(e);
+		}
+	}
+
+	/**
+	 * CROND形式文字列を返します．
+	 * 
+	 * @return CROND形式文字列
+	 */
 	public String getCronExpression() {
 		return this.expression.getCronExprssion();
 	}
 
+	/*
+	 * (非 Javadoc)
+	 * @see org.seasar.chronos.core.model.TaskTrigger#isEndTask()
+	 */
 	public boolean isEndTask() {
 		return false;
 	}
 
+	/*
+	 * (非 Javadoc)
+	 * @see org.seasar.chronos.core.model.TaskTrigger#isStartTask()
+	 */
 	public boolean isStartTask() {
 		if (this.isExecuting()) {
 			return false;
@@ -87,25 +141,17 @@ public class CCronTrigger extends AbstractTrigger {
 		return false;
 	}
 
-	public void setExpression(String cronExpression) {
-		try {
-			this.expression = new CronExpression(cronExpression);
-		} catch (ParseException e) {
-			log.log("ECHRONOS0200", null);
-			throw new ParseRuntimeException(e);
-		}
-	}
-
-	public String getExpression() {
-		return this.expression.getCronExprssion();
-	}
-
+	/*
+	 * (非 Javadoc)
+	 * @see org.seasar.chronos.core.model.TaskTrigger#setEndTask(boolean)
+	 */
 	public void setEndTask(boolean endTask) {
-
 	}
 
+	/*
+	 * (非 Javadoc)
+	 * @see org.seasar.chronos.core.model.TaskTrigger#setStartTask(boolean)
+	 */
 	public void setStartTask(boolean startTask) {
-
 	}
-
 }
