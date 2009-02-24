@@ -86,11 +86,11 @@ public class SchedulerImplTest implements
 			TaskStateType taskStateType, TaskScheduleEntry taskScheduleEntry) {		
 	}
 
-	public void resigtTaskAfterScheduler(Scheduler scheduler) {
+	public void resigterTaskSchedulerAfter(Scheduler scheduler) {
 
 	}
 
-	public void resigtTaskBeforeScheduler(Scheduler scheduler) {
+	public void resigterTaskSchedulerBefore(Scheduler scheduler) {
 
 	}
 

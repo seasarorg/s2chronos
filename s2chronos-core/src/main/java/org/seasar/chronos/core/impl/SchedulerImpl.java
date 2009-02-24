@@ -381,10 +381,10 @@ public class SchedulerImpl extends AbstractScheduler {
 	public void start() {
 		initialize();
 		log.log("DCHRONOS0011", null);
-		schedulerEventHandler.fireRegisterTaskBeforeScheduler();
+		schedulerEventHandler.fireRegisterTaskSchedulerBefore();
 		registerTaskFromS2Container();
 		setupHandler();
-		schedulerEventHandler.fireRegisterTaskAfterScheduler();
+		schedulerEventHandler.fireRegisterTaskSchedulerAfter();
 		schedulerTaskFuture = executorService.submit(new Callable<Void>() {
 			public Void call() throws InterruptedException {
 				do {

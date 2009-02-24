@@ -50,11 +50,11 @@ public class SchedulerEventHandlerTest implements
 		System.out.println("removeTaskScheduleEntry");
 	}
 
-	public void resigtTaskAfterScheduler(Scheduler scheduler) {
+	public void resigterTaskSchedulerAfter(Scheduler scheduler) {
 		System.out.println("resigtTaskAfterScheduler");
 	}
 
-	public void resigtTaskBeforeScheduler(Scheduler scheduler) {
+	public void resigterTaskSchedulerBefore(Scheduler scheduler) {
 		System.out.println("resigtTaskBeforeScheduler");
 	}
 
@@ -123,7 +123,7 @@ public class SchedulerEventHandlerTest implements
 	}
 
 	public void testFireRegistTaskAfterScheduler() {
-		schedulerEventHandler.fireRegisterTaskAfterScheduler();
+		schedulerEventHandler.fireRegisterTaskSchedulerAfter();
 		try {
 			Thread.sleep(2000);
 		} catch (InterruptedException e) {
@@ -131,7 +131,7 @@ public class SchedulerEventHandlerTest implements
 	}
 
 	public void testFireRegistTaskBeforeScheduler() {
-		schedulerEventHandler.fireRegisterTaskBeforeScheduler();
+		schedulerEventHandler.fireRegisterTaskSchedulerBefore();
 		try {
 			Thread.sleep(2000);
 		} catch (InterruptedException e) {

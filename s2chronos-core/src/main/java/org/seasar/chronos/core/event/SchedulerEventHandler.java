@@ -30,14 +30,14 @@ import org.seasar.framework.log.Logger;
 import org.seasar.framework.util.tiger.CollectionsUtil;
 
 public class SchedulerEventHandler {
-
 	private final Logger log = Logger.getLogger(SchedulerEventHandler.class);
 
 	private ExecutorServiceFactory executorServiceFacotry;
 
 	private ExecutorService executorService;
 
-	private final CopyOnWriteArrayList<SchedulerEventListener> schedulerEventListener = CollectionsUtil.newCopyOnWriteArrayList();
+	private final CopyOnWriteArrayList<SchedulerEventListener> schedulerEventListener =
+	    CollectionsUtil.newCopyOnWriteArrayList();
 
 	private boolean async;
 
@@ -64,16 +64,18 @@ public class SchedulerEventHandler {
 	}
 
 	/**
-	 * 
+	 * @param taskStateType
 	 * @param taskScheduleEntry
 	 */
 	public void fireAddTaskScheduleEntry(final TaskStateType taskStateType,
-			final TaskScheduleEntry taskScheduleEntry) {
+	        final TaskScheduleEntry taskScheduleEntry) {
 		for (final SchedulerEventListener listener : schedulerEventListener) {
 			Future<?> future = executorService.submit(new Runnable() {
 				public void run() {
-					listener.addTaskScheduleEntry(scheduler, taskStateType,
-							taskScheduleEntry);
+					listener.addTaskScheduleEntry(
+					    scheduler,
+					    taskStateType,
+					    taskScheduleEntry);
 				}
 			});
 			waitFuture(future);
@@ -178,11 +180,11 @@ public class SchedulerEventHandler {
 	/**
 	 * タスク登録後イベントを発火します．
 	 */
-	public void fireRegisterTaskAfterScheduler() {
+	public void fireRegisterTaskSchedulerAfter() {
 		for (final SchedulerEventListener listener : schedulerEventListener) {
 			Future<?> future = executorService.submit(new Runnable() {
 				public void run() {
-					listener.resigtTaskAfterScheduler(scheduler);
+					listener.resigterTaskSchedulerAfter(scheduler);
 				}
 			});
 			waitFuture(future);
@@ -192,11 +194,11 @@ public class SchedulerEventHandler {
 	/**
 	 * タスク登録前イベントを発火します．
 	 */
-	public void fireRegisterTaskBeforeScheduler() {
+	public void fireRegisterTaskSchedulerBefore() {
 		for (final SchedulerEventListener listener : schedulerEventListener) {
 			Future<?> future = executorService.submit(new Runnable() {
 				public void run() {
-					listener.resigtTaskBeforeScheduler(scheduler);
+					listener.resigterTaskSchedulerBefore(scheduler);
 				}
 			});
 			waitFuture(future);
@@ -204,16 +206,18 @@ public class SchedulerEventHandler {
 	}
 
 	/**
-	 * 
+	 * @param taskStateType
 	 * @param taskScheduleEntry
 	 */
 	public void fireRemoveTaskScheduleEntry(final TaskStateType taskStateType,
-			final TaskScheduleEntry taskScheduleEntry) {
+	        final TaskScheduleEntry taskScheduleEntry) {
 		for (final SchedulerEventListener listener : schedulerEventListener) {
 			Future<?> future = executorService.submit(new Runnable() {
 				public void run() {
-					listener.removeTaskScheduleEntry(scheduler, taskStateType,
-							taskScheduleEntry);
+					listener.removeTaskScheduleEntry(
+					    scheduler,
+					    taskStateType,
+					    taskScheduleEntry);
 				}
 			});
 			waitFuture(future);
@@ -280,7 +284,6 @@ public class SchedulerEventHandler {
 	 * @param listener
 	 *            リスナー
 	 * @return リストが指定された要素を保持している場合はtrue，以外はfalse
-	 * 
 	 */
 	public boolean remove(SchedulerEventListener listener) {
 		return this.schedulerEventListener.remove(listener);
@@ -314,16 +317,24 @@ public class SchedulerEventHandler {
 	}
 
 	/**
+	 * {@link ExecutorServiceFactory}を設定します．
+	 * 
 	 * @param executorServiceFacotry
-	 *            the executorServiceFacotry to set
+	 *            {@link ExecutorServiceFactory}
 	 */
 	public void setExecutorServiceFacotry(
-			ExecutorServiceFactory executorServiceFacotry) {
+	        ExecutorServiceFactory executorServiceFacotry) {
 		this.executorServiceFacotry = executorServiceFacotry;
-		this.executorService = this.executorServiceFacotry.create(
-				ThreadPoolType.CACHED, null);
+		this.executorService =
+		    this.executorServiceFacotry.create(ThreadPoolType.CACHED, null);
 	}
 
+	/**
+	 * {@link Scheduler}を設定します．
+	 * 
+	 * @param scheduler
+	 *            {@link Scheduler}
+	 */
 	public void setScheduler(Scheduler scheduler) {
 		this.scheduler = scheduler;
 	}

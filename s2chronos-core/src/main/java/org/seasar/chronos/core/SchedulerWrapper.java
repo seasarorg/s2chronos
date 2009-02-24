@@ -19,11 +19,19 @@ import org.seasar.chronos.core.impl.AbstractScheduler;
 import org.seasar.chronos.core.model.SchedulerConfiguration;
 
 /**
+ * {@link Scheduler}のラッパークラスです．
+ * 
  * @author j5ik2o
  */
 public abstract class SchedulerWrapper extends AbstractScheduler {
 	private final Scheduler scheduler;
 
+	/**
+	 * コンストラクタです．
+	 * 
+	 * @param scheduler
+	 *            {@link Scheduler}
+	 */
 	public SchedulerWrapper(Scheduler scheduler) {
 		this.scheduler = scheduler;
 	}
@@ -64,7 +72,7 @@ public abstract class SchedulerWrapper extends AbstractScheduler {
 	}
 
 	public void setSchedulerConfiguration(
-			SchedulerConfiguration schedulerConfiguration) {
+	        SchedulerConfiguration schedulerConfiguration) {
 		scheduler.setSchedulerConfiguration(schedulerConfiguration);
 	}
 
