@@ -25,39 +25,126 @@ import org.seasar.chronos.core.model.TaskStateType;
  */
 public interface SchedulerEventListener {
 	/**
+	 * {@link TaskScheduleEntry}を追加したときに呼ばれるハンドラーです．
+	 * 
 	 * @param scheduler
+	 *            {@link Scheduler}
 	 * @param taskStateType
+	 *            {@link TaskStateType}
 	 * @param taskScheduleEntry
+	 *            {@link TaskScheduleEntry}
 	 */
 	public void addTaskScheduleEntry(Scheduler scheduler,
-			TaskStateType taskStateType, TaskScheduleEntry taskScheduleEntry);
+	        TaskStateType taskStateType, TaskScheduleEntry taskScheduleEntry);
 
 	/**
+	 * タスクがキャンセルされたときに呼ばれるハンドラーです．
+	 * 
 	 * @param scheduler
+	 *            　{@link Scheduler}
 	 * @param task
+	 *            タスクのインスタンス
 	 */
 	public void cancelTask(Scheduler scheduler, Object task);
 
+	/**
+	 * スケジューラが終了したときに呼ばれるハンドラーです．
+	 * 
+	 * @param scheduler
+	 *            {@link Scheduler}
+	 */
 	public void endScheduler(Scheduler scheduler);
 
+	/**
+	 * タスクが終了したときに呼ばれるハンドラーです．
+	 * 
+	 * @param scheduler
+	 *            {@link Scheduler}
+	 * @param task
+	 *            タスクのインスタンス
+	 */
 	public void endTask(Scheduler scheduler, Object task);
 
+	/**
+	 * スケジューラが一時停止したときに呼ばれるハンドラーです．
+	 * 
+	 * @param scheduler
+	 *            {@link Scheduler}
+	 */
 	public void pauseScheduler(Scheduler scheduler);
 
+	/**
+	 * スケジューラが再開されたときに呼ばれるハンドラーです．
+	 * 
+	 * @param scheduler
+	 *            {@link Scheduler}
+	 */
 	public void resumeScheduler(Scheduler scheduler);
 
+	/**
+	 * タスクスケジュールエントリが削除されたときに呼ばれるハンドラーです．
+	 * 
+	 * @param scheduler
+	 *            {@link Scheduler}
+	 * @param taskStateType
+	 *            {@link TaskStateType}
+	 * @param taskScheduleEntry
+	 *            {@link TaskScheduleEntry}
+	 */
 	public void removeTaskScheduleEntry(Scheduler scheduler,
-			TaskStateType taskStateType, TaskScheduleEntry taskScheduleEntry);
+	        TaskStateType taskStateType, TaskScheduleEntry taskScheduleEntry);
 
-	public void resigtTaskAfterScheduler(Scheduler scheduler);
+	/**
+	 * スケジューラにタスクが登録された後に呼ばれるハンドラーです．
+	 * 
+	 * @param scheduler
+	 *            {@link Scheduler}
+	 */
+	public void resigterTaskSchedulerAfter(Scheduler scheduler);
 
-	public void resigtTaskBeforeScheduler(Scheduler scheduler);
+	/**
+	 * スケジューラにタスクが登録された前に呼ばれるハンドラーです．
+	 * 
+	 * @param scheduler
+	 *            {@link Scheduler}
+	 */
+	public void resigterTaskSchedulerBefore(Scheduler scheduler);
 
+	/**
+	 * スケジューラをシャットダウンするときに呼ばれるハンドラーです．
+	 * 
+	 * @param scheduler
+	 *            {@link Scheduler}
+	 */
 	public void shutdownScheduler(Scheduler scheduler);
 
+	/**
+	 * スケジューラが開始したときに呼ばれるハンドラーです．
+	 * 
+	 * @param scheduler
+	 *            {@link Scheduler}
+	 */
 	public void startScheduler(Scheduler scheduler);
 
+	/**
+	 * タスクが開始したときに呼ばれるハンドラーです．
+	 * 
+	 * @param scheduler
+	 *            {@link Scheduler}
+	 * @param task
+	 *            タスクのインスタンス
+	 */
 	public void startTask(Scheduler scheduler, Object task);
 
+	/**
+	 * タスクで例外が発生したときに呼ばれるハンドラーです．
+	 * 
+	 * @param scheduler
+	 *            {@link Scheduler}
+	 * @param task
+	 *            タスクのインスタンス
+	 * @param e
+	 *            発生した例外
+	 */
 	public void exceptionTask(Scheduler scheduler, Object task, Exception e);
 }
