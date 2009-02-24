@@ -14,44 +14,78 @@
  * under the License.
  * 
  */
-
 package org.seasar.chronos.core.model.trigger;
 
 import java.util.Date;
 
+/**
+ * @author kato
+ */
+@SuppressWarnings("serial")
 public class CTimedTrigger extends AbstractTrigger {
-
-	private static final long serialVersionUID = 1L;
-
 	private Date startTime;
 
 	private Date endTime;
 
+	/**
+	 * コンストラクタです．
+	 */
 	public CTimedTrigger() {
 		super("timedTrigger");
 	}
 
+	/*
+	 * (非 Javadoc)
+	 * @see
+	 * org.seasar.chronos.core.model.trigger.AbstractTrigger#isReScheduleTask()
+	 */
 	@Override
 	public boolean isReScheduleTask() {
 		return false;
 	}
 
+	/**
+	 * 開始日時を設定します．
+	 * 
+	 * @param startDate
+	 *            開始日時
+	 */
 	public void setStartTime(Date startDate) {
 		this.startTime = (Date) startDate.clone();
 	}
 
+	/**
+	 * 開始日時を返します．
+	 * 
+	 * @return 開始日時
+	 */
 	public Date getStartTime() {
 		return (Date) startTime.clone();
 	}
 
+	/**
+	 * 終了日時を設定します．
+	 * 
+	 * @param endDate
+	 *            終了日時
+	 */
 	public void setEndTime(Date endDate) {
 		this.endTime = (Date) endDate.clone();
 	}
 
+	/**
+	 * 終了日時を返します．
+	 * 
+	 * @return 終了日時
+	 */
 	public Date getEndTime() {
 		return (Date) endTime.clone();
 	}
 
+	/*
+	 * (非 Javadoc)
+	 * @see org.seasar.chronos.core.model.TaskTrigger#isStartTask()
+	 */
 	public boolean isStartTask() {
 		if (this.isExecuting() || this.isExecuted()) {
 			return false;
@@ -59,11 +93,16 @@ public class CTimedTrigger extends AbstractTrigger {
 		boolean startTimeCheck = false;
 		// 開始時刻の確認
 		if (startTime != null) {
-			startTimeCheck = (System.currentTimeMillis() >= startTime.getTime());
+			startTimeCheck =
+			    (System.currentTimeMillis() >= startTime.getTime());
 		}
 		return startTimeCheck;
 	}
 
+	/*
+	 * (非 Javadoc)
+	 * @see org.seasar.chronos.core.model.TaskTrigger#isEndTask()
+	 */
 	public boolean isEndTask() {
 		boolean endTimeCheck = false;
 		// 終了時刻の確認
@@ -73,12 +112,17 @@ public class CTimedTrigger extends AbstractTrigger {
 		return endTimeCheck;
 	}
 
+	/*
+	 * (非 Javadoc)
+	 * @see org.seasar.chronos.core.model.TaskTrigger#setStartTask(boolean)
+	 */
 	public void setStartTask(boolean startTask) {
-
 	}
 
+	/*
+	 * (非 Javadoc)
+	 * @see org.seasar.chronos.core.model.TaskTrigger#setEndTask(boolean)
+	 */
 	public void setEndTask(boolean endTask) {
-
 	}
-
 }

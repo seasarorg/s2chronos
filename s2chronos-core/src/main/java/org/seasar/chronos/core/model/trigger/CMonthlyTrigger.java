@@ -16,15 +16,26 @@
  */
 package org.seasar.chronos.core.model.trigger;
 
+/**
+ * 月末に起動するトリガークラスです．
+ * 
+ * @author j5ik2o
+ */
+@SuppressWarnings("serial")
 public class CMonthlyTrigger extends CCronTrigger {
-	private static final long serialVersionUID = 1L;
+	/**
+	 * コンストラクタです．
+	 */
+	public CMonthlyTrigger() {
+		setCronExpression("59 59 23 L * ?");
+	}
 
+	/*
+	 * (非 Javadoc)
+	 * @see org.seasar.chronos.core.model.trigger.CCronTrigger#hashCode()
+	 */
 	@Override
 	public int hashCode() {
 		return super.hashCode();
-	}
-
-	public CMonthlyTrigger() {
-		setCronExpression("59 59 23 L * ?");
 	}
 }

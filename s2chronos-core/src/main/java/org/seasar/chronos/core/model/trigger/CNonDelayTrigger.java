@@ -14,27 +14,45 @@
  * under the License.
  * 
  */
-
 package org.seasar.chronos.core.model.trigger;
 
+/**
+ * 即時実行のためのトリガークラスです．
+ * 
+ * @author j5ik2o
+ */
+@SuppressWarnings("serial")
 public class CNonDelayTrigger extends AbstractTrigger {
+	/**
+	 * コンストラクタです．
+	 */
+	public CNonDelayTrigger() {
+		super("nonDelayTrigger");
+	}
 
-	private static final long serialVersionUID = 1L;
-
+	/*
+	 * (非 Javadoc)
+	 * @see org.seasar.chronos.core.model.trigger.AbstractTrigger#hashCode()
+	 */
 	@Override
 	public int hashCode() {
 		return super.hashCode();
 	}
 
-	public CNonDelayTrigger() {
-		super("nonDelayTrigger");
-	}
-
+	/*
+	 * (非 Javadoc)
+	 * @see
+	 * org.seasar.chronos.core.model.trigger.AbstractTrigger#isReScheduleTask()
+	 */
 	@Override
 	public boolean isReScheduleTask() {
 		return false;
 	}
 
+	/*
+	 * (非 Javadoc)
+	 * @see org.seasar.chronos.core.model.TaskTrigger#isStartTask()
+	 */
 	public boolean isStartTask() {
 		if (this.isExecuting() || this.isExecuted()) {
 			return false;
@@ -42,16 +60,25 @@ public class CNonDelayTrigger extends AbstractTrigger {
 		return true;
 	}
 
+	/*
+	 * (非 Javadoc)
+	 * @see org.seasar.chronos.core.model.TaskTrigger#isEndTask()
+	 */
 	public boolean isEndTask() {
 		return false;
 	}
 
+	/*
+	 * (非 Javadoc)
+	 * @see org.seasar.chronos.core.model.TaskTrigger#setStartTask(boolean)
+	 */
 	public void setStartTask(boolean startTask) {
-
 	}
 
+	/*
+	 * (非 Javadoc)
+	 * @see org.seasar.chronos.core.model.TaskTrigger#setEndTask(boolean)
+	 */
 	public void setEndTask(boolean endTask) {
-
 	}
-
 }
