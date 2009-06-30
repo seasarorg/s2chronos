@@ -9,3 +9,4 @@
 	</component>
 	<component class="org.seasar.framework.convention.impl.PersistenceConventionImpl"/>
 </components>
+

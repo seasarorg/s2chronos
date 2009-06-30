@@ -5,11 +5,12 @@
 	<classpathentry including="**/*.java" kind="src" path="src/main/webapp/WEB-INF/view"/>
 	<classpathentry including="**/*.java" kind="src" output="target/test-classes" path="src/test/java"/>
 	<classpathentry kind="src" output="target/test-classes" path="src/test/resources"/>
-	<classpathentry kind="con" path="org.devzuz.q.maven.jdt.core.mavenClasspathContainer">
+	<classpathentry kind="con" path="org.eclipse.iam.jdt.core.mavenClasspathContainer">
 		<attributes>
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="output" path="src/main/webapp/WEB-INF/classes"/>
+	<classpathentry kind="output" path="target/classes"/>
 </classpath>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<m:mayaa xmlns:m="http://mayaa.seasar.org"
+	xmlns:s="http://sastruts.seasar.org"
+	xmlns:f="http://sastruts.seasar.org/functions"
+	xmlns:bean="http://jakarta.apache.org/struts/tags-bean"
+	xmlns:html="http://jakarta.apache.org/struts/tags-html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fmt="http://java.sun.com/jstl/fmt"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+
+	<html:errors m:id="errors" />
+	<s:form m:id="form"></s:form>
+	<html:text m:id="eventDate" property="eventDate" />
+	<html:text m:id="eventText" property="eventText" />
+	<html:text m:id="eventStatus" property="eventStatus" />
+	<html:text m:id="createDate" property="createDate" />
+	<html:text m:id="updateDate" property="updateDate" />
+	<s:link m:id="listLink" href="/event/">
+		<m:doBody />
+	</s:link>
+</m:mayaa>

@@ -54,16 +54,6 @@
 			<version>1.2.13</version>
 		</dependency>
 		<dependency>
-			<groupId>org.seasar.container</groupId>
-			<artifactId>s2-extension</artifactId>
-			<version>2.4.28</version>
-		</dependency>
-		<dependency>
-			<groupId>org.seasar.container</groupId>
-			<artifactId>s2-tiger</artifactId>
-			<version>2.4.28</version>
-		</dependency>
-		<dependency>
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi</artifactId>
 			<version>3.0-FINAL</version>
@@ -73,6 +63,18 @@
 			<groupId>commons-lang</groupId>
 			<artifactId>commons-lang</artifactId>
 			<version>2.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.seasar.container</groupId>
+			<artifactId>s2-extension</artifactId>
+			<version>2.4.38</version>
+			<optional>false</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.seasar.container</groupId>
+			<artifactId>s2-tiger</artifactId>
+			<version>2.4.38</version>
+			<optional>false</optional>
 		</dependency>
 	</dependencies>
 </project>

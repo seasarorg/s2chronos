@@ -20,10 +20,18 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * タスクをクローンするためのアノテーションです。
+ * 
+ * @author j5ik2o
+ */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface CloneTask {
-
+	/**
+	 * タスクのクローン数です。
+	 * 
+	 * @return クローン数
+	 */
 	long value();
-
 }
