@@ -50,11 +50,11 @@ public class SchedulerEventHandlerTest implements
 		System.out.println("removeTaskScheduleEntry");
 	}
 
-	public void resigterTaskSchedulerAfter(Scheduler scheduler) {
+	public void registerTaskSchedulerAfter(Scheduler scheduler) {
 		System.out.println("resigtTaskAfterScheduler");
 	}
 
-	public void resigterTaskSchedulerBefore(Scheduler scheduler) {
+	public void registerTaskSchedulerBefore(Scheduler scheduler) {
 		System.out.println("resigtTaskBeforeScheduler");
 	}
 

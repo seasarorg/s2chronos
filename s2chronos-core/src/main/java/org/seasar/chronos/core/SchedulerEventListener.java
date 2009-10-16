@@ -100,7 +100,7 @@ public interface SchedulerEventListener {
 	 * @param scheduler
 	 *            {@link Scheduler}
 	 */
-	public void resigterTaskSchedulerAfter(Scheduler scheduler);
+	public void registerTaskSchedulerAfter(Scheduler scheduler);
 
 	/**
 	 * スケジューラにタスクが登録された前に呼ばれるハンドラーです．
@@ -108,7 +108,7 @@ public interface SchedulerEventListener {
 	 * @param scheduler
 	 *            {@link Scheduler}
 	 */
-	public void resigterTaskSchedulerBefore(Scheduler scheduler);
+	public void registerTaskSchedulerBefore(Scheduler scheduler);
 
 	/**
 	 * スケジューラをシャットダウンするときに呼ばれるハンドラーです．

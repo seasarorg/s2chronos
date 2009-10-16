@@ -184,7 +184,7 @@ public class SchedulerEventHandler {
 		for (final SchedulerEventListener listener : schedulerEventListener) {
 			Future<?> future = executorService.submit(new Runnable() {
 				public void run() {
-					listener.resigterTaskSchedulerAfter(scheduler);
+					listener.registerTaskSchedulerAfter(scheduler);
 				}
 			});
 			waitFuture(future);
@@ -198,7 +198,7 @@ public class SchedulerEventHandler {
 		for (final SchedulerEventListener listener : schedulerEventListener) {
 			Future<?> future = executorService.submit(new Runnable() {
 				public void run() {
-					listener.resigterTaskSchedulerBefore(scheduler);
+					listener.registerTaskSchedulerBefore(scheduler);
 				}
 			});
 			waitFuture(future);
