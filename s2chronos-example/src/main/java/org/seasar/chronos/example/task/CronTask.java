@@ -10,7 +10,7 @@ import org.seasar.chronos.core.annotation.trigger.CronTrigger;
  * </p>
  */
 @Task
-@CronTrigger(expression = "0 */1 * * * ?")
+@CronTrigger(cronExpression = "0 */1 * * * ?")
 public class CronTask extends AbstractCommonTask {
 
 }
