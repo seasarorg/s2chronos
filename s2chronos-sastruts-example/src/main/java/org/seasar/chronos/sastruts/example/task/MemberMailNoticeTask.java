@@ -18,7 +18,7 @@ import org.seasar.framework.util.tiger.CollectionsUtil;
  * ユーザにメールを通知するタスククラスです。
  */
 @Task(autoSchedule=false)
-@CronTrigger(expression = "0 */1 * * * ?")
+@CronTrigger(cronExpression = "0 */1 * * * ?")
 public class MemberMailNoticeTask {
 
 	/** Logger */

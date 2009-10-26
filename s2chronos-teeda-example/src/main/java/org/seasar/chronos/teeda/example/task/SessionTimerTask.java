@@ -7,7 +7,7 @@ import org.seasar.chronos.core.annotation.trigger.CronTrigger;
 import org.seasar.chronos.teeda.example.dao.S2SessionDao;
 
 @Task
-@CronTrigger(expression = "0 */1 * * * ?")
+@CronTrigger(cronExpression = "0 */1 * * * ?")
 public class SessionTimerTask {
 
 	public S2SessionDao s2SessionDao;

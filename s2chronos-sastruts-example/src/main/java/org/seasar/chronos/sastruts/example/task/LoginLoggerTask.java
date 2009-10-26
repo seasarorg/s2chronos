@@ -13,7 +13,7 @@ import org.seasar.framework.log.Logger;
 
 @SuppressWarnings("serial")
 @Task
-@CronTrigger(expression = "0 */1 * * * ?")
+@CronTrigger(cronExpression = "0 */1 * * * ?")
 public class LoginLoggerTask implements Serializable{
 	/** Logger */
 	private static final Logger log = Logger.getLogger(LoginLoggerTask.class);

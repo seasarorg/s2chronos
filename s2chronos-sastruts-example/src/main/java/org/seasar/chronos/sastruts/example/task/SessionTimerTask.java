@@ -11,7 +11,7 @@ import org.seasar.framework.log.Logger;
  * 古くなったS2SESSION情報を削除します。
  */
 @Task(autoSchedule=false)
-@CronTrigger(expression = "0 */1 * * * ?")
+@CronTrigger(cronExpression = "0 */1 * * * ?")
 public class SessionTimerTask {
 	
 	public String testName;

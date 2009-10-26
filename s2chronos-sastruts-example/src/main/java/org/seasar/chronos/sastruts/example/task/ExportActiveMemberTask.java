@@ -17,7 +17,7 @@ import au.com.bytecode.opencsv.CSVWriter;
  * 入会中のユーザ一覧をCSVで出力する。
  */
 @Task
-@CronTrigger(expression = "0 */5 * * * ?")
+@CronTrigger(cronExpression = "0 */5 * * * ?")
 public class ExportActiveMemberTask {
 
 	/** Logger */
