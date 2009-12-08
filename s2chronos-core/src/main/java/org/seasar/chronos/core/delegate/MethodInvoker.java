@@ -34,14 +34,14 @@ import org.seasar.framework.util.tiger.CollectionsUtil;
 import org.seasar.framework.util.tiger.ReflectionUtil;
 
 public class MethodInvoker {
-
 	private static final long serialVersionUID = -3755599989232609874L;
 
 	private static Logger log = Logger.getLogger(MethodInvoker.class);
 
 	private static final String CALLBACK_SUFFIX = "Callback";
 
-	private final CopyOnWriteArrayList<AsyncResult> resultList = CollectionsUtil.newCopyOnWriteArrayList();
+	private final CopyOnWriteArrayList<AsyncResult> resultList =
+	    CollectionsUtil.newCopyOnWriteArrayList();
 
 	private final Class<?> targetClass;
 
@@ -64,7 +64,7 @@ public class MethodInvoker {
 	 *            コンポーネント定義
 	 */
 	public MethodInvoker(ExecutorService executorService,
-			ComponentDef componentDef) {
+	        ComponentDef componentDef) {
 		this.executorService = executorService;
 		this.target = componentDef.getComponent();
 		this.targetClass = componentDef.getComponentClass();
@@ -82,25 +82,25 @@ public class MethodInvoker {
 	 *            BeanDesc
 	 */
 	public MethodInvoker(ExecutorService executorService, Object target,
-			BeanDesc beanDesc) {
+	        BeanDesc beanDesc) {
 		this.executorService = executorService;
 		this.beanDesc = beanDesc;
 		this.target = target;
 		this.targetClass = this.beanDesc.getBeanClass();
 	}
-	
+
 	private boolean initialized;
-	
-	private synchronized void initialize(){
-		if ( !initialized ){
-			this.callbackExecutorService = executorServiceFactory.create(
-					ThreadPoolType.SINGLE, null);
+
+	private synchronized void initialize() {
+		if (!initialized) {
+			this.callbackExecutorService =
+			    executorServiceFactory.create(ThreadPoolType.SINGLE, null);
 			initialized = true;
 		}
 	}
 
 	public boolean awaitInvokes(long time, TimeUnit unit)
-			throws InterruptedException {
+	        throws InterruptedException {
 		return this.executorService.awaitTermination(time, unit);
 	}
 
@@ -113,7 +113,7 @@ public class MethodInvoker {
 	 * @throws InterruptedException
 	 */
 	public AsyncResult beginInvoke(final String methodName)
-			throws InterruptedException {
+	        throws InterruptedException {
 		return beginInvoke(methodName, null, null, null);
 	}
 
@@ -130,8 +130,8 @@ public class MethodInvoker {
 	 * @throws InterruptedException
 	 */
 	public AsyncResult beginInvoke(final String methodName,
-			final MethodCallback methodCallback, final Object state)
-			throws InterruptedException {
+	        final MethodCallback methodCallback, final Object state)
+	        throws InterruptedException {
 		return beginInvoke(methodName, null, methodCallback, state);
 	}
 
@@ -146,7 +146,7 @@ public class MethodInvoker {
 	 * @throws InterruptedException
 	 */
 	public AsyncResult beginInvoke(final String methodName, final Object[] args)
-			throws InterruptedException {
+	        throws InterruptedException {
 		return beginInvoke(methodName, args, null, null);
 	}
 
@@ -165,42 +165,47 @@ public class MethodInvoker {
 	 * @throws InterruptedException
 	 */
 	public AsyncResult beginInvoke(final String methodName,
-			final Object[] args, final MethodCallback methodCallback,
-			final Object state) throws InterruptedException {
+	        final Object[] args, final MethodCallback methodCallback,
+	        final Object state) throws InterruptedException {
 		this.initialize();
 		final AsyncResult asyncResult = new AsyncResult();
 		this.resultList.add(asyncResult);
 		asyncResult.setState(state);
-		final Future<Object> future = this.executorService
-				.submit(new Callable<Object>() {
-					public Object call() throws Exception {
-						// 対象メソッドを実行
-						Object result = invoke(methodName, args);
-						if (methodCallback != null) {
-							// さらにコールバックをスレッドプールから実行
-							callbackExecutorService
-									.submit(new Callable<Void>() {
-										public Void call() throws Exception {
-											callbackHandler(methodName,
-													methodCallback, asyncResult);
-											return null;
-										}
-									});
-							// futureCallback.get();
-						}
-						resultList.remove(asyncResult);
-						return result;
-					}
-
-				});
+		final Future<Object> future =
+		    this.executorService.submit(new Callable<Object>() {
+			    public Object call() throws Exception {
+				    // 対象メソッドを実行
+				    Object result = null;
+				    try {
+					    result = invoke(methodName, args);
+					    if (methodCallback != null) {
+						    // さらにコールバックをスレッドプールから実行
+						    callbackExecutorService
+						        .submit(new Callable<Void>() {
+							        public Void call() throws Exception {
+								        callbackHandler(
+								            methodName,
+								            methodCallback,
+								            asyncResult);
+								        return null;
+							        }
+						        });
+						    // futureCallback.get();
+					    }
+				    } finally {
+					    resultList.remove(asyncResult);
+				    }
+				    return result;
+			    }
+		    });
 		asyncResult.setFuture(future);
 		return asyncResult;
 	}
 
 	// コールバックを実行します
 	private void callbackHandler(final String methodName,
-			final MethodCallback methodCallback, final AsyncResult asyncResult)
-			throws Exception {
+	        final MethodCallback methodCallback, final AsyncResult asyncResult)
+	        throws Exception {
 		try {
 			String callbackMethodName = methodCallback.getMethodName();
 			StringBuffer sb = new StringBuffer();
@@ -210,15 +215,15 @@ public class MethodInvoker {
 			} else {
 				sb.append(callbackMethodName);
 			}
-			Method mt = ReflectionUtil.getDeclaredMethod(methodCallback
-					.getTargetClass(), sb.toString(), AsyncResult.class);
+			Method mt =
+			    ReflectionUtil.getDeclaredMethod(methodCallback
+			        .getTargetClass(), sb.toString(), AsyncResult.class);
 			mt.setAccessible(true);
 			ReflectionUtil.invoke(mt, methodCallback.getTarget(), asyncResult);
 		} catch (Exception ex) {
 			log.log("ECHRONOS0001", null, ex);
 			throw ex;
 		}
-
 	}
 
 	/**
@@ -278,7 +283,7 @@ public class MethodInvoker {
 	 *             例外
 	 */
 	public Object endInvoke(AsyncResult asyncResult)
-			throws InterruptedException {
+	        throws InterruptedException {
 		try {
 			return asyncResult.getFuture().get();
 		} catch (ExecutionException e) {
@@ -354,8 +359,7 @@ public class MethodInvoker {
 	}
 
 	public void setExecutorServiceFactory(
-			ExecutorServiceFactory executorServiceFactory) {
+	        ExecutorServiceFactory executorServiceFactory) {
 		this.executorServiceFactory = executorServiceFactory;
 	}
-
 }
