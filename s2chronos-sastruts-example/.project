@@ -3,8 +3,6 @@
 	<name>s2chronos-sastruts-example</name>
 	<comment></comment>
 	<projects>
-		<project>s2chronos-core</project>
-		<project>s2chronos-extension</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
@@ -23,11 +21,6 @@
 			</arguments>
 		</buildCommand>
 		<buildCommand>
-			<name>org.eclipse.iam.jdt.core.mavenIncrementalBuilder</name>
-			<arguments>
-			</arguments>
-		</buildCommand>
-		<buildCommand>
 			<name>org.seasar.kijimuna.core.builder</name>
 			<arguments>
 			</arguments>
@@ -37,9 +30,14 @@
 			<arguments>
 			</arguments>
 		</buildCommand>
+		<buildCommand>
+			<name>org.maven.ide.eclipse.maven2Builder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
 	</buildSpec>
 	<natures>
-		<nature>org.eclipse.iam.jdt.core.mavenNature</nature>
+		<nature>org.maven.ide.eclipse.maven2Nature</nature>
 		<nature>org.eclipse.wst.common.modulecore.ModuleCoreNature</nature>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 		<nature>org.eclipse.wst.common.project.facet.core.nature</nature>
