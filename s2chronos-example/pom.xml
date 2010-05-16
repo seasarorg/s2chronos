@@ -6,7 +6,7 @@
 	<groupId>org.seasar.chronos</groupId>
 	<artifactId>s2chronos-example</artifactId>
 	<packaging>jar</packaging>
-	<version>1.0.1-SNAPSHOT</version>
+	<version>1.0.1</version>
 	<name>S2Chronos Example</name>
 	<url>http://s2chronos.sandbox.seasar.org/</url>
 	<build>
