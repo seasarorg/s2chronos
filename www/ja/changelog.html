@@ -79,6 +79,35 @@ urchinTracker();
 </div>
 <!-- section -->
 <div class="section">
+<h3>2010-05-17</h3>
+<p>
+<ul>
+	<li><a href="download.html">1.0.1をリリースしました．</a></li>
+</ul>
+<pre>
+*Bug Fix
+[CHRONOS-34] タスク実行中に isReScheduleTaskが変更された場合でも，スケジューラ内のタスク状態管理キューに不整合が起きないように修正しました
+[CHRONOS-37] TriggerChainの isReScheduleTaskが正しく設定できない問題を修正しました
+[CHRONOS-38] TriggerWrapperが Decoratorパターンになっていない不具合を修正しました
+[CHRONOS-40] トリガーアノテーションが読み込めない時（存在しない時）にsetTriggerメソッドがあるとnull値を設定しまう不具合を修正した
+[CHRONOS-41] CDelayTriggerのコンストラクタで秒数を指定しても即時実行されてしまう不具合を修正した
+[CHRONOS-43] タスクで一度例外が発生すると 2度目も同じ例外がDIされてしまう不具合を修正した
+
+*New Feature
+[CHRONOS-31] TaskThreadPoolCacheUtil を新設しました．
+[CHRONOS-39] タスククラスに強制アンスケジュール用のプロパティ(forceUnScheduleTask)を新設しました
+
+*Improvement
+[CHRONOS-32] タスクおよびトリガーの実行中状態プロパティ(execute)をexecutingに改名しました
+[CHRONOS-33] タスクおよびトリガーの実行完了状態プロパティ(executed)を新規追加しました
+[CHRONOS-35] タスクのプロパティキャッシュをWeakHashMapで管理するように変更しました
+[CHRONOS-36] PropertyWriter にPropertyReaderを保持できるように変更しました
+[CHRONOS-44] モデル用パッケージ名を変更しました
+</pre>
+</p>
+</div>
+<!-- section -->
+<div class="section">
 <h3>2008-09-08</h3>
 <p>
 <ul>
@@ -93,7 +122,6 @@ urchinTracker();
 [CHRONOS-28] トリガーを複数格納できるTriggerChainトリガーを新規に実装しました
 [CHRONOS-29] S2ChronosのHOT deployを無効化できるオプションを実装しました
 [CHRONOS-30] タスクが初期されるときと破棄されるときに1度だけ呼び出されるメソッドを新規に実装しました
-
 
 *Improvement
 [CHRONOS-24] initializeメソッドとdestroyメソッドをstartメソッドとendメソッドに改名しました      

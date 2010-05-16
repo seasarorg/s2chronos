@@ -96,12 +96,12 @@ urchinTracker();
 &lt;!DOCTYPE components PUBLIC &quot;-//SEASAR//DTD S2Container 2.4//EN&quot;
 	&quot;http://www.seasar.org/dtd/components24.dtd&quot;&gt;
 &lt;components&gt;
-	&lt;component name=&quot;schedulerConfiguration&quot; class=&quot;org.seasar.chronos.core.SchedulerConfiguration&quot;&gt;
+	&lt;component name=&quot;schedulerConfiguration&quot; class=&quot;org.seasar.chronos.core.model.SchedulerConfiguration&quot;&gt; // 注意！1.0.1からmodelパッケージに移動しました．
 		&lt;property name=&quot;daemon&quot;&gt;true&lt;/property&gt;	// スケジューラをデーモンスレッドで起動します．注意！0.0.1-RC6より追加になりました．
 		&lt;property name=&quot;autoFinish&quot;&gt;false&lt;/property&gt;  // &lt;- 実行するタスクがない場合自動的にスケジューラを終了させるかどうかのフラグ．trueの場合自動的に終了します．
 		&lt;property name=&quot;autoFinishTimeLimit&quot;&gt;5000L&lt;/property&gt;	// &lt;- 実行するタスクがなくなってからどれぐらいでスケジューラを終了させるかの時間(msec)．
 		&lt;property name=&quot;taskScanIntervalTime&quot;&gt;2000L&lt;/property&gt; // &lt;- タスクを監視する時間間隔(msec).
-		&lt;property name=&quot;threadPoolType&quot;&gt;@org.seasar.chronos.core.ThreadPoolType@CACHED&lt;/property&gt; // スケジューラのスレッドプールタイプを指定します．注意！0.0.1-RC2より追加になりました．
+		&lt;property name=&quot;threadPoolType&quot;&gt;@org.seasar.chronos.core.model.ThreadPoolType@CACHED&lt;/property&gt; // スケジューラのスレッドプールタイプを指定します．注意！1.0.1からmodelパッケージに移動しました．
 	&lt;/component&gt;
 &lt;/components&gt; 
 </pre>
